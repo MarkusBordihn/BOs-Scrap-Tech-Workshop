@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+license = "MIT"
+issueTrackerURL = "https://github.com/MarkusBordihn/BOs-Scrap-Tech-Workshop/issues"
+
+[[mods]]
+modId = "scrap_tech_workshop"
+version = "${file.jarVersion}"
+displayName = "Scrap Tech Workshop"
+displayURL = "https://curseforge.com/minecraft/mc-mods/scrap_tech_workshop"
+logoFile = "logo.png"
+credits = ""
+authors = "Markus Bordihn"
+description = '''Build, craft and innovate with a mix of scrapyard engineering, neon-powered machinery and urban workshop tools.'''
+
+[[dependencies.scrap_tech_workshop]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.scrap_tech_workshop]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,1.21)"
+ordering = "NONE"
+side = "BOTH"

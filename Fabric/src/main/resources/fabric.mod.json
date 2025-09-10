@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "scrap_tech_workshop",
+  "version": "${version}",
+  "name": "Scrap Tech Workshop",
+  "description": "Build, craft and innovate with a mix of scrapyard engineering, neon-powered machinery and urban workshop tools.",
+  "authors": [
+    "Markus Bordihn"
+  ],
+  "contact": {
+    "homepage": "https://curseforge.com/minecraft/mc-mods/scrap_tech_workshop",
+    "issues": "https://github.com/MarkusBordihn/BOs-Scrap-Tech-Workshop/issues"
+  },
+  "license": "MIT",
+  "icon": "logo.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "de.markusbordihn.scraptechworkshop.ScrapTechWorkshop"
+    ],
+    "client": [
+      "de.markusbordihn.scraptechworkshop.ScrapTechWorkshopClient"
+    ],
+    "fabric-gametest": [
+      "de.markusbordihn.scraptechworkshop.gametest.SmokeTest"
+    ]
+  },
+  "mixins": [],
+  "accessWidener": "scraptechworkshop.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.15",
+    "fabric": "*",
+    "minecraft": "1.20.1",
+    "java": ">=17"
+  }
+}

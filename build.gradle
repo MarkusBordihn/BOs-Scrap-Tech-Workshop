@@ -1,0 +1,92 @@
+import org.gradle.tooling.GradleConnector
+
+tasks.register('runAllGameTests') {
+  group = 'verification'
+  description = 'Runs both Fabric and Forge game tests.'
+  dependsOn ':Fabric:runGameTest', ':Forge:runGameTestServer'
+}
+
+// Create a publish task to clean, build and publish sequentially
+tasks.register('publish') {
+  description = 'Cleans, builds and publishes to Modrinth and CurseForge sequentially'
+  group = "publishing"
+
+  doLast {
+    // First ensure clean runs, then build, then publishing tasks for all subprojects
+    def buildTasks = ['clean', 'build']
+    def publishingTasks = [':Fabric:modrinth', ':Forge:modrinth', ':Fabric:curseforge', ':Forge:curseforge']
+    def allTasks = buildTasks + publishingTasks
+
+    // Process each task sequentially to guarantee order
+    allTasks.eachWithIndex { taskName, index ->
+      println "Executing task: ${taskName}"
+
+      try {
+        // Use GradleConnector for proper task execution
+        def connection = GradleConnector.newConnector()
+            .forProjectDirectory(rootDir)
+            .connect()
+
+        try {
+          def taskLauncher = connection.newBuild()
+          taskLauncher.forTasks(taskName)
+          taskLauncher.setStandardOutput(System.out)
+          taskLauncher.setStandardError(System.err)
+          taskLauncher.run()
+          println "Successfully executed task: ${taskName}"
+
+          // Add delay of 5 seconds between modrinth and curseforge tasks
+          if (taskName.endsWith(':modrinth') && (index + 1) < allTasks.size() && allTasks[index + 1].endsWith(':curseforge')) {
+            println "Waiting 5 seconds before proceeding to CurseForge..."
+            sleep(5000)
+          }
+        } finally {
+          connection.close()
+        }
+      } catch (Exception e) {
+        println "Warning: Failed to execute ${taskName}"
+        println "Error message: ${e.message}"
+        throw e
+      }
+    }
+
+    println "All tasks completed successfully."
+  }
+}
+
+subprojects {
+
+  apply plugin: 'java'
+
+  java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+  java.withSourcesJar()
+  java.withJavadocJar()
+
+  repositories {
+    mavenCentral()
+    maven {
+      url "https://www.cursemaven.com"
+      content {
+        includeGroup "curse.maven"
+      }
+    }
+  }
+
+  tasks.register('wrapper', Wrapper) {
+    gradleVersion = '8.13'
+  }
+
+  tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+  }
+
+  tasks.withType(GenerateModuleMetadata).configureEach {
+    enabled = false
+  }
+
+  tasks.withType(Javadoc).configureEach {
+    enabled = false
+  }
+
+  tasks.register("prepareKotlinBuildScriptModel") {}
+}
