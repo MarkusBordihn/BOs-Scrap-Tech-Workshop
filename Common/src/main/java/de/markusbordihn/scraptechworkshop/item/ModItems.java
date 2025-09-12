@@ -17,29 +17,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop;
+package de.markusbordihn.scraptechworkshop.item;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import de.markusbordihn.scraptechworkshop.Constants;
+import java.util.function.Supplier;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 
-public final class Constants {
+public class ModItems {
 
-  public static final String MOD_ID = "scrap_tech_workshop";
-  public static final String MOD_NAME = "Scrap Tech Workshop";
-  public static final String MOD_COMMAND = MOD_ID;
-  public static final String LOG_NAME = MOD_NAME;
-  public static final String LOG_SUB_REGISTER_PREFIX = "- Register " + LOG_NAME;
-  public static final String LOG_REGISTER_PREFIX = "Register " + MOD_NAME;
-  public static final String TEXT_PREFIX = "text." + MOD_ID + ".";
+  public static Supplier<Item> SCRAP_METAL;
+  public static Supplier<Item> SCRAP_GOLD;
+  public static Supplier<Item> SCRAP_IRON;
+  public static Supplier<Item> SCRAP_COPPER;
 
-  public static Path GAME_DIR = Paths.get("").toAbsolutePath();
-  public static Path CONFIG_DIR = GAME_DIR.resolve("config");
+  public static <T extends Item> Supplier<T> registerItem(String name, Supplier<T> itemSupplier) {
+    throw new UnsupportedOperationException(
+        "This method must be implemented by platform-specific code");
+  }
 
-  public static boolean IS_FABRIC = false;
-  public static boolean IS_FORGE = false;
-  public static boolean IS_NEOFORGE = false;
+  public static ResourceLocation getItemId(String name) {
+    return new ResourceLocation(Constants.MOD_ID, name);
+  }
 
-  public static boolean HAS_FABRIC_TOOLTIPFIX_MOD = false;
-
-  private Constants() {}
+  public static void registerItems() {
+    // Platform-specific registration will be handled by subclasses
+  }
 }

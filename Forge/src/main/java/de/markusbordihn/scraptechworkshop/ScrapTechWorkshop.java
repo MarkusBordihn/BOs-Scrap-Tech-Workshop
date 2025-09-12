@@ -19,11 +19,14 @@
 
 package de.markusbordihn.scraptechworkshop;
 
+import de.markusbordihn.scraptechworkshop.config.Config;
+import de.markusbordihn.scraptechworkshop.item.ForgeModItems;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.fml.loading.FMLPaths;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +47,12 @@ public class ScrapTechWorkshop {
     Constants.CONFIG_DIR = FMLPaths.CONFIGDIR.get();
     Constants.IS_FORGE = true;
 
-    // Initialize the client mod initializer
+    log.info("{} Configuration ...", Constants.LOG_REGISTER_PREFIX);
+    Config.register(FMLEnvironment.dist == Dist.DEDICATED_SERVER);
+
+    log.info("{} Items ...", Constants.LOG_REGISTER_PREFIX);
+    ForgeModItems.register(modEventBus);
+
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new ScrapTechWorkshopClient(modEventBus));
   }
 }

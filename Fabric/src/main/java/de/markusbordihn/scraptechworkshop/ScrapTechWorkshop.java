@@ -19,6 +19,10 @@
 
 package de.markusbordihn.scraptechworkshop;
 
+import de.markusbordihn.scraptechworkshop.block.BlockEventHandler;
+import de.markusbordihn.scraptechworkshop.config.Config;
+import de.markusbordihn.scraptechworkshop.item.FabricModItems;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
@@ -37,5 +41,14 @@ public class ScrapTechWorkshop implements ModInitializer {
     Constants.CONFIG_DIR = FabricLoader.getInstance().getConfigDir();
     Constants.IS_FABRIC = true;
     Constants.HAS_FABRIC_TOOLTIPFIX_MOD = FabricLoader.getInstance().isModLoaded("tooltipfix");
+
+    log.info("{} Configuration ...", Constants.LOG_REGISTER_PREFIX);
+    Config.register(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER);
+
+    log.info("{} Items ...", Constants.LOG_REGISTER_PREFIX);
+    FabricModItems.registerModItems();
+
+    log.info("{} Block Events ...", Constants.LOG_REGISTER_PREFIX);
+    BlockEventHandler.register();
   }
 }

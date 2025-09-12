@@ -17,22 +17,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.gametest;
+package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.gametest.framework.GameTest;
-import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
 
-@SuppressWarnings("unused")
-public class SmokeTest {
+public class ModCreativeTabs {
 
-  @GameTest(template = Constants.MOD_ID + ":gametest.3x3x3")
-  public void testModRegistered(GameTestHelper helper) {
-    GameTestHelpers.assertTrue(
-        helper,
-        "Mod " + Constants.MOD_ID + " is not available!",
-        FabricLoader.getInstance().isModLoaded(Constants.MOD_ID));
-    helper.succeed();
+  public static final ResourceKey<CreativeModeTab> SCRAP_TECH_WORKSHOP_TAB =
+      ResourceKey.create(
+          Registries.CREATIVE_MODE_TAB,
+          new ResourceLocation(Constants.MOD_ID, "scrap_tech_workshop"));
+
+  public static CreativeModeTab.Builder createMainTab() {
+    return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
+        .title(Component.translatable("itemGroup.scrap_tech_workshop.main"))
+        .icon(() -> new ItemStack(ModItems.SCRAP_METAL.get()))
+        .displayItems(
+            (parameters, output) -> {
+              output.accept(ModItems.SCRAP_METAL.get());
+              output.accept(ModItems.SCRAP_GOLD.get());
+              output.accept(ModItems.SCRAP_IRON.get());
+              output.accept(ModItems.SCRAP_COPPER.get());
+            });
   }
 }

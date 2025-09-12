@@ -17,29 +17,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop;
+package de.markusbordihn.scraptechworkshop.block;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.drop.ScrapDropHandler;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.Block;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public final class Constants {
+public class BlockEvents {
 
-  public static final String MOD_ID = "scrap_tech_workshop";
-  public static final String MOD_NAME = "Scrap Tech Workshop";
-  public static final String MOD_COMMAND = MOD_ID;
-  public static final String LOG_NAME = MOD_NAME;
-  public static final String LOG_SUB_REGISTER_PREFIX = "- Register " + LOG_NAME;
-  public static final String LOG_REGISTER_PREFIX = "Register " + MOD_NAME;
-  public static final String TEXT_PREFIX = "text." + MOD_ID + ".";
+  protected static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
-  public static Path GAME_DIR = Paths.get("").toAbsolutePath();
-  public static Path CONFIG_DIR = GAME_DIR.resolve("config");
+  public static void handleBlockBreakEvent(
+      Block block, BlockPos blockPos, ServerLevel serverLevel) {
+    log.debug("Block broken: {} at {} in {}", block, blockPos, serverLevel);
 
-  public static boolean IS_FABRIC = false;
-  public static boolean IS_FORGE = false;
-  public static boolean IS_NEOFORGE = false;
-
-  public static boolean HAS_FABRIC_TOOLTIPFIX_MOD = false;
-
-  private Constants() {}
+    // Handle scrap drops for broken blocks
+    ScrapDropHandler.handleBlockBreak(serverLevel, blockPos, block);
+  }
 }

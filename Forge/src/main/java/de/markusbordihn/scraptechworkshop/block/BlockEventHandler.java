@@ -17,29 +17,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop;
+package de.markusbordihn.scraptechworkshop.block;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
-public final class Constants {
+@Mod.EventBusSubscriber
+public class BlockEventHandler {
 
-  public static final String MOD_ID = "scrap_tech_workshop";
-  public static final String MOD_NAME = "Scrap Tech Workshop";
-  public static final String MOD_COMMAND = MOD_ID;
-  public static final String LOG_NAME = MOD_NAME;
-  public static final String LOG_SUB_REGISTER_PREFIX = "- Register " + LOG_NAME;
-  public static final String LOG_REGISTER_PREFIX = "Register " + MOD_NAME;
-  public static final String TEXT_PREFIX = "text." + MOD_ID + ".";
-
-  public static Path GAME_DIR = Paths.get("").toAbsolutePath();
-  public static Path CONFIG_DIR = GAME_DIR.resolve("config");
-
-  public static boolean IS_FABRIC = false;
-  public static boolean IS_FORGE = false;
-  public static boolean IS_NEOFORGE = false;
-
-  public static boolean HAS_FABRIC_TOOLTIPFIX_MOD = false;
-
-  private Constants() {}
+  @SubscribeEvent
+  public static void onBlockBreak(BlockEvent.BreakEvent event) {
+    if (event.getLevel() instanceof ServerLevel serverLevel) {
+      BlockEvents.handleBlockBreakEvent(event.getState().getBlock(), event.getPos(), serverLevel);
+    }
+  }
 }
