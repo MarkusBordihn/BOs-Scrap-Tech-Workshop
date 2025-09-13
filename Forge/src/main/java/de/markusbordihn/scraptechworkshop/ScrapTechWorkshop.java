@@ -19,8 +19,13 @@
 
 package de.markusbordihn.scraptechworkshop;
 
+import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
 import de.markusbordihn.scraptechworkshop.config.Config;
+import de.markusbordihn.scraptechworkshop.entity.ForgeModBlockEntities;
+import de.markusbordihn.scraptechworkshop.item.ForgeModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.ForgeModItems;
+import de.markusbordihn.scraptechworkshop.menu.ForgeModMenus;
+import de.markusbordihn.scraptechworkshop.recipe.ForgeModRecipes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
@@ -37,8 +42,8 @@ public class ScrapTechWorkshop {
 
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
-  public ScrapTechWorkshop() {
-    final IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+  public ScrapTechWorkshop(FMLJavaModLoadingContext context) {
+    final IEventBus modEventBus = context.getModEventBus();
 
     log.info("Initializing {} (Forge) ...", Constants.MOD_NAME);
 
@@ -50,8 +55,23 @@ public class ScrapTechWorkshop {
     log.info("{} Configuration ...", Constants.LOG_REGISTER_PREFIX);
     Config.register(FMLEnvironment.dist == Dist.DEDICATED_SERVER);
 
+    log.info("{} Blocks ...", Constants.LOG_REGISTER_PREFIX);
+    ForgeModBlocks.register(modEventBus);
+
+    log.info("{} Block Entities ...", Constants.LOG_REGISTER_PREFIX);
+    ForgeModBlockEntities.register(modEventBus);
+
+    log.info("{} Block Items ...", Constants.LOG_REGISTER_PREFIX);
+    ForgeModBlockItems.register(modEventBus);
+
     log.info("{} Items ...", Constants.LOG_REGISTER_PREFIX);
     ForgeModItems.register(modEventBus);
+
+    log.info("{} Menus ...", Constants.LOG_REGISTER_PREFIX);
+    ForgeModMenus.register(modEventBus);
+
+    log.info("{} Recipes ...", Constants.LOG_REGISTER_PREFIX);
+    ForgeModRecipes.register(modEventBus);
 
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new ScrapTechWorkshopClient(modEventBus));
   }

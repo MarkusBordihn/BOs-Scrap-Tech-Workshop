@@ -1,0 +1,27 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:repeater"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:circuit_scrap",
+    "min": 1,
+    "max": 3,
+    "durability_scaling": true
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:tech_scrap",
+      "chance": 0.35,
+      "min": 1,
+      "max": 1
+    },
+    {
+      "item": "scrap_tech_workshop:glass_scrap",
+      "chance": 0.10,
+      "min": 1,
+      "max": 1
+    }
+  ],
+  "process_time": 200
+}

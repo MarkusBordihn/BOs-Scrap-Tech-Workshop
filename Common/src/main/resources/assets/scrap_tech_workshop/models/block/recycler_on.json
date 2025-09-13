@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "scrap_tech_workshop:block/recycler_side",
+    "down": "scrap_tech_workshop:block/recycler_bottom",
+    "up": "scrap_tech_workshop:block/recycler_top",
+    "north": "scrap_tech_workshop:block/recycler_front_on",
+    "east": "scrap_tech_workshop:block/recycler_side",
+    "south": "scrap_tech_workshop:block/recycler_side",
+    "west": "scrap_tech_workshop:block/recycler_side"
+  }
+}

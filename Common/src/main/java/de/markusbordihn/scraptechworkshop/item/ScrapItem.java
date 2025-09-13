@@ -19,31 +19,52 @@
 
 package de.markusbordihn.scraptechworkshop.item;
 
+import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import java.util.List;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public interface ScrapItem {
+public abstract class ScrapItem extends Item {
 
-  int getScrapValue();
+  protected final ScrapType scrapType;
 
-  default Rarity getScrapRarity() {
-    return Rarity.COMMON;
+  protected ScrapItem(Properties properties, ScrapType scrapType) {
+    super(properties);
+    this.scrapType = scrapType;
   }
 
-  default boolean isRecyclable() {
+  public ScrapType getScrapType() {
+    return scrapType;
+  }
+
+  public abstract int getScrapValue();
+
+  public abstract Rarity getScrapRarity();
+
+  public boolean isRecyclable() {
     return true;
   }
 
-  default float getEfficiencyBonus() {
-    return 1.0f;
+  public abstract float getEfficiencyBonus();
+
+  @Override
+  public Rarity getRarity(ItemStack stack) {
+    return getScrapRarity();
   }
 
-  default void addScrapTooltip(
+  @Override
+  public void appendHoverText(
       ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    super.appendHoverText(stack, level, tooltip, flag);
+    addScrapTooltip(stack, level, tooltip, flag);
+  }
+
+  protected void addScrapTooltip(
+      ItemStack itemStack, Level level, List<Component> tooltip, TooltipFlag flag) {
     tooltip.add(
         Component.translatable("tooltip.scrap_tech_workshop.scrap_value", getScrapValue())
             .withStyle(net.minecraft.ChatFormatting.GRAY));

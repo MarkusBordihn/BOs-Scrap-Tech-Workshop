@@ -20,7 +20,13 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.CrystalScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.LuminousScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MetalScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
+import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -38,33 +44,44 @@ public class ForgeModItems {
           net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB, Constants.MOD_ID);
 
   public static final RegistryObject<Item> FORGE_SCRAP_METAL =
-      ITEMS.register(
-          MetalScrapItem.METAL_SCRAP_ID, () -> new MetalScrapItem(new Item.Properties()));
-
+      ITEMS.register(MetalScrapItem.METAL_SCRAP_ID, () -> ScrapItemRegistry.METAL_SCRAP_ITEM);
   public static final RegistryObject<Item> FORGE_SCRAP_GOLD =
-      ITEMS.register(
-          MetalScrapItem.GOLD_SCRAP_ID,
-          () -> new MetalScrapItem(new Item.Properties(), MetalScrapItem.GOLD_SCRAP_ID));
-
+      ITEMS.register(MetalScrapItem.GOLD_SCRAP_ID, () -> ScrapItemRegistry.GOLD_SCRAP_ITEM);
   public static final RegistryObject<Item> FORGE_SCRAP_IRON =
-      ITEMS.register(
-          MetalScrapItem.IRON_SCRAP_ID,
-          () -> new MetalScrapItem(new Item.Properties(), MetalScrapItem.IRON_SCRAP_ID));
-
+      ITEMS.register(MetalScrapItem.IRON_SCRAP_ID, () -> ScrapItemRegistry.IRON_SCRAP_ITEM);
   public static final RegistryObject<Item> FORGE_SCRAP_COPPER =
+      ITEMS.register(MetalScrapItem.COPPER_SCRAP_ID, () -> ScrapItemRegistry.COPPER_SCRAP_ITEM);
+  public static final RegistryObject<Item> FORGE_SCRAP_CERAMIC =
+      ITEMS.register(CeramicScrapItem.CERAMIC_SCRAP_ID, () -> ScrapItemRegistry.CERAMIC_SCRAP_ITEM);
+
+  public static final RegistryObject<Item> FORGE_SCRAP_CRYSTAL =
+      ITEMS.register(CrystalScrapItem.CRYSTAL_SCRAP_ID, () -> ScrapItemRegistry.CRYSTAL_SCRAP_ITEM);
+
+  public static final RegistryObject<Item> FORGE_SCRAP_LUMINOUS =
       ITEMS.register(
-          MetalScrapItem.COPPER_SCRAP_ID,
-          () -> new MetalScrapItem(new Item.Properties(), MetalScrapItem.COPPER_SCRAP_ID));
+          LuminousScrapItem.LUMINOUS_SCRAP_ID, () -> ScrapItemRegistry.LUMINOUS_SCRAP_ITEM);
+
+  public static final RegistryObject<Item> FORGE_SCRAP_PLASTIC =
+      ITEMS.register(PlasticScrapItem.PLASTIC_SCRAP_ID, () -> ScrapItemRegistry.PLASTIC_SCRAP_ITEM);
+
+  public static final RegistryObject<Item> FORGE_SCRAP_TECH =
+      ITEMS.register(TechScrapItem.TECH_SCRAP_ID, () -> ScrapItemRegistry.TECH_SCRAP_ITEM);
 
   public static final RegistryObject<CreativeModeTab> SCRAP_TECH_WORKSHOP_TAB =
       CREATIVE_MODE_TABS.register("scrap_tech_workshop", ModCreativeTabs.createMainTab()::build);
 
   public static void register(IEventBus eventBus) {
-    ITEMS.register(eventBus);
     CREATIVE_MODE_TABS.register(eventBus);
-    ModItems.SCRAP_METAL = FORGE_SCRAP_METAL;
-    ModItems.SCRAP_GOLD = FORGE_SCRAP_GOLD;
-    ModItems.SCRAP_IRON = FORGE_SCRAP_IRON;
-    ModItems.SCRAP_COPPER = FORGE_SCRAP_COPPER;
+
+    ITEMS.register(eventBus);
+    ModItems.CERAMIC_SCRAP = FORGE_SCRAP_CERAMIC;
+    ModItems.COPPER_SCRAP = FORGE_SCRAP_COPPER;
+    ModItems.CRYSTAL_SCRAP = FORGE_SCRAP_CRYSTAL;
+    ModItems.GOLD_SCRAP = FORGE_SCRAP_GOLD;
+    ModItems.IRON_SCRAP = FORGE_SCRAP_IRON;
+    ModItems.LUMINOUS_SCRAP = FORGE_SCRAP_LUMINOUS;
+    ModItems.METAL_SCRAP = FORGE_SCRAP_METAL;
+    ModItems.PLASTIC_SCRAP = FORGE_SCRAP_PLASTIC;
+    ModItems.TECH_SCRAP = FORGE_SCRAP_TECH;
   }
 }

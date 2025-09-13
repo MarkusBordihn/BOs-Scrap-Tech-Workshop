@@ -1,0 +1,26 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:redstone_lamp"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:capacitor_scrap",
+    "min": 1,
+    "max": 2
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:glass_scrap",
+      "chance": 0.35,
+      "min": 1,
+      "max": 1
+    },
+    {
+      "item": "scrap_tech_workshop:tech_scrap",
+      "chance": 0.20,
+      "min": 1,
+      "max": 1
+    }
+  ],
+  "process_time": 220
+}

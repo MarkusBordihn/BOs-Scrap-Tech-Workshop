@@ -19,80 +19,42 @@
 
 package de.markusbordihn.scraptechworkshop.item.scrap;
 
+import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.item.ScrapItem;
-import java.util.List;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 
-public class MetalScrapItem extends Item implements ScrapItem {
+public class MetalScrapItem extends ScrapItem {
 
   public static final String METAL_SCRAP_ID = "metal_scrap";
   public static final String GOLD_SCRAP_ID = "gold_scrap";
   public static final String IRON_SCRAP_ID = "iron_scrap";
   public static final String COPPER_SCRAP_ID = "copper_scrap";
 
-  // Keep legacy ID for backward compatibility
-  public static final String ID = METAL_SCRAP_ID;
-
-  private final String scrapType;
-
-  public MetalScrapItem(Properties properties) {
-    this(properties, METAL_SCRAP_ID);
-  }
-
-  public MetalScrapItem(Properties properties, String scrapType) {
-    super(properties);
-    this.scrapType = scrapType;
+  public MetalScrapItem(Properties properties, ScrapType scrapType) {
+    super(properties, scrapType);
   }
 
   @Override
   public int getScrapValue() {
     return switch (scrapType) {
-      case GOLD_SCRAP_ID -> 25;
-      case IRON_SCRAP_ID -> 15;
-      case COPPER_SCRAP_ID -> 12;
-      default -> 10; // metal_scrap default
+      case GOLD -> 25;
+      case IRON -> 15;
+      case COPPER -> 12;
+      case METAL -> 10;
+      default -> 10;
     };
   }
 
   @Override
   public Rarity getScrapRarity() {
     return switch (scrapType) {
-      case GOLD_SCRAP_ID -> Rarity.UNCOMMON;
-      case IRON_SCRAP_ID -> Rarity.COMMON;
-      case COPPER_SCRAP_ID -> Rarity.COMMON;
-      default -> Rarity.COMMON; // metal_scrap default
+      case GOLD -> Rarity.UNCOMMON;
+      default -> Rarity.COMMON;
     };
   }
 
   @Override
-  public Rarity getRarity(ItemStack stack) {
-    return getScrapRarity();
-  }
-
-  @Override
-  public boolean isRecyclable() {
-    return true;
-  }
-
-  @Override
   public float getEfficiencyBonus() {
-    return 1.0f;
-  }
-
-  @Override
-  public void appendHoverText(
-      ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-    super.appendHoverText(stack, level, tooltip, flag);
-
-    String translationKey = "item.scrap_tech_workshop." + scrapType + ".description";
-    tooltip.add(
-        Component.translatable(translationKey).withStyle(net.minecraft.ChatFormatting.DARK_AQUA));
-
-    addScrapTooltip(stack, level, tooltip, flag);
+    return 1.0f; // Standard efficiency for metals
   }
 }

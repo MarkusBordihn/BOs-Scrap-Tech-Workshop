@@ -45,34 +45,34 @@ public class ScrapDropHandler {
     Map<Block, ScrapType> typeMap = new HashMap<>();
 
     // Stone blocks - metal scrap
-    typeMap.put(Blocks.STONE, ScrapType.METAL);
-    typeMap.put(Blocks.DEEPSLATE, ScrapType.METAL);
-    typeMap.put(Blocks.GRANITE, ScrapType.METAL);
     typeMap.put(Blocks.ANDESITE, ScrapType.METAL);
+    typeMap.put(Blocks.DEEPSLATE, ScrapType.METAL);
     typeMap.put(Blocks.DIORITE, ScrapType.METAL);
+    typeMap.put(Blocks.GRANITE, ScrapType.METAL);
+    typeMap.put(Blocks.STONE, ScrapType.METAL);
 
     // Gold blocks - gold scrap
-    typeMap.put(Blocks.GOLD_ORE, ScrapType.GOLD);
-    typeMap.put(Blocks.DEEPSLATE_GOLD_ORE, ScrapType.GOLD);
-    typeMap.put(Blocks.GOLD_BLOCK, ScrapType.GOLD);
     typeMap.put(Blocks.ANVIL, ScrapType.GOLD);
     typeMap.put(Blocks.CHIPPED_ANVIL, ScrapType.GOLD);
     typeMap.put(Blocks.DAMAGED_ANVIL, ScrapType.GOLD);
+    typeMap.put(Blocks.DEEPSLATE_GOLD_ORE, ScrapType.GOLD);
+    typeMap.put(Blocks.GOLD_BLOCK, ScrapType.GOLD);
+    typeMap.put(Blocks.GOLD_ORE, ScrapType.GOLD);
 
     // Iron blocks - iron scrap
-    typeMap.put(Blocks.IRON_ORE, ScrapType.IRON);
     typeMap.put(Blocks.DEEPSLATE_IRON_ORE, ScrapType.IRON);
     typeMap.put(Blocks.IRON_BLOCK, ScrapType.IRON);
+    typeMap.put(Blocks.IRON_ORE, ScrapType.IRON);
     typeMap.put(Blocks.RAW_IRON_BLOCK, ScrapType.IRON);
 
     // Copper blocks - copper scrap
+    typeMap.put(Blocks.COPPER_BLOCK, ScrapType.COPPER);
     typeMap.put(Blocks.COPPER_ORE, ScrapType.COPPER);
     typeMap.put(Blocks.DEEPSLATE_COPPER_ORE, ScrapType.COPPER);
-    typeMap.put(Blocks.COPPER_BLOCK, ScrapType.COPPER);
-    typeMap.put(Blocks.RAW_COPPER_BLOCK, ScrapType.COPPER);
     typeMap.put(Blocks.EXPOSED_COPPER, ScrapType.COPPER);
-    typeMap.put(Blocks.WEATHERED_COPPER, ScrapType.COPPER);
     typeMap.put(Blocks.OXIDIZED_COPPER, ScrapType.COPPER);
+    typeMap.put(Blocks.RAW_COPPER_BLOCK, ScrapType.COPPER);
+    typeMap.put(Blocks.WEATHERED_COPPER, ScrapType.COPPER);
 
     return typeMap;
   }
@@ -109,33 +109,50 @@ public class ScrapDropHandler {
     if (!ScrapDropConfig.enableDropSounds || ScrapDropConfig.dropSoundVolume <= 0.0f) {
       return;
     }
-
     SoundEvent soundEvent = getSoundForScrapType(scrapType);
-    float volume = Math.min(1.0f, ScrapDropConfig.dropSoundVolume);
-    float pitch = 0.8f + RANDOM.nextFloat() * 0.4f;
-
-    level.playSound(null, pos, soundEvent, SoundSource.BLOCKS, volume, pitch);
+    level.playSound(
+        null,
+        pos,
+        soundEvent,
+        SoundSource.BLOCKS,
+        Math.min(1.0f, ScrapDropConfig.dropSoundVolume),
+        0.8f + RANDOM.nextFloat() * 0.4f);
   }
 
   private static SoundEvent getSoundForScrapType(ScrapType scrapType) {
     return switch (scrapType) {
-      case METAL -> SoundEvents.COPPER_BREAK;
+      case CERAMIC -> SoundEvents.STONE_BREAK;
+      case COPPER -> SoundEvents.COPPER_BREAK;
+      case CRYSTAL -> SoundEvents.AMETHYST_CLUSTER_BREAK;
       case GOLD -> SoundEvents.ANVIL_LAND;
       case IRON -> SoundEvents.IRON_TRAPDOOR_CLOSE;
-      case COPPER -> SoundEvents.COPPER_BREAK;
+      case LUMINOUS -> SoundEvents.GLASS_BREAK;
+      case METAL -> SoundEvents.COPPER_BREAK;
+      case PLASTIC -> SoundEvents.WOOL_BREAK;
+      case TECH -> SoundEvents.REDSTONE_TORCH_BURNOUT;
     };
   }
 
   private static ScrapDropData getScrapDropDataForType(ScrapType scrapType) {
     return switch (scrapType) {
-      case METAL ->
-          new ScrapDropData(ModItems.SCRAP_METAL.get(), ScrapDropConfig.metalScrapDropChance);
-      case GOLD ->
-          new ScrapDropData(ModItems.SCRAP_GOLD.get(), ScrapDropConfig.goldScrapDropChance);
-      case IRON ->
-          new ScrapDropData(ModItems.SCRAP_IRON.get(), ScrapDropConfig.ironScrapDropChance);
+      case CERAMIC ->
+          new ScrapDropData(ModItems.CERAMIC_SCRAP.get(), ScrapDropConfig.ceramicScrapDropChance);
       case COPPER ->
-          new ScrapDropData(ModItems.SCRAP_COPPER.get(), ScrapDropConfig.copperScrapDropChance);
+          new ScrapDropData(ModItems.COPPER_SCRAP.get(), ScrapDropConfig.copperScrapDropChance);
+      case CRYSTAL ->
+          new ScrapDropData(ModItems.CRYSTAL_SCRAP.get(), ScrapDropConfig.crystalScrapDropChance);
+      case GOLD ->
+          new ScrapDropData(ModItems.GOLD_SCRAP.get(), ScrapDropConfig.goldScrapDropChance);
+      case IRON ->
+          new ScrapDropData(ModItems.IRON_SCRAP.get(), ScrapDropConfig.ironScrapDropChance);
+      case LUMINOUS ->
+          new ScrapDropData(ModItems.LUMINOUS_SCRAP.get(), ScrapDropConfig.luminousScrapDropChance);
+      case METAL ->
+          new ScrapDropData(ModItems.METAL_SCRAP.get(), ScrapDropConfig.metalScrapDropChance);
+      case PLASTIC ->
+          new ScrapDropData(ModItems.PLASTIC_SCRAP.get(), ScrapDropConfig.plasticScrapDropChance);
+      case TECH ->
+          new ScrapDropData(ModItems.TECH_SCRAP.get(), ScrapDropConfig.techScrapDropChance);
     };
   }
 }

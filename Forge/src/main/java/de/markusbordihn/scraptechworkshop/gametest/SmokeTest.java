@@ -29,14 +29,15 @@ import net.minecraftforge.gametest.PrefixGameTestTemplate;
 @SuppressWarnings("unused")
 @PrefixGameTestTemplate(value = false)
 @GameTestHolder(Constants.MOD_ID)
-public class SmokeTest {
+public class SmokeTest extends BaseSmokeTest {
 
   @GameTest(template = "gametest.3x3x3")
   public void testModRegistered(GameTestHelper helper) {
-    GameTestHelpers.assertTrue(
-        helper,
-        "Mod " + Constants.MOD_ID + " is not available!",
-        ModList.get().isLoaded(Constants.MOD_ID));
-    helper.succeed();
+    super.testModRegistered(helper);
+  }
+
+  @Override
+  protected boolean isModLoaded(String modId) {
+    return ModList.get().isLoaded(modId);
   }
 }

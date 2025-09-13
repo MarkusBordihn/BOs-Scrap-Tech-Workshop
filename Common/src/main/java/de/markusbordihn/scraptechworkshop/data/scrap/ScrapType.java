@@ -20,8 +20,13 @@
 package de.markusbordihn.scraptechworkshop.data.scrap;
 
 public enum ScrapType {
-  METAL,
+  CERAMIC,
+  COPPER,
+  CRYSTAL,
   GOLD,
   IRON,
-  COPPER
+  LUMINOUS,
+  METAL,
+  PLASTIC,
+  TECH
 }

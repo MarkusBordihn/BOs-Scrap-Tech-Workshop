@@ -20,8 +20,13 @@
 package de.markusbordihn.scraptechworkshop;
 
 import de.markusbordihn.scraptechworkshop.block.BlockEventHandler;
+import de.markusbordihn.scraptechworkshop.block.FabricModBlocks;
 import de.markusbordihn.scraptechworkshop.config.Config;
+import de.markusbordihn.scraptechworkshop.entity.FabricModBlockEntities;
+import de.markusbordihn.scraptechworkshop.item.FabricModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.FabricModItems;
+import de.markusbordihn.scraptechworkshop.menu.FabricModMenus;
+import de.markusbordihn.scraptechworkshop.recipe.FabricModRecipes;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -45,8 +50,23 @@ public class ScrapTechWorkshop implements ModInitializer {
     log.info("{} Configuration ...", Constants.LOG_REGISTER_PREFIX);
     Config.register(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER);
 
+    log.info("{} Blocks ...", Constants.LOG_REGISTER_PREFIX);
+    FabricModBlocks.registerBlocks();
+
+    log.info("{} Block Entities ...", Constants.LOG_REGISTER_PREFIX);
+    FabricModBlockEntities.registerBlockEntities();
+
+    log.info("{} Block Items ...", Constants.LOG_REGISTER_PREFIX);
+    FabricModBlockItems.registerBlockItems();
+
     log.info("{} Items ...", Constants.LOG_REGISTER_PREFIX);
     FabricModItems.registerModItems();
+
+    log.info("{} Menus ...", Constants.LOG_REGISTER_PREFIX);
+    FabricModMenus.registerMenus();
+
+    log.info("{} Recipes ...", Constants.LOG_REGISTER_PREFIX);
+    FabricModRecipes.registerRecipes();
 
     log.info("{} Block Events ...", Constants.LOG_REGISTER_PREFIX);
     BlockEventHandler.register();

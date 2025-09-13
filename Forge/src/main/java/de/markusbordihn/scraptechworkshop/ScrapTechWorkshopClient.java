@@ -19,16 +19,27 @@
 
 package de.markusbordihn.scraptechworkshop;
 
+import de.markusbordihn.scraptechworkshop.client.screen.ClientScreens;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("unused")
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ScrapTechWorkshopClient {
 
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   public ScrapTechWorkshopClient(IEventBus modEventBus) {
     log.info("Initializing {} (Forge-Client) ...", Constants.MOD_NAME);
+  }
+
+  @SubscribeEvent
+  public static void onClientSetup(FMLClientSetupEvent event) {
+    event.enqueueWork(ClientScreens::registerScreens);
   }
 }

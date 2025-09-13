@@ -25,14 +25,15 @@ import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 
 @SuppressWarnings("unused")
-public class SmokeTest {
+public class SmokeTest extends BaseSmokeTest {
 
   @GameTest(template = Constants.MOD_ID + ":gametest.3x3x3")
   public void testModRegistered(GameTestHelper helper) {
-    GameTestHelpers.assertTrue(
-        helper,
-        "Mod " + Constants.MOD_ID + " is not available!",
-        FabricLoader.getInstance().isModLoaded(Constants.MOD_ID));
-    helper.succeed();
+    super.testModRegistered(helper);
+  }
+
+  @Override
+  protected boolean isModLoaded(String modId) {
+    return FabricLoader.getInstance().isModLoaded(modId);
   }
 }

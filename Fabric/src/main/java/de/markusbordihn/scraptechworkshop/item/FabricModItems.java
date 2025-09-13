@@ -19,7 +19,13 @@
 
 package de.markusbordihn.scraptechworkshop.item;
 
+import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.CrystalScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.LuminousScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MetalScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
+import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -35,24 +41,34 @@ public class FabricModItems {
   }
 
   public static void registerModItems() {
-    ModItems.SCRAP_METAL =
-        registerItem(
-            MetalScrapItem.METAL_SCRAP_ID, () -> new MetalScrapItem(new Item.Properties()));
+    ModItems.METAL_SCRAP =
+        registerItem(MetalScrapItem.METAL_SCRAP_ID, () -> ScrapItemRegistry.METAL_SCRAP_ITEM);
 
-    ModItems.SCRAP_GOLD =
-        registerItem(
-            MetalScrapItem.GOLD_SCRAP_ID,
-            () -> new MetalScrapItem(new Item.Properties(), MetalScrapItem.GOLD_SCRAP_ID));
+    ModItems.GOLD_SCRAP =
+        registerItem(MetalScrapItem.GOLD_SCRAP_ID, () -> ScrapItemRegistry.GOLD_SCRAP_ITEM);
 
-    ModItems.SCRAP_IRON =
-        registerItem(
-            MetalScrapItem.IRON_SCRAP_ID,
-            () -> new MetalScrapItem(new Item.Properties(), MetalScrapItem.IRON_SCRAP_ID));
+    ModItems.IRON_SCRAP =
+        registerItem(MetalScrapItem.IRON_SCRAP_ID, () -> ScrapItemRegistry.IRON_SCRAP_ITEM);
 
-    ModItems.SCRAP_COPPER =
+    ModItems.COPPER_SCRAP =
+        registerItem(MetalScrapItem.COPPER_SCRAP_ID, () -> ScrapItemRegistry.COPPER_SCRAP_ITEM);
+    // Register scrap items
+
+    ModItems.CERAMIC_SCRAP =
+        registerItem(CeramicScrapItem.CERAMIC_SCRAP_ID, () -> ScrapItemRegistry.CERAMIC_SCRAP_ITEM);
+
+    ModItems.CRYSTAL_SCRAP =
+        registerItem(CrystalScrapItem.CRYSTAL_SCRAP_ID, () -> ScrapItemRegistry.CRYSTAL_SCRAP_ITEM);
+
+    ModItems.LUMINOUS_SCRAP =
         registerItem(
-            MetalScrapItem.COPPER_SCRAP_ID,
-            () -> new MetalScrapItem(new Item.Properties(), MetalScrapItem.COPPER_SCRAP_ID));
+            LuminousScrapItem.LUMINOUS_SCRAP_ID, () -> ScrapItemRegistry.LUMINOUS_SCRAP_ITEM);
+
+    ModItems.PLASTIC_SCRAP =
+        registerItem(PlasticScrapItem.PLASTIC_SCRAP_ID, () -> ScrapItemRegistry.PLASTIC_SCRAP_ITEM);
+
+    ModItems.TECH_SCRAP =
+        registerItem(TechScrapItem.TECH_SCRAP_ID, () -> ScrapItemRegistry.TECH_SCRAP_ITEM);
 
     Registry.register(
         BuiltInRegistries.CREATIVE_MODE_TAB,

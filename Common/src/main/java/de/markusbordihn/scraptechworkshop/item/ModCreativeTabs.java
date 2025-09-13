@@ -37,13 +37,20 @@ public class ModCreativeTabs {
   public static CreativeModeTab.Builder createMainTab() {
     return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
         .title(Component.translatable("itemGroup.scrap_tech_workshop.main"))
-        .icon(() -> new ItemStack(ModItems.SCRAP_METAL.get()))
+        .icon(() -> new ItemStack(ModItems.METAL_SCRAP.get()))
         .displayItems(
             (parameters, output) -> {
-              output.accept(ModItems.SCRAP_METAL.get());
-              output.accept(ModItems.SCRAP_GOLD.get());
-              output.accept(ModItems.SCRAP_IRON.get());
-              output.accept(ModItems.SCRAP_COPPER.get());
+              output.accept(ModItems.CERAMIC_SCRAP.get());
+              output.accept(ModItems.COPPER_SCRAP.get());
+              output.accept(ModItems.CRYSTAL_SCRAP.get());
+              output.accept(ModItems.GOLD_SCRAP.get());
+              output.accept(ModItems.IRON_SCRAP.get());
+              output.accept(ModItems.LUMINOUS_SCRAP.get());
+              output.accept(ModItems.METAL_SCRAP.get());
+              output.accept(ModItems.PLASTIC_SCRAP.get());
+              output.accept(ModItems.TECH_SCRAP.get());
+
+              output.accept(ModBlockItems.RECYCLER_BLOCK_ITEM.get());
             });
   }
 }

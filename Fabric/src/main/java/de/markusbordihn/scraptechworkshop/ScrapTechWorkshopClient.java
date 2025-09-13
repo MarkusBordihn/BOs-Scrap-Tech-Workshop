@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop;
 
+import de.markusbordihn.scraptechworkshop.client.screen.ClientScreens;
 import net.fabricmc.api.ClientModInitializer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,5 +31,7 @@ public class ScrapTechWorkshopClient implements ClientModInitializer {
   @Override
   public void onInitializeClient() {
     log.info("Initializing {} (Fabric-Client) ...", Constants.MOD_NAME);
+
+    ClientScreens.registerScreens();
   }
 }

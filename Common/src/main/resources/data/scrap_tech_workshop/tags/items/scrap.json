@@ -1,0 +1,25 @@
+{
+  "replace": false,
+  "values": [
+    "scrap_tech_workshop:metal_scrap",
+    "scrap_tech_workshop:iron_scrap",
+    "scrap_tech_workshop:copper_scrap",
+    "scrap_tech_workshop:gold_scrap",
+    "scrap_tech_workshop:gilded_scrap",
+    "scrap_tech_workshop:fastener_scrap",
+    "scrap_tech_workshop:tech_scrap",
+    "scrap_tech_workshop:circuit_scrap",
+    "scrap_tech_workshop:coil_scrap",
+    "scrap_tech_workshop:capacitor_scrap",
+    "scrap_tech_workshop:energy_cell_scrap",
+    "scrap_tech_workshop:crystal_scrap",
+    "scrap_tech_workshop:luminous_scrap",
+    "scrap_tech_workshop:plastic_scrap",
+    "scrap_tech_workshop:rubber_scrap",
+    "scrap_tech_workshop:glass_scrap",
+    "scrap_tech_workshop:ceramic_scrap",
+    "scrap_tech_workshop:fiber_scrap",
+    "scrap_tech_workshop:wood_scrap",
+    "scrap_tech_workshop:bio_scrap"
+  ]
+}
