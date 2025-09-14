@@ -1,0 +1,54 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {"type": "minecraft:uniform", "min": 1, "max": 2},
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:ceramic_scrap",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {"type": "minecraft:uniform", "min": 1, "max": 3}
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:gold_scrap",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {"type": "minecraft:uniform", "min": 1, "max": 2}
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:metal_scrap",
+          "weight": 6,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {"type": "minecraft:uniform", "min": 1, "max": 3}
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:crystal_scrap",
+          "weight": 2,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {"type": "minecraft:uniform", "min": 1, "max": 1}
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -25,6 +25,7 @@ import de.markusbordihn.scraptechworkshop.config.Config;
 import de.markusbordihn.scraptechworkshop.entity.FabricModBlockEntities;
 import de.markusbordihn.scraptechworkshop.item.FabricModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.FabricModItems;
+import de.markusbordihn.scraptechworkshop.loot.VanillaChestLootModifier;
 import de.markusbordihn.scraptechworkshop.menu.FabricModMenus;
 import de.markusbordihn.scraptechworkshop.recipe.FabricModRecipes;
 import net.fabricmc.api.EnvType;
@@ -35,7 +36,7 @@ import org.apache.logging.log4j.Logger;
 
 public class ScrapTechWorkshop implements ModInitializer {
 
-  protected static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
+  private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   @Override
   public void onInitialize() {
@@ -70,5 +71,8 @@ public class ScrapTechWorkshop implements ModInitializer {
 
     log.info("{} Block Events ...", Constants.LOG_REGISTER_PREFIX);
     BlockEventHandler.register();
+
+    log.info("{} Loot Table Modifiers ...", Constants.LOG_REGISTER_PREFIX);
+    VanillaChestLootModifier.register();
   }
 }

@@ -24,6 +24,7 @@ import de.markusbordihn.scraptechworkshop.config.Config;
 import de.markusbordihn.scraptechworkshop.entity.ForgeModBlockEntities;
 import de.markusbordihn.scraptechworkshop.item.ForgeModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.ForgeModItems;
+import de.markusbordihn.scraptechworkshop.loot.ModLootModifiers;
 import de.markusbordihn.scraptechworkshop.menu.ForgeModMenus;
 import de.markusbordihn.scraptechworkshop.recipe.ForgeModRecipes;
 import net.minecraftforge.api.distmarker.Dist;
@@ -72,6 +73,9 @@ public class ScrapTechWorkshop {
 
     log.info("{} Recipes ...", Constants.LOG_REGISTER_PREFIX);
     ForgeModRecipes.register(modEventBus);
+
+    log.info("{} Loot Modifiers ...", Constants.LOG_REGISTER_PREFIX);
+    ModLootModifiers.register(modEventBus);
 
     DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> new ScrapTechWorkshopClient(modEventBus));
   }

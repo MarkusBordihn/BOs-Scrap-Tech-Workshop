@@ -48,17 +48,18 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RecyclerBlock extends BaseEntityBlock {
 
   public static final String ID = "recycler";
-
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final EnumProperty<RecyclerStatus> STATUS =
       EnumProperty.create("status", RecyclerStatus.class);
-
   protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+  private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   public RecyclerBlock(Properties properties) {
     super(properties);
@@ -68,6 +69,14 @@ public class RecyclerBlock extends BaseEntityBlock {
             .setValue(FACING, Direction.NORTH)
             .setValue(POWERED, Boolean.FALSE)
             .setValue(STATUS, RecyclerStatus.IDLE));
+  }
+
+  public static void updateStatus(Level level, BlockPos pos, RecyclerStatus newStatus) {
+    BlockState currentState = level.getBlockState(pos);
+    if (currentState.getBlock() instanceof RecyclerBlock
+        && currentState.getValue(STATUS) != newStatus) {
+      level.setBlock(pos, currentState.setValue(STATUS, newStatus), Block.UPDATE_ALL);
+    }
   }
 
   @Override
@@ -111,14 +120,14 @@ public class RecyclerBlock extends BaseEntityBlock {
     if (Constants.IS_FABRIC) {
       try {
         Class<?> fabricFactoryClass =
-            Class.forName(
-                "de.markusbordihn.scraptechworkshop.menu.FabricExtendedScreenHandlerFactory");
+            Class.forName("de.markusbordihn.scraptechworkshop.menu.BaseScreenHandler");
         Object fabricFactory =
             fabricFactoryClass
                 .getConstructor(RecyclerBlockEntity.class)
                 .newInstance(recyclerBlockEntity);
         player.openMenu((net.minecraft.world.MenuProvider) fabricFactory);
       } catch (Exception e) {
+        log.error("Failed to open Recycler menu on Fabric: {}", e.getMessage());
         player.openMenu(recyclerBlockEntity);
       }
     } else {
@@ -173,13 +182,5 @@ public class RecyclerBlock extends BaseEntityBlock {
       return recyclerBlockEntity.getRedstoneSignal();
     }
     return 0;
-  }
-
-  public static void updateStatus(Level level, BlockPos pos, RecyclerStatus newStatus) {
-    BlockState currentState = level.getBlockState(pos);
-    if (currentState.getBlock() instanceof RecyclerBlock
-        && currentState.getValue(STATUS) != newStatus) {
-      level.setBlock(pos, currentState.setValue(STATUS, newStatus), Block.UPDATE_ALL);
-    }
   }
 }
