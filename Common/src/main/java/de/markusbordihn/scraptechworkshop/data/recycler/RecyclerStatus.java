@@ -17,17 +17,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.data.scrap;
+package de.markusbordihn.scraptechworkshop.data.recycler;
 
-public enum ScrapType {
-  CERAMIC,
-  COPPER,
-  CRYSTAL,
-  FASTENER,
-  GOLD,
-  IRON,
-  LUMINOUS,
-  METAL,
-  PLASTIC,
-  TECH
+import net.minecraft.util.StringRepresentable;
+
+public enum RecyclerStatus implements StringRepresentable {
+  IDLE("idle"),
+  ACTIVE("active");
+
+  private final String name;
+
+  RecyclerStatus(String name) {
+    this.name = name;
+  }
+
+  @Override
+  public String getSerializedName() {
+    return this.name;
+  }
+
+  @Override
+  public String toString() {
+    return this.name;
+  }
 }

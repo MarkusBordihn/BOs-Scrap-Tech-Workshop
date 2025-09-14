@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "scrap_tech_workshop:iron_scrap",
+    "scrap_tech_workshop:metal_scrap",
+    {"id": "#c:scrap/metal/iron", "required": false}
+  ]
+}

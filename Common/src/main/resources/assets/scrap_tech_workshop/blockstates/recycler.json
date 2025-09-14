@@ -1,33 +1,33 @@
 {
   "variants": {
-    "facing=north,powered=false": {
+    "facing=north,status=idle": {
       "model": "scrap_tech_workshop:block/recycler"
     },
-    "facing=south,powered=false": {
+    "facing=south,status=idle": {
       "model": "scrap_tech_workshop:block/recycler",
       "y": 180
     },
-    "facing=west,powered=false": {
+    "facing=west,status=idle": {
       "model": "scrap_tech_workshop:block/recycler",
       "y": 270
     },
-    "facing=east,powered=false": {
+    "facing=east,status=idle": {
       "model": "scrap_tech_workshop:block/recycler",
       "y": 90
     },
-    "facing=north,powered=true": {
-      "model": "scrap_tech_workshop:block/recycler_on"
+    "facing=north,status=active": {
+      "model": "scrap_tech_workshop:block/recycler_active"
     },
-    "facing=south,powered=true": {
-      "model": "scrap_tech_workshop:block/recycler_on",
+    "facing=south,status=active": {
+      "model": "scrap_tech_workshop:block/recycler_active",
       "y": 180
     },
-    "facing=west,powered=true": {
-      "model": "scrap_tech_workshop:block/recycler_on",
+    "facing=west,status=active": {
+      "model": "scrap_tech_workshop:block/recycler_active",
       "y": 270
     },
-    "facing=east,powered=true": {
-      "model": "scrap_tech_workshop:block/recycler_on",
+    "facing=east,status=active": {
+      "model": "scrap_tech_workshop:block/recycler_active",
       "y": 90
     }
   }

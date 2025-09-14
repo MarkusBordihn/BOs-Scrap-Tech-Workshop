@@ -26,6 +26,10 @@ import net.minecraft.world.item.Rarity;
 public class TechScrapItem extends ScrapItem {
 
   public static final String TECH_SCRAP_ID = "tech_scrap";
+  public static final String CIRCUIT_SCRAP_ID = "circuit_scrap";
+  public static final String COIL_SCRAP_ID = "coil_scrap";
+  public static final String CAPACITOR_SCRAP_ID = "capacitor_scrap";
+  public static final String ENERGY_CELL_SCRAP_ID = "energy_cell_scrap";
 
   public TechScrapItem(Properties properties) {
     super(properties, ScrapType.TECH);

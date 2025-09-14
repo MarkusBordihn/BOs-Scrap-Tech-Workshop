@@ -38,6 +38,7 @@ public class ScrapDropConfig extends Config {
   public static int ceramicScrapDropChance = 1;
   public static int copperScrapDropChance = 2;
   public static int crystalScrapDropChance = 1;
+  public static int fastenerScrapDropChance = 1;
   public static int goldScrapDropChance = 2;
   public static int ironScrapDropChance = 2;
   public static int luminousScrapDropChance = 3;
@@ -65,6 +66,8 @@ public class ScrapDropConfig extends Config {
         parseConfigValue(properties, "copperScrapDropChance", copperScrapDropChance);
     crystalScrapDropChance =
         parseConfigValue(properties, "crystalScrapDropChance", crystalScrapDropChance);
+    fastenerScrapDropChance =
+        parseConfigValue(properties, "fastenerScrapDropChance", fastenerScrapDropChance);
     goldScrapDropChance = parseConfigValue(properties, "goldScrapDropChance", goldScrapDropChance);
     ironScrapDropChance = parseConfigValue(properties, "ironScrapDropChance", ironScrapDropChance);
     luminousScrapDropChance =

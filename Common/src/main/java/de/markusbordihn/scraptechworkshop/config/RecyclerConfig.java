@@ -79,10 +79,12 @@ public class RecyclerConfig extends Config {
     energyPerOperation = parseConfigValue(properties, "energyPerOperation", energyPerOperation);
     durabilityScaling = parseConfigValue(properties, "durabilityScaling", durabilityScaling);
     byproductMode = parseConfigValue(properties, "byproductMode", byproductMode);
-    maxByproductsPerOperation = parseConfigValue(properties, "maxByproductsPerOperation", maxByproductsPerOperation);
+    maxByproductsPerOperation =
+        parseConfigValue(properties, "maxByproductsPerOperation", maxByproductsPerOperation);
     deniedItems = parseConfigValue(properties, "deniedItems", deniedItems);
     allowedItems = parseConfigValue(properties, "allowedItems", allowedItems);
-    progressUpdateInterval = parseConfigValue(properties, "progressUpdateInterval", progressUpdateInterval);
+    progressUpdateInterval =
+        parseConfigValue(properties, "progressUpdateInterval", progressUpdateInterval);
 
     // Update config file if needed
     updateConfigFileIfChanged(configFile, CONFIG_FILE_HEADER, properties, unmodifiedProperties);

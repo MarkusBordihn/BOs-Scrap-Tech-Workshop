@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "recycler",
+  "pattern": [
+    "IHI",
+    "FPt",
+    "CRG"
+  ],
+  "key": {
+    "I": {"tag": "scrap_tech_workshop:scrap/metal/iron"},
+    "H": {"item": "minecraft:hopper"},
+    "C": {"tag": "scrap_tech_workshop:scrap/metal/copper"},
+    "F": {"tag": "scrap_tech_workshop:scrap/fasteners"},
+    "P": {"item": "minecraft:piston"},
+    "t": {"tag": "scrap_tech_workshop:scrap/tech"},
+    "R": {"item": "minecraft:redstone_block"},
+    "G": {"item": "minecraft:glass_pane"}
+  },
+  "result": {
+    "item": "scrap_tech_workshop:recycler", "count": 1
+  }
+}

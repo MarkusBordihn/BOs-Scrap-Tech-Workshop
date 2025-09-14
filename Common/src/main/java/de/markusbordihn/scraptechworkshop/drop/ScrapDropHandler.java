@@ -78,7 +78,7 @@ public class ScrapDropHandler {
   }
 
   public static void handleBlockBreak(
-      ServerLevel serverLevel, BlockPos blockPos, Block brokenBlock) {
+      final ServerLevel serverLevel, final BlockPos blockPos, final Block brokenBlock) {
     ScrapType scrapType = BLOCK_SCRAP_TYPES.get(brokenBlock);
     if (scrapType == null) {
       return;
@@ -105,7 +105,8 @@ public class ScrapDropHandler {
     }
   }
 
-  private static void playDropSound(ServerLevel level, BlockPos pos, ScrapType scrapType) {
+  private static void playDropSound(
+      final ServerLevel level, final BlockPos pos, final ScrapType scrapType) {
     if (!ScrapDropConfig.enableDropSounds || ScrapDropConfig.dropSoundVolume <= 0.0f) {
       return;
     }
@@ -119,21 +120,21 @@ public class ScrapDropHandler {
         0.8f + RANDOM.nextFloat() * 0.4f);
   }
 
-  private static SoundEvent getSoundForScrapType(ScrapType scrapType) {
+  private static SoundEvent getSoundForScrapType(final ScrapType scrapType) {
     return switch (scrapType) {
       case CERAMIC -> SoundEvents.STONE_BREAK;
-      case COPPER -> SoundEvents.COPPER_BREAK;
+      case COPPER, METAL -> SoundEvents.COPPER_BREAK;
       case CRYSTAL -> SoundEvents.AMETHYST_CLUSTER_BREAK;
+      case FASTENER -> SoundEvents.CHAIN_BREAK;
       case GOLD -> SoundEvents.ANVIL_LAND;
       case IRON -> SoundEvents.IRON_TRAPDOOR_CLOSE;
       case LUMINOUS -> SoundEvents.GLASS_BREAK;
-      case METAL -> SoundEvents.COPPER_BREAK;
       case PLASTIC -> SoundEvents.WOOL_BREAK;
       case TECH -> SoundEvents.REDSTONE_TORCH_BURNOUT;
     };
   }
 
-  private static ScrapDropData getScrapDropDataForType(ScrapType scrapType) {
+  private static ScrapDropData getScrapDropDataForType(final ScrapType scrapType) {
     return switch (scrapType) {
       case CERAMIC ->
           new ScrapDropData(ModItems.CERAMIC_SCRAP.get(), ScrapDropConfig.ceramicScrapDropChance);
@@ -143,6 +144,8 @@ public class ScrapDropHandler {
           new ScrapDropData(ModItems.CRYSTAL_SCRAP.get(), ScrapDropConfig.crystalScrapDropChance);
       case GOLD ->
           new ScrapDropData(ModItems.GOLD_SCRAP.get(), ScrapDropConfig.goldScrapDropChance);
+      case FASTENER ->
+          new ScrapDropData(ModItems.FASTENER_SCRAP.get(), ScrapDropConfig.fastenerScrapDropChance);
       case IRON ->
           new ScrapDropData(ModItems.IRON_SCRAP.get(), ScrapDropConfig.ironScrapDropChance);
       case LUMINOUS ->

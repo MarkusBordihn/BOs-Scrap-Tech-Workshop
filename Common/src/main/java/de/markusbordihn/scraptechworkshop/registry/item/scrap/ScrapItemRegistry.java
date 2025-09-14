@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.registry.item.scrap;
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CrystalScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.FastenerScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.LuminousScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MetalScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
@@ -45,20 +46,22 @@ public class ScrapItemRegistry {
       new CeramicScrapItem(new Item.Properties());
   public static final CrystalScrapItem CRYSTAL_SCRAP_ITEM =
       new CrystalScrapItem(new Item.Properties());
+  public static final FastenerScrapItem FASTENER_SCRAP_ITEM =
+      new FastenerScrapItem(new Item.Properties(), ScrapType.FASTENER);
   public static final LuminousScrapItem LUMINOUS_SCRAP_ITEM =
       new LuminousScrapItem(new Item.Properties());
   public static final PlasticScrapItem PLASTIC_SCRAP_ITEM =
       new PlasticScrapItem(new Item.Properties());
+
+  // Additional Tech Scrap Items for recycler system
   public static final TechScrapItem TECH_SCRAP_ITEM = new TechScrapItem(new Item.Properties());
+  public static final TechScrapItem CIRCUIT_SCRAP_ITEM = new TechScrapItem(new Item.Properties());
+  public static final TechScrapItem COIL_SCRAP_ITEM = new TechScrapItem(new Item.Properties());
+  public static final TechScrapItem CAPACITOR_SCRAP_ITEM = new TechScrapItem(new Item.Properties());
+  public static final TechScrapItem ENERGY_CELL_SCRAP_ITEM =
+      new TechScrapItem(new Item.Properties());
 
   /*
-    // Additional Tech Scrap Items for recycler system
-    public static final TechScrapItem CIRCUIT_SCRAP_ITEM = new TechScrapItem(new Item.Properties());
-    public static final TechScrapItem COIL_SCRAP_ITEM = new TechScrapItem(new Item.Properties());
-    public static final TechScrapItem CAPACITOR_SCRAP_ITEM = new TechScrapItem(new Item.Properties());
-    public static final TechScrapItem ENERGY_CELL_SCRAP_ITEM =
-        new TechScrapItem(new Item.Properties());
-
     // Additional Material Scrap Items
     public static final PlasticScrapItem RUBBER_SCRAP_ITEM =
         new PlasticScrapItem(new Item.Properties());

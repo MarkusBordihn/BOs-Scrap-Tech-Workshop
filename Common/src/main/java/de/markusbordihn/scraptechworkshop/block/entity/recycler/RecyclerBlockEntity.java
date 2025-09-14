@@ -19,14 +19,18 @@
 
 package de.markusbordihn.scraptechworkshop.block.entity.recycler;
 
+import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.config.RecyclerConfig;
+import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
 import de.markusbordihn.scraptechworkshop.menu.RecyclerMenu;
 import de.markusbordihn.scraptechworkshop.recipe.recycler.RecyclerRecipe;
 import de.markusbordihn.scraptechworkshop.recipe.recycler.RecyclerRecipeType;
+import java.util.Arrays;
 import java.util.List;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleContainer;
@@ -84,10 +88,7 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Co
 
   public RecyclerBlockEntity(BlockPos pos, BlockState blockState) {
     super(TYPE, pos, blockState);
-    // Initialize all slots as empty
-    for (int i = 0; i < TOTAL_SLOTS; i++) {
-      items[i] = ItemStack.EMPTY;
-    }
+    Arrays.fill(items, ItemStack.EMPTY);
   }
 
   public static void tick(
@@ -100,6 +101,9 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Co
     boolean hasChanged = false;
 
     // Check for recipe and process
+    RecyclerStatus currentStatus = state.getValue(RecyclerBlock.STATUS);
+    RecyclerStatus newStatus = currentStatus;
+
     if (blockEntity.currentRecipe == null || !blockEntity.canProcessCurrentRecipe()) {
       blockEntity.currentRecipe = blockEntity.findRecipe();
       blockEntity.progress = 0;
@@ -108,17 +112,34 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Co
 
     if (blockEntity.currentRecipe != null && blockEntity.canProcessCurrentRecipe()) {
       blockEntity.progress++;
+      newStatus = RecyclerStatus.ACTIVE;
       hasChanged = true;
 
       if (blockEntity.progress >= blockEntity.maxProgress) {
         blockEntity.processRecipe();
         blockEntity.progress = 0;
         blockEntity.currentRecipe = null;
-        hasChanged = true;
       }
     } else if (blockEntity.progress > 0) {
+      // Check if we can continue processing (if there's another recipe available)
+      if (blockEntity.findRecipe() == null) {
+        newStatus = RecyclerStatus.IDLE;
+      }
       blockEntity.progress = Math.max(0, blockEntity.progress - 2);
       hasChanged = true;
+
+      // If progress reaches 0 and no recipe is available, set to idle
+      if (blockEntity.progress == 0) {
+        newStatus = RecyclerStatus.IDLE;
+      }
+    } else {
+      // No recipe and no progress - should be idle
+      newStatus = RecyclerStatus.IDLE;
+    }
+
+    // Update block status if it changed
+    if (newStatus != currentStatus) {
+      RecyclerBlock.updateStatus(level, pos, newStatus);
     }
 
     // Sync to client periodically
@@ -223,35 +244,35 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Co
   }
 
   @Override
-  public void load(CompoundTag tag) {
-    super.load(tag);
+  public void load(CompoundTag compoundTag) {
+    super.load(compoundTag);
 
     // Load items
     for (int i = 0; i < TOTAL_SLOTS; i++) {
-      if (tag.contains("Item" + i)) {
-        items[i] = ItemStack.of(tag.getCompound("Item" + i));
+      if (compoundTag.contains("Item" + i)) {
+        items[i] = ItemStack.of(compoundTag.getCompound("Item" + i));
       } else {
         items[i] = ItemStack.EMPTY;
       }
     }
 
-    progress = tag.getInt("Progress");
-    maxProgress = tag.getInt("MaxProgress");
+    progress = compoundTag.getInt("Progress");
+    maxProgress = compoundTag.getInt("MaxProgress");
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag) {
-    super.saveAdditional(tag);
+  protected void saveAdditional(CompoundTag compoundTag) {
+    super.saveAdditional(compoundTag);
 
     // Save items
     for (int i = 0; i < TOTAL_SLOTS; i++) {
       if (!items[i].isEmpty()) {
-        tag.put("Item" + i, items[i].save(new CompoundTag()));
+        compoundTag.put("Item" + i, items[i].save(new CompoundTag()));
       }
     }
 
-    tag.putInt("Progress", progress);
-    tag.putInt("MaxProgress", maxProgress);
+    compoundTag.putInt("Progress", progress);
+    compoundTag.putInt("MaxProgress", maxProgress);
   }
 
   // Container implementation
@@ -304,11 +325,11 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Co
   }
 
   @Override
-  public void setItem(int slot, ItemStack stack) {
+  public void setItem(int slot, ItemStack itemStack) {
     if (slot >= 0 && slot < TOTAL_SLOTS) {
-      items[slot] = stack;
-      if (!stack.isEmpty() && stack.getCount() > getMaxStackSize()) {
-        stack.setCount(getMaxStackSize());
+      items[slot] = itemStack;
+      if (!itemStack.isEmpty() && itemStack.getCount() > getMaxStackSize()) {
+        itemStack.setCount(getMaxStackSize());
       }
       setChanged();
     }
@@ -347,5 +368,29 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Co
 
   public ContainerData getContainerData() {
     return containerData;
+  }
+
+  private void syncToClient() {
+    if (level != null && !level.isClientSide) {
+      level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+    }
+  }
+
+  @Override
+  public void setChanged() {
+    super.setChanged();
+    syncToClient();
+  }
+
+  @Override
+  public CompoundTag getUpdateTag() {
+    CompoundTag compoundTag = new CompoundTag();
+    saveAdditional(compoundTag);
+    return compoundTag;
+  }
+
+  @Override
+  public ClientboundBlockEntityDataPacket getUpdatePacket() {
+    return ClientboundBlockEntityDataPacket.create(this);
   }
 }

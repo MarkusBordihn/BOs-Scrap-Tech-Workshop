@@ -43,12 +43,19 @@ public class ModCreativeTabs {
               output.accept(ModItems.CERAMIC_SCRAP.get());
               output.accept(ModItems.COPPER_SCRAP.get());
               output.accept(ModItems.CRYSTAL_SCRAP.get());
+              output.accept(ModItems.FASTENER_SCRAP.get());
               output.accept(ModItems.GOLD_SCRAP.get());
               output.accept(ModItems.IRON_SCRAP.get());
               output.accept(ModItems.LUMINOUS_SCRAP.get());
               output.accept(ModItems.METAL_SCRAP.get());
               output.accept(ModItems.PLASTIC_SCRAP.get());
               output.accept(ModItems.TECH_SCRAP.get());
+
+              // Additional Tech Scrap Items
+              output.accept(ModItems.CIRCUIT_SCRAP.get());
+              output.accept(ModItems.COIL_SCRAP.get());
+              output.accept(ModItems.CAPACITOR_SCRAP.get());
+              output.accept(ModItems.ENERGY_CELL_SCRAP.get());
 
               output.accept(ModBlockItems.RECYCLER_BLOCK_ITEM.get());
             });

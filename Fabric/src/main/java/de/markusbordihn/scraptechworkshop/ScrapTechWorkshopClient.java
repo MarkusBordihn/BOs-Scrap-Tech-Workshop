@@ -19,8 +19,11 @@
 
 package de.markusbordihn.scraptechworkshop;
 
+import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.client.renderer.RecyclerBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.screen.ClientScreens;
 import net.fabricmc.api.ClientModInitializer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,5 +36,7 @@ public class ScrapTechWorkshopClient implements ClientModInitializer {
     log.info("Initializing {} (Fabric-Client) ...", Constants.MOD_NAME);
 
     ClientScreens.registerScreens();
+
+    BlockEntityRenderers.register(RecyclerBlockEntity.TYPE, RecyclerBlockEntityRenderer::new);
   }
 }

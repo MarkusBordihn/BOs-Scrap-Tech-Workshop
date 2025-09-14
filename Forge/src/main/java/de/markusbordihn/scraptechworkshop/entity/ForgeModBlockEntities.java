@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ForgeModBlockEntities {
@@ -43,17 +44,16 @@ public class ForgeModBlockEntities {
                       RecyclerBlockEntity::new, RecyclerBlockRegistry.RECYCLER_BLOCK)
                   .build(null));
 
-  private ForgeModBlockEntities() {
-    // Utility class
-  }
+  private ForgeModBlockEntities() {}
 
   public static void register(IEventBus eventBus) {
     BLOCK_ENTITY_TYPES.register(eventBus);
 
-    // Set the block entity type in the common registry after registration
     eventBus.addListener(
-        (net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) -> {
-          RecyclerBlockEntityRegistry.setBlockEntityType(RECYCLER_BLOCK_ENTITY.get());
+        (RegisterEvent event) -> {
+          if (event.getRegistryKey().equals(ForgeRegistries.BLOCK_ENTITY_TYPES.getRegistryKey())) {
+            RecyclerBlockEntityRegistry.setBlockEntityType(RECYCLER_BLOCK_ENTITY.get());
+          }
         });
   }
 }

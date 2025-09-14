@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop.block.recycler;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
@@ -43,6 +44,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -53,6 +55,8 @@ public class RecyclerBlock extends BaseEntityBlock {
 
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+  public static final EnumProperty<RecyclerStatus> STATUS =
+      EnumProperty.create("status", RecyclerStatus.class);
 
   protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
@@ -62,7 +66,8 @@ public class RecyclerBlock extends BaseEntityBlock {
         this.stateDefinition
             .any()
             .setValue(FACING, Direction.NORTH)
-            .setValue(POWERED, Boolean.FALSE));
+            .setValue(POWERED, Boolean.FALSE)
+            .setValue(STATUS, RecyclerStatus.IDLE));
   }
 
   @Override
@@ -137,7 +142,8 @@ public class RecyclerBlock extends BaseEntityBlock {
   public BlockState getStateForPlacement(BlockPlaceContext context) {
     return this.defaultBlockState()
         .setValue(FACING, context.getHorizontalDirection().getOpposite())
-        .setValue(POWERED, Boolean.FALSE);
+        .setValue(POWERED, Boolean.FALSE)
+        .setValue(STATUS, RecyclerStatus.IDLE);
   }
 
   @Override
@@ -152,7 +158,7 @@ public class RecyclerBlock extends BaseEntityBlock {
 
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-    builder.add(FACING, POWERED);
+    builder.add(FACING, POWERED, STATUS);
   }
 
   @Override
@@ -167,5 +173,13 @@ public class RecyclerBlock extends BaseEntityBlock {
       return recyclerBlockEntity.getRedstoneSignal();
     }
     return 0;
+  }
+
+  public static void updateStatus(Level level, BlockPos pos, RecyclerStatus newStatus) {
+    BlockState currentState = level.getBlockState(pos);
+    if (currentState.getBlock() instanceof RecyclerBlock
+        && currentState.getValue(STATUS) != newStatus) {
+      level.setBlock(pos, currentState.setValue(STATUS, newStatus), Block.UPDATE_ALL);
+    }
   }
 }

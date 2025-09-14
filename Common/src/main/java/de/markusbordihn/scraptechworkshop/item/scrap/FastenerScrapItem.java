@@ -17,17 +17,41 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.data.scrap;
+package de.markusbordihn.scraptechworkshop.item.scrap;
 
-public enum ScrapType {
-  CERAMIC,
-  COPPER,
-  CRYSTAL,
-  FASTENER,
-  GOLD,
-  IRON,
-  LUMINOUS,
-  METAL,
-  PLASTIC,
-  TECH
+import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
+import de.markusbordihn.scraptechworkshop.item.ScrapItem;
+import net.minecraft.world.item.Rarity;
+
+public class FastenerScrapItem extends ScrapItem {
+
+  public static final String FASTENER_SCRAP_ID = "fastener_scrap";
+
+  public FastenerScrapItem(Properties properties, ScrapType scrapType) {
+    super(properties, scrapType);
+  }
+
+  @Override
+  public int getScrapValue() {
+    return switch (scrapType) {
+      case FASTENER -> 8;
+      default -> 8;
+    };
+  }
+
+  @Override
+  public Rarity getScrapRarity() {
+    return switch (scrapType) {
+      case FASTENER -> Rarity.COMMON;
+      default -> Rarity.COMMON;
+    };
+  }
+
+  @Override
+  public float getEfficiencyBonus() {
+    return switch (scrapType) {
+      case FASTENER -> 1.0f;
+      default -> 1.0f;
+    };
+  }
 }

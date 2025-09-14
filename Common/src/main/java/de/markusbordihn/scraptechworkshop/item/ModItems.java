@@ -28,12 +28,19 @@ public class ModItems {
   public static Supplier<Item> CERAMIC_SCRAP;
   public static Supplier<Item> COPPER_SCRAP;
   public static Supplier<Item> CRYSTAL_SCRAP;
+  public static Supplier<Item> FASTENER_SCRAP;
   public static Supplier<Item> GOLD_SCRAP;
   public static Supplier<Item> IRON_SCRAP;
   public static Supplier<Item> LUMINOUS_SCRAP;
   public static Supplier<Item> METAL_SCRAP;
   public static Supplier<Item> PLASTIC_SCRAP;
   public static Supplier<Item> TECH_SCRAP;
+
+  // Additional Tech Scrap Items
+  public static Supplier<Item> CIRCUIT_SCRAP;
+  public static Supplier<Item> COIL_SCRAP;
+  public static Supplier<Item> CAPACITOR_SCRAP;
+  public static Supplier<Item> ENERGY_CELL_SCRAP;
 
   public static ResourceLocation getItemId(String name) {
     return new ResourceLocation(Constants.MOD_ID, name);

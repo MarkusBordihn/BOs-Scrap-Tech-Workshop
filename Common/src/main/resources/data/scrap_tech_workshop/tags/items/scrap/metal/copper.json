@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "scrap_tech_workshop:copper_scrap",
+    {"id": "#c:scrap/metal/copper", "required": false}
+  ]
+}

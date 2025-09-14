@@ -17,17 +17,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.data.scrap;
+package de.markusbordihn.scraptechworkshop.client.renderer;
 
-public enum ScrapType {
-  CERAMIC,
-  COPPER,
-  CRYSTAL,
-  FASTENER,
-  GOLD,
-  IRON,
-  LUMINOUS,
-  METAL,
-  PLASTIC,
-  TECH
+import de.markusbordihn.scraptechworkshop.Constants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class ClientRenderers {
+
+  private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
+
+  private ClientRenderers() {
+    // Utility class
+  }
+
+  public static void registerRenderers() {
+    log.info("{} Client Renderers ...", Constants.LOG_REGISTER_PREFIX);
+    // Platform-specific registration is handled in the respective modules
+  }
 }
