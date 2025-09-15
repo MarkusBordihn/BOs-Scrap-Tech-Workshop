@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
+import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,8 +36,8 @@ public class ForgeModBlockItems {
 
   public static final RegistryObject<BlockItem> RECYCLER_BLOCK_ITEM =
       BLOCK_ITEMS.register(
-          "recycler",
-          () -> new BlockItem(ForgeModBlocks.RECYCLER_BLOCK.get(), new Item.Properties()));
+          RecyclerBlock.ID,
+          () -> new RecyclerBlockItem(ForgeModBlocks.RECYCLER_BLOCK.get(), new Item.Properties()));
 
   private ForgeModBlockItems() {}
 

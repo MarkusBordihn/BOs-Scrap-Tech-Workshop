@@ -20,7 +20,7 @@
 package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RecyclerBlockEntityRegistry;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -38,7 +38,7 @@ public class ForgeModBlockEntities {
   // Block Entity registrations
   public static final RegistryObject<BlockEntityType<RecyclerBlockEntity>> RECYCLER_BLOCK_ENTITY =
       BLOCK_ENTITY_TYPES.register(
-          "recycler",
+          RecyclerBlockEntity.ID,
           () ->
               BlockEntityType.Builder.of(
                       RecyclerBlockEntity::new, RecyclerBlockRegistry.RECYCLER_BLOCK)

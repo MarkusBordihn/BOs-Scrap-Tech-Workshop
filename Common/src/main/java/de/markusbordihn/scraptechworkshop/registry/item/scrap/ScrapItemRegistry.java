@@ -20,13 +20,19 @@
 package de.markusbordihn.scraptechworkshop.registry.item.scrap;
 
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
+import de.markusbordihn.scraptechworkshop.item.scrap.BioScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CrystalScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.FastenerScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.FiberScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.GlassScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.LuminousScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MetalScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.MineralScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
 import net.minecraft.world.item.Item;
 
 public class ScrapItemRegistry {
@@ -61,25 +67,17 @@ public class ScrapItemRegistry {
   public static final TechScrapItem ENERGY_CELL_SCRAP_ITEM =
       new TechScrapItem(new Item.Properties());
 
-  /*
-    // Additional Material Scrap Items
-    public static final PlasticScrapItem RUBBER_SCRAP_ITEM =
-        new PlasticScrapItem(new Item.Properties());
-    public static final CeramicScrapItem GLASS_SCRAP_ITEM =
-        new CeramicScrapItem(new Item.Properties());
-    public static final MetalScrapItem FASTENER_SCRAP_ITEM =
-        new MetalScrapItem(new Item.Properties(), ScrapType.METAL);
+  // Additional Material Scrap Items
+  public static final MineralScrapItem MINERAL_SCRAP_ITEM =
+      new MineralScrapItem(new Item.Properties());
+  public static final WoodScrapItem WOOD_SCRAP_ITEM = new WoodScrapItem(new Item.Properties());
+  public static final RubberScrapItem RUBBER_SCRAP_ITEM =
+      new RubberScrapItem(new Item.Properties());
+  public static final GlassScrapItem GLASS_SCRAP_ITEM = new GlassScrapItem(new Item.Properties());
 
-    // Organic and Textile Scrap Items
-    public static final PlasticScrapItem FIBER_SCRAP_ITEM =
-        new PlasticScrapItem(new Item.Properties());
-    public static final PlasticScrapItem WOOD_SCRAP_ITEM =
-        new PlasticScrapItem(new Item.Properties());
-    public static final PlasticScrapItem BIO_SCRAP_ITEM = new PlasticScrapItem(new Item.Properties());
+  // Organic and Textile Scrap Items
+  public static final FiberScrapItem FIBER_SCRAP_ITEM = new FiberScrapItem(new Item.Properties());
+  public static final BioScrapItem BIO_SCRAP_ITEM = new BioScrapItem(new Item.Properties());
 
-    // Optional advanced scrap items (for future expansion)
-    public static final MetalScrapItem GILDED_SCRAP_ITEM =
-        new MetalScrapItem(new Item.Properties(), ScrapType.GOLD);
-  */
   private ScrapItemRegistry() {}
 }

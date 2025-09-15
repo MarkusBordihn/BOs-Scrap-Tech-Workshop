@@ -17,10 +17,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block.recycler;
+package de.markusbordihn.scraptechworkshop.block;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -58,7 +58,11 @@ public class RecyclerBlock extends BaseEntityBlock {
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
   public static final EnumProperty<RecyclerStatus> STATUS =
       EnumProperty.create("status", RecyclerStatus.class);
-  protected static final VoxelShape SHAPE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+  private static final VoxelShape SHAPE_NORTH_SOUTH =
+      Block.box(1.0D, 0.0D, 0.0D, 15.0D, 14.0D, 16.0D);
+  private static final VoxelShape SHAPE_EAST_WEST =
+      Block.box(0.0D, 0.0D, 1.0D, 16.0D, 14.0D, 15.0D);
+
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   public RecyclerBlock(Properties properties) {
@@ -82,7 +86,12 @@ public class RecyclerBlock extends BaseEntityBlock {
   @Override
   public VoxelShape getShape(
       BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-    return SHAPE;
+    Direction facing = state.getValue(FACING);
+    return switch (facing) {
+      case NORTH, SOUTH -> SHAPE_NORTH_SOUTH;
+      case EAST, WEST -> SHAPE_EAST_WEST;
+      default -> SHAPE_NORTH_SOUTH;
+    };
   }
 
   @Override

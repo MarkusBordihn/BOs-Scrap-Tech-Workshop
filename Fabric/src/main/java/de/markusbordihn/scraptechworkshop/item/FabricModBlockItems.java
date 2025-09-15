@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.item;
 
+import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
@@ -36,8 +37,9 @@ public class FabricModBlockItems {
     // Register recycler block item
     ModBlockItems.RECYCLER_BLOCK_ITEM =
         registerBlockItem(
-            "recycler",
-            () -> new BlockItem(RecyclerBlockRegistry.RECYCLER_BLOCK, new Item.Properties()));
+            RecyclerBlock.ID,
+            () ->
+                new RecyclerBlockItem(RecyclerBlockRegistry.RECYCLER_BLOCK, new Item.Properties()));
   }
 
   private static Supplier<BlockItem> registerBlockItem(

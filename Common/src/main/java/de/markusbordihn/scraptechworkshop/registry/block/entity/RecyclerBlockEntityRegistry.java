@@ -19,7 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.registry.block.entity;
 
-import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class RecyclerBlockEntityRegistry {
@@ -27,11 +27,8 @@ public class RecyclerBlockEntityRegistry {
   // Note: BlockEntityType will be set by platform-specific code during registration
   public static BlockEntityType<RecyclerBlockEntity> RECYCLER_BLOCK_ENTITY_TYPE;
 
-  private RecyclerBlockEntityRegistry() {
-    // Utility class
-  }
+  private RecyclerBlockEntityRegistry() {}
 
-  // Helper method to set the type from platform-specific code
   public static void setBlockEntityType(BlockEntityType<RecyclerBlockEntity> type) {
     RECYCLER_BLOCK_ENTITY_TYPE = type;
     RecyclerBlockEntity.TYPE = type;

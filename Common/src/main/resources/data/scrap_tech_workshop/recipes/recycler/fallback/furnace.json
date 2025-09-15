@@ -1,0 +1,12 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:furnace"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:mineral_scrap",
+    "min": 6,
+    "max": 12
+  },
+  "process_time": 220
+}

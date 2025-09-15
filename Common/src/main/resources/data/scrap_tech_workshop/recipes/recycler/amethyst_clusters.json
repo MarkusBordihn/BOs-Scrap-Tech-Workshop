@@ -11,10 +11,8 @@
   "byproducts": [
     {
       "item": "scrap_tech_workshop:luminous_scrap",
-      "chance": 0.10,
-      "min": 1,
-      "max": 1
+      "chance": 0.10
     }
   ],
-  "process_time": 200
+  "process_time": 10
 }

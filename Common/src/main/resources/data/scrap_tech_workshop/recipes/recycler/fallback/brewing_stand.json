@@ -1,0 +1,18 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:brewing_stand"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:metal_scrap",
+    "min": 2,
+    "max": 5
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:glass_scrap",
+      "chance": 0.40
+    }
+  ],
+  "process_time": 200
+}

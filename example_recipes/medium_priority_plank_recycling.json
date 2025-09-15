@@ -1,0 +1,11 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:planks"
+  },
+  "primary_output": {
+    "item": "minecraft:stick"
+  },
+  "process_time": 4,
+  "weight": 1
+}

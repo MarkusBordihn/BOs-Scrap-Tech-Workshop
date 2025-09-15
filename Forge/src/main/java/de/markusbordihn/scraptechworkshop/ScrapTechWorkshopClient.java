@@ -19,7 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop;
 
-import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.client.renderer.RecyclerBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.screen.ClientScreens;
 import net.minecraftforge.api.distmarker.Dist;

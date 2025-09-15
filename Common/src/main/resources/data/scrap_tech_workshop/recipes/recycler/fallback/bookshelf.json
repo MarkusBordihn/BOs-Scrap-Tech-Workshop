@@ -1,0 +1,20 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:bookshelf"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:wood_scrap",
+    "min": 4,
+    "max": 8
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:fiber_scrap",
+      "chance": 0.60,
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "process_time": 180
+}

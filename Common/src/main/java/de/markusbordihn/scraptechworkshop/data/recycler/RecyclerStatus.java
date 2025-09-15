@@ -23,7 +23,10 @@ import net.minecraft.util.StringRepresentable;
 
 public enum RecyclerStatus implements StringRepresentable {
   IDLE("idle"),
-  ACTIVE("active");
+  WORKING("working"),
+  DONE("done"),
+  ERROR("error"),
+  NO_RECIPE("no_recipe");
 
   private final String name;
 

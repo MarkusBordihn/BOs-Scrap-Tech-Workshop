@@ -1,0 +1,9 @@
+{
+  "parent": "scrap_tech_workshop:block/recycler/recycler",
+  "textures": {
+    "shredder": "scrap_tech_workshop:block/recycler/shredder",
+    "particle": "scrap_tech_workshop:block/recycler/body",
+    "body": "scrap_tech_workshop:block/recycler/body",
+    "control_panel": "scrap_tech_workshop:block/recycler/control_panel"
+  }
+}

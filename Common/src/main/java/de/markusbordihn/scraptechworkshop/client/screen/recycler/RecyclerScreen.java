@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop.client.screen.recycler;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
 import de.markusbordihn.scraptechworkshop.menu.RecyclerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -34,11 +35,42 @@ public class RecyclerScreen extends AbstractContainerScreen<RecyclerMenu> {
   private static final ResourceLocation TEXTURE =
       new ResourceLocation(Constants.MOD_ID, "textures/gui/recycler.png");
 
+  private static final int SCREEN_WIDTH = 176;
+  private static final int SCREEN_HEIGHT = 185;
+  private static final int INVENTORY_LABEL_OFFSET = 94;
+
+  private static final int PROGRESS_ARROW_X = 80;
+  private static final int PROGRESS_ARROW_Y = 35;
+  private static final int PROGRESS_TEXTURE_X = 176;
+  private static final int PROGRESS_TEXTURE_Y = 14;
+  private static final int PROGRESS_ARROW_HEIGHT = 16;
+  private static final int PROGRESS_SCALE_FACTOR = 26;
+
+  private static final int PROGRESS_AREA_X1 = 80;
+  private static final int PROGRESS_AREA_X2 = 106;
+  private static final int PROGRESS_AREA_Y1 = 35;
+  private static final int PROGRESS_AREA_Y2 = 51;
+
+  private static final int INPUT_SLOT_X1 = 26;
+  private static final int INPUT_SLOT_X2 = 42;
+  private static final int INPUT_SLOT_Y1 = 35;
+  private static final int INPUT_SLOT_Y2 = 51;
+
+  private static final int OUTPUT_AREA_X1 = 116;
+  private static final int OUTPUT_AREA_X2 = 170;
+  private static final int OUTPUT_AREA_Y1 = 17;
+  private static final int OUTPUT_AREA_Y2 = 71;
+
+  private static final int UPGRADE_SLOTS_X1 = 62;
+  private static final int UPGRADE_SLOTS_X2 = 98;
+  private static final int UPGRADE_SLOTS_Y1 = 71;
+  private static final int UPGRADE_SLOTS_Y2 = 87;
+
   public RecyclerScreen(RecyclerMenu menu, Inventory playerInventory, Component title) {
     super(menu, playerInventory, title);
-    this.imageWidth = 176;
-    this.imageHeight = 185;
-    this.inventoryLabelY = this.imageHeight - 94;
+    this.imageWidth = SCREEN_WIDTH;
+    this.imageHeight = SCREEN_HEIGHT;
+    this.inventoryLabelY = this.imageHeight - INVENTORY_LABEL_OFFSET;
   }
 
   @Override
@@ -56,13 +88,18 @@ public class RecyclerScreen extends AbstractContainerScreen<RecyclerMenu> {
     int x = (width - imageWidth) / 2;
     int y = (height - imageHeight) / 2;
 
-    // Draw main GUI background
     guiGraphics.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
 
-    // Draw progress arrow if crafting
     if (menu.isCrafting()) {
       int progress = menu.getScaledProgress();
-      guiGraphics.blit(TEXTURE, x + 80, y + 35, 176, 14, progress, 16);
+      guiGraphics.blit(
+          TEXTURE,
+          x + PROGRESS_ARROW_X,
+          y + PROGRESS_ARROW_Y,
+          PROGRESS_TEXTURE_X,
+          PROGRESS_TEXTURE_Y,
+          progress,
+          PROGRESS_ARROW_HEIGHT);
     }
   }
 
@@ -77,16 +114,26 @@ public class RecyclerScreen extends AbstractContainerScreen<RecyclerMenu> {
   protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
     super.renderTooltip(guiGraphics, x, y);
 
-    // Add custom tooltips for progress area
     int relativeX = x - leftPos;
     int relativeY = y - topPos;
 
-    // Progress arrow tooltip
-    if (relativeX >= 80 && relativeX <= 106 && relativeY >= 35 && relativeY <= 51) {
+    if (relativeX >= PROGRESS_AREA_X1
+        && relativeX <= PROGRESS_AREA_X2
+        && relativeY >= PROGRESS_AREA_Y1
+        && relativeY <= PROGRESS_AREA_Y2) {
+      RecyclerStatus status = menu.getRecyclerStatus();
+
       if (menu.isCrafting()) {
         Component tooltip =
             Component.translatable(
-                "gui.scrap_tech_workshop.recycler.progress", menu.getScaledProgress() * 100 / 26);
+                "gui.scrap_tech_workshop.recycler.progress",
+                menu.getScaledProgress() * 100 / PROGRESS_SCALE_FACTOR);
+        guiGraphics.renderTooltip(this.font, tooltip, x, y);
+      } else if (status == RecyclerStatus.NO_RECIPE) {
+        Component tooltip = Component.translatable("gui.scrap_tech_workshop.recycler.no_recipe");
+        guiGraphics.renderTooltip(this.font, tooltip, x, y);
+      } else if (status == RecyclerStatus.DONE) {
+        Component tooltip = Component.translatable("gui.scrap_tech_workshop.recycler.done");
         guiGraphics.renderTooltip(this.font, tooltip, x, y);
       } else {
         Component tooltip = Component.translatable("gui.scrap_tech_workshop.recycler.idle");
@@ -94,21 +141,27 @@ public class RecyclerScreen extends AbstractContainerScreen<RecyclerMenu> {
       }
     }
 
-    // Input slot tooltip
     if (!menu.isCrafting()
-        & (relativeX >= 26 && relativeX <= 42 && relativeY >= 35 && relativeY <= 51)) {
+        & (relativeX >= INPUT_SLOT_X1
+            && relativeX <= INPUT_SLOT_X2
+            && relativeY >= INPUT_SLOT_Y1
+            && relativeY <= INPUT_SLOT_Y2)) {
       Component tooltip = Component.translatable("gui.scrap_tech_workshop.recycler.input_slot");
       guiGraphics.renderTooltip(this.font, tooltip, x, y);
     }
 
-    // Output area tooltip
-    if (relativeX >= 116 && relativeX <= 170 && relativeY >= 17 && relativeY <= 71) {
+    if (relativeX >= OUTPUT_AREA_X1
+        && relativeX <= OUTPUT_AREA_X2
+        && relativeY >= OUTPUT_AREA_Y1
+        && relativeY <= OUTPUT_AREA_Y2) {
       Component tooltip = Component.translatable("gui.scrap_tech_workshop.recycler.output_slots");
       guiGraphics.renderTooltip(this.font, tooltip, x, y);
     }
 
-    // Upgrade slots tooltip
-    if (relativeX >= 62 && relativeX <= 98 && relativeY >= 71 && relativeY <= 87) {
+    if (relativeX >= UPGRADE_SLOTS_X1
+        && relativeX <= UPGRADE_SLOTS_X2
+        && relativeY >= UPGRADE_SLOTS_Y1
+        && relativeY <= UPGRADE_SLOTS_Y2) {
       Component tooltip = Component.translatable("gui.scrap_tech_workshop.recycler.upgrade_slots");
       guiGraphics.renderTooltip(this.font, tooltip, x, y);
     }

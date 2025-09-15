@@ -1,0 +1,13 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "forge:ingots"
+  },
+  "primary_output": {
+    "item": "minecraft:iron_nugget",
+    "min": 3,
+    "max": 9
+  },
+  "process_time": 10,
+  "weight": 1
+}

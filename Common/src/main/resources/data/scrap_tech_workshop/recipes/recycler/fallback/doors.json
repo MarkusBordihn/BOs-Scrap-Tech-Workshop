@@ -1,0 +1,18 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:doors"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:wood_scrap",
+    "min": 1,
+    "max": 4
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:fastener_scrap",
+      "chance": 0.15
+    }
+  ],
+  "process_time": 140
+}

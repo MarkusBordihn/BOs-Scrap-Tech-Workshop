@@ -42,19 +42,12 @@ public record RecyclerRecipe(
     int weight)
     implements Recipe<Container> {
 
-  public RecyclerRecipe(
-      ResourceLocation id,
-      RecyclerMatch match,
-      RecyclerOutput primaryOutput,
-      List<RecyclerByproduct> byproducts,
-      int processTime,
-      int weight) {
-    this.id = id;
-    this.match = match;
-    this.primaryOutput = primaryOutput;
-    this.byproducts = byproducts != null ? byproducts : new ArrayList<>();
-    this.processTime = processTime;
-    this.weight = weight;
+  private static final int INPUT_SLOT = 0;
+
+  public RecyclerRecipe {
+    if (byproducts == null) {
+      byproducts = new ArrayList<>();
+    }
   }
 
   @Override
@@ -62,7 +55,7 @@ public record RecyclerRecipe(
     if (container.isEmpty()) {
       return false;
     }
-    ItemStack inputStack = container.getItem(0);
+    ItemStack inputStack = container.getItem(INPUT_SLOT);
     return !inputStack.isEmpty() && match.matches(inputStack);
   }
 

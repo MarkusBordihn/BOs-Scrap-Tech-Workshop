@@ -19,7 +19,9 @@
 
 package de.markusbordihn.scraptechworkshop.menu;
 
-import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
+import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
 import de.markusbordihn.scraptechworkshop.menu.slots.DummySlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.RecyclerInputSlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.RecyclerOutputSlot;
@@ -40,7 +42,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class RecyclerMenu extends AbstractContainerMenu {
 
-  // GUI Layout Constants
   public static final int INPUT_SLOT_X = 26;
   public static final int INPUT_SLOT_Y = 35;
   public static final int SLOT_SPACING = 18;
@@ -62,10 +63,8 @@ public class RecyclerMenu extends AbstractContainerMenu {
   public static final int PLAYER_HOTBAR_Y = 161;
   public static final int PLAYER_HOTBAR_SLOTS = 9;
 
-  // Progress Arrow Constants
   public static final int PROGRESS_ARROW_SIZE = 26;
 
-  // Container Data Constants
   public static final int CONTAINER_DATA_SIZE = 2;
   public static final int PROGRESS_DATA_INDEX = 0;
   public static final int MAX_PROGRESS_DATA_INDEX = 1;
@@ -91,37 +90,25 @@ public class RecyclerMenu extends AbstractContainerMenu {
   public RecyclerMenu(
       int windowId, Inventory playerInventory, BlockEntity entity, ContainerData data) {
     super(TYPE, windowId);
-
-    // Always set these fields first
     this.blockEntity = entity instanceof RecyclerBlockEntity recyclerEntity ? recyclerEntity : null;
     this.level = playerInventory.player.level();
     this.data = data != null ? data : new SimpleContainerData(CONTAINER_DATA_SIZE);
     this.dummyContainer = new SimpleContainer(RecyclerBlockEntity.TOTAL_SLOTS);
 
-    // Always check container size with the total slot count
     checkContainerSize(playerInventory, RecyclerBlockEntity.TOTAL_SLOTS);
-
-    // Add recycler slots first (always add them for consistent slot count)
     addRecyclerSlots();
-
-    // Then add player inventory
     addPlayerInventory(playerInventory);
     addPlayerHotbar(playerInventory);
-
     addDataSlots(this.data);
   }
 
   private void addRecyclerSlots() {
-    // Always add recycler slots, even if blockEntity is null
-    // This ensures consistent slot count between server and client
-
     // Input slots (left side)
     for (int i = 0; i < RecyclerBlockEntity.INPUT_SLOTS; i++) {
       if (blockEntity != null) {
         this.addSlot(
             new RecyclerInputSlot(blockEntity, i, INPUT_SLOT_X, INPUT_SLOT_Y + i * SLOT_SPACING));
       } else {
-        // Add dummy slot that doesn't accept items when blockEntity is null
         this.addSlot(
             new DummySlot(dummyContainer, i, INPUT_SLOT_X, INPUT_SLOT_Y + i * SLOT_SPACING));
       }
@@ -137,7 +124,6 @@ public class RecyclerMenu extends AbstractContainerMenu {
         if (blockEntity != null) {
           this.addSlot(new RecyclerOutputSlot(blockEntity, slotIndex, x, y));
         } else {
-          // Add dummy slot when blockEntity is null
           this.addSlot(new DummySlot(dummyContainer, slotIndex, x, y));
         }
       }
@@ -151,7 +137,6 @@ public class RecyclerMenu extends AbstractContainerMenu {
       if (blockEntity != null) {
         this.addSlot(new RecyclerUpgradeSlot(blockEntity, slotIndex, x, UPGRADE_SLOT_Y));
       } else {
-        // Add dummy slot when blockEntity is null
         this.addSlot(new DummySlot(dummyContainer, slotIndex, x, UPGRADE_SLOT_Y));
       }
     }
@@ -184,14 +169,11 @@ public class RecyclerMenu extends AbstractContainerMenu {
     if (slot.hasItem()) {
       ItemStack slotStack = slot.getItem();
       itemStack = slotStack.copy();
-
-      // Now recycler slots are always present, so calculations are consistent
       int playerInventoryEnd =
           RecyclerBlockEntity.TOTAL_SLOTS + (PLAYER_INVENTORY_ROWS * PLAYER_INVENTORY_COLUMNS);
       int playerHotbarEnd = playerInventoryEnd + PLAYER_HOTBAR_SLOTS;
 
       if (blockEntity != null) {
-        // Normal recycler behavior when blockEntity is available
         int inputEnd = RecyclerBlockEntity.INPUT_SLOTS;
         int outputEnd = inputEnd + RecyclerBlockEntity.OUTPUT_SLOTS;
         int upgradeEnd = outputEnd + RecyclerBlockEntity.UPGRADE_SLOTS;
@@ -281,5 +263,12 @@ public class RecyclerMenu extends AbstractContainerMenu {
 
   public RecyclerBlockEntity getBlockEntity() {
     return blockEntity;
+  }
+
+  public RecyclerStatus getRecyclerStatus() {
+    if (blockEntity == null || blockEntity.getLevel() == null) {
+      return RecyclerStatus.IDLE;
+    }
+    return blockEntity.getBlockState().getValue(RecyclerBlock.STATUS);
   }
 }

@@ -1,0 +1,19 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:planks"
+  },
+  "primary_output": {
+    "item": "minecraft:stick",
+    "min": 1,
+    "max": 2
+  },
+  "byproducts": [
+    {
+      "item": "minecraft:sawdust",
+      "chance": 0.3
+    }
+  ],
+  "process_time": 5,
+  "weight": 1
+}

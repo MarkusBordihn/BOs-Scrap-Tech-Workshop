@@ -19,13 +19,19 @@
 
 package de.markusbordihn.scraptechworkshop.item;
 
+import de.markusbordihn.scraptechworkshop.item.scrap.BioScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CrystalScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.FastenerScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.FiberScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.GlassScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.LuminousScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MetalScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.MineralScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
@@ -65,6 +71,22 @@ public class FabricModItems {
             LuminousScrapItem.LUMINOUS_SCRAP_ID, () -> ScrapItemRegistry.LUMINOUS_SCRAP_ITEM);
     ModItems.PLASTIC_SCRAP =
         registerItem(PlasticScrapItem.PLASTIC_SCRAP_ID, () -> ScrapItemRegistry.PLASTIC_SCRAP_ITEM);
+
+    // Additional Material Scrap Items
+    ModItems.MINERAL_SCRAP =
+        registerItem(MineralScrapItem.MINERAL_SCRAP_ID, () -> ScrapItemRegistry.MINERAL_SCRAP_ITEM);
+    ModItems.WOOD_SCRAP =
+        registerItem(WoodScrapItem.WOOD_SCRAP_ID, () -> ScrapItemRegistry.WOOD_SCRAP_ITEM);
+    ModItems.RUBBER_SCRAP =
+        registerItem(RubberScrapItem.RUBBER_SCRAP_ID, () -> ScrapItemRegistry.RUBBER_SCRAP_ITEM);
+    ModItems.GLASS_SCRAP =
+        registerItem(GlassScrapItem.GLASS_SCRAP_ID, () -> ScrapItemRegistry.GLASS_SCRAP_ITEM);
+
+    // Organic and Textile Scrap Items
+    ModItems.FIBER_SCRAP =
+        registerItem(FiberScrapItem.FIBER_SCRAP_ID, () -> ScrapItemRegistry.FIBER_SCRAP_ITEM);
+    ModItems.BIO_SCRAP =
+        registerItem(BioScrapItem.BIO_SCRAP_ID, () -> ScrapItemRegistry.BIO_SCRAP_ITEM);
 
     // Additional Tech Scrap Items
     ModItems.TECH_SCRAP =

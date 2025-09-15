@@ -1,0 +1,18 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:banners"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:fiber_scrap",
+    "min": 2,
+    "max": 5
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.30
+    }
+  ],
+  "process_time": 140
+}

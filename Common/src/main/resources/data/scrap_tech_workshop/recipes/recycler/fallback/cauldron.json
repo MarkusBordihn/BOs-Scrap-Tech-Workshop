@@ -1,0 +1,12 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:cauldron"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:iron_scrap",
+    "min": 5,
+    "max": 10
+  },
+  "process_time": 240
+}

@@ -25,16 +25,23 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 public class ModItems {
+  // Basic Scrap Items
+  public static Supplier<Item> BIO_SCRAP;
   public static Supplier<Item> CERAMIC_SCRAP;
   public static Supplier<Item> COPPER_SCRAP;
   public static Supplier<Item> CRYSTAL_SCRAP;
   public static Supplier<Item> FASTENER_SCRAP;
+  public static Supplier<Item> FIBER_SCRAP;
+  public static Supplier<Item> GLASS_SCRAP;
   public static Supplier<Item> GOLD_SCRAP;
   public static Supplier<Item> IRON_SCRAP;
   public static Supplier<Item> LUMINOUS_SCRAP;
   public static Supplier<Item> METAL_SCRAP;
+  public static Supplier<Item> MINERAL_SCRAP;
   public static Supplier<Item> PLASTIC_SCRAP;
+  public static Supplier<Item> RUBBER_SCRAP;
   public static Supplier<Item> TECH_SCRAP;
+  public static Supplier<Item> WOOD_SCRAP;
 
   // Additional Tech Scrap Items
   public static Supplier<Item> CIRCUIT_SCRAP;

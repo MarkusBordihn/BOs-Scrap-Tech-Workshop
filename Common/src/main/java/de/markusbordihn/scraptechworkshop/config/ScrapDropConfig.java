@@ -35,16 +35,22 @@ public class ScrapDropConfig extends Config {
 
 """;
 
+  public static int bioScrapDropChance = 1;
   public static int ceramicScrapDropChance = 1;
   public static int copperScrapDropChance = 2;
   public static int crystalScrapDropChance = 1;
   public static int fastenerScrapDropChance = 1;
+  public static int fiberScrapDropChance = 1;
+  public static int glassScrapDropChance = 1;
   public static int goldScrapDropChance = 2;
   public static int ironScrapDropChance = 2;
   public static int luminousScrapDropChance = 3;
   public static int metalScrapDropChance = 1;
+  public static int mineralScrapDropChance = 1;
   public static int plasticScrapDropChance = 1;
+  public static int rubberScrapDropChance = 1;
   public static int techScrapDropChance = 2;
+  public static int woodScrapDropChance = 1;
 
   public static boolean enableDropSounds = true;
   public static float dropSoundVolume = 0.3f;
@@ -60,6 +66,7 @@ public class ScrapDropConfig extends Config {
     Properties unmodifiedProperties = (Properties) properties.clone();
 
     // Config entries
+    bioScrapDropChance = parseConfigValue(properties, "bioScrapDropChance", bioScrapDropChance);
     ceramicScrapDropChance =
         parseConfigValue(properties, "ceramicScrapDropChance", ceramicScrapDropChance);
     copperScrapDropChance =
@@ -68,15 +75,24 @@ public class ScrapDropConfig extends Config {
         parseConfigValue(properties, "crystalScrapDropChance", crystalScrapDropChance);
     fastenerScrapDropChance =
         parseConfigValue(properties, "fastenerScrapDropChance", fastenerScrapDropChance);
+    fiberScrapDropChance =
+        parseConfigValue(properties, "fiberScrapDropChance", fiberScrapDropChance);
+    glassScrapDropChance =
+        parseConfigValue(properties, "glassScrapDropChance", glassScrapDropChance);
     goldScrapDropChance = parseConfigValue(properties, "goldScrapDropChance", goldScrapDropChance);
     ironScrapDropChance = parseConfigValue(properties, "ironScrapDropChance", ironScrapDropChance);
     luminousScrapDropChance =
         parseConfigValue(properties, "luminousScrapDropChance", luminousScrapDropChance);
     metalScrapDropChance =
         parseConfigValue(properties, "metalScrapDropChance", metalScrapDropChance);
+    mineralScrapDropChance =
+        parseConfigValue(properties, "mineralScrapDropChance", mineralScrapDropChance);
     plasticScrapDropChance =
         parseConfigValue(properties, "plasticScrapDropChance", plasticScrapDropChance);
+    rubberScrapDropChance =
+        parseConfigValue(properties, "rubberScrapDropChance", rubberScrapDropChance);
     techScrapDropChance = parseConfigValue(properties, "techScrapDropChance", techScrapDropChance);
+    woodScrapDropChance = parseConfigValue(properties, "woodScrapDropChance", woodScrapDropChance);
 
     enableDropSounds = parseConfigValue(properties, "enableDropSounds", enableDropSounds);
     dropSoundVolume = parseConfigValue(properties, "dropSoundVolume", dropSoundVolume);

@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop.drop;
 
 import de.markusbordihn.scraptechworkshop.config.ScrapDropConfig;
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapDropData;
+import de.markusbordihn.scraptechworkshop.data.scrap.ScrapSoundType;
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import java.util.HashMap;
@@ -29,7 +30,6 @@ import java.util.Random;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
@@ -110,7 +110,7 @@ public class ScrapDropHandler {
     if (!ScrapDropConfig.enableDropSounds || ScrapDropConfig.dropSoundVolume <= 0.0f) {
       return;
     }
-    SoundEvent soundEvent = getSoundForScrapType(scrapType);
+    SoundEvent soundEvent = ScrapSoundType.forScrapType(scrapType).getSoundEvent();
     level.playSound(
         null,
         pos,
@@ -120,42 +120,39 @@ public class ScrapDropHandler {
         0.8f + RANDOM.nextFloat() * 0.4f);
   }
 
-  private static SoundEvent getSoundForScrapType(final ScrapType scrapType) {
-    return switch (scrapType) {
-      case CERAMIC -> SoundEvents.STONE_BREAK;
-      case COPPER, METAL -> SoundEvents.COPPER_BREAK;
-      case CRYSTAL -> SoundEvents.AMETHYST_CLUSTER_BREAK;
-      case FASTENER -> SoundEvents.CHAIN_BREAK;
-      case GOLD -> SoundEvents.ANVIL_LAND;
-      case IRON -> SoundEvents.IRON_TRAPDOOR_CLOSE;
-      case LUMINOUS -> SoundEvents.GLASS_BREAK;
-      case PLASTIC -> SoundEvents.WOOL_BREAK;
-      case TECH -> SoundEvents.REDSTONE_TORCH_BURNOUT;
-    };
-  }
-
   private static ScrapDropData getScrapDropDataForType(final ScrapType scrapType) {
     return switch (scrapType) {
+      case BIO -> new ScrapDropData(ModItems.BIO_SCRAP.get(), ScrapDropConfig.bioScrapDropChance);
       case CERAMIC ->
           new ScrapDropData(ModItems.CERAMIC_SCRAP.get(), ScrapDropConfig.ceramicScrapDropChance);
       case COPPER ->
           new ScrapDropData(ModItems.COPPER_SCRAP.get(), ScrapDropConfig.copperScrapDropChance);
       case CRYSTAL ->
           new ScrapDropData(ModItems.CRYSTAL_SCRAP.get(), ScrapDropConfig.crystalScrapDropChance);
-      case GOLD ->
-          new ScrapDropData(ModItems.GOLD_SCRAP.get(), ScrapDropConfig.goldScrapDropChance);
       case FASTENER ->
           new ScrapDropData(ModItems.FASTENER_SCRAP.get(), ScrapDropConfig.fastenerScrapDropChance);
+      case FIBER ->
+          new ScrapDropData(ModItems.FIBER_SCRAP.get(), ScrapDropConfig.fiberScrapDropChance);
+      case GLASS ->
+          new ScrapDropData(ModItems.GLASS_SCRAP.get(), ScrapDropConfig.glassScrapDropChance);
+      case GOLD ->
+          new ScrapDropData(ModItems.GOLD_SCRAP.get(), ScrapDropConfig.goldScrapDropChance);
       case IRON ->
           new ScrapDropData(ModItems.IRON_SCRAP.get(), ScrapDropConfig.ironScrapDropChance);
       case LUMINOUS ->
           new ScrapDropData(ModItems.LUMINOUS_SCRAP.get(), ScrapDropConfig.luminousScrapDropChance);
       case METAL ->
           new ScrapDropData(ModItems.METAL_SCRAP.get(), ScrapDropConfig.metalScrapDropChance);
+      case MINERAL ->
+          new ScrapDropData(ModItems.MINERAL_SCRAP.get(), ScrapDropConfig.mineralScrapDropChance);
       case PLASTIC ->
           new ScrapDropData(ModItems.PLASTIC_SCRAP.get(), ScrapDropConfig.plasticScrapDropChance);
+      case RUBBER ->
+          new ScrapDropData(ModItems.RUBBER_SCRAP.get(), ScrapDropConfig.rubberScrapDropChance);
       case TECH ->
           new ScrapDropData(ModItems.TECH_SCRAP.get(), ScrapDropConfig.techScrapDropChance);
+      case WOOD ->
+          new ScrapDropData(ModItems.WOOD_SCRAP.get(), ScrapDropConfig.woodScrapDropChance);
     };
   }
 }

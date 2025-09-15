@@ -20,13 +20,19 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.item.scrap.BioScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CrystalScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.FastenerScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.FiberScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.GlassScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.LuminousScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MetalScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.MineralScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -68,6 +74,22 @@ public class ForgeModItems {
   public static final RegistryObject<Item> SCRAP_PLASTIC =
       ITEMS.register(PlasticScrapItem.PLASTIC_SCRAP_ID, () -> ScrapItemRegistry.PLASTIC_SCRAP_ITEM);
 
+  // Additional Material Scrap Items
+  public static final RegistryObject<Item> SCRAP_MINERAL =
+      ITEMS.register(MineralScrapItem.MINERAL_SCRAP_ID, () -> ScrapItemRegistry.MINERAL_SCRAP_ITEM);
+  public static final RegistryObject<Item> SCRAP_WOOD =
+      ITEMS.register(WoodScrapItem.WOOD_SCRAP_ID, () -> ScrapItemRegistry.WOOD_SCRAP_ITEM);
+  public static final RegistryObject<Item> SCRAP_RUBBER =
+      ITEMS.register(RubberScrapItem.RUBBER_SCRAP_ID, () -> ScrapItemRegistry.RUBBER_SCRAP_ITEM);
+  public static final RegistryObject<Item> SCRAP_GLASS =
+      ITEMS.register(GlassScrapItem.GLASS_SCRAP_ID, () -> ScrapItemRegistry.GLASS_SCRAP_ITEM);
+
+  // Organic and Textile Scrap Items
+  public static final RegistryObject<Item> SCRAP_FIBER =
+      ITEMS.register(FiberScrapItem.FIBER_SCRAP_ID, () -> ScrapItemRegistry.FIBER_SCRAP_ITEM);
+  public static final RegistryObject<Item> SCRAP_BIO =
+      ITEMS.register(BioScrapItem.BIO_SCRAP_ID, () -> ScrapItemRegistry.BIO_SCRAP_ITEM);
+
   // Tech Scrap Items
   public static final RegistryObject<Item> TECH_SCRAP =
       ITEMS.register(TechScrapItem.TECH_SCRAP_ID, () -> ScrapItemRegistry.TECH_SCRAP_ITEM);
@@ -102,6 +124,16 @@ public class ForgeModItems {
     ModItems.FASTENER_SCRAP = SCRAP_FASTENER;
     ModItems.LUMINOUS_SCRAP = SCRAP_LUMINOUS;
     ModItems.PLASTIC_SCRAP = SCRAP_PLASTIC;
+
+    // Additional Material Scrap Items
+    ModItems.MINERAL_SCRAP = SCRAP_MINERAL;
+    ModItems.WOOD_SCRAP = SCRAP_WOOD;
+    ModItems.RUBBER_SCRAP = SCRAP_RUBBER;
+    ModItems.GLASS_SCRAP = SCRAP_GLASS;
+
+    // Organic and Textile Scrap Items
+    ModItems.FIBER_SCRAP = SCRAP_FIBER;
+    ModItems.BIO_SCRAP = SCRAP_BIO;
 
     // Tech Scrap Items
     ModItems.TECH_SCRAP = TECH_SCRAP;

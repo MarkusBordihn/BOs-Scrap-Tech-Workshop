@@ -19,7 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.menu.slots;
 
-import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -30,6 +30,6 @@ public class RecyclerOutputSlot extends Slot {
 
   @Override
   public boolean mayPlace(ItemStack stack) {
-    return false; // Output slots cannot accept items
+    return false;
   }
 }
