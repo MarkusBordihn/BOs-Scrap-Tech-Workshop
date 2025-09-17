@@ -17,29 +17,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block;
+package de.markusbordihn.scraptechworkshop.server;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.drop.ScrapDropHandler;
-import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.Block;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
+import net.minecraftforge.event.server.ServerStartingEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-public class BlockEvents {
+@EventBusSubscriber
+public class ServerEventHandler {
 
-  protected static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
+  @SubscribeEvent
+  public static void onServerStarted(ServerStartedEvent event) {
+    ServerEvents.handleServerStartedEvent(event.getServer());
+  }
 
-  public static void handleBlockBreakEvent(
-      Block block, BlockPos blockPos, ServerLevel serverLevel) {
-    // Record player activity in this chunk for intelligent spawning
-    ChunkPos chunkPos = new ChunkPos(blockPos);
-    ScrapPileSpawner.recordPlayerActivity(chunkPos);
+  @SubscribeEvent
+  public static void onServerStarting(ServerStartingEvent event) {
+    ServerEvents.handleServerStartingEvent(event.getServer());
+  }
 
-    // Handle scrap drops for broken blocks
-    ScrapDropHandler.handleBlockBreak(serverLevel, blockPos, block);
+  @SubscribeEvent
+  public static void onServerTick(TickEvent.ServerTickEvent event) {
+    if (event.phase == TickEvent.Phase.START) {
+      ServerEvents.handleServerStartTickEvent(event.getServer());
+    } else if (event.phase == TickEvent.Phase.END) {
+      ServerEvents.handleServerEndTickEvent(event.getServer());
+    }
   }
 }

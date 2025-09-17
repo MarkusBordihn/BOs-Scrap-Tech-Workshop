@@ -27,6 +27,9 @@ import net.minecraft.world.item.BlockItem;
 public class ModBlockItems {
 
   public static Supplier<BlockItem> RECYCLER_BLOCK_ITEM;
+  public static Supplier<BlockItem> MIXED_SCRAP_PILE_BLOCK_ITEM;
+  public static Supplier<BlockItem> METAL_SCRAP_PILE_BLOCK_ITEM;
+  public static Supplier<BlockItem> TECH_SCRAP_PILE_BLOCK_ITEM;
 
   public static ResourceLocation getBlockItemId(String name) {
     return new ResourceLocation(Constants.MOD_ID, name);

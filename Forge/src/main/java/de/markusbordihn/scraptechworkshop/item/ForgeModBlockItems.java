@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.item;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
 import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
+import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -39,10 +40,40 @@ public class ForgeModBlockItems {
           RecyclerBlock.ID,
           () -> new RecyclerBlockItem(ForgeModBlocks.RECYCLER_BLOCK.get(), new Item.Properties()));
 
+  public static final RegistryObject<BlockItem> MIXED_SCRAP_PILE_BLOCK_ITEM =
+      BLOCK_ITEMS.register(
+          ScrapPileBlockItem.MIXED_ID,
+          () ->
+              new ScrapPileBlockItem(
+                  ForgeModBlocks.SCRAP_PILE_BLOCK.get(),
+                  new Item.Properties(),
+                  ScrapPileVariant.MIXED));
+
+  public static final RegistryObject<BlockItem> METAL_SCRAP_PILE_BLOCK_ITEM =
+      BLOCK_ITEMS.register(
+          ScrapPileBlockItem.METAL_ID,
+          () ->
+              new ScrapPileBlockItem(
+                  ForgeModBlocks.SCRAP_PILE_BLOCK.get(),
+                  new Item.Properties(),
+                  ScrapPileVariant.METAL));
+
+  public static final RegistryObject<BlockItem> TECH_SCRAP_PILE_BLOCK_ITEM =
+      BLOCK_ITEMS.register(
+          ScrapPileBlockItem.TECH_ID,
+          () ->
+              new ScrapPileBlockItem(
+                  ForgeModBlocks.SCRAP_PILE_BLOCK.get(),
+                  new Item.Properties(),
+                  ScrapPileVariant.TECH));
+
   private ForgeModBlockItems() {}
 
   public static void register(IEventBus eventBus) {
     BLOCK_ITEMS.register(eventBus);
     ModBlockItems.RECYCLER_BLOCK_ITEM = RECYCLER_BLOCK_ITEM::get;
+    ModBlockItems.MIXED_SCRAP_PILE_BLOCK_ITEM = MIXED_SCRAP_PILE_BLOCK_ITEM::get;
+    ModBlockItems.METAL_SCRAP_PILE_BLOCK_ITEM = METAL_SCRAP_PILE_BLOCK_ITEM::get;
+    ModBlockItems.TECH_SCRAP_PILE_BLOCK_ITEM = TECH_SCRAP_PILE_BLOCK_ITEM::get;
   }
 }

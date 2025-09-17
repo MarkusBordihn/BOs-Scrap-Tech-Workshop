@@ -76,7 +76,7 @@ public class VanillaChestLootData {
   }
 
   public static boolean shouldModifyLootTable(ResourceLocation targetTable) {
-    return LOOT_TABLE_INJECTIONS.containsKey(targetTable);
+    return targetTable != null && LOOT_TABLE_INJECTIONS.containsKey(targetTable);
   }
 
   public static Map<ResourceLocation, ResourceLocation> getAllInjections() {

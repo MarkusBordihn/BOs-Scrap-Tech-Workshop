@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop.block;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -33,7 +34,10 @@ public class ForgeModBlocks {
       DeferredRegister.create(ForgeRegistries.BLOCKS, Constants.MOD_ID);
 
   public static final RegistryObject<Block> RECYCLER_BLOCK =
-      BLOCKS.register("recycler", () -> RecyclerBlockRegistry.RECYCLER_BLOCK);
+      BLOCKS.register(RecyclerBlock.ID, () -> RecyclerBlockRegistry.RECYCLER_BLOCK);
+
+  public static final RegistryObject<Block> SCRAP_PILE_BLOCK =
+      BLOCKS.register(ScrapPileBlock.ID, () -> ScrapPileBlockRegistry.SCRAP_PILE_BLOCK);
 
   private ForgeModBlocks() {}
 

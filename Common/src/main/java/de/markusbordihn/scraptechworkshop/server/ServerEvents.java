@@ -17,29 +17,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block;
+package de.markusbordihn.scraptechworkshop.server;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.drop.ScrapDropHandler;
+import de.markusbordihn.scraptechworkshop.config.Config;
 import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.Block;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraft.server.MinecraftServer;
 
-public class BlockEvents {
+public class ServerEvents {
+  public static void handleServerStartedEvent(MinecraftServer minecraftServer) {}
 
-  protected static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
-
-  public static void handleBlockBreakEvent(
-      Block block, BlockPos blockPos, ServerLevel serverLevel) {
-    // Record player activity in this chunk for intelligent spawning
-    ChunkPos chunkPos = new ChunkPos(blockPos);
-    ScrapPileSpawner.recordPlayerActivity(chunkPos);
-
-    // Handle scrap drops for broken blocks
-    ScrapDropHandler.handleBlockBreak(serverLevel, blockPos, block);
+  public static void handleServerStartingEvent(MinecraftServer minecraftServer) {
+    Config.registerDeferred(true);
   }
+
+  public static void handleServerStartTickEvent(MinecraftServer minecraftServer) {
+    ScrapPileSpawner.tick(minecraftServer);
+  }
+
+  public static void handleServerEndTickEvent(MinecraftServer minecraftServer) {}
 }

@@ -17,29 +17,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block;
+package de.markusbordihn.scraptechworkshop.data;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.drop.ScrapDropHandler;
-import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
-import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.block.Block;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.minecraft.util.StringRepresentable;
 
-public class BlockEvents {
+public enum ScrapPileVariant implements StringRepresentable {
+  MIXED("mixed"),
+  METAL("metal"),
+  TECH("tech");
 
-  protected static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
+  private final String name;
 
-  public static void handleBlockBreakEvent(
-      Block block, BlockPos blockPos, ServerLevel serverLevel) {
-    // Record player activity in this chunk for intelligent spawning
-    ChunkPos chunkPos = new ChunkPos(blockPos);
-    ScrapPileSpawner.recordPlayerActivity(chunkPos);
+  ScrapPileVariant(String name) {
+    this.name = name;
+  }
 
-    // Handle scrap drops for broken blocks
-    ScrapDropHandler.handleBlockBreak(serverLevel, blockPos, block);
+  @Override
+  public String getSerializedName() {
+    return this.name;
   }
 }

@@ -1,0 +1,148 @@
+{
+  "variants": {
+    "variant=mixed,size=1,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_1"
+    },
+    "variant=mixed,size=1,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_1", "y": 90
+    },
+    "variant=mixed,size=1,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_1", "y": 180
+    },
+    "variant=mixed,size=1,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_1", "y": 270
+    },
+    "variant=mixed,size=2,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_2"
+    },
+    "variant=mixed,size=2,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_2", "y": 90
+    },
+    "variant=mixed,size=2,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_2", "y": 180
+    },
+    "variant=mixed,size=2,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_2", "y": 270
+    },
+    "variant=mixed,size=3,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_3"
+    },
+    "variant=mixed,size=3,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_3", "y": 90
+    },
+    "variant=mixed,size=3,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_3", "y": 180
+    },
+    "variant=mixed,size=3,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_3", "y": 270
+    },
+    "variant=mixed,size=4,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_4"
+    },
+    "variant=mixed,size=4,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_4", "y": 90
+    },
+    "variant=mixed,size=4,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_4", "y": 180
+    },
+    "variant=mixed,size=4,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_mixed_4", "y": 270
+    },
+    "variant=metal,size=1,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_1"
+    },
+    "variant=metal,size=1,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_1", "y": 90
+    },
+    "variant=metal,size=1,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_1", "y": 180
+    },
+    "variant=metal,size=1,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_1", "y": 270
+    },
+    "variant=metal,size=2,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_2"
+    },
+    "variant=metal,size=2,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_2", "y": 90
+    },
+    "variant=metal,size=2,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_2", "y": 180
+    },
+    "variant=metal,size=2,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_2", "y": 270
+    },
+    "variant=metal,size=3,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_3"
+    },
+    "variant=metal,size=3,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_3", "y": 90
+    },
+    "variant=metal,size=3,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_3", "y": 180
+    },
+    "variant=metal,size=3,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_3", "y": 270
+    },
+    "variant=metal,size=4,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_4"
+    },
+    "variant=metal,size=4,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_4", "y": 90
+    },
+    "variant=metal,size=4,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_4", "y": 180
+    },
+    "variant=metal,size=4,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_metal_4", "y": 270
+    },
+    "variant=tech,size=1,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_1"
+    },
+    "variant=tech,size=1,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_1", "y": 90
+    },
+    "variant=tech,size=1,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_1", "y": 180
+    },
+    "variant=tech,size=1,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_1", "y": 270
+    },
+    "variant=tech,size=2,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_2"
+    },
+    "variant=tech,size=2,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_2", "y": 90
+    },
+    "variant=tech,size=2,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_2", "y": 180
+    },
+    "variant=tech,size=2,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_2", "y": 270
+    },
+    "variant=tech,size=3,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_3"
+    },
+    "variant=tech,size=3,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_3", "y": 90
+    },
+    "variant=tech,size=3,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_3", "y": 180
+    },
+    "variant=tech,size=3,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_3", "y": 270
+    },
+    "variant=tech,size=4,facing=north": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_4"
+    },
+    "variant=tech,size=4,facing=east": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_4", "y": 90
+    },
+    "variant=tech,size=4,facing=south": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_4", "y": 180
+    },
+    "variant=tech,size=4,facing=west": {
+      "model": "scrap_tech_workshop:block/scrap_pile/scrap_pile_tech_4", "y": 270
+    }
+  }
+}

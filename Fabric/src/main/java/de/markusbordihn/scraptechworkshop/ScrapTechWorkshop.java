@@ -28,6 +28,7 @@ import de.markusbordihn.scraptechworkshop.item.FabricModItems;
 import de.markusbordihn.scraptechworkshop.loot.VanillaChestLootModifier;
 import de.markusbordihn.scraptechworkshop.menu.FabricModMenus;
 import de.markusbordihn.scraptechworkshop.recipe.FabricModRecipes;
+import de.markusbordihn.scraptechworkshop.server.ServerEventHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
@@ -74,5 +75,8 @@ public class ScrapTechWorkshop implements ModInitializer {
 
     log.info("{} Loot Table Modifiers ...", Constants.LOG_REGISTER_PREFIX);
     VanillaChestLootModifier.register();
+
+    log.info("{} Server Event Handler ...", Constants.LOG_REGISTER_PREFIX);
+    ServerEventHandler.registerServerEvents();
   }
 }

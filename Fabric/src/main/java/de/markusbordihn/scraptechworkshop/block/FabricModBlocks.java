@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop.block;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -33,7 +34,13 @@ public class FabricModBlocks {
     // Register recycler block
     Registry.register(
         BuiltInRegistries.BLOCK,
-        new ResourceLocation(Constants.MOD_ID, "recycler"),
+        new ResourceLocation(Constants.MOD_ID, RecyclerBlock.ID),
         RecyclerBlockRegistry.RECYCLER_BLOCK);
+
+    // Register scrap pile block
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapPileBlock.ID),
+        ScrapPileBlockRegistry.SCRAP_PILE_BLOCK);
   }
 }

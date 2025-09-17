@@ -53,7 +53,7 @@ public class VanillaChestLootModifier extends LootModifier {
     ResourceLocation lootTableId = context.getQueriedLootTableId();
 
     // Check if this loot table should be modified using common data
-    if (lootTableId != null && VanillaChestLootData.shouldModifyLootTable(lootTableId)) {
+    if (VanillaChestLootData.shouldModifyLootTable(lootTableId)) {
       ResourceLocation injectionTable = VanillaChestLootData.getInjectionTable(lootTableId);
 
       if (injectionTable != null) {
@@ -92,8 +92,6 @@ public class VanillaChestLootModifier extends LootModifier {
       } else {
         VanillaChestLootData.logSkippedInjection(lootTableId, "No injection table configured");
       }
-    } else if (lootTableId != null) {
-      VanillaChestLootData.logSkippedInjection(lootTableId, "Not a target loot table");
     }
 
     return generatedLoot;

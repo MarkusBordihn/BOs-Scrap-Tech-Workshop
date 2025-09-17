@@ -64,6 +64,9 @@ public class ModCreativeTabs {
               output.accept(ModItems.ENERGY_CELL_SCRAP.get());
 
               output.accept(ModBlockItems.RECYCLER_BLOCK_ITEM.get());
+              output.accept(ModBlockItems.MIXED_SCRAP_PILE_BLOCK_ITEM.get());
+              output.accept(ModBlockItems.METAL_SCRAP_PILE_BLOCK_ITEM.get());
+              output.accept(ModBlockItems.TECH_SCRAP_PILE_BLOCK_ITEM.get());
             });
   }
 }

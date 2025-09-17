@@ -63,6 +63,7 @@ public class Config {
     log.info("{} Registering common configuration ...", LOG_PREFIX);
     ScrapDropConfig.registerConfig();
     RecyclerConfig.registerConfig();
+    ScrapPileConfig.registerConfig();
   }
 
   public static void registerServerConfig() {

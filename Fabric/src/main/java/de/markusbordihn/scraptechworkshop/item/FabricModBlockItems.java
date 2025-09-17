@@ -20,7 +20,9 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
+import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -29,9 +31,7 @@ import net.minecraft.world.item.Item;
 
 public class FabricModBlockItems {
 
-  private FabricModBlockItems() {
-    // Utility class
-  }
+  private FabricModBlockItems() {}
 
   public static void registerBlockItems() {
     // Register recycler block item
@@ -40,6 +40,34 @@ public class FabricModBlockItems {
             RecyclerBlock.ID,
             () ->
                 new RecyclerBlockItem(RecyclerBlockRegistry.RECYCLER_BLOCK, new Item.Properties()));
+
+    // Register scrap pile block items
+    ModBlockItems.MIXED_SCRAP_PILE_BLOCK_ITEM =
+        registerBlockItem(
+            ScrapPileBlockItem.MIXED_ID,
+            () ->
+                new ScrapPileBlockItem(
+                    ScrapPileBlockRegistry.SCRAP_PILE_BLOCK,
+                    new Item.Properties(),
+                    ScrapPileVariant.MIXED));
+
+    ModBlockItems.METAL_SCRAP_PILE_BLOCK_ITEM =
+        registerBlockItem(
+            ScrapPileBlockItem.METAL_ID,
+            () ->
+                new ScrapPileBlockItem(
+                    ScrapPileBlockRegistry.SCRAP_PILE_BLOCK,
+                    new Item.Properties(),
+                    ScrapPileVariant.METAL));
+
+    ModBlockItems.TECH_SCRAP_PILE_BLOCK_ITEM =
+        registerBlockItem(
+            ScrapPileBlockItem.TECH_ID,
+            () ->
+                new ScrapPileBlockItem(
+                    ScrapPileBlockRegistry.SCRAP_PILE_BLOCK,
+                    new Item.Properties(),
+                    ScrapPileVariant.TECH));
   }
 
   private static Supplier<BlockItem> registerBlockItem(
