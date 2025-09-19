@@ -27,7 +27,10 @@ import de.markusbordihn.scraptechworkshop.loot.ScrapLootTables;
 import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -74,10 +77,11 @@ public class ScrapPileBlock extends Block implements SimpleWaterloggedBlock {
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
   public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
-  private static final VoxelShape SHAPE_SIZE_1 = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 2.0D, 14.0D);
+  private static final VoxelShape SHAPE_SIZE_1 = Block.box(2.0D, 0.0D, 2.0D, 14.0D, 4.0D, 14.0D);
   private static final VoxelShape SHAPE_SIZE_2 = Block.box(1.5D, 0.0D, 1.5D, 14.5D, 4.0D, 14.5D);
   private static final VoxelShape SHAPE_SIZE_3 = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 4.0D, 15.0D);
   private static final VoxelShape SHAPE_SIZE_4 = Block.box(0.5D, 0.0D, 0.5D, 15.5D, 4.0D, 15.5D);
+  private static final Map<UUID, Long> playerPickupCooldowns = new HashMap<>();
 
   public ScrapPileBlock(final Properties properties) {
     super(properties);
@@ -97,6 +101,17 @@ public class ScrapPileBlock extends Block implements SimpleWaterloggedBlock {
       case 4 -> SHAPE_SIZE_4;
       default -> SHAPE_SIZE_1;
     };
+  }
+
+  private static boolean isPlayerOnCooldown(final Player player) {
+    final Long lastPickupTime = playerPickupCooldowns.get(player.getUUID());
+    return lastPickupTime != null
+        && (System.currentTimeMillis() - lastPickupTime)
+            < ScrapPileConfig.autoPickupDelayTicks * 50L;
+  }
+
+  private static void setPlayerCooldown(final Player player) {
+    playerPickupCooldowns.put(player.getUUID(), System.currentTimeMillis());
   }
 
   private void handleScrapCollection(
@@ -127,9 +142,8 @@ public class ScrapPileBlock extends Block implements SimpleWaterloggedBlock {
     final int newSize = currentSize - 1;
     if (newSize <= 0) {
       level.removeBlock(pos, false);
-      ChunkPos chunkPos = new ChunkPos(pos);
       try {
-        ScrapPileSpawner.decrementChunkCount(chunkPos);
+        ScrapPileSpawner.decrementChunkCount(new ChunkPos(pos));
       } catch (Exception e) {
         // Silent error handling
       }
@@ -258,8 +272,20 @@ public class ScrapPileBlock extends Block implements SimpleWaterloggedBlock {
   public void stepOn(Level level, BlockPos pos, BlockState state, Entity entity) {
     if (!level.isClientSide
         && entity instanceof Player player
-        && ScrapPileConfig.autoPickupEnabled) {
-      handleScrapCollection(level, pos, state, player);
+        && ScrapPileConfig.autoPickupEnabled
+        && (ScrapPileConfig.autoPickupDelayTicks == 0 || !isPlayerOnCooldown(player))) {
+
+      if (state.getValue(SIZE) == 1 || ScrapPileConfig.autoPickupDelayTicks == 0) {
+        while (level.getBlockState(pos).getBlock() == this) {
+          handleScrapCollection(level, pos, level.getBlockState(pos), player);
+        }
+      } else {
+        handleScrapCollection(level, pos, state, player);
+      }
+
+      if (ScrapPileConfig.autoPickupDelayTicks > 0) {
+        setPlayerCooldown(player);
+      }
     }
     super.stepOn(level, pos, state, entity);
   }

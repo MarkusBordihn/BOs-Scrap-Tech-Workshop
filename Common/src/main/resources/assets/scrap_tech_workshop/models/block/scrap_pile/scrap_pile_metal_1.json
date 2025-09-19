@@ -6,22 +6,23 @@
     "particle": "block/iron_block",
     "iron": "block/iron_block",
     "netherite": "block/netherite_block",
-    "copper": "block/copper_block",
-    "oxidized_copper": "block/oxidized_copper"
+    "metal_scrap": "scrap_tech_workshop:block/scrap/metal_scrap_plate",
+    "metal_scrap_oxidized": "scrap_tech_workshop:block/scrap/tech_scrap_plate",
+    "iron_scrap_plate": "scrap_tech_workshop:block/scrap/iron_scrap_plate"
   },
   "elements": [
     {
-      "name": "iron_plate",
+      "name": "scrap_plate",
       "from": [5.44821, -0.002, 5.14911],
       "to": [9.95221, 1.002, 9.65311],
       "rotation": {"angle": 45, "axis": "y", "origin": [7.625, 0.53209, 8.52612]},
       "faces": {
-        "north": {"uv": [0, 0, 16, 4], "texture": "#iron"},
-        "east": {"uv": [0, 0, 16, 4], "texture": "#iron"},
-        "south": {"uv": [0, 0, 16, 4], "texture": "#iron"},
-        "west": {"uv": [0, 0, 16, 4], "texture": "#iron"},
-        "up": {"uv": [15, 7, 7, 15], "texture": "#iron"},
-        "down": {"uv": [2, 15, 12, 3], "rotation": 90, "texture": "#iron", "cullface": "down"}
+        "north": {"uv": [8, 6, 16, 7.5], "texture": "#metal_scrap"},
+        "east": {"uv": [0, 7, 9.5, 8.5], "texture": "#metal_scrap"},
+        "south": {"uv": [0, 0, 16, 4], "texture": "#metal_scrap"},
+        "west": {"uv": [0, 7, 9.5, 8.5], "rotation": 180, "texture": "#metal_scrap"},
+        "up": {"uv": [16, 9, 8, 16], "texture": "#metal_scrap"},
+        "down": {"uv": [16, 9, 8, 16], "rotation": 180, "texture": "#metal_scrap"}
       }
     },
     {
@@ -53,30 +54,32 @@
       }
     },
     {
-      "name": "copper_plate",
+      "name": "iron_scrap_plate",
       "from": [7.35494, 0, 1.7888],
       "to": [11.35494, 0.5, 5.2888],
       "rotation": {"angle": -22.5, "axis": "y", "origin": [10.15, 0.53209, 7.02612]},
       "faces": {
-        "north": {"uv": [1, 6, 15, 8], "texture": "#copper"},
-        "east": {"uv": [0, 7, 15, 9], "texture": "#copper"},
-        "south": {"uv": [2, 7, 13, 9], "texture": "#copper"},
-        "west": {"uv": [1, 7, 15, 9], "texture": "#copper"},
-        "up": {"uv": [13, 13, 3, 4], "rotation": 180, "texture": "#copper"},
-        "down": {"uv": [12, 4, 4, 12], "rotation": 180, "texture": "#copper", "cullface": "down"}
+        "north": {"uv": [0, 5, 16, 7], "rotation": 180, "texture": "#iron_scrap_plate"},
+        "east": {"uv": [0, 0, 2, 16], "rotation": 90, "texture": "#iron_scrap_plate"},
+        "south": {"uv": [0, 10, 16, 12], "texture": "#iron_scrap_plate"},
+        "west": {"uv": [0, 0, 2, 16], "rotation": 90, "texture": "#iron_scrap_plate"},
+        "up": {"uv": [16, 16, 0, 0], "rotation": 180, "texture": "#iron_scrap_plate"},
+        "down": {
+          "uv": [0, 16, 16, 0], "rotation": 270, "texture": "#iron_scrap_plate", "cullface": "down"
+        }
       }
     },
     {
-      "name": "oxidized_copper_rod",
+      "name": "oxidized_metal_rod",
       "from": [9.01501, 0.999, 6.09762],
       "to": [9.51701, 1.501, 11.09962],
       "rotation": {"angle": -22.5, "axis": "y", "origin": [9.04101, 1.25, 9.59862]},
       "faces": {
-        "north": {"uv": [4, 6, 11, 9], "rotation": 90, "texture": "#oxidized_copper"},
-        "east": {"uv": [2, 3, 14, 5], "texture": "#oxidized_copper"},
-        "south": {"uv": [8, 3, 10, 5], "rotation": 270, "texture": "#oxidized_copper"},
-        "west": {"uv": [2, 4, 14, 6], "texture": "#oxidized_copper"},
-        "up": {"uv": [0, 0, 13, 2], "rotation": 90, "texture": "#oxidized_copper"}
+        "north": {"uv": [10, 9, 12, 11], "rotation": 90, "texture": "#metal_scrap_oxidized"},
+        "east": {"uv": [0, 7, 16, 9], "texture": "#metal_scrap_oxidized"},
+        "south": {"uv": [6, 4, 8, 6], "rotation": 270, "texture": "#metal_scrap_oxidized"},
+        "west": {"uv": [0, 7, 16, 9], "texture": "#metal_scrap_oxidized"},
+        "up": {"uv": [0, 7, 16, 9], "rotation": 90, "texture": "#metal_scrap_oxidized"}
       }
     }
   ],

@@ -1,0 +1,230 @@
+{
+  "format_version": "1.9.0",
+  "credit": "Made with Blockbench by Markus Bordihn",
+  "render_type": "cutout_mipped",
+  "textures": {
+    "9": "scrap_tech_workshop:block/scrap/tech_mainboard_scrap",
+    "netherite": "block/netherite_block",
+    "copper_washer": "scrap_tech_workshop:block/washer/copper_washer",
+    "iron_washer": "scrap_tech_workshop:block/washer/iron_washer",
+    "metal_scrap_oxidized": "scrap_tech_workshop:block/scrap/tech_scrap_plate",
+    "particle": "scrap_tech_workshop:block/scrap/tech_platine_scrap",
+    "tech_platine_scrap": "scrap_tech_workshop:block/scrap/tech_platine_scrap",
+    "tech_block_scrap": "scrap_tech_workshop:block/scrap/tech_block_scrap"
+  },
+  "elements": [
+    {
+      "name": "gold",
+      "from": [8.91601, 0, 12.09862],
+      "to": [9.91601, 0.5, 14.09862],
+      "rotation": {"angle": -22.5, "axis": "y", "origin": [8.94101, 0.25, 12.59862]},
+      "faces": {
+        "north": {"uv": [10.5, 8.5, 15, 10], "texture": "#9"},
+        "east": {"uv": [2.5, 7, 11.5, 8.5], "texture": "#9"},
+        "south": {"uv": [4.5, 9, 6.5, 13], "rotation": 270, "texture": "#9"},
+        "west": {"uv": [2, 4, 14, 6], "texture": "#9"},
+        "up": {"uv": [10.5, 7.5, 14.5, 11], "rotation": 90, "texture": "#9"},
+        "down": {"uv": [3, 7, 10, 9.5], "rotation": 90, "texture": "#9", "cullface": "down"}
+      }
+    },
+    {
+      "name": "copper_case",
+      "from": [4.23181, -0.001, 2.91046],
+      "to": [7.23381, 0.501, 4.91246],
+      "rotation": {"angle": 45, "axis": "y", "origin": [5.775, 0.53209, 7.52612]},
+      "faces": {
+        "north": {"uv": [3, 0, 13, 2], "texture": "#copper_washer"},
+        "east": {"uv": [14, 3, 16, 13], "rotation": 90, "texture": "#copper_washer"},
+        "south": {"uv": [3, 14, 13, 16], "texture": "#copper_washer"},
+        "west": {"uv": [0, 3, 2, 13], "rotation": 90, "texture": "#copper_washer"},
+        "up": {"uv": [13, 12, 0, 4], "texture": "#copper_washer"},
+        "down": {"uv": [13, 3, 0, 13], "texture": "#copper_washer", "cullface": "down"}
+      }
+    },
+    {
+      "name": "iron_case",
+      "from": [11.93822, -0.001, 11.999],
+      "to": [14.94022, 0.501, 14.001],
+      "rotation": {"angle": -22.5, "axis": "y", "origin": [13.43922, 0.25, 13]},
+      "faces": {
+        "north": {"uv": [3, 14, 13, 16], "texture": "#iron_washer"},
+        "east": {"uv": [0, 3, 2, 13], "rotation": 90, "texture": "#iron_washer"},
+        "south": {"uv": [3, 0, 13, 2], "texture": "#iron_washer"},
+        "west": {"uv": [14, 3, 16, 13], "rotation": 90, "texture": "#iron_washer"},
+        "up": {"uv": [16, 12, 3, 4], "rotation": 180, "texture": "#iron_washer"},
+        "down": {
+          "uv": [16, 4, 3, 12], "rotation": 180, "texture": "#iron_washer", "cullface": "down"
+        }
+      }
+    },
+    {
+      "name": "scrap_plate",
+      "from": [9.28556, 1.79223, 5.5],
+      "to": [14.78556, 2.04223, 8],
+      "rotation": {"angle": -22.5, "axis": "z", "origin": [10.15, 0.93209, 9.02612]},
+      "faces": {
+        "north": {"uv": [0, 15.5, 12, 16], "texture": "#tech_platine_scrap"},
+        "east": {"uv": [7.5, 15.5, 16, 16], "texture": "#tech_platine_scrap"},
+        "south": {"uv": [0, 15, 16, 16], "texture": "#tech_platine_scrap"},
+        "west": {"uv": [0, 0, 5, 0.5], "texture": "#tech_platine_scrap"},
+        "up": {"uv": [12, 16, 0, 10], "texture": "#tech_platine_scrap"},
+        "down": {"uv": [0, 0, 13, 6], "texture": "#tech_platine_scrap"}
+      }
+    },
+    {
+      "name": "scrap_plate",
+      "from": [9.28556, 1.84223, 8],
+      "to": [14.78556, 2.09223, 11],
+      "rotation": {"angle": -22.5, "axis": "z", "origin": [10.15, 0.98209, 9.02612]},
+      "faces": {
+        "north": {"uv": [8, 15.5, 16, 16], "texture": "#tech_platine_scrap"},
+        "east": {"uv": [8, 15.5, 16, 16], "texture": "#tech_platine_scrap"},
+        "south": {"uv": [0, 12, 8, 12.5], "texture": "#tech_platine_scrap"},
+        "west": {"uv": [0, 0, 8, 0.5], "texture": "#tech_platine_scrap"},
+        "up": {"uv": [12, 10, 0, 4], "texture": "#tech_platine_scrap"},
+        "down": {"uv": [0, 6.5, 13, 12.5], "texture": "#tech_platine_scrap"}
+      }
+    },
+    {
+      "name": "scrap_plate",
+      "from": [4.28556, 1.36723, 2],
+      "to": [7.78556, 1.61723, 6.5],
+      "rotation": {"angle": -22.5, "axis": "x", "origin": [3.15, 0.50709, 5.52612]},
+      "faces": {
+        "north": {"uv": [8.5, 6, 9, 10], "rotation": 90, "texture": "#tech_platine_scrap"},
+        "east": {"uv": [8, 10, 16, 9.5], "rotation": 90, "texture": "#tech_platine_scrap"},
+        "south": {"uv": [12.5, 6, 13, 10], "rotation": 270, "texture": "#tech_platine_scrap"},
+        "west": {"uv": [8, 9, 16, 9.5], "texture": "#tech_platine_scrap"},
+        "up": {"uv": [16, 15.5, 4.5, 8.5], "rotation": 90, "texture": "#tech_platine_scrap"},
+        "down": {"uv": [5, 9.5, 15, 15.5], "rotation": 270, "texture": "#tech_platine_scrap"}
+      }
+    },
+    {
+      "name": "iron_rod",
+      "from": [2.31501, -0.001, 7.09762],
+      "to": [2.81701, 0.501, 12.09962],
+      "rotation": {"angle": -22.5, "axis": "y", "origin": [2.79101, 0.25, 8.59862]},
+      "faces": {
+        "north": {"uv": [14, 14, 16, 16], "rotation": 270, "texture": "#netherite"},
+        "east": {"uv": [4, 10, 16, 12], "texture": "#netherite"},
+        "south": {"uv": [4, 6, 11, 9], "rotation": 90, "texture": "#netherite"},
+        "west": {"uv": [4, 4, 16, 6], "rotation": 180, "texture": "#netherite"},
+        "up": {"uv": [4, 3, 16, 5], "rotation": 270, "texture": "#netherite"},
+        "down": {"uv": [5, 5, 16, 7], "rotation": 90, "texture": "#netherite", "cullface": "down"}
+      }
+    },
+    {
+      "name": "scrap_plate",
+      "from": [4.94821, -0.002, 5.14911],
+      "to": [9.45221, 1.002, 9.65311],
+      "rotation": {"angle": 45, "axis": "y", "origin": [7.125, 0.53209, 8.52612]},
+      "faces": {
+        "north": {"uv": [0, 6, 16, 10], "rotation": 180, "texture": "#metal_scrap_oxidized"},
+        "east": {"uv": [12, 0, 16, 16], "rotation": 90, "texture": "#metal_scrap_oxidized"},
+        "south": {"uv": [0, 6, 16, 10], "rotation": 180, "texture": "#metal_scrap_oxidized"},
+        "west": {"uv": [12, 0, 16, 16], "rotation": 90, "texture": "#metal_scrap_oxidized"},
+        "up": {"uv": [16, 0, 0, 16], "texture": "#metal_scrap_oxidized"},
+        "down": {"uv": [16, 0, 0, 16], "rotation": 180, "texture": "#metal_scrap_oxidized"}
+      }
+    },
+    {
+      "name": "iron_plate",
+      "from": [7.63381, -0.001, 7.44177],
+      "to": [12.13581, 1.001, 11.94377],
+      "rotation": {"angle": 22.5, "axis": "y", "origin": [8.525, 0.53209, 9.77612]},
+      "faces": {
+        "north": {"uv": [0, 0, 16, 4], "texture": "#metal_scrap_oxidized"},
+        "east": {"uv": [0, 0, 16, 4], "texture": "#metal_scrap_oxidized"},
+        "south": {"uv": [0, 0, 16, 4], "texture": "#metal_scrap_oxidized"},
+        "west": {"uv": [0, 0, 16, 4], "texture": "#metal_scrap_oxidized"},
+        "up": {"uv": [4, 8, 12, 0], "rotation": 270, "texture": "#metal_scrap_oxidized"},
+        "down": {
+          "uv": [2, 2, 12, 15], "rotation": 180, "texture": "#metal_scrap_oxidized",
+          "cullface": "down"
+        }
+      }
+    },
+    {
+      "name": "mainboard_plate",
+      "from": [2.84806, 0, 9.31609],
+      "to": [6.84806, 0.5, 12.81609],
+      "rotation": {"angle": 22.5, "axis": "y", "origin": [8.15, 0.53209, 11.02612]},
+      "faces": {
+        "north": {"uv": [0, 14, 16, 16], "texture": "#9"},
+        "east": {"uv": [0, 0.5, 2, 15.5], "rotation": 270, "texture": "#9"},
+        "south": {"uv": [15.5, 1, 0.5, 3], "texture": "#9"},
+        "west": {"uv": [4, 0.5, 5.5, 15.5], "rotation": 90, "texture": "#9"},
+        "up": {"uv": [15.5, 15.5, 0.5, 1], "texture": "#9"},
+        "down": {"uv": [15, 1, 1, 15], "texture": "#9", "cullface": "down"}
+      }
+    },
+    {
+      "name": "tech_scrap_plate",
+      "from": [7.35494, 0, 1.7888],
+      "to": [11.35494, 0.5, 5.2888],
+      "rotation": {"angle": -22.5, "axis": "y", "origin": [10.15, 0.53209, 7.02612]},
+      "faces": {
+        "north": {"uv": [0, 14.5, 16, 16], "rotation": 180, "texture": "#tech_block_scrap"},
+        "east": {"uv": [0, 0, 1.5, 16], "rotation": 90, "texture": "#tech_block_scrap"},
+        "south": {"uv": [0, 0, 16, 2], "texture": "#tech_block_scrap"},
+        "west": {"uv": [0, 0, 1.5, 16], "rotation": 90, "texture": "#tech_block_scrap"},
+        "up": {"uv": [16, 16, 0, 0], "rotation": 180, "texture": "#tech_block_scrap"},
+        "down": {
+          "uv": [0, 16, 16, 0], "rotation": 270, "texture": "#tech_block_scrap", "cullface": "down"
+        }
+      }
+    },
+    {
+      "name": "oxidized_metal_rod",
+      "from": [9.01501, 0.999, 6.09762],
+      "to": [9.51701, 1.501, 11.09962],
+      "rotation": {"angle": -22.5, "axis": "y", "origin": [9.04101, 1.25, 9.59862]},
+      "faces": {
+        "north": {"uv": [10, 9, 12, 11], "rotation": 90, "texture": "#metal_scrap_oxidized"},
+        "east": {"uv": [0, 7, 16, 9], "texture": "#metal_scrap_oxidized"},
+        "south": {"uv": [6, 4, 8, 6], "rotation": 270, "texture": "#metal_scrap_oxidized"},
+        "west": {"uv": [0, 7, 16, 9], "texture": "#metal_scrap_oxidized"},
+        "up": {"uv": [0, 7, 16, 9], "rotation": 90, "texture": "#metal_scrap_oxidized"}
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [0, 90, 55],
+      "translation": [0, 4, 4],
+      "scale": [0.85, 0.85, 0.85]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [0, 90, 55],
+      "translation": [0, 4, 4],
+      "scale": [0.85, 0.85, 0.85]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 75, 55],
+      "translation": [0, 4, 4],
+      "scale": [0.85, 0.85, 0.85]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 75, 55],
+      "translation": [0, 4, 4],
+      "scale": [0.85, 0.85, 0.85]
+    },
+    "ground": {
+      "translation": [0, 2.25, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "gui": {
+      "rotation": [30, -94, 0],
+      "translation": [0, 4.25, 0],
+      "scale": [1.14, 1.14, 1.14]
+    },
+    "head": {
+      "rotation": [0, -180, 0],
+      "translation": [0, 14.5, 0.25]
+    },
+    "fixed": {
+      "rotation": [-90, -180, 0],
+      "translation": [0, 0, -8]
+    }
+  }
+}

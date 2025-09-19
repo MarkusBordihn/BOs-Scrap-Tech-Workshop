@@ -44,6 +44,7 @@ public class ScrapPileConfig extends Config {
  - decay_enabled: Enable/disable time-based decay
  - decay_chance: Chance per random tick for decay (higher = faster decay)
  - auto_pickup_enabled: Enable pickup when walking over piles
+ - auto_pickup_delay_ticks: Delay in ticks between automatic pickups (default: 20 = 1 second, 0 = instant complete pickup)
  - auto_merge_enabled: Enable automatic merging of adjacent piles
  - silk_touch_enabled: Allow silk touch harvesting
  - fortune_enabled: Enable fortune enchantment effects
@@ -66,6 +67,7 @@ public class ScrapPileConfig extends Config {
   public static boolean decayEnabled = true;
   public static int decayChance = 24000; // Higher value = slower decay
   public static boolean autoPickupEnabled = true;
+  public static int autoPickupDelayTicks = 20; // 1 second delay between pickups
   public static boolean autoMergeEnabled = false;
   public static boolean silkTouchEnabled = true;
   public static boolean fortuneEnabled = true;
@@ -116,6 +118,8 @@ public class ScrapPileConfig extends Config {
     decayEnabled = parseConfigValue(properties, "decay_enabled", decayEnabled);
     decayChance = parseConfigValue(properties, "decay_chance", decayChance);
     autoPickupEnabled = parseConfigValue(properties, "auto_pickup_enabled", autoPickupEnabled);
+    autoPickupDelayTicks =
+        parseConfigValue(properties, "auto_pickup_delay_ticks", autoPickupDelayTicks);
     autoMergeEnabled = parseConfigValue(properties, "auto_merge_enabled", autoMergeEnabled);
     silkTouchEnabled = parseConfigValue(properties, "silk_touch_enabled", silkTouchEnabled);
     fortuneEnabled = parseConfigValue(properties, "fortune_enabled", fortuneEnabled);
