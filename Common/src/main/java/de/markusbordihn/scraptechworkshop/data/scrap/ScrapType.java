@@ -20,20 +20,36 @@
 package de.markusbordihn.scraptechworkshop.data.scrap;
 
 public enum ScrapType {
-  BIO,
-  CERAMIC,
-  COPPER,
-  CRYSTAL,
-  FASTENER,
-  FIBER,
-  GLASS,
-  GOLD,
-  IRON,
-  LUMINOUS,
-  METAL,
-  MINERAL,
-  PLASTIC,
-  RUBBER,
-  TECH,
-  WOOD
+  ALLOY(ScrapCategory.MATERIAL),
+  BIO(ScrapCategory.ORGANIC),
+  CAPACITOR_SCRAP(ScrapCategory.TECHNOLOGY),
+  CERAMIC(ScrapCategory.SYNTHETIC),
+  CIRCUIT_SCRAP(ScrapCategory.TECHNOLOGY),
+  COIL_SCRAP(ScrapCategory.MATERIAL),
+  COPPER(ScrapCategory.MATERIAL),
+  CRYSTAL(ScrapCategory.MINERAL),
+  ENERGY_CELL_SCRAP(ScrapCategory.TECHNOLOGY),
+  FASTENER(ScrapCategory.MATERIAL),
+  FIBER(ScrapCategory.ORGANIC),
+  GLASS(ScrapCategory.SYNTHETIC),
+  GOLD(ScrapCategory.MATERIAL),
+  INSULATION(ScrapCategory.SYNTHETIC),
+  IRON(ScrapCategory.MATERIAL),
+  LUMINOUS(ScrapCategory.SYNTHETIC),
+  METAL(ScrapCategory.MATERIAL),
+  MINERAL(ScrapCategory.MINERAL),
+  PLASTIC(ScrapCategory.SYNTHETIC),
+  RUBBER(ScrapCategory.ORGANIC),
+  TECH(ScrapCategory.TECHNOLOGY),
+  WOOD(ScrapCategory.ORGANIC);
+
+  private final ScrapCategory category;
+
+  ScrapType(ScrapCategory category) {
+    this.category = category;
+  }
+
+  public ScrapCategory getCategory() {
+    return category;
+  }
 }

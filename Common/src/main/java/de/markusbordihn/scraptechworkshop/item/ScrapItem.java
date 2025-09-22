@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.item;
 
+import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import java.util.List;
 import net.minecraft.network.chat.Component;
@@ -71,21 +72,28 @@ public abstract class ScrapItem extends Item {
   protected void addScrapTooltip(
       ItemStack itemStack, Level level, List<Component> tooltip, TooltipFlag flag) {
     tooltip.add(
-        Component.translatable("tooltip.scrap_tech_workshop.scrap_value", getScrapValue())
+        Component.translatable(Constants.TOOLTIP_PREFIX + "scrap_value", getScrapValue())
             .withStyle(net.minecraft.ChatFormatting.GRAY));
+
+    // Add category tooltip
+    tooltip.add(
+        Component.translatable(
+                Constants.TOOLTIP_PREFIX + "category",
+                Component.translatable(scrapType.getCategory().getTranslationKey()))
+            .withStyle(net.minecraft.ChatFormatting.BLUE));
 
     Rarity rarity = getScrapRarity();
     tooltip.add(
         Component.translatable(
-                "tooltip.scrap_tech_workshop.rarity",
+                Constants.TOOLTIP_PREFIX + "rarity",
                 Component.translatable("rarity." + rarity.name().toLowerCase()))
             .withStyle(rarity.color));
 
     if (getEfficiencyBonus() != 1.0f) {
       String efficiencyKey =
           getEfficiencyBonus() > 1.0f
-              ? "tooltip.scrap_tech_workshop.efficiency.bonus"
-              : "tooltip.scrap_tech_workshop.efficiency.penalty";
+              ? Constants.TOOLTIP_PREFIX + "efficiency.bonus"
+              : Constants.TOOLTIP_PREFIX + "efficiency.penalty";
       int percentage = Math.round((getEfficiencyBonus() - 1.0f) * 100);
       tooltip.add(
           Component.translatable(efficiencyKey, Math.abs(percentage))
@@ -97,7 +105,7 @@ public abstract class ScrapItem extends Item {
 
     if (!isRecyclable()) {
       tooltip.add(
-          Component.translatable("tooltip.scrap_tech_workshop.not_recyclable")
+          Component.translatable(Constants.TOOLTIP_PREFIX + "not_recyclable")
               .withStyle(net.minecraft.ChatFormatting.DARK_RED));
     }
   }

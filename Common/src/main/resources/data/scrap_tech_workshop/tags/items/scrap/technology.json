@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "scrap_tech_workshop:tech_scrap",
+    "scrap_tech_workshop:circuit_scrap",
+    "scrap_tech_workshop:capacitor_scrap",
+    "scrap_tech_workshop:energy_cell_scrap"
+  ]
+}

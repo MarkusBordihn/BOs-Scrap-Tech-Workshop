@@ -19,12 +19,17 @@
 
 package de.markusbordihn.scraptechworkshop.item;
 
+import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;
+import de.markusbordihn.scraptechworkshop.item.component.EnergyCellBlockItem;
+import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.AlloyScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.BioScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CrystalScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.FastenerScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.FiberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.GlassScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.InsulationScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.LuminousScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MetalScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MineralScrapItem;
@@ -32,7 +37,9 @@ import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
+import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -49,6 +56,8 @@ public class FabricModItems {
 
   public static void registerModItems() {
     // Register metal scrap items
+    ModItems.ALLOY_SCRAP =
+        registerItem(AlloyScrapItem.ALLOY_SCRAP_ID, () -> ScrapItemRegistry.ALLOY_SCRAP_ITEM);
     ModItems.METAL_SCRAP =
         registerItem(MetalScrapItem.METAL_SCRAP_ID, () -> ScrapItemRegistry.METAL_SCRAP_ITEM);
     ModItems.GOLD_SCRAP =
@@ -66,6 +75,9 @@ public class FabricModItems {
     ModItems.FASTENER_SCRAP =
         registerItem(
             FastenerScrapItem.FASTENER_SCRAP_ID, () -> ScrapItemRegistry.FASTENER_SCRAP_ITEM);
+    ModItems.INSULATION_SCRAP =
+        registerItem(
+            InsulationScrapItem.INSULATION_SCRAP_ID, () -> ScrapItemRegistry.INSULATION_SCRAP_ITEM);
     ModItems.LUMINOUS_SCRAP =
         registerItem(
             LuminousScrapItem.LUMINOUS_SCRAP_ID, () -> ScrapItemRegistry.LUMINOUS_SCRAP_ITEM);
@@ -101,6 +113,17 @@ public class FabricModItems {
     ModItems.ENERGY_CELL_SCRAP =
         registerItem(
             TechScrapItem.ENERGY_CELL_SCRAP_ID, () -> ScrapItemRegistry.ENERGY_CELL_SCRAP_ITEM);
+
+    // Tool Items
+    ModItems.SCRAP_MULTITOOL =
+        registerItem(ScrapMultitoolItem.ID, () -> ToolItemRegistry.SCRAP_MULTITOOL_ITEM);
+
+    // Component Items
+    ModItems.ENERGY_CELL = registerItem(EnergyCellItem.ID, () -> ToolItemRegistry.ENERGY_CELL_ITEM);
+    ModItems.ENERGY_CELL_BLOCK =
+        registerItem(EnergyCellBlockItem.ID, () -> ToolItemRegistry.ENERGY_CELL_BLOCK_ITEM);
+    ModItems.CIRCUIT_BOARD =
+        registerItem(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
 
     Registry.register(
         BuiltInRegistries.CREATIVE_MODE_TAB,

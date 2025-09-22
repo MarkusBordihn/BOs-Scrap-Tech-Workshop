@@ -96,10 +96,8 @@ public record RecyclerRecipe(
   public List<ItemStack> getOutputsForInput(ItemStack inputStack) {
     List<ItemStack> outputs = new ArrayList<>();
 
-    // Add primary output
     outputs.add(primaryOutput.createStackForInput(inputStack));
 
-    // Add byproducts based on chance
     if (RecyclerConfig.isMultiByproductMode()) {
       int addedByproducts = 0;
       for (RecyclerByproduct byproduct : byproducts) {
@@ -112,7 +110,6 @@ public record RecyclerRecipe(
         }
       }
     } else {
-      // Single byproduct mode - pick one randomly
       if (!byproducts.isEmpty()) {
         for (RecyclerByproduct byproduct : byproducts) {
           if (byproduct.shouldProduce()) {
@@ -205,7 +202,6 @@ public record RecyclerRecipe(
       return new ItemStack(item, baseCount);
     }
 
-    // Getter methods for serialization
     public Item getItem() {
       return item;
     }
@@ -260,7 +256,6 @@ public record RecyclerRecipe(
       return chance;
     }
 
-    // Getter methods for serialization
     public int getMinCount() {
       return minCount;
     }

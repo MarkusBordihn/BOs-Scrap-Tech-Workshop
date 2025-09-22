@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "EEE",
+    "EEE",
+    "EEE"
+  ],
+  "key": {
+    "E": {
+      "item": "scrap_tech_workshop:energy_cell"
+    }
+  },
+  "result": {
+    "item": "scrap_tech_workshop:energy_cell_block",
+    "count": 1
+  }
+}

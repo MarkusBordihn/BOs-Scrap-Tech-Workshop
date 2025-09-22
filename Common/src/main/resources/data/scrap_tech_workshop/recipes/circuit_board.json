@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "scrap_tech_workshop_components",
+  "pattern": [
+    "cg",
+    "cm"
+  ],
+  "key": {
+    "c": {"tag": "scrap_tech_workshop:scrap/tech/circuit"},
+    "g": {"tag": "scrap_tech_workshop:scrap/glass"},
+    "m": {"tag": "scrap_tech_workshop:scrap/metal"}
+  },
+  "result": {
+    "item": "scrap_tech_workshop:circuit_board",
+    "count": 1
+  }
+}

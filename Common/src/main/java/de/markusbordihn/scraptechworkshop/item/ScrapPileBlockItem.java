@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.item;
 
+import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.ScrapPileBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import java.util.List;
@@ -114,8 +115,8 @@ public class ScrapPileBlockItem extends BlockItem {
   @Override
   public void appendHoverText(
       ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component.translatable("item.scrap_tech_workshop.scrap_pile.tooltip"));
-    tooltip.add(Component.translatable("item.scrap_tech_workshop.scrap_pile.stacking"));
+    tooltip.add(Component.translatable(Constants.ITEM_PREFIX + "scrap_pile.tooltip"));
+    tooltip.add(Component.translatable(Constants.ITEM_PREFIX + "scrap_pile.stacking"));
 
     String variantKey =
         switch (variant) {
@@ -123,7 +124,7 @@ public class ScrapPileBlockItem extends BlockItem {
           case METAL -> "metal_scrap_pile";
           case TECH -> "tech_scrap_pile";
         };
-    tooltip.add(Component.translatable("item.scrap_tech_workshop." + variantKey + ".tooltip"));
+    tooltip.add(Component.translatable(Constants.ITEM_PREFIX + variantKey + ".tooltip"));
   }
 
   public ScrapPileVariant getVariant() {

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "scrap_tech_workshop:item/mineral_scrap"
+    "layer0": "scrap_tech_workshop:item/scrap/mineral_scrap"
   }
 }

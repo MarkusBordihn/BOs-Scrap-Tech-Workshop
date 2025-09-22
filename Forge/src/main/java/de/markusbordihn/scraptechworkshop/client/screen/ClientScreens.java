@@ -37,5 +37,6 @@ public class ClientScreens {
   public static void registerScreens() {
     log.info("{} Client Screens ...", Constants.LOG_REGISTER_PREFIX);
     MenuScreens.register(ForgeModMenus.RECYCLER_MENU.get(), RecyclerScreen::new);
+    MenuScreens.register(ForgeModMenus.SCRAP_MULTITOOL_MENU.get(), ScrapMultitoolScreen::new);
   }
 }

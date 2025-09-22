@@ -128,11 +128,20 @@ public class RecyclerBlock extends BaseEntityBlock {
   private void openRecyclerMenu(Player player, RecyclerBlockEntity recyclerBlockEntity) {
     if (Constants.IS_FABRIC) {
       try {
-        Class<?> fabricFactoryClass =
-            Class.forName("de.markusbordihn.scraptechworkshop.menu.BaseScreenHandler");
+        // First try BlockBaseScreenHandler, then fall back to BaseScreenHandler if not found
+        Class<?> fabricFactoryClass;
+        try {
+          fabricFactoryClass =
+              Class.forName("de.markusbordihn.scraptechworkshop.menu.BlockBaseScreenHandler");
+        } catch (ClassNotFoundException e) {
+          // Fall back to BaseScreenHandler if BlockBaseScreenHandler doesn't exist yet
+          fabricFactoryClass =
+              Class.forName("de.markusbordihn.scraptechworkshop.menu.BaseScreenHandler");
+        }
+
         Object fabricFactory =
             fabricFactoryClass
-                .getConstructor(RecyclerBlockEntity.class)
+                .getConstructor(net.minecraft.world.level.block.entity.BlockEntity.class)
                 .newInstance(recyclerBlockEntity);
         player.openMenu((net.minecraft.world.MenuProvider) fabricFactory);
       } catch (Exception e) {

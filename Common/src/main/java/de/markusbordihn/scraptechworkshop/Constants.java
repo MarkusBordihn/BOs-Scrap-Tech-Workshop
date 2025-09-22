@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import net.minecraft.resources.ResourceLocation;
 
 public final class Constants {
 
@@ -30,7 +31,21 @@ public final class Constants {
   public static final String LOG_NAME = MOD_NAME;
   public static final String LOG_SUB_REGISTER_PREFIX = "- Register " + LOG_NAME;
   public static final String LOG_REGISTER_PREFIX = "Register " + MOD_NAME;
+
+  public static final String COMPONENT_TYPE_PREFIX = "component_type." + MOD_ID + ".";
+  public static final String ITEM_PREFIX = "item." + MOD_ID + ".";
+  public static final String SCRAP_CATEGORY_PREFIX = "scrap_category." + MOD_ID + ".";
   public static final String TEXT_PREFIX = "text." + MOD_ID + ".";
+  public static final String TOOLTIP_PREFIX = "tooltip." + MOD_ID + ".";
+
+  // Minecraft vanilla texture references
+  public static final String MINECRAFT_PREFIX = "minecraft";
+  public static final ResourceLocation TEXTURE_DEMO_BACKGROUND =
+      new ResourceLocation(MINECRAFT_PREFIX, "textures/gui/demo_background.png");
+  public static final ResourceLocation TEXTURE_INVENTORY =
+      new ResourceLocation(MINECRAFT_PREFIX, "textures/gui/container/inventory.png");
+  public static final ResourceLocation TEXTURE_FURNACE =
+      new ResourceLocation(MINECRAFT_PREFIX, "textures/gui/container/furnace.png");
 
   public static Path GAME_DIR = Paths.get("").toAbsolutePath();
   public static Path CONFIG_DIR = GAME_DIR.resolve("config");

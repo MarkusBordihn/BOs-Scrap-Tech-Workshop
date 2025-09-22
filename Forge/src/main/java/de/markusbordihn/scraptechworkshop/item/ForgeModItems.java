@@ -20,12 +20,17 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;
+import de.markusbordihn.scraptechworkshop.item.component.EnergyCellBlockItem;
+import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.AlloyScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.BioScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CrystalScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.FastenerScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.FiberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.GlassScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.InsulationScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.LuminousScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MetalScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MineralScrapItem;
@@ -33,7 +38,9 @@ import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
+import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -51,6 +58,8 @@ public class ForgeModItems {
           net.minecraft.core.registries.Registries.CREATIVE_MODE_TAB, Constants.MOD_ID);
 
   // Metal Scrap Items
+  public static final RegistryObject<Item> SCRAP_ALLOY =
+      ITEMS.register(AlloyScrapItem.ALLOY_SCRAP_ID, () -> ScrapItemRegistry.ALLOY_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_METAL =
       ITEMS.register(MetalScrapItem.METAL_SCRAP_ID, () -> ScrapItemRegistry.METAL_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_GOLD =
@@ -68,6 +77,9 @@ public class ForgeModItems {
   public static final RegistryObject<Item> SCRAP_FASTENER =
       ITEMS.register(
           FastenerScrapItem.FASTENER_SCRAP_ID, () -> ScrapItemRegistry.FASTENER_SCRAP_ITEM);
+  public static final RegistryObject<Item> SCRAP_INSULATION =
+      ITEMS.register(
+          InsulationScrapItem.INSULATION_SCRAP_ID, () -> ScrapItemRegistry.INSULATION_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_LUMINOUS =
       ITEMS.register(
           LuminousScrapItem.LUMINOUS_SCRAP_ID, () -> ScrapItemRegistry.LUMINOUS_SCRAP_ITEM);
@@ -104,6 +116,18 @@ public class ForgeModItems {
       ITEMS.register(
           TechScrapItem.ENERGY_CELL_SCRAP_ID, () -> ScrapItemRegistry.ENERGY_CELL_SCRAP_ITEM);
 
+  // Tool Items
+  public static final RegistryObject<Item> SCRAP_MULTITOOL =
+      ITEMS.register(ScrapMultitoolItem.ID, () -> ToolItemRegistry.SCRAP_MULTITOOL_ITEM);
+
+  // Component Items
+  public static final RegistryObject<Item> ENERGY_CELL =
+      ITEMS.register(EnergyCellItem.ID, () -> ToolItemRegistry.ENERGY_CELL_ITEM);
+  public static final RegistryObject<Item> ENERGY_CELL_BLOCK =
+      ITEMS.register(EnergyCellBlockItem.ID, () -> ToolItemRegistry.ENERGY_CELL_BLOCK_ITEM);
+  public static final RegistryObject<Item> CIRCUIT_BOARD =
+      ITEMS.register(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
+
   public static final RegistryObject<CreativeModeTab> SCRAP_TECH_WORKSHOP_TAB =
       CREATIVE_MODE_TABS.register("scrap_tech_workshop", ModCreativeTabs.createMainTab()::build);
 
@@ -113,6 +137,7 @@ public class ForgeModItems {
     ITEMS.register(eventBus);
 
     // Metal Scrap Items
+    ModItems.ALLOY_SCRAP = SCRAP_ALLOY;
     ModItems.METAL_SCRAP = SCRAP_METAL;
     ModItems.GOLD_SCRAP = SCRAP_GOLD;
     ModItems.IRON_SCRAP = SCRAP_IRON;
@@ -122,6 +147,7 @@ public class ForgeModItems {
     ModItems.CERAMIC_SCRAP = SCRAP_CERAMIC;
     ModItems.CRYSTAL_SCRAP = SCRAP_CRYSTAL;
     ModItems.FASTENER_SCRAP = SCRAP_FASTENER;
+    ModItems.INSULATION_SCRAP = SCRAP_INSULATION;
     ModItems.LUMINOUS_SCRAP = SCRAP_LUMINOUS;
     ModItems.PLASTIC_SCRAP = SCRAP_PLASTIC;
 
@@ -141,5 +167,13 @@ public class ForgeModItems {
     ModItems.COIL_SCRAP = COIL_SCRAP;
     ModItems.CAPACITOR_SCRAP = CAPACITOR_SCRAP;
     ModItems.ENERGY_CELL_SCRAP = ENERGY_CELL_SCRAP;
+
+    // Tool Items
+    ModItems.SCRAP_MULTITOOL = SCRAP_MULTITOOL;
+
+    // Component Items
+    ModItems.ENERGY_CELL = ENERGY_CELL;
+    ModItems.ENERGY_CELL_BLOCK = ENERGY_CELL_BLOCK;
+    ModItems.CIRCUIT_BOARD = CIRCUIT_BOARD;
   }
 }

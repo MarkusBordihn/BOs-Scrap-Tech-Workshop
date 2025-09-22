@@ -19,36 +19,43 @@
 
 package de.markusbordihn.scraptechworkshop.menu;
 
-import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
 
 @SuppressWarnings("unused")
-public class BaseScreenHandler implements ExtendedScreenHandlerFactory {
+public class ScrapMultitoolScreenHandler implements ExtendedScreenHandlerFactory {
 
-  private final RecyclerBlockEntity blockEntity;
+  private final ItemStack multitoolStack;
+  private final InteractionHand hand;
 
-  public BaseScreenHandler(RecyclerBlockEntity blockEntity) {
-    this.blockEntity = blockEntity;
+  public ScrapMultitoolScreenHandler(ItemStack multitoolStack, InteractionHand hand) {
+    this.multitoolStack = multitoolStack;
+    this.hand = hand;
   }
 
   @Override
   public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
-    buf.writeBlockPos(blockEntity.getBlockPos());
+    buf.writeItem(multitoolStack);
+    buf.writeEnum(hand);
+    int slotIndex = hand == InteractionHand.MAIN_HAND ? player.getInventory().selected : 40;
+    buf.writeInt(slotIndex);
   }
 
   @Override
   public Component getDisplayName() {
-    return blockEntity.getDisplayName();
+    return multitoolStack.getHoverName();
   }
 
   @Override
   public AbstractContainerMenu createMenu(int windowId, Inventory playerInventory, Player player) {
-    return blockEntity.createMenu(windowId, playerInventory, player);
+    int slotIndex = hand == InteractionHand.MAIN_HAND ? playerInventory.selected : 40;
+    return new ScrapMultitoolMenu(windowId, playerInventory, multitoolStack, hand, slotIndex);
   }
 }

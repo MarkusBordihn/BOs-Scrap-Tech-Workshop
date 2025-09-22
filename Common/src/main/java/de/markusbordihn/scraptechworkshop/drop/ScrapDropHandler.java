@@ -74,6 +74,51 @@ public class ScrapDropHandler {
     typeMap.put(Blocks.RAW_COPPER_BLOCK, ScrapType.COPPER);
     typeMap.put(Blocks.WEATHERED_COPPER, ScrapType.COPPER);
 
+    // Alloy blocks - sophisticated alloys from ancient civilizations
+    typeMap.put(Blocks.NETHERITE_BLOCK, ScrapType.ALLOY);
+    typeMap.put(Blocks.END_STONE, ScrapType.ALLOY);
+    typeMap.put(Blocks.PURPUR_BLOCK, ScrapType.ALLOY);
+    typeMap.put(Blocks.PURPUR_PILLAR, ScrapType.ALLOY);
+    typeMap.put(Blocks.END_STONE_BRICKS, ScrapType.ALLOY);
+
+    // Insulation materials - blocks used for thermal/electrical insulation
+    typeMap.put(Blocks.MAGMA_BLOCK, ScrapType.INSULATION);
+    typeMap.put(Blocks.SPONGE, ScrapType.INSULATION);
+    typeMap.put(Blocks.WET_SPONGE, ScrapType.INSULATION);
+    typeMap.put(Blocks.WHITE_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.ORANGE_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.MAGENTA_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.LIGHT_BLUE_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.YELLOW_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.LIME_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.PINK_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.GRAY_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.LIGHT_GRAY_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.CYAN_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.PURPLE_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.BLUE_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.BROWN_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.GREEN_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.RED_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.BLACK_CONCRETE, ScrapType.INSULATION);
+    typeMap.put(Blocks.WHITE_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.ORANGE_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.MAGENTA_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.LIGHT_BLUE_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.YELLOW_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.LIME_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.PINK_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.GRAY_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.LIGHT_GRAY_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.CYAN_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.PURPLE_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.BLUE_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.BROWN_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.GREEN_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.RED_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.BLACK_TERRACOTTA, ScrapType.INSULATION);
+    typeMap.put(Blocks.TERRACOTTA, ScrapType.INSULATION);
+
     return typeMap;
   }
 
@@ -153,6 +198,23 @@ public class ScrapDropHandler {
           new ScrapDropData(ModItems.TECH_SCRAP.get(), ScrapDropConfig.techScrapDropChance);
       case WOOD ->
           new ScrapDropData(ModItems.WOOD_SCRAP.get(), ScrapDropConfig.woodScrapDropChance);
+
+      // Additional tech scrap items using existing tech drop chance
+      case CIRCUIT_SCRAP ->
+          new ScrapDropData(ModItems.CIRCUIT_SCRAP.get(), ScrapDropConfig.techScrapDropChance);
+      case COIL_SCRAP ->
+          new ScrapDropData(ModItems.COIL_SCRAP.get(), ScrapDropConfig.techScrapDropChance);
+      case CAPACITOR_SCRAP ->
+          new ScrapDropData(ModItems.CAPACITOR_SCRAP.get(), ScrapDropConfig.techScrapDropChance);
+      case ENERGY_CELL_SCRAP ->
+          new ScrapDropData(ModItems.ENERGY_CELL_SCRAP.get(), ScrapDropConfig.techScrapDropChance);
+
+      // Additional material and synthetic scrap items
+      case ALLOY ->
+          new ScrapDropData(ModItems.ALLOY_SCRAP.get(), ScrapDropConfig.metalScrapDropChance);
+      case INSULATION ->
+          new ScrapDropData(
+              ModItems.INSULATION_SCRAP.get(), ScrapDropConfig.plasticScrapDropChance);
     };
   }
 }

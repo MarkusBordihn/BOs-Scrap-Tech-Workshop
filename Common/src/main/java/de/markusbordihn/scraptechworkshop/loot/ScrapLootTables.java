@@ -101,6 +101,7 @@ public final class ScrapLootTables {
 
   private static WeightedLootTable<Item> createMetalTable() {
     return new WeightedLootTable<>(
+        new WeightedLootTable.Entry<>(ModItems.ALLOY_SCRAP.get(), ScrapPileConfig.alloyScrapWeight),
         new WeightedLootTable.Entry<>(ModItems.METAL_SCRAP.get(), ScrapPileConfig.metalScrapWeight),
         new WeightedLootTable.Entry<>(ModItems.IRON_SCRAP.get(), ScrapPileConfig.ironScrapWeight),
         new WeightedLootTable.Entry<>(
@@ -132,6 +133,8 @@ public final class ScrapLootTables {
         new WeightedLootTable.Entry<>(ModItems.WOOD_SCRAP.get(), ScrapPileConfig.woodScrapWeight),
         new WeightedLootTable.Entry<>(
             ModItems.CRYSTAL_SCRAP.get(), ScrapPileConfig.crystalScrapWeight),
+        new WeightedLootTable.Entry<>(
+            ModItems.INSULATION_SCRAP.get(), ScrapPileConfig.insulationScrapWeight),
         new WeightedLootTable.Entry<>(
             ModItems.LUMINOUS_SCRAP.get(), ScrapPileConfig.luminousScrapWeight));
   }

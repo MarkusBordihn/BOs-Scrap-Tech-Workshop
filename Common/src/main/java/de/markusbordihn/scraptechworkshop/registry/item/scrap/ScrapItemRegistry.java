@@ -20,12 +20,14 @@
 package de.markusbordihn.scraptechworkshop.registry.item.scrap;
 
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
+import de.markusbordihn.scraptechworkshop.item.scrap.AlloyScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.BioScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CrystalScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.FastenerScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.FiberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.GlassScrapItem;
+import de.markusbordihn.scraptechworkshop.item.scrap.InsulationScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.LuminousScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MetalScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.MineralScrapItem;
@@ -38,6 +40,8 @@ import net.minecraft.world.item.Item;
 public class ScrapItemRegistry {
 
   // Metal Scrap Items (actual metals)
+  public static final AlloyScrapItem ALLOY_SCRAP_ITEM =
+      new AlloyScrapItem(new Item.Properties(), ScrapType.ALLOY);
   public static final MetalScrapItem COPPER_SCRAP_ITEM =
       new MetalScrapItem(new Item.Properties(), ScrapType.COPPER);
   public static final MetalScrapItem GOLD_SCRAP_ITEM =
@@ -54,6 +58,8 @@ public class ScrapItemRegistry {
       new CrystalScrapItem(new Item.Properties());
   public static final FastenerScrapItem FASTENER_SCRAP_ITEM =
       new FastenerScrapItem(new Item.Properties(), ScrapType.FASTENER);
+  public static final InsulationScrapItem INSULATION_SCRAP_ITEM =
+      new InsulationScrapItem(new Item.Properties());
   public static final LuminousScrapItem LUMINOUS_SCRAP_ITEM =
       new LuminousScrapItem(new Item.Properties());
   public static final PlasticScrapItem PLASTIC_SCRAP_ITEM =

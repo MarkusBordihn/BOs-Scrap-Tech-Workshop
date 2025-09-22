@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.client.screen;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.screen.recycler.RecyclerScreen;
 import de.markusbordihn.scraptechworkshop.menu.RecyclerMenu;
+import de.markusbordihn.scraptechworkshop.menu.ScrapMultitoolMenu;
 import net.minecraft.client.gui.screens.MenuScreens;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -37,5 +38,6 @@ public class ClientScreens {
   public static void registerScreens() {
     log.info("{} Client Screens ...", Constants.LOG_REGISTER_PREFIX);
     MenuScreens.register(RecyclerMenu.TYPE, RecyclerScreen::new);
+    MenuScreens.register(ScrapMultitoolMenu.TYPE, ScrapMultitoolScreen::new);
   }
 }

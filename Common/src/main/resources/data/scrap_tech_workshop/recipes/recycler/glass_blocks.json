@@ -1,0 +1,22 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:glass_blocks"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:insulation_scrap",
+    "min": 1,
+    "max": 4
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:glass_scrap",
+      "chance": 0.30
+    },
+    {
+      "item": "scrap_tech_workshop:crystal_scrap",
+      "chance": 0.10
+    }
+  ],
+  "process_time": 150
+}

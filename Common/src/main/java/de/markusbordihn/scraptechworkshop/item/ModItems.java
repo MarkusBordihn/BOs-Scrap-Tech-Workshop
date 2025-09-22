@@ -49,6 +49,18 @@ public class ModItems {
   public static Supplier<Item> CAPACITOR_SCRAP;
   public static Supplier<Item> ENERGY_CELL_SCRAP;
 
+  // Additional Material and Synthetic Scrap Items
+  public static Supplier<Item> ALLOY_SCRAP;
+  public static Supplier<Item> INSULATION_SCRAP;
+
+  // Tool Items
+  public static Supplier<Item> SCRAP_MULTITOOL;
+
+  // Component Items
+  public static Supplier<Item> ENERGY_CELL;
+  public static Supplier<Item> ENERGY_CELL_BLOCK;
+  public static Supplier<Item> CIRCUIT_BOARD;
+
   public static ResourceLocation getItemId(String name) {
     return new ResourceLocation(Constants.MOD_ID, name);
   }

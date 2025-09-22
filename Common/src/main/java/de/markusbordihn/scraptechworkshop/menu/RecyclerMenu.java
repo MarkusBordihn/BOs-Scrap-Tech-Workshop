@@ -103,62 +103,62 @@ public class RecyclerMenu extends AbstractContainerMenu {
   }
 
   private void addRecyclerSlots() {
-    // Input slots (left side)
-    for (int i = 0; i < RecyclerBlockEntity.INPUT_SLOTS; i++) {
-      if (blockEntity != null) {
-        this.addSlot(
-            new RecyclerInputSlot(blockEntity, i, INPUT_SLOT_X, INPUT_SLOT_Y + i * SLOT_SPACING));
-      } else {
-        this.addSlot(
-            new DummySlot(dummyContainer, i, INPUT_SLOT_X, INPUT_SLOT_Y + i * SLOT_SPACING));
-      }
-    }
+    if (blockEntity != null) {
+      // Input slot
+      this.addSlot(new RecyclerInputSlot(blockEntity, 0, INPUT_SLOT_X, INPUT_SLOT_Y));
 
-    // Output slots (3x3 grid on the right)
-    for (int row = 0; row < OUTPUT_GRID_ROWS; row++) {
-      for (int col = 0; col < OUTPUT_GRID_COLUMNS; col++) {
-        int slotIndex = RecyclerBlockEntity.INPUT_SLOTS + row * OUTPUT_GRID_COLUMNS + col;
-        int x = OUTPUT_GRID_START_X + col * SLOT_SPACING;
-        int y = OUTPUT_GRID_START_Y + row * SLOT_SPACING;
-
-        if (blockEntity != null) {
-          this.addSlot(new RecyclerOutputSlot(blockEntity, slotIndex, x, y));
-        } else {
-          this.addSlot(new DummySlot(dummyContainer, slotIndex, x, y));
+      // Output slots (3x3)
+      int outputStartIndex = 1;
+      for (int row = 0; row < OUTPUT_GRID_ROWS; row++) {
+        for (int col = 0; col < OUTPUT_GRID_COLUMNS; col++) {
+          this.addSlot(
+              new RecyclerOutputSlot(
+                  blockEntity,
+                  outputStartIndex++,
+                  OUTPUT_GRID_START_X + col * SLOT_SPACING,
+                  OUTPUT_GRID_START_Y + row * SLOT_SPACING));
         }
       }
-    }
 
-    // Upgrade slots (bottom)
-    for (int i = 0; i < RecyclerBlockEntity.UPGRADE_SLOTS; i++) {
-      int slotIndex = RecyclerBlockEntity.INPUT_SLOTS + RecyclerBlockEntity.OUTPUT_SLOTS + i;
-      int x = UPGRADE_SLOT_START_X + i * SLOT_SPACING;
-
-      if (blockEntity != null) {
-        this.addSlot(new RecyclerUpgradeSlot(blockEntity, slotIndex, x, UPGRADE_SLOT_Y));
-      } else {
-        this.addSlot(new DummySlot(dummyContainer, slotIndex, x, UPGRADE_SLOT_Y));
+      // Upgrade slots
+      this.addSlot(new RecyclerUpgradeSlot(blockEntity, 10, UPGRADE_SLOT_START_X, UPGRADE_SLOT_Y));
+      this.addSlot(
+          new RecyclerUpgradeSlot(
+              blockEntity, 11, UPGRADE_SLOT_START_X + SLOT_SPACING, UPGRADE_SLOT_Y));
+    } else {
+      // Add dummy slots if no block entity
+      for (int i = 0; i < RecyclerBlockEntity.TOTAL_SLOTS; i++) {
+        this.addSlot(new DummySlot(dummyContainer, i, -1000, -1000));
       }
     }
   }
 
   private void addPlayerInventory(Inventory playerInventory) {
-    for (int row = 0; row < PLAYER_INVENTORY_ROWS; ++row) {
-      for (int col = 0; col < PLAYER_INVENTORY_COLUMNS; ++col) {
-        int x = PLAYER_INVENTORY_START_X + col * SLOT_SPACING;
-        int y = PLAYER_INVENTORY_START_Y + row * SLOT_SPACING;
-        int slotIndex = col + row * PLAYER_INVENTORY_COLUMNS + PLAYER_INVENTORY_COLUMNS;
-
-        this.addSlot(new Slot(playerInventory, slotIndex, x, y));
+    for (int row = 0; row < PLAYER_INVENTORY_ROWS; row++) {
+      for (int col = 0; col < PLAYER_INVENTORY_COLUMNS; col++) {
+        this.addSlot(
+            new Slot(
+                playerInventory,
+                col + row * PLAYER_INVENTORY_COLUMNS + 9,
+                PLAYER_INVENTORY_START_X + col * SLOT_SPACING,
+                124 + row * SLOT_SPACING));
       }
     }
   }
 
   private void addPlayerHotbar(Inventory playerInventory) {
-    for (int col = 0; col < PLAYER_HOTBAR_SLOTS; ++col) {
-      int x = PLAYER_HOTBAR_START_X + col * SLOT_SPACING;
-      this.addSlot(new Slot(playerInventory, col, x, PLAYER_HOTBAR_Y));
+    for (int col = 0; col < PLAYER_HOTBAR_SLOTS; col++) {
+      this.addSlot(
+          new Slot(
+              playerInventory,
+              col,
+              PLAYER_HOTBAR_START_X + col * SLOT_SPACING,
+              182));
     }
+  }
+
+  public ItemStack getCurrentInput() {
+    return this.blockEntity != null ? this.blockEntity.getItem(0) : ItemStack.EMPTY;
   }
 
   @Override

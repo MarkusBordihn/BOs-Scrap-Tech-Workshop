@@ -19,7 +19,24 @@
 
 package de.markusbordihn.scraptechworkshop.registry.item.tools;
 
+import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;
+import de.markusbordihn.scraptechworkshop.item.component.EnergyCellBlockItem;
+import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
+import net.minecraft.world.item.Item;
+
 public class ToolItemRegistry {
+
+  // Tool Items
+  public static final ScrapMultitoolItem SCRAP_MULTITOOL_ITEM =
+      new ScrapMultitoolItem(new Item.Properties());
+
+  // Component Items
+  public static final EnergyCellItem ENERGY_CELL_ITEM = new EnergyCellItem(new Item.Properties());
+  public static final EnergyCellBlockItem ENERGY_CELL_BLOCK_ITEM =
+      new EnergyCellBlockItem(new Item.Properties());
+  public static final CircuitBoardItem CIRCUIT_BOARD_ITEM =
+      new CircuitBoardItem(new Item.Properties());
 
   private ToolItemRegistry() {}
 }

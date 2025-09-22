@@ -1,0 +1,22 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:netherite_items"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:alloy_scrap",
+    "min": 3,
+    "max": 8
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:metal_scrap",
+      "chance": 0.40
+    },
+    {
+      "item": "scrap_tech_workshop:crystal_scrap",
+      "chance": 0.15
+    }
+  ],
+  "process_time": 400
+}

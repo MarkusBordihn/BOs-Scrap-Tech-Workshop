@@ -73,6 +73,7 @@ public class ScrapPileConfig extends Config {
   public static boolean fortuneEnabled = true;
 
   // Loot weights (higher = more common)
+  public static int alloyScrapWeight = 12;
   public static int metalScrapWeight = 40;
   public static int ironScrapWeight = 30;
   public static int copperScrapWeight = 25;
@@ -83,6 +84,7 @@ public class ScrapPileConfig extends Config {
   public static int capacitorScrapWeight = 8;
   public static int energyCellScrapWeight = 5;
   public static int crystalScrapWeight = 5;
+  public static int insulationScrapWeight = 18;
   public static int luminousScrapWeight = 3;
   public static int plasticScrapWeight = 25;
   public static int woodScrapWeight = 30;
@@ -125,6 +127,7 @@ public class ScrapPileConfig extends Config {
     fortuneEnabled = parseConfigValue(properties, "fortune_enabled", fortuneEnabled);
 
     // Parse loot weights
+    alloyScrapWeight = parseConfigValue(properties, "alloy_scrap_weight", alloyScrapWeight);
     metalScrapWeight = parseConfigValue(properties, "metal_scrap_weight", metalScrapWeight);
     ironScrapWeight = parseConfigValue(properties, "iron_scrap_weight", ironScrapWeight);
     copperScrapWeight = parseConfigValue(properties, "copper_scrap_weight", copperScrapWeight);
@@ -137,6 +140,8 @@ public class ScrapPileConfig extends Config {
     energyCellScrapWeight =
         parseConfigValue(properties, "energy_cell_scrap_weight", energyCellScrapWeight);
     crystalScrapWeight = parseConfigValue(properties, "crystal_scrap_weight", crystalScrapWeight);
+    insulationScrapWeight =
+        parseConfigValue(properties, "insulation_scrap_weight", insulationScrapWeight);
     luminousScrapWeight =
         parseConfigValue(properties, "luminous_scrap_weight", luminousScrapWeight);
     plasticScrapWeight = parseConfigValue(properties, "plastic_scrap_weight", plasticScrapWeight);

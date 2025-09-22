@@ -49,10 +49,8 @@ public class VanillaChestLootModifier extends LootModifier {
   @Override
   protected @NotNull ObjectArrayList<ItemStack> doApply(
       ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-    // Get the loot table ID from context
     ResourceLocation lootTableId = context.getQueriedLootTableId();
 
-    // Check if this loot table should be modified using common data
     if (VanillaChestLootData.shouldModifyLootTable(lootTableId)) {
       ResourceLocation injectionTable = VanillaChestLootData.getInjectionTable(lootTableId);
 
@@ -63,10 +61,8 @@ public class VanillaChestLootModifier extends LootModifier {
               level.getServer().getLootData().getLootTable(injectionTable);
 
           if (injectionLootTable != null) {
-            // Generate additional loot from injection table
             LootParams.Builder paramsBuilder = new LootParams.Builder(level);
 
-            // Copy relevant parameters from the original context if they exist
             if (context.hasParam(LootContextParams.ORIGIN)) {
               paramsBuilder.withParameter(
                   LootContextParams.ORIGIN, context.getParam(LootContextParams.ORIGIN));

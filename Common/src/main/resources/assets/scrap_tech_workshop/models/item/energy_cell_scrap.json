@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "scrap_tech_workshop:item/energy_cell_scrap"
+    "layer0": "scrap_tech_workshop:item/scrap/energy_cell_scrap"
   }
 }

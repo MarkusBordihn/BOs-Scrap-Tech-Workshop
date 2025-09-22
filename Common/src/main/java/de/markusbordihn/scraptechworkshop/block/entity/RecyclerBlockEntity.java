@@ -165,11 +165,9 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
     boolean hasChanged = false;
     RecyclerStatus newStatus = state.getValue(RecyclerBlock.STATUS);
 
-    // Check if we need to find a new recipe or if current recipe is no longer valid
     if (currentRecipe == null || !canProcessCurrentRecipe()) {
       currentRecipe = findRecipe();
 
-      // If no recipe found but we have input, eject it
       if (currentRecipe == null && !getInputStack().isEmpty()) {
         ejectInputItem(level, pos, state);
         noRecipeTimer = NO_RECIPE_COOLDOWN;

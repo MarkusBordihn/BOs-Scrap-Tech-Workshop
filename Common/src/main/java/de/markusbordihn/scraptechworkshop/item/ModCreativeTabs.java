@@ -40,6 +40,7 @@ public class ModCreativeTabs {
         .icon(() -> new ItemStack(ModItems.METAL_SCRAP.get()))
         .displayItems(
             (parameters, output) -> {
+              output.accept(ModItems.ALLOY_SCRAP.get());
               output.accept(ModItems.BIO_SCRAP.get());
               output.accept(ModItems.CERAMIC_SCRAP.get());
               output.accept(ModItems.COPPER_SCRAP.get());
@@ -48,6 +49,7 @@ public class ModCreativeTabs {
               output.accept(ModItems.FIBER_SCRAP.get());
               output.accept(ModItems.GLASS_SCRAP.get());
               output.accept(ModItems.GOLD_SCRAP.get());
+              output.accept(ModItems.INSULATION_SCRAP.get());
               output.accept(ModItems.IRON_SCRAP.get());
               output.accept(ModItems.LUMINOUS_SCRAP.get());
               output.accept(ModItems.METAL_SCRAP.get());
@@ -62,6 +64,14 @@ public class ModCreativeTabs {
               output.accept(ModItems.COIL_SCRAP.get());
               output.accept(ModItems.CAPACITOR_SCRAP.get());
               output.accept(ModItems.ENERGY_CELL_SCRAP.get());
+
+              // Component Items
+              output.accept(ModItems.ENERGY_CELL.get());
+              output.accept(ModItems.ENERGY_CELL_BLOCK.get());
+              output.accept(ModItems.CIRCUIT_BOARD.get());
+
+              // Tool Items
+              output.accept(ModItems.SCRAP_MULTITOOL.get());
 
               output.accept(ModBlockItems.RECYCLER_BLOCK_ITEM.get());
               output.accept(ModBlockItems.MIXED_SCRAP_PILE_BLOCK_ITEM.get());
