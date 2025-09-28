@@ -123,6 +123,13 @@ public class ForgeModItems {
   // Component Items
   public static final RegistryObject<Item> ENERGY_CELL =
       ITEMS.register(EnergyCellItem.ID, () -> ToolItemRegistry.ENERGY_CELL_ITEM);
+  public static final RegistryObject<Item> SLIGHTLY_DAMAGED_ENERGY_CELL =
+      ITEMS.register(
+          "slightly_damaged_energy_cell", () -> ToolItemRegistry.SLIGHTLY_DAMAGED_ENERGY_CELL_ITEM);
+  public static final RegistryObject<Item> DAMAGED_ENERGY_CELL =
+      ITEMS.register("damaged_energy_cell", () -> ToolItemRegistry.DAMAGED_ENERGY_CELL_ITEM);
+  public static final RegistryObject<Item> EMPTY_ENERGY_CELL =
+      ITEMS.register("empty_energy_cell", () -> ToolItemRegistry.EMPTY_ENERGY_CELL_ITEM);
   public static final RegistryObject<Item> ENERGY_CELL_BLOCK =
       ITEMS.register(EnergyCellBlockItem.ID, () -> ToolItemRegistry.ENERGY_CELL_BLOCK_ITEM);
   public static final RegistryObject<Item> CIRCUIT_BOARD =
@@ -173,6 +180,9 @@ public class ForgeModItems {
 
     // Component Items
     ModItems.ENERGY_CELL = ENERGY_CELL;
+    ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL = SLIGHTLY_DAMAGED_ENERGY_CELL;
+    ModItems.DAMAGED_ENERGY_CELL = DAMAGED_ENERGY_CELL;
+    ModItems.EMPTY_ENERGY_CELL = EMPTY_ENERGY_CELL;
     ModItems.ENERGY_CELL_BLOCK = ENERGY_CELL_BLOCK;
     ModItems.CIRCUIT_BOARD = CIRCUIT_BOARD;
   }

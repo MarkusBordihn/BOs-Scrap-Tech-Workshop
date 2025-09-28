@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.menu;
 
+import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
@@ -26,6 +27,7 @@ import de.markusbordihn.scraptechworkshop.menu.slots.DummySlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.RecyclerInputSlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.RecyclerOutputSlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.RecyclerUpgradeSlot;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -39,36 +41,33 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class RecyclerMenu extends AbstractContainerMenu {
 
   public static final int INPUT_SLOT_X = 26;
   public static final int INPUT_SLOT_Y = 35;
   public static final int SLOT_SPACING = 18;
-
   public static final int OUTPUT_GRID_START_X = 116;
   public static final int OUTPUT_GRID_START_Y = 17;
   public static final int OUTPUT_GRID_ROWS = 3;
   public static final int OUTPUT_GRID_COLUMNS = 3;
-
   public static final int UPGRADE_SLOT_START_X = 62;
   public static final int UPGRADE_SLOT_Y = 71;
-
   public static final int PLAYER_INVENTORY_START_X = 8;
-  public static final int PLAYER_INVENTORY_START_Y = 103;
+  public static final int PLAYER_INVENTORY_START_Y = 124;
   public static final int PLAYER_INVENTORY_ROWS = 3;
   public static final int PLAYER_INVENTORY_COLUMNS = 9;
-
   public static final int PLAYER_HOTBAR_START_X = 8;
-  public static final int PLAYER_HOTBAR_Y = 161;
+  public static final int PLAYER_HOTBAR_START_Y = 182;
   public static final int PLAYER_HOTBAR_SLOTS = 9;
-
   public static final int PROGRESS_ARROW_SIZE = 26;
-
   public static final int CONTAINER_DATA_SIZE = 2;
   public static final int PROGRESS_DATA_INDEX = 0;
   public static final int MAX_PROGRESS_DATA_INDEX = 1;
-
+  private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
+  private static final String LOG_PREFIX = "[RECYCLER]";
   // Note: MenuType will be registered by platform-specific code
   public static MenuType<RecyclerMenu> TYPE;
 
@@ -76,24 +75,35 @@ public class RecyclerMenu extends AbstractContainerMenu {
   private final Level level;
   private final ContainerData data;
   private final SimpleContainer dummyContainer;
+  private final BlockPos blockPos;
 
   public RecyclerMenu(int windowId, Inventory playerInventory, FriendlyByteBuf additionalData) {
     this(
         windowId,
         playerInventory,
-        additionalData != null
-            ? playerInventory.player.level().getBlockEntity(additionalData.readBlockPos())
-            : null,
+        getBlockEntityFromData(playerInventory, additionalData),
         new SimpleContainerData(CONTAINER_DATA_SIZE));
   }
 
   public RecyclerMenu(
       int windowId, Inventory playerInventory, BlockEntity entity, ContainerData data) {
     super(TYPE, windowId);
-    this.blockEntity = entity instanceof RecyclerBlockEntity recyclerEntity ? recyclerEntity : null;
     this.level = playerInventory.player.level();
     this.data = data != null ? data : new SimpleContainerData(CONTAINER_DATA_SIZE);
     this.dummyContainer = new SimpleContainer(RecyclerBlockEntity.TOTAL_SLOTS);
+
+    if (entity instanceof RecyclerBlockEntity recyclerEntity) {
+      this.blockEntity = recyclerEntity;
+      this.blockPos = recyclerEntity.getBlockPos();
+    } else {
+      log.error(
+          "{} Expected RecyclerBlockEntity but got {} at {}",
+          LOG_PREFIX,
+          entity,
+          entity != null ? entity.getBlockPos() : "NULL");
+      this.blockEntity = null;
+      this.blockPos = null;
+    }
 
     checkContainerSize(playerInventory, RecyclerBlockEntity.TOTAL_SLOTS);
     addRecyclerSlots();
@@ -102,10 +112,37 @@ public class RecyclerMenu extends AbstractContainerMenu {
     addDataSlots(this.data);
   }
 
+  private static BlockEntity getBlockEntityFromData(
+      Inventory playerInventory, FriendlyByteBuf additionalData) {
+    if (additionalData == null) {
+      log.error("{} additionalData is NULL", LOG_PREFIX);
+      return null;
+    }
+
+    try {
+      BlockPos pos = additionalData.readBlockPos();
+      Level level = playerInventory.player.level();
+      BlockEntity blockEntity = level.getBlockEntity(pos);
+
+      if (blockEntity == null) {
+        log.error("{} BlockEntity is NULL at {}", LOG_PREFIX, pos);
+        return null;
+      }
+
+      return blockEntity;
+
+    } catch (Exception e) {
+      log.error("{} Error reading BlockEntity from additionalData: {}", LOG_PREFIX, e.getMessage());
+      return null;
+    }
+  }
+
   private void addRecyclerSlots() {
-    if (blockEntity != null) {
+    RecyclerBlockEntity entityToUse = getValidBlockEntity();
+
+    if (entityToUse != null) {
       // Input slot
-      this.addSlot(new RecyclerInputSlot(blockEntity, 0, INPUT_SLOT_X, INPUT_SLOT_Y));
+      this.addSlot(new RecyclerInputSlot(entityToUse, 0, INPUT_SLOT_X, INPUT_SLOT_Y));
 
       // Output slots (3x3)
       int outputStartIndex = 1;
@@ -113,7 +150,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
         for (int col = 0; col < OUTPUT_GRID_COLUMNS; col++) {
           this.addSlot(
               new RecyclerOutputSlot(
-                  blockEntity,
+                  entityToUse,
                   outputStartIndex++,
                   OUTPUT_GRID_START_X + col * SLOT_SPACING,
                   OUTPUT_GRID_START_Y + row * SLOT_SPACING));
@@ -121,16 +158,34 @@ public class RecyclerMenu extends AbstractContainerMenu {
       }
 
       // Upgrade slots
-      this.addSlot(new RecyclerUpgradeSlot(blockEntity, 10, UPGRADE_SLOT_START_X, UPGRADE_SLOT_Y));
+      this.addSlot(new RecyclerUpgradeSlot(entityToUse, 10, UPGRADE_SLOT_START_X, UPGRADE_SLOT_Y));
       this.addSlot(
           new RecyclerUpgradeSlot(
-              blockEntity, 11, UPGRADE_SLOT_START_X + SLOT_SPACING, UPGRADE_SLOT_Y));
+              entityToUse, 11, UPGRADE_SLOT_START_X + SLOT_SPACING, UPGRADE_SLOT_Y));
     } else {
       // Add dummy slots if no block entity
       for (int i = 0; i < RecyclerBlockEntity.TOTAL_SLOTS; i++) {
         this.addSlot(new DummySlot(dummyContainer, i, -1000, -1000));
       }
     }
+  }
+
+  private RecyclerBlockEntity getValidBlockEntity() {
+    // First try the stored blockEntity
+    if (blockEntity != null) {
+      return blockEntity;
+    }
+
+    // If not available and we have a position, try to look it up again (for client-side delay)
+    if (blockPos != null && level != null) {
+      BlockEntity entity = level.getBlockEntity(blockPos);
+      if (entity instanceof RecyclerBlockEntity recyclerEntity) {
+        log.debug("{} Resolved BlockEntity on delayed lookup", LOG_PREFIX);
+        return recyclerEntity;
+      }
+    }
+
+    return null;
   }
 
   private void addPlayerInventory(Inventory playerInventory) {
@@ -141,7 +196,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
                 playerInventory,
                 col + row * PLAYER_INVENTORY_COLUMNS + 9,
                 PLAYER_INVENTORY_START_X + col * SLOT_SPACING,
-                124 + row * SLOT_SPACING));
+                PLAYER_INVENTORY_START_Y + row * SLOT_SPACING));
       }
     }
   }
@@ -153,7 +208,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
               playerInventory,
               col,
               PLAYER_HOTBAR_START_X + col * SLOT_SPACING,
-              182));
+              PLAYER_HOTBAR_START_Y));
     }
   }
 
@@ -213,7 +268,6 @@ public class RecyclerMenu extends AbstractContainerMenu {
           }
         }
       } else {
-        // Simplified behavior when no valid blockEntity is available
         // Only allow movement between player inventory and hotbar
         if (index < playerInventoryEnd) {
           // Moving from player inventory to hotbar

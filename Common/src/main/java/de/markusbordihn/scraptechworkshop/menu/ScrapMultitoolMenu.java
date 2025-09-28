@@ -20,7 +20,7 @@
 package de.markusbordihn.scraptechworkshop.menu;
 
 import de.markusbordihn.scraptechworkshop.data.ScrapMultitoolData;
-import de.markusbordihn.scraptechworkshop.item.ModItems;
+import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
 import de.markusbordihn.scraptechworkshop.menu.slots.MultitoolBatterySlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.MultitoolModuleSlot;
@@ -183,15 +183,7 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
               currentData.toolPriority());
 
       multitool.setData(multitoolStack, newData);
-
-      // Check for battery and charge if present
-      ItemStack battery = toolContainer.getItem(0);
-      if (!battery.isEmpty() && battery.getItem() == ModItems.ENERGY_CELL_SCRAP.get()) {
-        // Add energy from battery
-        int energyToAdd = 1000; // Energy per battery
-        multitool.addEnergy(multitoolStack, energyToAdd);
-        battery.shrink(1);
-      }
+      multitool.syncEnergyFromBattery(multitoolStack);
     }
   }
 
@@ -214,10 +206,9 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
         }
       } else if (index < playerInventoryEnd) {
         // Moving from player inventory
-        if (slotStack.getItem() == ModItems.ENERGY_CELL_SCRAP.get()) {
+        if (slotStack.getItem() instanceof EnergyCellItem) {
           // Try to move battery to battery slot
           if (!this.moveItemStackTo(slotStack, 0, 1, false)) {
-            // If failed, try hotbar
             if (!this.moveItemStackTo(slotStack, playerInventoryEnd, playerHotbarEnd, false)) {
               return ItemStack.EMPTY;
             }
@@ -225,7 +216,6 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
         } else if (isValidModule(slotStack)) {
           // Try to move module to module slots
           if (!this.moveItemStackTo(slotStack, 1, TOTAL_TOOL_SLOTS, false)) {
-            // If failed, try hotbar
             if (!this.moveItemStackTo(slotStack, playerInventoryEnd, playerHotbarEnd, false)) {
               return ItemStack.EMPTY;
             }
@@ -238,10 +228,9 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
         }
       } else if (index < playerHotbarEnd) {
         // Moving from player hotbar
-        if (slotStack.getItem() == ModItems.ENERGY_CELL_SCRAP.get()) {
+        if (slotStack.getItem() instanceof EnergyCellItem) {
           // Try to move battery to battery slot
           if (!this.moveItemStackTo(slotStack, 0, 1, false)) {
-            // If failed, try inventory
             if (!this.moveItemStackTo(slotStack, TOTAL_TOOL_SLOTS, playerInventoryEnd, false)) {
               return ItemStack.EMPTY;
             }
@@ -249,7 +238,6 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
         } else if (isValidModule(slotStack)) {
           // Try to move module to module slots
           if (!this.moveItemStackTo(slotStack, 1, TOTAL_TOOL_SLOTS, false)) {
-            // If failed, try inventory
             if (!this.moveItemStackTo(slotStack, TOTAL_TOOL_SLOTS, playerInventoryEnd, false)) {
               return ItemStack.EMPTY;
             }
@@ -273,7 +261,6 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
   }
 
   private boolean isValidModule(ItemStack stack) {
-    // Add module validation logic here
     return stack.getItem().toString().contains("module")
         || stack.getItem().toString().contains("upgrade");
   }

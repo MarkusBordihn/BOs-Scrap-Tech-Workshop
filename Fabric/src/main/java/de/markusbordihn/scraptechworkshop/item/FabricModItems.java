@@ -120,6 +120,14 @@ public class FabricModItems {
 
     // Component Items
     ModItems.ENERGY_CELL = registerItem(EnergyCellItem.ID, () -> ToolItemRegistry.ENERGY_CELL_ITEM);
+    ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL =
+        registerItem(
+            "slightly_damaged_energy_cell",
+            () -> ToolItemRegistry.SLIGHTLY_DAMAGED_ENERGY_CELL_ITEM);
+    ModItems.DAMAGED_ENERGY_CELL =
+        registerItem("damaged_energy_cell", () -> ToolItemRegistry.DAMAGED_ENERGY_CELL_ITEM);
+    ModItems.EMPTY_ENERGY_CELL =
+        registerItem("empty_energy_cell", () -> ToolItemRegistry.EMPTY_ENERGY_CELL_ITEM);
     ModItems.ENERGY_CELL_BLOCK =
         registerItem(EnergyCellBlockItem.ID, () -> ToolItemRegistry.ENERGY_CELL_BLOCK_ITEM);
     ModItems.CIRCUIT_BOARD =

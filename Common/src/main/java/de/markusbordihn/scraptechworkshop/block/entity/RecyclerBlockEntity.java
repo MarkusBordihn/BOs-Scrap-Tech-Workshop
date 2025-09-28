@@ -225,7 +225,15 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
       return null;
     }
 
-    return RecyclerRecipeSelector.selectBestRecipe(level, getInputStack()).orElse(null);
+    ItemStack inputStack = getInputStack();
+    RecyclerRecipe recipe = RecyclerRecipeSelector.selectBestRecipe(level, inputStack).orElse(null);
+    if (recipe == null) {
+      log.debug(
+          "No recycler recipe found for item: {} ({})",
+          inputStack.getItem(),
+          inputStack.getItem().getDescriptionId());
+    }
+    return recipe;
   }
 
   private boolean canProcessCurrentRecipe() {
@@ -452,6 +460,15 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
   @Override
   public boolean stillValid(Player player) {
     return Container.stillValidBlockEntity(this, player);
+  }
+
+  @Override
+  public boolean canPlaceItem(int slot, ItemStack itemStack) {
+    if (slot == INPUT_SLOT) {
+      return true;
+    }
+    // Output and upgrade slots cannot be filled manually through GUI
+    return false;
   }
 
   @Override

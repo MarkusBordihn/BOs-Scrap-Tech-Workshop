@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SRS",
+    "RCR",
+    "SRS"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "S": {
+      "item": "scrap_tech_workshop:slightly_damaged_energy_cell"
+    },
+    "C": {
+      "tag": "scrap_tech_workshop:scrap/tech/circuit"
+    }
+  },
+  "result": {
+    "item": "scrap_tech_workshop:scrap_multitool",
+    "nbt": "{CustomModelData:3}"
+  }
+}

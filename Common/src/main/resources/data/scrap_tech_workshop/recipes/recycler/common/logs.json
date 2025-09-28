@@ -1,18 +1,20 @@
 {
   "type": "scrap_tech_workshop:recycler",
   "match": {
-    "tag": "minecraft:wool"
+    "tag": "minecraft:logs"
   },
   "primary_output": {
-    "item": "scrap_tech_workshop:fiber_scrap",
-    "min": 1,
-    "max": 4
+    "item": "minecraft:stick",
+    "min": 3,
+    "max": 5
   },
   "byproducts": [
     {
       "item": "scrap_tech_workshop:wood_scrap",
-      "chance": 0.10
+      "chance": 0.4,
+      "min": 1,
+      "max": 2
     }
   ],
-  "process_time": 160
+  "process_time": 180
 }

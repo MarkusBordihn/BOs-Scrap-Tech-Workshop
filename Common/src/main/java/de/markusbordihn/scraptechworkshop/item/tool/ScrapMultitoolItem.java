@@ -21,6 +21,8 @@ package de.markusbordihn.scraptechworkshop.item.tool;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.data.ScrapMultitoolData;
+import de.markusbordihn.scraptechworkshop.item.ModItems;
+import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.menu.ScrapMultitoolMenu;
 import de.markusbordihn.scraptechworkshop.menu.ScrapMultitoolMenuProvider;
 import java.util.List;
@@ -57,7 +59,6 @@ public class ScrapMultitoolItem extends DiggerItem {
   public static final int ENERGY_PER_USE = 1;
   public static final int ENERGY_PER_BLOCK = 2;
   public static final int ENERGY_PER_ATTACK = 5;
-
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   public ScrapMultitoolItem(Properties properties) {
@@ -67,6 +68,35 @@ public class ScrapMultitoolItem extends DiggerItem {
         Tiers.IRON,
         BlockTags.MINEABLE_WITH_PICKAXE,
         properties.durability(ENERGY_MAX).rarity(Rarity.RARE));
+  }
+
+  public static ItemStack createWithBattery() {
+    ItemStack battery = new ItemStack(ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL.get());
+    if (battery.getItem() instanceof EnergyCellItem energyCell) {
+      energyCell.setEnergy(battery, EnergyCellItem.ENERGY_MAX / 2);
+    }
+
+    ItemStack multitool = new ItemStack(ModItems.SCRAP_MULTITOOL.get());
+    ScrapMultitoolData data = ScrapMultitoolData.createDefault().withBattery(battery);
+    ((ScrapMultitoolItem) multitool.getItem()).setData(multitool, data);
+    ((ScrapMultitoolItem) multitool.getItem()).syncEnergyFromBattery(multitool);
+
+    return multitool;
+  }
+
+  @Override
+  public void onCraftedBy(ItemStack itemStack, Level level, Player player) {
+    super.onCraftedBy(itemStack, level, player);
+
+    ScrapMultitoolData data = getData(itemStack);
+    if (!data.hasBattery()) {
+      ItemStack battery = new ItemStack(ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL.get());
+      if (battery.getItem() instanceof EnergyCellItem energyCell) {
+        energyCell.setEnergy(battery, EnergyCellItem.ENERGY_MAX / 2);
+      }
+      setData(itemStack, data.withBattery(battery));
+      syncEnergyFromBattery(itemStack);
+    }
   }
 
   @Override
@@ -160,11 +190,103 @@ public class ScrapMultitoolItem extends DiggerItem {
     return ENERGY_MAX - itemStack.getDamageValue();
   }
 
+  public float getEnergyPercentage(ItemStack itemStack) {
+    int energy = getEnergy(itemStack);
+    // If energy is 1 (minimum to prevent breaking), show as 0%
+    if (energy <= 1) {
+      return 0.0f;
+    }
+    return (float) energy / ENERGY_MAX;
+  }
+
+  public int getDisplayEnergy(ItemStack itemStack) {
+    float percentage = getEnergyPercentage(itemStack);
+    return Math.round(percentage * 100);
+  }
+
+  public int getTotalEnergy(ItemStack itemStack) {
+    int toolEnergy = getEnergy(itemStack);
+    ScrapMultitoolData data = getData(itemStack);
+
+    if (data.hasBattery()) {
+      ItemStack battery = data.battery();
+      if (battery.getItem() instanceof EnergyCellItem batteryItem) {
+        return toolEnergy + batteryItem.getEnergy(battery);
+      }
+    }
+    return toolEnergy;
+  }
+
+  public void syncEnergyFromBattery(ItemStack itemStack) {
+    ScrapMultitoolData data = getData(itemStack);
+    if (data.hasBattery()) {
+      ItemStack battery = data.battery();
+      if (battery.getItem() instanceof EnergyCellItem batteryItem) {
+        float batteryPercentage = batteryItem.getEnergyPercentage(battery);
+        int newEnergy = Math.round(ENERGY_MAX * batteryPercentage);
+        setEnergy(itemStack, newEnergy);
+      }
+    } else {
+      // Reset energy if no battery is installed
+      setEnergy(itemStack, 1);
+    }
+    // Always update the display model after syncing
+    updateDisplayModel(itemStack, data);
+  }
+
+  public BatteryLevel getBatteryLevel(ItemStack itemStack) {
+    ScrapMultitoolData data = getData(itemStack);
+    if (!data.hasBattery()) {
+      return BatteryLevel.BATTERY_LEVEL_0;
+    }
+
+    ItemStack battery = data.battery();
+    if (battery.getItem() instanceof EnergyCellItem batteryItem) {
+      float percentage = batteryItem.getEnergyPercentage(battery);
+      if (percentage >= 1.0f) return BatteryLevel.BATTERY_LEVEL_100;
+      if (percentage >= 0.75f) return BatteryLevel.BATTERY_LEVEL_75;
+      if (percentage >= 0.5f) return BatteryLevel.BATTERY_LEVEL_50;
+      if (percentage >= 0.25f) return BatteryLevel.BATTERY_LEVEL_25;
+    }
+    return BatteryLevel.BATTERY_LEVEL_0;
+  }
+
   public void setEnergy(ItemStack itemStack, int energy) {
     itemStack.setDamageValue(ENERGY_MAX - Math.max(1, Math.min(energy, ENERGY_MAX)));
   }
 
   public void consumeEnergy(ItemStack itemStack, int amount) {
+    ScrapMultitoolData data = getData(itemStack);
+
+    // If we have a battery, consume energy from it first
+    if (data.hasBattery()) {
+      ItemStack battery = data.battery();
+      if (battery.getItem() instanceof EnergyCellItem batteryItem) {
+        int batteryEnergy = batteryItem.getEnergy(battery);
+
+        if (batteryEnergy > amount) {
+          // Battery has enough energy, consume from it
+          batteryItem.consumeEnergy(battery, amount);
+          syncEnergyFromBattery(itemStack);
+          return;
+        } else {
+          // Battery doesn't have enough energy, replace with empty battery
+          ItemStack emptyBattery = batteryItem.createEmptyBattery();
+          ScrapMultitoolData newData =
+              new ScrapMultitoolData(
+                  emptyBattery,
+                  data.modules(),
+                  data.hologramColor(),
+                  data.hudEnabled(),
+                  data.toolPriority());
+          setData(itemStack, newData);
+          syncEnergyFromBattery(itemStack);
+          return;
+        }
+      }
+    }
+
+    // Fallback: consume energy from tool itself
     int currentEnergy = getEnergy(itemStack);
     setEnergy(itemStack, Math.max(1, currentEnergy - amount));
   }
@@ -206,6 +328,22 @@ public class ScrapMultitoolItem extends DiggerItem {
   public void setData(ItemStack itemStack, ScrapMultitoolData data) {
     CompoundTag tag = itemStack.getOrCreateTag();
     tag.put("MultitoolData", data.toNBT());
+    updateDisplayModel(itemStack, data);
+  }
+
+  private void updateDisplayModel(ItemStack itemStack, ScrapMultitoolData data) {
+    BatteryLevel level = getBatteryLevel(itemStack);
+    int customModelData =
+        switch (level) {
+          case BATTERY_LEVEL_0 -> 1;
+          case BATTERY_LEVEL_25 -> 2;
+          case BATTERY_LEVEL_50 -> 3;
+          case BATTERY_LEVEL_75 -> 4;
+          case BATTERY_LEVEL_100 -> 5;
+        };
+
+    CompoundTag tag = itemStack.getOrCreateTag();
+    tag.putInt("CustomModelData", customModelData);
   }
 
   private void openMultitoolScreen(Player player, ItemStack stack, InteractionHand hand) {
@@ -258,7 +396,7 @@ public class ScrapMultitoolItem extends DiggerItem {
 
   @Override
   public int getBarColor(ItemStack itemStack) {
-    float energyRatio = (float) getEnergy(itemStack) / ENERGY_MAX;
+    float energyRatio = getEnergyPercentage(itemStack);
     return energyRatio > 0.6f ? 0x00FF00 : energyRatio > 0.3f ? 0xFFFF00 : 0xFF0000;
   }
 
@@ -268,9 +406,9 @@ public class ScrapMultitoolItem extends DiggerItem {
     tooltipComponents.add(
         Component.translatable(Constants.ITEM_PREFIX + "scrap_multitool.description"));
 
-    int energy = getEnergy(itemStack);
+    int displayEnergy = getDisplayEnergy(itemStack);
     tooltipComponents.add(
-        Component.literal("Energy: " + energy + "/" + ENERGY_MAX)
+        Component.literal("Energy: " + displayEnergy + "%")
             .withStyle(style -> style.withColor(getBarColor(itemStack))));
 
     ScrapMultitoolData data = getData(itemStack);
@@ -302,5 +440,23 @@ public class ScrapMultitoolItem extends DiggerItem {
     AXE,
     SHOVEL,
     SWORD
+  }
+
+  public enum BatteryLevel {
+    BATTERY_LEVEL_0(0.0f),
+    BATTERY_LEVEL_25(0.25f),
+    BATTERY_LEVEL_50(0.5f),
+    BATTERY_LEVEL_75(0.75f),
+    BATTERY_LEVEL_100(1.0f);
+
+    private final float percentage;
+
+    BatteryLevel(float percentage) {
+      this.percentage = percentage;
+    }
+
+    public float getPercentage() {
+      return percentage;
+    }
   }
 }

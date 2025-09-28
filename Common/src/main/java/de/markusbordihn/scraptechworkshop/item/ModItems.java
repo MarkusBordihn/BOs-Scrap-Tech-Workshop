@@ -58,6 +58,9 @@ public class ModItems {
 
   // Component Items
   public static Supplier<Item> ENERGY_CELL;
+  public static Supplier<Item> SLIGHTLY_DAMAGED_ENERGY_CELL;
+  public static Supplier<Item> DAMAGED_ENERGY_CELL;
+  public static Supplier<Item> EMPTY_ENERGY_CELL;
   public static Supplier<Item> ENERGY_CELL_BLOCK;
   public static Supplier<Item> CIRCUIT_BOARD;
 

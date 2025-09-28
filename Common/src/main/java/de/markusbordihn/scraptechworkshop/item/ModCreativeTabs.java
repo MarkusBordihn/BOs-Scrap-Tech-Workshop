@@ -66,7 +66,10 @@ public class ModCreativeTabs {
               output.accept(ModItems.ENERGY_CELL_SCRAP.get());
 
               // Component Items
-              output.accept(ModItems.ENERGY_CELL.get());
+              output.accept(ModItems.ENERGY_CELL.get().getDefaultInstance());
+              output.accept(ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL.get().getDefaultInstance());
+              output.accept(ModItems.DAMAGED_ENERGY_CELL.get().getDefaultInstance());
+              output.accept(ModItems.EMPTY_ENERGY_CELL.get());
               output.accept(ModItems.ENERGY_CELL_BLOCK.get());
               output.accept(ModItems.CIRCUIT_BOARD.get());
 

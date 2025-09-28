@@ -24,9 +24,11 @@ import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -128,7 +130,6 @@ public class RecyclerBlock extends BaseEntityBlock {
   private void openRecyclerMenu(Player player, RecyclerBlockEntity recyclerBlockEntity) {
     if (Constants.IS_FABRIC) {
       try {
-        // First try BlockBaseScreenHandler, then fall back to BaseScreenHandler if not found
         Class<?> fabricFactoryClass;
         try {
           fabricFactoryClass =
@@ -140,12 +141,48 @@ public class RecyclerBlock extends BaseEntityBlock {
         }
 
         Object fabricFactory =
-            fabricFactoryClass
-                .getConstructor(net.minecraft.world.level.block.entity.BlockEntity.class)
-                .newInstance(recyclerBlockEntity);
-        player.openMenu((net.minecraft.world.MenuProvider) fabricFactory);
+            fabricFactoryClass.getConstructor(BlockEntity.class).newInstance(recyclerBlockEntity);
+        player.openMenu((MenuProvider) fabricFactory);
       } catch (Exception e) {
         log.error("Failed to open Recycler menu on Fabric: {}", e.getMessage());
+        player.openMenu(recyclerBlockEntity);
+      }
+    } else if (Constants.IS_FORGE) {
+      try {
+        Class<?> forgeMenuProviderClass =
+            Class.forName(
+                "de.markusbordihn.scraptechworkshop.block.entity.ForgeRecyclerMenuProvider");
+        Object menuProvider =
+            forgeMenuProviderClass
+                .getConstructor(RecyclerBlockEntity.class)
+                .newInstance(recyclerBlockEntity);
+
+        // Try openGui method (newer Forge versions)
+        Class<?> networkHooksClass = Class.forName("net.minecraftforge.network.NetworkHooks");
+        try {
+          java.lang.reflect.Method openGuiMethod =
+              networkHooksClass.getMethod(
+                  "openGui", ServerPlayer.class, MenuProvider.class, BlockPos.class);
+
+          if (player instanceof ServerPlayer serverPlayer) {
+            openGuiMethod.invoke(
+                null, serverPlayer, menuProvider, recyclerBlockEntity.getBlockPos());
+          }
+        } catch (NoSuchMethodException e1) {
+          // Fallback to openScreen method
+          java.lang.reflect.Method openScreenMethod =
+              networkHooksClass.getMethod(
+                  "openScreen", ServerPlayer.class, MenuProvider.class, BlockPos.class);
+
+          if (player instanceof ServerPlayer serverPlayer) {
+            openScreenMethod.invoke(
+                null, serverPlayer, menuProvider, recyclerBlockEntity.getBlockPos());
+          }
+        }
+      } catch (Exception e) {
+        log.error(
+            "[RECYCLER] Failed to use Forge NetworkHooks, falling back to standard: {}",
+            e.getMessage());
         player.openMenu(recyclerBlockEntity);
       }
     } else {

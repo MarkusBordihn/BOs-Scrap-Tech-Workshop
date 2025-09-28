@@ -20,6 +20,7 @@
 package de.markusbordihn.scraptechworkshop.registry.item.tools;
 
 import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;
+import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
@@ -33,6 +34,12 @@ public class ToolItemRegistry {
 
   // Component Items
   public static final EnergyCellItem ENERGY_CELL_ITEM = new EnergyCellItem(new Item.Properties());
+  public static final EnergyCellItem SLIGHTLY_DAMAGED_ENERGY_CELL_ITEM =
+      new EnergyCellItem(new Item.Properties(), 3750);
+  public static final EnergyCellItem DAMAGED_ENERGY_CELL_ITEM =
+      new EnergyCellItem(new Item.Properties(), 2500);
+  public static final EmptyEnergyCellItem EMPTY_ENERGY_CELL_ITEM =
+      new EmptyEnergyCellItem(new Item.Properties());
   public static final EnergyCellBlockItem ENERGY_CELL_BLOCK_ITEM =
       new EnergyCellBlockItem(new Item.Properties());
   public static final CircuitBoardItem CIRCUIT_BOARD_ITEM =

@@ -24,12 +24,13 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class RecyclerInputSlot extends Slot {
+
   public RecyclerInputSlot(RecyclerBlockEntity blockEntity, int slot, int x, int y) {
     super(blockEntity, slot, x, y);
   }
 
   @Override
   public boolean mayPlace(ItemStack stack) {
-    return container.canPlaceItem(this.index, stack);
+    return !stack.isEmpty();
   }
 }
