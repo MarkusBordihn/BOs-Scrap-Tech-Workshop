@@ -17,22 +17,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.client.renderer;
+package de.markusbordihn.scraptechworkshop.data.multitool;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+public enum ToolMode {
+  DEFAULT("default", 0), // Battery level will be used for model data
+  PICKAXE("pickaxe", 7),
+  AXE("axe", 6),
+  SHOVEL("shovel", 8),
+  HOE("hoe", 9),
+  SWORD("sword", 10),
+  NONE("none", 0);
 
-public class ClientRenderers {
+  private final String id;
+  private final int modelData;
 
-  private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
-
-  private ClientRenderers() {
-    // Utility class
+  ToolMode(String id, int modelData) {
+    this.id = id;
+    this.modelData = modelData;
   }
 
-  public static void registerRenderers() {
-    log.info("{} Client Renderers ...", Constants.LOG_REGISTER_PREFIX);
-    // Platform-specific registration is handled in the respective modules
+  public static ToolMode fromId(String id) {
+    for (ToolMode mode : values()) {
+      if (mode.id.equals(id)) {
+        return mode;
+      }
+    }
+    return DEFAULT;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  public int getModelData() {
+    return modelData;
+  }
+
+  public boolean isToolMode() {
+    return this != DEFAULT && this != NONE;
   }
 }

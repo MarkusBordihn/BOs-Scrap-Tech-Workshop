@@ -33,6 +33,7 @@ public final class Constants {
   public static final String LOG_REGISTER_PREFIX = "Register " + MOD_NAME;
 
   public static final String COMPONENT_TYPE_PREFIX = "component_type." + MOD_ID + ".";
+  public static final String GUI_PREFIX = "gui." + MOD_ID + ".";
   public static final String ITEM_PREFIX = "item." + MOD_ID + ".";
   public static final String SCRAP_CATEGORY_PREFIX = "scrap_category." + MOD_ID + ".";
   public static final String TEXT_PREFIX = "text." + MOD_ID + ".";

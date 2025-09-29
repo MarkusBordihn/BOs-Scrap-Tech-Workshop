@@ -7,9 +7,34 @@
     "particle": "scrap_tech_workshop:item/tool/scrap_multitool/coat_default",
     "coat": "scrap_tech_workshop:item/tool/scrap_multitool/coat_default",
     "holder": "scrap_tech_workshop:item/tool/scrap_multitool/holder_default",
-    "display": "scrap_tech_workshop:item/tool/scrap_multitool/display/display_default"
+    "display": "scrap_tech_workshop:item/tool/scrap_multitool/display/display_default",
+    "hologram_rod": "scrap_tech_workshop:item/tool/scrap_multitool/hologram/rod/hologram_rod_axt",
+    "hologram_symbol": "scrap_tech_workshop:item/tool/scrap_multitool/hologram/symbol/hologram_symbol_axt"
   },
   "elements": [
+    {
+      "name": "hologram_symbol",
+      "from": [8, 11.25, 4],
+      "to": [8, 19.25, 12],
+      "rotation": {"angle": 0, "axis": "y", "origin": [7, 11.25, 7]},
+      "faces": {
+        "east": {"uv": [0, 0, 16, 16], "texture": "#hologram_symbol"},
+        "west": {"uv": [16, 0, 0, 16], "texture": "#hologram_symbol"}
+      }
+    },
+    {
+      "name": "hologram_rod",
+      "from": [7.65, 11.25, 7.65],
+      "to": [8.35, 21.9, 8.35],
+      "rotation": {"angle": 45, "axis": "y", "origin": [8, 15.25, 8]},
+      "faces": {
+        "north": {"uv": [0, 0, 1, 16], "texture": "#hologram_rod"},
+        "east": {"uv": [3, 0, 4, 16], "texture": "#hologram_rod"},
+        "south": {"uv": [2, 0, 3, 16], "texture": "#hologram_rod"},
+        "west": {"uv": [1, 0, 2, 16], "texture": "#hologram_rod"},
+        "up": {"uv": [5, 1, 4, 0], "texture": "#hologram_rod"}
+      }
+    },
     {
       "name": "octagon",
       "from": [7.74112, 0.001, 7.375],
@@ -190,7 +215,7 @@
       "to": [8.75, 8.95, 6.875],
       "rotation": {"angle": 0, "axis": "y", "origin": [7, 6.95, 6.875]},
       "faces": {
-        "north": {"uv": [0, 0, 12, 14], "texture": "#display"},
+        "north": {"uv": [0, 0, 14, 16], "texture": "#display"},
         "east": {"uv": [7.5, 5, 9, 12], "texture": "#holder"},
         "south": {"uv": [6, 12, 9, 15.5], "texture": "#holder"},
         "west": {"uv": [6, 5, 7.5, 12], "texture": "#holder"},
@@ -211,13 +236,13 @@
       "scale": [0.6, 0.6, 0.6]
     },
     "firstperson_righthand": {
-      "rotation": [-22, 143, -25],
-      "translation": [1.13, 3.2, 1.13],
+      "rotation": [-25, 175, -25],
+      "translation": [1.25, 3.5, 1.25],
       "scale": [0.7, 0.7, 0.7]
     },
     "firstperson_lefthand": {
-      "rotation": [-29, 138, -23],
-      "translation": [1.13, 3.2, 1.13],
+      "rotation": [-25, 175, -23],
+      "translation": [1.25, 3.5, 1.13],
       "scale": [0.7, 0.7, 0.7]
     },
     "ground": {
@@ -225,9 +250,9 @@
       "scale": [0.6, 0.6, 0.6]
     },
     "gui": {
-      "rotation": [0, -180, 25],
-      "translation": [1, 2, 0],
-      "scale": [1.3, 1.3, 1.3]
+      "rotation": [0, -175, 45],
+      "translation": [2.5, 2.5, 0],
+      "scale": [1.6, 1.6, 1.6]
     },
     "head": {
       "translation": [0, 13, 0]

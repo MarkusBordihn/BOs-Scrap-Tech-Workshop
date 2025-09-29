@@ -1,0 +1,13 @@
+{
+  "format_version": "1.9.0",
+  "parent": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool",
+  "textures": {
+    "base": "scrap_tech_workshop:item/tool/scrap_multitool/base_default",
+    "particle": "scrap_tech_workshop:item/tool/scrap_multitool/coat_default",
+    "coat": "scrap_tech_workshop:item/tool/scrap_multitool/coat_default",
+    "holder": "scrap_tech_workshop:item/tool/scrap_multitool/holder_default",
+    "display": "scrap_tech_workshop:item/tool/scrap_multitool/display/tool/display_tool_axt",
+    "hologram_rod": "scrap_tech_workshop:item/tool/scrap_multitool/hologram/rod/hologram_rod_axt",
+    "hologram_symbol": "scrap_tech_workshop:item/tool/scrap_multitool/hologram/symbol/hologram_symbol_axt"
+  }
+}

@@ -37,7 +37,6 @@ import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
-import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;
 import java.util.function.Supplier;
@@ -116,7 +115,7 @@ public class FabricModItems {
 
     // Tool Items
     ModItems.SCRAP_MULTITOOL =
-        registerItem(ScrapMultitoolItem.ID, () -> ToolItemRegistry.SCRAP_MULTITOOL_ITEM);
+        registerItem("scrap_multitool", () -> ToolItemRegistry.SCRAP_MULTITOOL_ITEM);
 
     // Component Items
     ModItems.ENERGY_CELL = registerItem(EnergyCellItem.ID, () -> ToolItemRegistry.ENERGY_CELL_ITEM);

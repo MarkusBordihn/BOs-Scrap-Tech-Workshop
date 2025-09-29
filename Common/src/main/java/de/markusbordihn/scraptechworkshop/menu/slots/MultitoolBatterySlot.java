@@ -36,6 +36,22 @@ public class MultitoolBatterySlot extends Slot {
   }
 
   @Override
+  public void setByPlayer(ItemStack itemStack) {
+    super.setByPlayer(itemStack);
+  }
+
+  @Override
+  public ItemStack remove(int amount) {
+    ItemStack result = super.remove(amount);
+    return result;
+  }
+
+  @Override
+  public void setChanged() {
+    super.setChanged();
+  }
+
+  @Override
   public int getMaxStackSize() {
     return 1;
   }

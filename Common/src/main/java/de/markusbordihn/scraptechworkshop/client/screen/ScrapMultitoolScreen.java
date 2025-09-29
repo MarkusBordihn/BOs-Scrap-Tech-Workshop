@@ -22,38 +22,46 @@ package de.markusbordihn.scraptechworkshop.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
 import de.markusbordihn.scraptechworkshop.menu.ScrapMultitoolMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class ScrapMultitoolScreen extends BaseContainerScreen<ScrapMultitoolMenu> {
 
+  @SuppressWarnings("deprecation")
   private static final ResourceLocation CUSTOM_ELEMENTS_TEXTURE =
       new ResourceLocation(Constants.MOD_ID, "textures/gui/scrap_multitool_elements.png");
 
-  private static final int SCREEN_WIDTH = 176;
-  private static final int SCREEN_HEIGHT = 220; // Reduced from 266 to better fit
+  private static final String TRANSLATION_KEY_PREFIX = Constants.GUI_PREFIX + "scrap_multitool.";
 
-  private static final int TOOL_RENDER_X = 12;
-  private static final int TOOL_RENDER_Y = 12;
-  private static final float TOOL_RENDER_SCALE = 3.5f;
+  private static final String TRANSLATION_BATTERY_SLOT = TRANSLATION_KEY_PREFIX + "battery_slot";
+  private static final String TRANSLATION_MODULE_SLOTS = TRANSLATION_KEY_PREFIX + "module_slots";
+
+  private static final int SCREEN_WIDTH = 176;
+  private static final int SCREEN_HEIGHT = 220;
+
+  private static final int TOOL_RENDER_X = 10;
+  private static final int TOOL_RENDER_Y = 30;
+  private static final float TOOL_RENDER_SCALE = 4.0f;
 
   private static final int ENERGY_BAR_X = 152;
-  private static final int ENERGY_BAR_Y = 8;
+  private static final int ENERGY_BAR_Y = 20;
   private static final int ENERGY_BAR_WIDTH = 16;
   private static final int ENERGY_BAR_HEIGHT = 68;
 
-  private static final int BATTERY_SLOT_X = 100; // Moved right
+  private static final int BATTERY_SLOT_X = 100;
   private static final int BATTERY_SLOT_Y = 20;
 
-  private static final int MODULE_SLOTS_X1 = 64; // Moved right
-  private static final int MODULE_SLOTS_X2 = 136; // Moved right
+  private static final int MODULE_SLOTS_X1 = 64;
+  private static final int MODULE_SLOTS_X2 = 136;
   private static final int MODULE_SLOTS_Y = 50;
 
   private ItemRenderer itemRenderer;
@@ -93,10 +101,11 @@ public class ScrapMultitoolScreen extends BaseContainerScreen<ScrapMultitoolMenu
     }
 
     // Player inventory moved down appropriately
-    renderPlayerInventoryAt(guiGraphics, x, y, 137, 195); // Adjusted positions
+    renderPlayerInventoryAt(guiGraphics, x, y, 137, 195);
+
+    render3DMultitool(guiGraphics, x, y);
 
     renderEnergyBar(guiGraphics, x, y);
-    render3DMultitool(guiGraphics, x, y);
   }
 
   private void render3DMultitool(GuiGraphics guiGraphics, int x, int y) {
@@ -108,15 +117,15 @@ public class ScrapMultitoolScreen extends BaseContainerScreen<ScrapMultitoolMenu
       // Position and scale the 3D item
       poseStack.translate(x + TOOL_RENDER_X + 24, y + TOOL_RENDER_Y + 34, 100);
       poseStack.scale(TOOL_RENDER_SCALE * 16, TOOL_RENDER_SCALE * 16, TOOL_RENDER_SCALE * 16);
-      poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(45));
-      poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(-20));
+      poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(-45));
+      poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(-180));
 
-      // Render the item
+      // Render the item with proper lighting - using combined light values for better visibility
       itemRenderer.renderStatic(
           multitoolStack,
-          net.minecraft.world.item.ItemDisplayContext.GUI,
-          15728880, // Light value
-          net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY,
+          ItemDisplayContext.FIXED,
+          LightTexture.FULL_BRIGHT,
+          OverlayTexture.NO_OVERLAY,
           poseStack,
           guiGraphics.bufferSource(),
           minecraft.level,
@@ -128,34 +137,29 @@ public class ScrapMultitoolScreen extends BaseContainerScreen<ScrapMultitoolMenu
 
   private void renderEnergyBar(GuiGraphics guiGraphics, int x, int y) {
     RenderSystem.setShaderTexture(0, CUSTOM_ELEMENTS_TEXTURE);
-    ItemStack multitoolStack = menu.getMultitoolStack();
 
-    if (multitoolStack.getItem() instanceof ScrapMultitoolItem multitool) {
-      int energy = multitool.getEnergy(multitoolStack);
-      int maxEnergy = ScrapMultitoolItem.ENERGY_MAX;
+    int energy = menu.getCurrentEnergyFromBattery();
+    int maxEnergy = menu.getMaxEnergyFromBattery();
 
-      if (maxEnergy > 0) {
-        // Energy bar background
-        guiGraphics.blit(
-            CUSTOM_ELEMENTS_TEXTURE,
-            x + ENERGY_BAR_X,
-            y + ENERGY_BAR_Y,
-            0,
-            0,
-            ENERGY_BAR_WIDTH,
-            ENERGY_BAR_HEIGHT);
+    if (maxEnergy > 0) {
+      guiGraphics.blit(
+          CUSTOM_ELEMENTS_TEXTURE,
+          x + ENERGY_BAR_X,
+          y + ENERGY_BAR_Y,
+          0,
+          0,
+          ENERGY_BAR_WIDTH,
+          ENERGY_BAR_HEIGHT);
 
-        // Energy bar fill
-        int energyBarHeight = (int) ((float) energy / maxEnergy * ENERGY_BAR_HEIGHT);
-        guiGraphics.blit(
-            CUSTOM_ELEMENTS_TEXTURE,
-            x + ENERGY_BAR_X,
-            y + ENERGY_BAR_Y + (ENERGY_BAR_HEIGHT - energyBarHeight),
-            16,
-            ENERGY_BAR_HEIGHT - energyBarHeight,
-            ENERGY_BAR_WIDTH,
-            energyBarHeight);
-      }
+      int energyBarHeight = (int) ((float) energy / maxEnergy * ENERGY_BAR_HEIGHT);
+      guiGraphics.blit(
+          CUSTOM_ELEMENTS_TEXTURE,
+          x + ENERGY_BAR_X,
+          y + ENERGY_BAR_Y + (ENERGY_BAR_HEIGHT - energyBarHeight),
+          16,
+          ENERGY_BAR_HEIGHT - energyBarHeight,
+          ENERGY_BAR_WIDTH,
+          energyBarHeight);
     }
   }
 
@@ -173,43 +177,49 @@ public class ScrapMultitoolScreen extends BaseContainerScreen<ScrapMultitoolMenu
     int relativeX = x - leftPos;
     int relativeY = y - topPos;
 
-    // Energy bar tooltip
     if (relativeX >= ENERGY_BAR_X
         && relativeX <= ENERGY_BAR_X + ENERGY_BAR_WIDTH
         && relativeY >= ENERGY_BAR_Y
         && relativeY <= ENERGY_BAR_Y + ENERGY_BAR_HEIGHT) {
 
-      ItemStack multitoolStack = menu.getMultitoolStack();
-      if (multitoolStack.getItem() instanceof ScrapMultitoolItem multitool) {
-        int energy = multitool.getEnergy(multitoolStack);
-        int maxEnergy = ScrapMultitoolItem.ENERGY_MAX;
-        int percentage = (int) ((float) energy / maxEnergy * 100);
+      int currentEnergy = menu.getCurrentEnergyFromBattery();
+      int maxEnergy = menu.getMaxEnergyFromBattery();
+      int percentage = menu.getBatteryPercentageFromSlot();
 
-        Component tooltip =
-            Component.translatable(
-                "gui.scrap_tech_workshop.scrap_multitool.energy", energy, maxEnergy, percentage);
-        guiGraphics.renderTooltip(this.font, tooltip, x, y);
-      }
+      Component tooltip =
+          Component.translatable(
+              Constants.GUI_PREFIX + "scrap_multitool.energy_tooltip",
+              currentEnergy,
+              maxEnergy,
+              percentage);
+      guiGraphics.renderTooltip(this.font, tooltip, x, y);
     }
-
-    // Battery slot tooltip
     if (relativeX >= BATTERY_SLOT_X - 1
         && relativeX <= BATTERY_SLOT_X + 17
         && relativeY >= BATTERY_SLOT_Y - 1
         && relativeY <= BATTERY_SLOT_Y + 17) {
-      Component tooltip =
-          Component.translatable("gui.scrap_tech_workshop.scrap_multitool.battery_slot");
-      guiGraphics.renderTooltip(this.font, tooltip, x, y);
+      if (menu.getSlot(0).getItem().isEmpty()) {
+        Component tooltip = Component.translatable(TRANSLATION_BATTERY_SLOT);
+        guiGraphics.renderTooltip(this.font, tooltip, x, y);
+      }
     }
 
-    // Module slots tooltip
     if (relativeX >= MODULE_SLOTS_X1
         && relativeX <= MODULE_SLOTS_X2
         && relativeY >= MODULE_SLOTS_Y - 1
         && relativeY <= MODULE_SLOTS_Y + 17) {
-      Component tooltip =
-          Component.translatable("gui.scrap_tech_workshop.scrap_multitool.module_slots");
-      guiGraphics.renderTooltip(this.font, tooltip, x, y);
+      boolean allModuleSlotsEmpty = true;
+      for (int i = 1; i <= 4; i++) {
+        if (!menu.getSlot(i).getItem().isEmpty()) {
+          allModuleSlotsEmpty = false;
+          break;
+        }
+      }
+
+      if (allModuleSlotsEmpty) {
+        Component tooltip = Component.translatable(TRANSLATION_MODULE_SLOTS);
+        guiGraphics.renderTooltip(this.font, tooltip, x, y);
+      }
     }
   }
 
@@ -225,19 +235,15 @@ public class ScrapMultitoolScreen extends BaseContainerScreen<ScrapMultitoolMenu
         4210752,
         false);
 
-    // Render energy text
-    ItemStack multitoolStack = menu.getMultitoolStack();
-    if (multitoolStack.getItem() instanceof ScrapMultitoolItem multitool) {
-      int energy = multitool.getEnergy(multitoolStack);
-      String energyText = energy + " Energy"; // Changed from FE to generic "Energy"
-      int textWidth = this.font.width(energyText);
-      guiGraphics.drawString(
-          this.font,
-          energyText,
-          ENERGY_BAR_X + (ENERGY_BAR_WIDTH - textWidth) / 2,
-          ENERGY_BAR_Y + ENERGY_BAR_HEIGHT + 2,
-          0x404040,
-          false);
-    }
+    // Energy percentage text below the energy bar
+    String energyText = menu.getBatteryPercentageFromSlot() + "%";
+    int textWidth = this.font.width(energyText);
+    guiGraphics.drawString(
+        this.font,
+        energyText,
+        ENERGY_BAR_X + (ENERGY_BAR_WIDTH - textWidth) / 2,
+        ENERGY_BAR_Y + ENERGY_BAR_HEIGHT + 2,
+        0x404040,
+        false);
   }
 }

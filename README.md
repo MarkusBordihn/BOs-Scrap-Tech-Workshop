@@ -142,7 +142,7 @@ appear as systems mature.
 
 ## Support
 
-If you enjoy the mod and want to fuel more late-night iteration, a Ko‑fi tip means a lot. 
+If you enjoy the mod and want to fuel more late-night iteration, a Ko‑fi tip means a lot.
 Never required—always appreciated.
 
 Thanks for giving broken tech a second life. ⚙️

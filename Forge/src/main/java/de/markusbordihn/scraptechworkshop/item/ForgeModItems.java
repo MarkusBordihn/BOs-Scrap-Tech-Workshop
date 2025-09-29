@@ -1,7 +1,8 @@
 /*
  * Copyright 2025 Markus Bordihn
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
+import de.markusbordihn.scraptechworkshop.registry.item.scraps.ScrapItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;* Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the "Software"), to deal in the Software without restriction,
  * including without limitation the rights to use, copy, modify, merge, publish, distribute,
  * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
@@ -38,7 +39,6 @@ import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
-import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;
 import net.minecraft.world.item.CreativeModeTab;
@@ -118,7 +118,7 @@ public class ForgeModItems {
 
   // Tool Items
   public static final RegistryObject<Item> SCRAP_MULTITOOL =
-      ITEMS.register(ScrapMultitoolItem.ID, () -> ToolItemRegistry.SCRAP_MULTITOOL_ITEM);
+      ITEMS.register("scrap_multitool", () -> ToolItemRegistry.SCRAP_MULTITOOL_ITEM);
 
   // Component Items
   public static final RegistryObject<Item> ENERGY_CELL =

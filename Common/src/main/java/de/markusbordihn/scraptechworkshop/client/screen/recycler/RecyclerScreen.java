@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop.client.screen.recycler;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.screen.BaseContainerScreen;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
@@ -36,12 +37,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
 
-  private static final String TRANSLATION_KEY_PREFIX = "gui.scrap_tech_workshop.recycler.";
+  private static final String TRANSLATION_KEY_PREFIX = Constants.GUI_PREFIX + "recycler.";
   private static final String TRANSLATION_PROGRESS = TRANSLATION_KEY_PREFIX + "progress";
   private static final String TRANSLATION_NO_RECIPE = TRANSLATION_KEY_PREFIX + "no_recipe";
   private static final String TRANSLATION_DONE = TRANSLATION_KEY_PREFIX + "done";
@@ -55,7 +57,7 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
 
   private static final int SCREEN_WIDTH = 176;
   private static final int SCREEN_HEIGHT = 205;
-  private static final int INVENTORY_LABEL_OFFSET = 114;
+  private static final int INVENTORY_LABEL_OFFSET = 92;
 
   private static final int PROGRESS_ARROW_X = 80;
   private static final int PROGRESS_ARROW_Y = 35;
@@ -70,10 +72,10 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
   private static final int INPUT_SLOT_X = 26;
   private static final int INPUT_SLOT_Y = 35;
 
-  private static final int OUTPUT_AREA_X = 115;
+  private static final int OUTPUT_AREA_X = 116;
   private static final int OUTPUT_AREA_Y = 17;
 
-  private static final int UPGRADE_SLOTS_X = 61;
+  private static final int UPGRADE_SLOTS_X = 62;
   private static final int UPGRADE_SLOTS_Y = 71;
 
   private static final int BLOCK_RENDER_X = 53;
@@ -159,8 +161,8 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
       BlockState blockState = blockItem.getBlock().defaultBlockState();
 
       poseStack.scale(BLOCK_RENDER_SCALE, -BLOCK_RENDER_SCALE, BLOCK_RENDER_SCALE);
-      poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(rotationAngle));
-      poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(30));
+      poseStack.mulPose(Axis.YP.rotationDegrees(rotationAngle));
+      poseStack.mulPose(Axis.XP.rotationDegrees(30));
 
       MultiBufferSource.BufferSource bufferSource = guiGraphics.bufferSource();
       blockRenderer.renderSingleBlock(
@@ -174,12 +176,12 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
       // Render as item - scale up items to be more visible
       poseStack.scale(
           BLOCK_RENDER_SCALE * 1.5f, BLOCK_RENDER_SCALE * 1.5f, BLOCK_RENDER_SCALE * 1.5f);
-      poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(rotationAngle));
-      poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(30));
+      poseStack.mulPose(Axis.YP.rotationDegrees(rotationAngle));
+      poseStack.mulPose(Axis.XP.rotationDegrees(30));
 
       itemRenderer.renderStatic(
           inputItem,
-          net.minecraft.world.item.ItemDisplayContext.GUI,
+          ItemDisplayContext.GUI,
           15728880, // Light value
           OverlayTexture.NO_OVERLAY,
           poseStack,
