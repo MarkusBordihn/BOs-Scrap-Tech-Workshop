@@ -4,138 +4,138 @@
   "subtitle": "The Old World",
   "titleColor": "#00FFAA",
   "subtitleColor": "#AAAAAA",
-  "lineDelayTicks": 40,
+  "lineDelayTicks": 60,
   "voiceOver": "scrap_tech_workshop:holologs/en/intro/introduction",
-  "displayEntity": {
-    "type": "entity",
-    "id": "minecraft:villager",
-    "scale": 0.5,
-    "rotationSpeed": 1.0
+  "displayHoloEntity": {
+    "id": "scrap_tech_workshop:hololog_humanoid",
+    "texture": "scrap_tech_workshop:textures/entity/hololog/hololog_humanoid.png",
+    "slim": true,
+    "scale": 0.5
   },
   "start": {
-    "sfx": [{"id": "minecraft:block.note_block.bass", "volume": 0.8}],
-    "fx": [{"id": "minecraft:dust", "color": "#00FFAA"}]
+    "playSound": [{"id": "minecraft:block.note_block.bass", "volume": 0.8}],
+    "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
   },
   "lines": [
     {
       "text": "If you're hearing this…",
-      "sfx": [{"id": "minecraft:block.note_block.hat", "volume": 0.8}],
-      "fx": [{"id": "minecraft:dust", "color": "#00FFAA"}]
+      "playSound": [{"id": "minecraft:block.note_block.hat", "volume": 0.8}],
+      "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
     },
     {
       "text": "then the old world is already gone.",
-      "sfx": [{"id": "minecraft:block.beacon.activate", "pitch": 0.8}],
-      "fx": [{"id": "minecraft:smoke", "count": 3}]
+      "playSound": [{"id": "minecraft:block.beacon.activate", "pitch": 0.8}],
+      "showParticle": [{"id": "minecraft:smoke", "count": 3}]
     },
     {
       "text": "The skies burned,",
-      "displayEntity": {
-        "type": "block", "id": "minecraft:fire", "scale": 0.3, "rotationSpeed": 0.0
-      },
-      "sfx": [{"id": "minecraft:block.note_block.snare", "volume": 0.7}],
-      "fx": [{"id": "minecraft:dust", "color": "#FF5500"}]
+      "displayBlock": {"id": "minecraft:fire", "scale": 0.3, "rotationSpeed": 0.0},
+      "playSound": [{"id": "minecraft:block.note_block.snare", "volume": 0.7}],
+      "showParticle": [{"id": "minecraft:dust", "color": "#FF5500"}]
     },
     {
       "text": "the cities fell,",
-      "displayEntity": {"type": "block", "id": "minecraft:cracked_stone_bricks"},
-      "sfx": [{"id": "minecraft:ambient.cave", "volume": 0.3}]
+      "displayBlock": {"id": "minecraft:cracked_stone_bricks"},
+      "playSound": [{"id": "minecraft:ambient.cave", "volume": 0.3}]
     },
     {
       "text": "and what we once called technology",
-      "displayEntity": {"type": "block", "id": "minecraft:redstone_block", "scale": 0.4}
+      "displayBlock": {"id": "minecraft:redstone_block", "scale": 0.4}
     },
     {
       "text": "was shattered in the fire.",
-      "displayEntity": {"type": "block", "id": "minecraft:blackstone", "scale": 0.4},
-      "sfx": [{"id": "minecraft:entity.blaze.burn", "volume": 0.35, "pitch": 0.9}],
-      "fx": [{"id": "minecraft:smoke", "count": 8}]
+      "displayBlock": {"id": "minecraft:blackstone", "scale": 0.4},
+      "playSound": [{"id": "minecraft:entity.blaze.burn", "volume": 0.35, "pitch": 0.9}],
+      "showParticle": [{"id": "minecraft:smoke", "count": 8}]
     },
     {
       "text": "What remains… lies broken.",
-      "displayEntity": {"type": "item", "id": "scrap_tech_workshop:metal_scrap", "scale": 0.6},
-      "sfx": [{"id": "minecraft:block.redstone_torch.burnout", "volume": 0.7}],
-      "fx": [{"id": "minecraft:portal", "count": 6}]
+      "displayItem": {"id": "scrap_tech_workshop:metal_scrap", "scale": 0.6},
+      "playSound": [{"id": "minecraft:block.redstone_torch.burnout", "volume": 0.7}],
+      "showParticle": [{"id": "minecraft:portal", "count": 6}]
     },
     {
       "text": "Rusted panels,"
     },
     {
       "text": "shattered coils,",
-      "displayEntity": {"type": "item", "id": "scrap_tech_workshop:coil_scrap", "scale": 0.5},
-      "sfx": [{"id": "minecraft:block.glass.break", "volume": 0.3, "pitch": 0.8}]
+      "displayItem": {"id": "scrap_tech_workshop:coil_scrap", "scale": 0.5},
+      "playSound": [{"id": "minecraft:block.glass.break", "volume": 0.3, "pitch": 0.8}]
     },
     {
       "text": "fragments of power lost in the ash.",
-      "sfx": [{"id": "minecraft:entity.elder_guardian.curse", "volume": 0.25, "pitch": 0.8}],
-      "fx": [{"id": "minecraft:smoke", "count": 6}]
+      "playSound": [{"id": "minecraft:entity.elder_guardian.curse", "volume": 0.25, "pitch": 0.8}],
+      "showParticle": [{"id": "minecraft:smoke", "count": 6}]
     },
     {
-      "text": "We don't scavenge for glory.",
-      "displayEntity": {"type": "entity", "id": "minecraft:villager", "scale": 0.5}
+      "text": "We don't scavenge for glory."
     },
     {
       "text": "We scavenge because survival demands it.",
-      "sfx": [
+      "playSound": [
         {"id": "minecraft:block.note_block.snare", "volume": 0.7},
         {"id": "minecraft:entity.enderman.teleport", "volume": 0.15, "pitch": 1.6}
       ],
-      "fx": [{"id": "minecraft:crit", "count": 8}]
+      "showParticle": [{"id": "minecraft:crit", "count": 8}]
     },
     {
       "text": "Every capacitor,",
-      "displayEntity": {"type": "item", "id": "scrap_tech_workshop:capacitor_scrap"}
+      "displayItem": {"id": "scrap_tech_workshop:capacitor_scrap"}
     },
     {
       "text": "every cell,",
-      "displayEntity": {"type": "item", "id": "scrap_tech_workshop:energy_cell_scrap"},
-      "sfx": [{"id": "minecraft:block.comparator.click", "volume": 0.4, "pitch": 1.2}]
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell_scrap"},
+      "playSound": [{"id": "minecraft:block.comparator.click", "volume": 0.4, "pitch": 1.2}]
     },
     {
       "text": "every shard of circuitry",
-      "displayEntity": {"type": "item", "id": "scrap_tech_workshop:circuit_scrap"}
+      "displayItem": {"id": "scrap_tech_workshop:circuit_scrap"}
     },
     {
       "text": "is a chance to rebuild.",
-      "displayEntity": {"type": "block", "id": "minecraft:crafting_table", "scale": 0.45},
-      "sfx": [{"id": "minecraft:block.beacon.activate", "volume": 0.8, "pitch": 0.9}],
-      "fx": [{"id": "minecraft:dust", "color": "#00FFAA"}]
+      "displayBlock": {"id": "minecraft:crafting_table", "scale": 0.45},
+      "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8, "pitch": 0.9}],
+      "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
+    },
+    {
+      "lineDelayTicks": 90
     },
     {
       "text": "The age of polished alloys"
     },
     {
       "text": "and perfect machines is over.",
-      "displayEntity": {"type": "item", "id": "minecraft:broken_elytra", "scale": 0.6},
-      "sfx": [{"id": "minecraft:entity.elder_guardian.curse", "volume": 0.2, "pitch": 0.75}],
-      "fx": [{"id": "minecraft:smoke", "count": 6}]
+      "displayItem": {"id": "minecraft:broken_elytra", "scale": 0.6},
+      "playSound": [{"id": "minecraft:entity.elder_guardian.curse", "volume": 0.2, "pitch": 0.75}],
+      "showParticle": [{"id": "minecraft:smoke", "count": 6}]
     },
     {
       "text": "Now the future is forged from fragments.",
-      "displayEntity": {"type": "item", "id": "scrap_tech_workshop:alloy_scrap", "scale": 0.5},
-      "sfx": [
+      "displayItem": {"id": "scrap_tech_workshop:alloy_scrap", "scale": 0.5},
+      "playSound": [
         {"id": "minecraft:block.note_block.hat", "volume": 0.8},
         {"id": "minecraft:entity.enderman.teleport", "volume": 0.15, "pitch": 1.6}
       ],
-      "fx": [{"id": "minecraft:portal", "count": 6}]
+      "showParticle": [{"id": "minecraft:portal", "count": 6}]
     },
     {
       "text": "From wreckage.",
-      "displayEntity": {"type": "item", "id": "scrap_tech_workshop:tech_scrap", "scale": 0.4},
-      "sfx": [{"id": "minecraft:ui.toast.in"}],
-      "fx": [{"id": "minecraft:crit", "count": 10}]
+      "displayItem": {"id": "scrap_tech_workshop:tech_scrap", "scale": 0.4},
+      "playSound": [{"id": "minecraft:ui.toast.in"}],
+      "showParticle": [{"id": "minecraft:crit", "count": 10}]
     },
     {
       "text": "From scrap.",
-      "displayEntity": {"type": "item", "id": "scrap_tech_workshop:iron_scrap", "scale": 0.4},
-      "sfx": [{"id": "minecraft:block.beacon.deactivate"}],
-      "fx": [{"id": "minecraft:flash"}]
+      "displayItem": {"id": "scrap_tech_workshop:iron_scrap", "scale": 0.4},
+      "playSound": [{"id": "minecraft:block.beacon.deactivate"}],
+      "showParticle": [{"id": "minecraft:flash"}]
     }
   ],
   "end": {
-    "sfx": [
+    "playSound": [
       {"id": "minecraft:block.beacon.deactivate", "volume": 0.9},
       {"id": "minecraft:ui.toast.in"}
     ],
-    "fx": [{"id": "minecraft:flash"}]
+    "showParticle": [{"id": "minecraft:flash"}]
   }
 }

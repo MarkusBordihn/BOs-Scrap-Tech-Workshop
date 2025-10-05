@@ -47,7 +47,8 @@ public record HolologData(
   public enum DisplayType {
     ENTITY,
     BLOCK,
-    ITEM
+    ITEM,
+    HOLO_ENTITY
   }
 
   public record HolologEffects(List<HolologSound> sfx, List<HolologParticle> fx) {
@@ -71,24 +72,53 @@ public record HolologData(
   }
 
   public record HolologLine(
-      String text, HolologDisplayEntity displayEntity, HolologEffects effects) {
+      String text, HolologDisplayEntity displayEntity, HolologEffects effects, int lineDelayTicks) {
     public HolologLine(String text) {
-      this(text, null, HolologEffects.EMPTY);
+      this(text, null, HolologEffects.EMPTY, -1);
     }
 
     public HolologLine(String text, HolologEffects effects) {
-      this(text, null, effects);
+      this(text, null, effects, -1);
+    }
+
+    public HolologLine(String text, HolologDisplayEntity displayEntity, HolologEffects effects) {
+      this(text, displayEntity, effects, -1);
     }
   }
 
   public record HolologDisplayEntity(
-      DisplayType type, ResourceLocation id, float scale, float rotationSpeed) {
+      DisplayType type,
+      ResourceLocation id,
+      float scale,
+      float rotationSpeed,
+      float rotationX,
+      float rotationY,
+      float rotationZ,
+      ResourceLocation texture,
+      boolean slim) {
     public static final HolologDisplayEntity DEFAULT_VILLAGER =
         new HolologDisplayEntity(
-            DisplayType.ENTITY, new ResourceLocation("minecraft", "villager"), 0.5f, 1.0f);
+            DisplayType.ENTITY,
+            new ResourceLocation("minecraft", "villager"),
+            0.5f,
+            1.0f,
+            0.0f,
+            0.0f,
+            0.0f,
+            null,
+            false);
 
     public HolologDisplayEntity(DisplayType type, ResourceLocation id) {
-      this(type, id, 0.5f, 1.0f);
+      this(type, id, 0.5f, 1.0f, 0.0f, 0.0f, 0.0f, null, false);
+    }
+
+    public HolologDisplayEntity(DisplayType type, ResourceLocation id, float scale) {
+      this(type, id, scale, 1.0f, 0.0f, 0.0f, 0.0f, null, false);
+    }
+
+    public HolologDisplayEntity(
+        DisplayType type, ResourceLocation id, float scale, float rotationSpeed) {
+      this(type, id, scale, rotationSpeed, 0.0f, 0.0f, 0.0f, null, false);
     }
   }
 }

@@ -119,8 +119,6 @@ public class HoloCubeBlock extends BaseEntityBlock {
       InteractionHand hand,
       BlockHitResult hit) {
 
-    log.debug("HoloCube used at {} by player {}", pos, player.getName().getString());
-
     if (level.isClientSide) {
       return InteractionResult.SUCCESS;
     }
@@ -131,20 +129,36 @@ public class HoloCubeBlock extends BaseEntityBlock {
     }
 
     ResourceLocation holologId = blockEntity.getHolologId();
-    log.debug("HoloCube at {} has hololog ID: {}", pos, holologId);
-
     if (holologId == null) {
       player.displayClientMessage(Component.literal("No hololog data found!"), true);
-      log.warn("HoloCube at {} has no hololog ID!", pos);
+      log.warn("[{}] No hololog ID found", blockEntity.getCubeUUID());
       return InteractionResult.FAIL;
     }
-    log.debug("HoloCube interaction - hololog ID: {}", holologId);
 
-    // Cycle through states using the enum's cycle() method
     HolologStatus currentStatus = state.getValue(STATUS);
     HolologStatus newStatus = currentStatus.cycle();
 
-    log.debug("Changing HoloCube status from {} to {} at {}", currentStatus, newStatus, pos);
+    // Check distance when activating (changing to PLAYING)
+    if (currentStatus != HolologStatus.PLAYING && newStatus == HolologStatus.PLAYING) {
+      double distance = player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+      if (distance > 32.0 * 32.0) {
+        player.displayClientMessage(
+            Component.literal("You must be within 32 blocks to activate the hololog!"), true);
+        log.debug(
+            "[{}] Player {} too far away ({} blocks) to activate",
+            blockEntity.getCubeUUID(),
+            player.getName().getString(),
+            Math.sqrt(distance));
+        return InteractionResult.FAIL;
+      }
+    }
+
+    log.debug(
+        "[{}] Player {} changed status from {} to {}",
+        blockEntity.getCubeUUID(),
+        player.getName().getString(),
+        currentStatus,
+        newStatus);
     level.setBlock(pos, state.setValue(STATUS, newStatus), Block.UPDATE_ALL);
     return InteractionResult.SUCCESS;
   }
@@ -179,18 +193,35 @@ public class HoloCubeBlock extends BaseEntityBlock {
   }
 
   @Override
+  public void playerWillDestroy(
+      Level level,
+      BlockPos pos,
+      BlockState state,
+      net.minecraft.world.entity.player.Player player) {
+    if (!level.isClientSide && !player.isCreative()) {
+      if (level.getBlockEntity(pos) instanceof HoloCubeBlockEntity blockEntity) {
+        ResourceLocation holologId = blockEntity.getHolologId();
+        if (holologId != null) {
+          ItemStack stack = HoloCubeItem.create(holologId);
+          popResource(level, pos, stack);
+        }
+      }
+    }
+    super.playerWillDestroy(level, pos, state, player);
+  }
+
+  @Override
   public void setPlacedBy(
       Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
     super.setPlacedBy(level, pos, state, placer, stack);
 
     if (level.getBlockEntity(pos) instanceof HoloCubeBlockEntity blockEntity) {
       ResourceLocation holologId = HoloCubeItem.getHolologId(stack);
-      log.debug("Placing HoloCube at {} with hololog ID from ItemStack: {}", pos, holologId);
       if (holologId != null) {
         blockEntity.setHolologId(holologId);
-        log.info("HoloCube placed at {} with hololog: {}", pos, holologId);
+        log.info("[{}] Placed with hololog: {}", blockEntity.getCubeUUID(), holologId);
       } else {
-        log.warn("HoloCube placed at {} but ItemStack has no hololog ID!", pos);
+        log.warn("[{}] Placed without hololog ID", blockEntity.getCubeUUID());
       }
     }
   }

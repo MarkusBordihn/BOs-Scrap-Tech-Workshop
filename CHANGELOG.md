@@ -7,6 +7,15 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v0.4.0
+
+- Fixed serveral hololog and holocube related issues.
+- Added hololog voice over support and sound files.
+- Added hololog entity for better visuals.
+- Improved holocube texture and model.
+- Improved holocube handling.
+- Removed hololog pause state to avoid issues with voice over timings.
+
 ### v0.3.0
 
 - Added hololog support and hololog player.

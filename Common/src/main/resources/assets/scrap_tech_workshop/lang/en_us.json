@@ -95,6 +95,7 @@
   "item.scrap_tech_workshop.holocube.description": "A holographic projection device that plays recorded hololog messages and displays 3D visualizations",
   "item.scrap_tech_workshop.holocube.usage": "Place the HoloCube on the ground and right-click to start the hologram playback",
   "block.scrap_tech_workshop.holocube": "HoloCube",
+  "subtitles.scrap_tech_workshop.holologs.en.intro.introduction": "Hololog: Introduction - The Old World",
   "scrap_category.scrap_tech_workshop.material": "Material",
   "scrap_category.scrap_tech_workshop.organic": "Organic",
   "scrap_category.scrap_tech_workshop.synthetic": "Synthetic",

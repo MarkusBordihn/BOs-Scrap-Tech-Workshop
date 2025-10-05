@@ -6,9 +6,6 @@
     "facing=north,status=playing": {
       "model": "scrap_tech_workshop:block/holocube/holocube_playing"
     },
-    "facing=north,status=paused": {
-      "model": "scrap_tech_workshop:block/holocube/holocube_paused"
-    },
     "facing=north,status=ended": {
       "model": "scrap_tech_workshop:block/holocube/holocube_ended"
     },
@@ -18,10 +15,6 @@
     },
     "facing=south,status=playing": {
       "model": "scrap_tech_workshop:block/holocube/holocube_playing",
-      "y": 180
-    },
-    "facing=south,status=paused": {
-      "model": "scrap_tech_workshop:block/holocube/holocube_paused",
       "y": 180
     },
     "facing=south,status=ended": {
@@ -36,10 +29,6 @@
       "model": "scrap_tech_workshop:block/holocube/holocube_playing",
       "y": 270
     },
-    "facing=west,status=paused": {
-      "model": "scrap_tech_workshop:block/holocube/holocube_paused",
-      "y": 270
-    },
     "facing=west,status=ended": {
       "model": "scrap_tech_workshop:block/holocube/holocube_ended",
       "y": 270
@@ -50,10 +39,6 @@
     },
     "facing=east,status=playing": {
       "model": "scrap_tech_workshop:block/holocube/holocube_playing",
-      "y": 90
-    },
-    "facing=east,status=paused": {
-      "model": "scrap_tech_workshop:block/holocube/holocube_paused",
       "y": 90
     },
     "facing=east,status=ended": {

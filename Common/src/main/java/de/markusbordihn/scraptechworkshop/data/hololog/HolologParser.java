@@ -45,27 +45,81 @@ public class HolologParser {
   private static final Gson GSON = new Gson();
   private static final Map<ResourceLocation, HolologData> CACHE = new HashMap<>();
 
+  // JSON field names
+  private static final String FIELD_ID = "id";
+  private static final String FIELD_TITLE = "title";
+  private static final String FIELD_SUBTITLE = "subtitle";
+  private static final String FIELD_TITLE_COLOR = "titleColor";
+  private static final String FIELD_SUBTITLE_COLOR = "subtitleColor";
+  private static final String FIELD_LINE_DELAY_TICKS = "lineDelayTicks";
+  private static final String FIELD_CHAR_DELAY_TICKS = "charDelayTicks";
+  private static final String FIELD_VOICE_OVER = "voiceOver";
+  private static final String FIELD_DISPLAY_ENTITY = "displayEntity";
+  private static final String FIELD_DISPLAY_BLOCK = "displayBlock";
+  private static final String FIELD_DISPLAY_ITEM = "displayItem";
+  private static final String FIELD_DISPLAY_HOLO_ENTITY = "displayHoloEntity";
+  private static final String FIELD_START = "start";
+  private static final String FIELD_LINES = "lines";
+  private static final String FIELD_END = "end";
+  private static final String FIELD_TEXT = "text";
+  private static final String FIELD_SCALE = "scale";
+  private static final String FIELD_ROTATION_SPEED = "rotationSpeed";
+  private static final String FIELD_ROTATION_X = "rotationX";
+  private static final String FIELD_ROTATION_Y = "rotationY";
+  private static final String FIELD_ROTATION_Z = "rotationZ";
+  private static final String FIELD_TEXTURE = "texture";
+  private static final String FIELD_SLIM = "slim";
+  private static final String FIELD_PLAY_SOUND = "playSound";
+  private static final String FIELD_SHOW_PARTICLE = "showParticle";
+  private static final String FIELD_VOLUME = "volume";
+  private static final String FIELD_PITCH = "pitch";
+  private static final String FIELD_COUNT = "count";
+  private static final String FIELD_COLOR = "color";
+
+  // Default values
+  private static final String DEFAULT_TITLE_COLOR = "#FFFFFF";
+  private static final String DEFAULT_SUBTITLE_COLOR = "#AAAAAA";
+  private static final int DEFAULT_LINE_DELAY_TICKS = 40;
+  private static final int DEFAULT_CHAR_DELAY_TICKS = 1;
+  private static final float DEFAULT_SCALE = 0.5f;
+  private static final float DEFAULT_ROTATION_SPEED = 1.0f;
+  private static final float DEFAULT_VOLUME = 1.0f;
+  private static final float DEFAULT_PITCH = 1.0f;
+  private static final float DEFAULT_EFFECT_SCALE = 1.0f;
+  private static final int DEFAULT_PARTICLE_COUNT = 5;
+
+  // File extensions and paths
+  private static final String JSON_EXTENSION = ".json";
+  private static final String ASSETS_PATH_PREFIX = "/assets/";
+  private static final String PATH_SEPARATOR = "/";
+  private static final String LANGUAGE_SEPARATOR = "_";
+  private static final String ENGLISH_LANGUAGE_CODE = "en";
+
   private HolologParser() {}
 
   public static ResourceLocation getLocalizedId(ResourceLocation id) {
     try {
-      String[] parts = id.getPath().split("/", 2);
+      String[] parts = id.getPath().split(PATH_SEPARATOR, 2);
       if (parts.length < 2) {
         return id;
       }
 
       String languageCode =
-          Minecraft.getInstance().getLanguageManager().getSelected().split("_")[0];
+          Minecraft.getInstance().getLanguageManager().getSelected().split(LANGUAGE_SEPARATOR)[0];
       ResourceLocation localizedId =
-          new ResourceLocation(id.getNamespace(), parts[0] + "/" + languageCode + "/" + parts[1]);
+          new ResourceLocation(
+              id.getNamespace(),
+              parts[0] + PATH_SEPARATOR + languageCode + PATH_SEPARATOR + parts[1]);
 
       if (holologExists(localizedId)) {
         return localizedId;
       }
 
-      if (!languageCode.equals("en")) {
+      if (!languageCode.equals(ENGLISH_LANGUAGE_CODE)) {
         ResourceLocation englishId =
-            new ResourceLocation(id.getNamespace(), parts[0] + "/en/" + parts[1]);
+            new ResourceLocation(
+                id.getNamespace(),
+                parts[0] + PATH_SEPARATOR + ENGLISH_LANGUAGE_CODE + PATH_SEPARATOR + parts[1]);
         if (holologExists(englishId)) {
           log.debug("Using English fallback hololog: {}", englishId);
           return englishId;
@@ -90,11 +144,12 @@ public class HolologParser {
       ResourceManager resourceManager = minecraft.getResourceManager();
 
       ResourceLocation resourcePath =
-          new ResourceLocation(id.getNamespace(), id.getPath() + ".json");
+          new ResourceLocation(id.getNamespace(), id.getPath() + JSON_EXTENSION);
       Optional<Resource> resource = resourceManager.getResource(resourcePath);
 
       if (resource.isEmpty()) {
-        String classpathPath = "/assets/" + id.getNamespace() + "/" + id.getPath() + ".json";
+        String classpathPath =
+            ASSETS_PATH_PREFIX + id.getNamespace() + PATH_SEPARATOR + id.getPath() + JSON_EXTENSION;
         try (InputStream stream = HolologParser.class.getResourceAsStream(classpathPath)) {
           return stream != null;
         }
@@ -117,14 +172,15 @@ public class HolologParser {
 
       Optional<Resource> resource =
           resourceManager.getResource(
-              new ResourceLocation(id.getNamespace(), id.getPath() + ".json"));
+              new ResourceLocation(id.getNamespace(), id.getPath() + JSON_EXTENSION));
 
       InputStream stream = null;
       if (resource.isPresent()) {
         stream = resource.get().open();
         log.debug("Loaded hololog from ResourceManager: {}", id);
       } else {
-        String classpathPath = "/assets/" + id.getNamespace() + "/" + id.getPath() + ".json";
+        String classpathPath =
+            ASSETS_PATH_PREFIX + id.getNamespace() + PATH_SEPARATOR + id.getPath() + JSON_EXTENSION;
         stream = HolologParser.class.getResourceAsStream(classpathPath);
         if (stream != null) {
           log.debug("Loaded hololog from classpath: {}", classpathPath);
@@ -161,53 +217,98 @@ public class HolologParser {
       return Optional.empty();
     }
 
-    ResourceLocation id = new ResourceLocation(json.get("id").getAsString());
-    String title = json.get("title").getAsString();
-    String subtitle = json.has("subtitle") ? json.get("subtitle").getAsString() : "";
-    String titleColor = json.has("titleColor") ? json.get("titleColor").getAsString() : "#FFFFFF";
+    ResourceLocation id = new ResourceLocation(json.get(FIELD_ID).getAsString());
+    String title = json.get(FIELD_TITLE).getAsString();
+    String subtitle = json.has(FIELD_SUBTITLE) ? json.get(FIELD_SUBTITLE).getAsString() : "";
+    String titleColor =
+        json.has(FIELD_TITLE_COLOR)
+            ? json.get(FIELD_TITLE_COLOR).getAsString()
+            : DEFAULT_TITLE_COLOR;
     String subtitleColor =
-        json.has("subtitleColor") ? json.get("subtitleColor").getAsString() : "#AAAAAA";
-    int lineDelayTicks = json.has("lineDelayTicks") ? json.get("lineDelayTicks").getAsInt() : 40;
-    int charDelayTicks = json.has("charDelayTicks") ? json.get("charDelayTicks").getAsInt() : 1;
+        json.has(FIELD_SUBTITLE_COLOR)
+            ? json.get(FIELD_SUBTITLE_COLOR).getAsString()
+            : DEFAULT_SUBTITLE_COLOR;
+    int lineDelayTicks =
+        json.has(FIELD_LINE_DELAY_TICKS)
+            ? json.get(FIELD_LINE_DELAY_TICKS).getAsInt()
+            : DEFAULT_LINE_DELAY_TICKS;
+    int charDelayTicks =
+        json.has(FIELD_CHAR_DELAY_TICKS)
+            ? json.get(FIELD_CHAR_DELAY_TICKS).getAsInt()
+            : DEFAULT_CHAR_DELAY_TICKS;
 
     ResourceLocation voiceOver = null;
-    if (json.has("voiceOver")) {
-      voiceOver = new ResourceLocation(json.get("voiceOver").getAsString());
+    if (json.has(FIELD_VOICE_OVER)) {
+      voiceOver = new ResourceLocation(json.get(FIELD_VOICE_OVER).getAsString());
     }
 
     HolologData.HolologDisplayEntity displayEntity = null;
-    if (json.has("displayEntity")) {
-      displayEntity = parseDisplayEntity(json.getAsJsonObject("displayEntity"));
+    if (json.has(FIELD_DISPLAY_ENTITY)) {
+      displayEntity =
+          parseDisplayEntity(
+              json.getAsJsonObject(FIELD_DISPLAY_ENTITY), HolologData.DisplayType.ENTITY);
+    } else if (json.has(FIELD_DISPLAY_BLOCK)) {
+      displayEntity =
+          parseDisplayEntity(
+              json.getAsJsonObject(FIELD_DISPLAY_BLOCK), HolologData.DisplayType.BLOCK);
+    } else if (json.has(FIELD_DISPLAY_ITEM)) {
+      displayEntity =
+          parseDisplayEntity(
+              json.getAsJsonObject(FIELD_DISPLAY_ITEM), HolologData.DisplayType.ITEM);
+    } else if (json.has(FIELD_DISPLAY_HOLO_ENTITY)) {
+      displayEntity =
+          parseDisplayEntity(
+              json.getAsJsonObject(FIELD_DISPLAY_HOLO_ENTITY), HolologData.DisplayType.HOLO_ENTITY);
     }
 
     HolologData.HolologEffects start =
-        json.has("start")
-            ? parseEffects(json.getAsJsonObject("start"))
+        json.has(FIELD_START)
+            ? parseEffects(json.getAsJsonObject(FIELD_START))
             : HolologData.HolologEffects.EMPTY;
 
     List<HolologData.HolologLine> lines = new ArrayList<>();
-    if (json.has("lines")) {
-      JsonArray linesArray = json.getAsJsonArray("lines");
+    if (json.has(FIELD_LINES)) {
+      JsonArray linesArray = json.getAsJsonArray(FIELD_LINES);
       for (JsonElement lineElement : linesArray) {
-        JsonObject lineObj = lineElement.getAsJsonObject();
-        String text = lineObj.get("text").getAsString();
+        JsonObject jsonObject = lineElement.getAsJsonObject();
+        String text = jsonObject.has(FIELD_TEXT) ? jsonObject.get(FIELD_TEXT).getAsString() : "";
+
+        int lineSpecificDelay =
+            jsonObject.has(FIELD_LINE_DELAY_TICKS)
+                ? jsonObject.get(FIELD_LINE_DELAY_TICKS).getAsInt()
+                : -1;
 
         HolologData.HolologDisplayEntity lineDisplayEntity = null;
-        if (lineObj.has("displayEntity")) {
-          lineDisplayEntity = parseDisplayEntity(lineObj.getAsJsonObject("displayEntity"));
+        if (jsonObject.has(FIELD_DISPLAY_ENTITY)) {
+          lineDisplayEntity =
+              parseDisplayEntity(
+                  jsonObject.getAsJsonObject(FIELD_DISPLAY_ENTITY), HolologData.DisplayType.ENTITY);
+        } else if (jsonObject.has(FIELD_DISPLAY_BLOCK)) {
+          lineDisplayEntity =
+              parseDisplayEntity(
+                  jsonObject.getAsJsonObject(FIELD_DISPLAY_BLOCK), HolologData.DisplayType.BLOCK);
+        } else if (jsonObject.has(FIELD_DISPLAY_ITEM)) {
+          lineDisplayEntity =
+              parseDisplayEntity(
+                  jsonObject.getAsJsonObject(FIELD_DISPLAY_ITEM), HolologData.DisplayType.ITEM);
+        } else if (jsonObject.has(FIELD_DISPLAY_HOLO_ENTITY)) {
+          lineDisplayEntity =
+              parseDisplayEntity(
+                  jsonObject.getAsJsonObject(FIELD_DISPLAY_HOLO_ENTITY),
+                  HolologData.DisplayType.HOLO_ENTITY);
         }
 
         HolologData.HolologEffects effects =
-            lineObj.has("sfx") || lineObj.has("fx")
-                ? parseEffects(lineObj)
+            jsonObject.has(FIELD_PLAY_SOUND) || jsonObject.has(FIELD_SHOW_PARTICLE)
+                ? parseEffects(jsonObject)
                 : HolologData.HolologEffects.EMPTY;
-        lines.add(new HolologData.HolologLine(text, lineDisplayEntity, effects));
+        lines.add(new HolologData.HolologLine(text, lineDisplayEntity, effects, lineSpecificDelay));
       }
     }
 
     HolologData.HolologEffects end =
-        json.has("end")
-            ? parseEffects(json.getAsJsonObject("end"))
+        json.has(FIELD_END)
+            ? parseEffects(json.getAsJsonObject(FIELD_END))
             : HolologData.HolologEffects.EMPTY;
 
     return Optional.of(
@@ -226,48 +327,67 @@ public class HolologParser {
             end));
   }
 
-  private static HolologData.HolologDisplayEntity parseDisplayEntity(JsonObject json) {
-    HolologData.DisplayType type;
-    try {
-      type =
-          HolologData.DisplayType.valueOf(
-              json.has("type") ? json.get("type").getAsString().toUpperCase() : "ENTITY");
-    } catch (IllegalArgumentException e) {
-      log.warn(
-          "Invalid display type '{}', defaulting to ENTITY",
-          json.has("type") ? json.get("type").getAsString() : "null");
-      type = HolologData.DisplayType.ENTITY;
+  private static HolologData.HolologDisplayEntity parseDisplayEntity(
+      JsonObject json, HolologData.DisplayType defaultType) {
+    ResourceLocation id = new ResourceLocation(json.get(FIELD_ID).getAsString());
+    float scale = json.has(FIELD_SCALE) ? json.get(FIELD_SCALE).getAsFloat() : DEFAULT_SCALE;
+
+    float rotationSpeed = 0.0f;
+    if (defaultType != HolologData.DisplayType.ENTITY) {
+      rotationSpeed =
+          json.has(FIELD_ROTATION_SPEED)
+              ? json.get(FIELD_ROTATION_SPEED).getAsFloat()
+              : DEFAULT_ROTATION_SPEED;
     }
 
-    ResourceLocation id = new ResourceLocation(json.get("id").getAsString());
-    float scale = json.has("scale") ? json.get("scale").getAsFloat() : 0.5f;
-    float rotationSpeed = json.has("rotationSpeed") ? json.get("rotationSpeed").getAsFloat() : 1.0f;
+    float rotationX = json.has(FIELD_ROTATION_X) ? json.get(FIELD_ROTATION_X).getAsFloat() : 0.0f;
+    float rotationY = json.has(FIELD_ROTATION_Y) ? json.get(FIELD_ROTATION_Y).getAsFloat() : 0.0f;
+    float rotationZ = json.has(FIELD_ROTATION_Z) ? json.get(FIELD_ROTATION_Z).getAsFloat() : 0.0f;
 
-    return new HolologData.HolologDisplayEntity(type, id, scale, rotationSpeed);
+    ResourceLocation texture = null;
+    if (json.has(FIELD_TEXTURE)) {
+      texture = new ResourceLocation(json.get(FIELD_TEXTURE).getAsString());
+    }
+
+    boolean slim = json.has(FIELD_SLIM) && json.get(FIELD_SLIM).getAsBoolean();
+
+    return new HolologData.HolologDisplayEntity(
+        defaultType, id, scale, rotationSpeed, rotationX, rotationY, rotationZ, texture, slim);
   }
 
   private static HolologData.HolologEffects parseEffects(JsonObject json) {
     List<HolologData.HolologSound> sounds = new ArrayList<>();
-    if (json.has("sfx")) {
-      JsonArray sfxArray = json.getAsJsonArray("sfx");
-      for (JsonElement sfxElement : sfxArray) {
-        JsonObject sfxObj = sfxElement.getAsJsonObject();
-        ResourceLocation id = new ResourceLocation(sfxObj.get("id").getAsString());
-        float volume = sfxObj.has("volume") ? sfxObj.get("volume").getAsFloat() : 1.0f;
-        float pitch = sfxObj.has("pitch") ? sfxObj.get("pitch").getAsFloat() : 1.0f;
+
+    if (json.has(FIELD_PLAY_SOUND)) {
+      JsonArray soundArray = json.getAsJsonArray(FIELD_PLAY_SOUND);
+      for (JsonElement soundElement : soundArray) {
+        JsonObject soundObj = soundElement.getAsJsonObject();
+        ResourceLocation id = new ResourceLocation(soundObj.get(FIELD_ID).getAsString());
+        float volume =
+            soundObj.has(FIELD_VOLUME) ? soundObj.get(FIELD_VOLUME).getAsFloat() : DEFAULT_VOLUME;
+        float pitch =
+            soundObj.has(FIELD_PITCH) ? soundObj.get(FIELD_PITCH).getAsFloat() : DEFAULT_PITCH;
         sounds.add(new HolologData.HolologSound(id, volume, pitch));
       }
     }
 
     List<HolologData.HolologParticle> particles = new ArrayList<>();
-    if (json.has("fx")) {
-      JsonArray fxArray = json.getAsJsonArray("fx");
-      for (JsonElement fxElement : fxArray) {
-        JsonObject fxObj = fxElement.getAsJsonObject();
-        ResourceLocation id = new ResourceLocation(fxObj.get("id").getAsString());
-        int count = fxObj.has("count") ? fxObj.get("count").getAsInt() : 5;
-        String color = fxObj.has("color") ? fxObj.get("color").getAsString() : null;
-        float scale = fxObj.has("scale") ? fxObj.get("scale").getAsFloat() : 1.0f;
+
+    if (json.has(FIELD_SHOW_PARTICLE)) {
+      JsonArray particleArray = json.getAsJsonArray(FIELD_SHOW_PARTICLE);
+      for (JsonElement particleElement : particleArray) {
+        JsonObject particleObj = particleElement.getAsJsonObject();
+        ResourceLocation id = new ResourceLocation(particleObj.get(FIELD_ID).getAsString());
+        int count =
+            particleObj.has(FIELD_COUNT)
+                ? particleObj.get(FIELD_COUNT).getAsInt()
+                : DEFAULT_PARTICLE_COUNT;
+        String color =
+            particleObj.has(FIELD_COLOR) ? particleObj.get(FIELD_COLOR).getAsString() : null;
+        float scale =
+            particleObj.has(FIELD_SCALE)
+                ? particleObj.get(FIELD_SCALE).getAsFloat()
+                : DEFAULT_EFFECT_SCALE;
         particles.add(new HolologData.HolologParticle(id, count, color, scale));
       }
     }

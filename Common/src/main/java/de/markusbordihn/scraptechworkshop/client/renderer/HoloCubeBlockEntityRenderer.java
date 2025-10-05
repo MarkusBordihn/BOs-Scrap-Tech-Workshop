@@ -28,6 +28,8 @@ import de.markusbordihn.scraptechworkshop.client.hololog.HolologPlayer;
 import de.markusbordihn.scraptechworkshop.data.hololog.HolologData;
 import de.markusbordihn.scraptechworkshop.data.hololog.HolologParser;
 import de.markusbordihn.scraptechworkshop.data.hololog.HolologStatus;
+import de.markusbordihn.scraptechworkshop.entity.hololog.HolologHumanoidEntity;
+import de.markusbordihn.scraptechworkshop.registry.entity.HolologEntityRegistry;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -109,6 +111,8 @@ public class HoloCubeBlockEntityRenderer<T extends HoloCubeBlockEntity>
         case ITEM ->
             renderItem(
                 blockEntity, displayEntity, poseStack, buffer, combinedLight, combinedOverlay);
+        case HOLO_ENTITY ->
+            renderHoloEntity(blockEntity, displayEntity, poseStack, buffer, combinedLight);
       }
     } catch (Exception e) {
       log.error(
@@ -157,6 +161,34 @@ public class HoloCubeBlockEntityRenderer<T extends HoloCubeBlockEntity>
     prepareHologramPose(blockEntity, displayEntity, poseStack);
 
     renderer.render(entity, 0.0F, 0.0F, poseStack, buffer, combinedLight);
+
+    poseStack.popPose();
+  }
+
+  private void renderHoloEntity(
+      T blockEntity,
+      HolologData.HolologDisplayEntity displayEntity,
+      PoseStack poseStack,
+      MultiBufferSource buffer,
+      int combinedLight) {
+
+    HolologHumanoidEntity holoEntity = getOrCreateHoloEntity(blockEntity.getLevel(), displayEntity);
+    if (holoEntity == null) {
+      return;
+    }
+
+    EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+    EntityRenderer<? super Entity> renderer = dispatcher.getRenderer(holoEntity);
+
+    Level level = blockEntity.getLevel();
+    if (level != null) {
+      holoEntity.tickCount = (int) level.getGameTime();
+    }
+
+    poseStack.pushPose();
+    prepareHologramPose(blockEntity, displayEntity, poseStack);
+
+    renderer.render(holoEntity, 0.0F, 0.0F, poseStack, buffer, combinedLight);
 
     poseStack.popPose();
   }
@@ -237,6 +269,38 @@ public class HoloCubeBlockEntityRenderer<T extends HoloCubeBlockEntity>
     return entity;
   }
 
+  private HolologHumanoidEntity getOrCreateHoloEntity(
+      Level level, HolologData.HolologDisplayEntity displayEntity) {
+    if (level == null || HolologEntityRegistry.HOLOLOG_HUMANOID_ENTITY_TYPE == null) {
+      return null;
+    }
+
+    ResourceLocation cacheKey = displayEntity.texture();
+    if (cacheKey == null) {
+      cacheKey = new ResourceLocation(Constants.MOD_ID, "hololog_humanoid_default");
+    }
+
+    if (entityCache.containsKey(cacheKey)) {
+      Entity cached = entityCache.get(cacheKey);
+      if (cached instanceof HolologHumanoidEntity holoEntity && !cached.isRemoved()) {
+        return holoEntity;
+      }
+    }
+
+    HolologHumanoidEntity holoEntity =
+        HolologEntityRegistry.HOLOLOG_HUMANOID_ENTITY_TYPE.create(level);
+    if (holoEntity != null) {
+      holoEntity.setInvisible(false);
+      if (displayEntity.texture() != null) {
+        holoEntity.setTexture(displayEntity.texture());
+      }
+      holoEntity.setSlim(displayEntity.slim());
+      entityCache.put(cacheKey, holoEntity);
+    }
+
+    return holoEntity;
+  }
+
   private void prepareHologramPose(
       T blockEntity, HolologData.HolologDisplayEntity displayEntity, PoseStack poseStack) {
 
@@ -266,21 +330,40 @@ public class HoloCubeBlockEntityRenderer<T extends HoloCubeBlockEntity>
       poseStack.translate(HOLOGRAM_CENTER_X, yOffset, HOLOGRAM_CENTER_Z);
     }
 
-    if (displayEntity.type() == HolologData.DisplayType.ENTITY) {
-      Minecraft minecraft = Minecraft.getInstance();
-      if (minecraft.player != null) {
-        Vec3 blockCenter = Vec3.atCenterOf(blockEntity.getBlockPos()).add(0, yOffset, 0);
-        Vec3 playerPos = minecraft.player.getEyePosition();
-        Vec3 lookDir = playerPos.subtract(blockCenter).normalize();
-        float yaw = (float) Math.toDegrees(Math.atan2(lookDir.x, lookDir.z));
-        poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+    if (displayEntity.type() == HolologData.DisplayType.ENTITY
+        || displayEntity.type() == HolologData.DisplayType.HOLO_ENTITY) {
 
-        Level level = blockEntity.getLevel();
-        if (level != null) {
-          float time = level.getGameTime() + minecraft.getFrameTimeNs() / 1_000_000_000f;
-          float headBob = (float) Math.sin(time * ENTITY_HEAD_BOB_SPEED) * ENTITY_HEAD_BOB_AMOUNT;
-          poseStack.mulPose(Axis.XP.rotationDegrees(headBob));
+      // Check if custom rotation is set for HOLO_ENTITY
+      boolean hasCustomRotation = false;
+      if (displayEntity.type() == HolologData.DisplayType.HOLO_ENTITY) {
+        hasCustomRotation =
+            displayEntity.rotationX() != 0.0f
+                || displayEntity.rotationY() != 0.0f
+                || displayEntity.rotationZ() != 0.0f;
+      }
+
+      // Apply player-facing rotation only if no custom rotation is set
+      if (!hasCustomRotation) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.player != null) {
+          Vec3 blockCenter = Vec3.atCenterOf(blockEntity.getBlockPos()).add(0, yOffset, 0);
+          Vec3 playerPos = minecraft.player.getEyePosition();
+          Vec3 lookDir = playerPos.subtract(blockCenter).normalize();
+          float yaw = (float) Math.toDegrees(Math.atan2(lookDir.x, lookDir.z));
+          poseStack.mulPose(Axis.YP.rotationDegrees(yaw));
+
+          Level level = blockEntity.getLevel();
+          if (level != null) {
+            float time = level.getGameTime() + minecraft.getFrameTimeNs() / 1_000_000_000f;
+            float headBob = (float) Math.sin(time * ENTITY_HEAD_BOB_SPEED) * ENTITY_HEAD_BOB_AMOUNT;
+            poseStack.mulPose(Axis.XP.rotationDegrees(headBob));
+          }
         }
+      } else {
+        // Apply custom rotation for HOLO_ENTITY
+        poseStack.mulPose(Axis.XP.rotationDegrees(displayEntity.rotationX()));
+        poseStack.mulPose(Axis.YP.rotationDegrees(displayEntity.rotationY()));
+        poseStack.mulPose(Axis.ZP.rotationDegrees(displayEntity.rotationZ()));
       }
 
       float scale = displayEntity.scale() * ENTITY_SCALE_MULTIPLIER;

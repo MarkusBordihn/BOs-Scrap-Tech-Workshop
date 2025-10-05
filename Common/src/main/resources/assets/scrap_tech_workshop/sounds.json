@@ -1,0 +1,24 @@
+{
+  "holologs.de.intro.introduction": {
+    "sounds": [
+      {
+        "name": "scrap_tech_workshop:holologs/de/intro/introduction",
+        "stream": true,
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ],
+    "subtitle": "subtitles.scrap_tech_workshop.holologs.de.intro.introduction"
+  },
+  "holologs.en.intro.introduction": {
+    "sounds": [
+      {
+        "name": "scrap_tech_workshop:holologs/en/intro/introduction",
+        "stream": true,
+        "volume": 1.0,
+        "pitch": 1.0
+      }
+    ],
+    "subtitle": "subtitles.scrap_tech_workshop.holologs.en.intro.introduction"
+  }
+}

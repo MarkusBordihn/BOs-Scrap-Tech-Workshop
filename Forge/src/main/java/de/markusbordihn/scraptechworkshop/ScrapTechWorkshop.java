@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
 import de.markusbordihn.scraptechworkshop.config.Config;
 import de.markusbordihn.scraptechworkshop.entity.ForgeModBlockEntities;
+import de.markusbordihn.scraptechworkshop.entity.ForgeModEntities;
 import de.markusbordihn.scraptechworkshop.item.ForgeModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.ForgeModItems;
 import de.markusbordihn.scraptechworkshop.loot.ModLootModifiers;
@@ -61,6 +62,9 @@ public class ScrapTechWorkshop {
 
     log.info("{} Block Entities ...", Constants.LOG_REGISTER_PREFIX);
     ForgeModBlockEntities.register(modEventBus);
+
+    log.info("{} Entities ...", Constants.LOG_REGISTER_PREFIX);
+    ForgeModEntities.register(modEventBus);
 
     log.info("{} Block Items ...", Constants.LOG_REGISTER_PREFIX);
     ForgeModBlockItems.register(modEventBus);

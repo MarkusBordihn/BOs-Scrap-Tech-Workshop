@@ -24,10 +24,13 @@ import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.client.ClientEventHandler;
 import de.markusbordihn.scraptechworkshop.client.renderer.HoloCubeBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.RecyclerBlockEntityRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.entity.HolologHumanoidRenderer;
 import de.markusbordihn.scraptechworkshop.client.screen.ClientScreens;
 import de.markusbordihn.scraptechworkshop.registry.block.hololog.HolologBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.entity.HolologEntityRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import org.apache.logging.log4j.LogManager;
@@ -46,6 +49,10 @@ public class ScrapTechWorkshopClient implements ClientModInitializer {
     // Register block entity renderers
     BlockEntityRenderers.register(RecyclerBlockEntity.TYPE, RecyclerBlockEntityRenderer::new);
     BlockEntityRenderers.register(HoloCubeBlockEntity.TYPE, HoloCubeBlockEntityRenderer::new);
+
+    // Register entity renderers
+    EntityRendererRegistry.register(
+        HolologEntityRegistry.HOLOLOG_HUMANOID_ENTITY_TYPE, HolologHumanoidRenderer::new);
 
     // Set render layers for transparent blocks
     BlockRenderLayerMap.INSTANCE.putBlock(

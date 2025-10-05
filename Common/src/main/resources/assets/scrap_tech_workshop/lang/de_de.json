@@ -89,6 +89,7 @@
   "item.scrap_tech_workshop.holocube.description": "Ein holografisches Projektionsgerät, das aufgezeichnete Hololog-Nachrichten abspielt und 3D-Visualisierungen anzeigt",
   "item.scrap_tech_workshop.holocube.usage": "Platziere den HoloWürfel auf dem Boden und klicke mit der rechten Maustaste, um die Hologramm-Wiedergabe zu starten",
   "block.scrap_tech_workshop.holocube": "HoloWürfel",
+  "subtitles.scrap_tech_workshop.holologs.de.intro.introduction": "Hololog: Einführung - Die Alte Welt",
   "scrap_category.scrap_tech_workshop.material": "Material",
   "scrap_category.scrap_tech_workshop.organic": "Organisch",
   "scrap_category.scrap_tech_workshop.synthetic": "Synthetisch",

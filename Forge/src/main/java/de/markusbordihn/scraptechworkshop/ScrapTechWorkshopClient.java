@@ -23,7 +23,9 @@ import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.client.renderer.HoloCubeBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.RecyclerBlockEntityRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.entity.HolologHumanoidRenderer;
 import de.markusbordihn.scraptechworkshop.client.screen.ClientScreens;
+import de.markusbordihn.scraptechworkshop.registry.entity.HolologEntityRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -52,5 +54,7 @@ public class ScrapTechWorkshopClient {
   public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
     event.registerBlockEntityRenderer(RecyclerBlockEntity.TYPE, RecyclerBlockEntityRenderer::new);
     event.registerBlockEntityRenderer(HoloCubeBlockEntity.TYPE, HoloCubeBlockEntityRenderer::new);
+    event.registerEntityRenderer(
+        HolologEntityRegistry.HOLOLOG_HUMANOID_ENTITY_TYPE, HolologHumanoidRenderer::new);
   }
 }

@@ -23,6 +23,7 @@ import de.markusbordihn.scraptechworkshop.block.BlockEventHandler;
 import de.markusbordihn.scraptechworkshop.block.FabricModBlocks;
 import de.markusbordihn.scraptechworkshop.config.Config;
 import de.markusbordihn.scraptechworkshop.entity.FabricModBlockEntities;
+import de.markusbordihn.scraptechworkshop.entity.FabricModEntities;
 import de.markusbordihn.scraptechworkshop.item.FabricModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.FabricModItems;
 import de.markusbordihn.scraptechworkshop.loot.VanillaChestLootModifier;
@@ -58,6 +59,9 @@ public class ScrapTechWorkshop implements ModInitializer {
 
     log.info("{} Block Entities ...", Constants.LOG_REGISTER_PREFIX);
     FabricModBlockEntities.registerBlockEntities();
+
+    log.info("{} Entities ...", Constants.LOG_REGISTER_PREFIX);
+    FabricModEntities.registerEntities();
 
     log.info("{} Block Items ...", Constants.LOG_REGISTER_PREFIX);
     FabricModBlockItems.registerBlockItems();

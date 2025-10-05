@@ -17,40 +17,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.data.hololog;
+package de.markusbordihn.scraptechworkshop.registry.entity;
 
-import net.minecraft.util.StringRepresentable;
+import de.markusbordihn.scraptechworkshop.entity.hololog.HolologHumanoidEntity;
+import net.minecraft.world.entity.EntityType;
 
-public enum HolologStatus implements StringRepresentable {
-  READY("ready"),
-  PLAYING("playing"),
-  ENDED("ended");
+public class HolologEntityRegistry {
 
-  private final String name;
+  public static EntityType<HolologHumanoidEntity> HOLOLOG_HUMANOID_ENTITY_TYPE;
 
-  HolologStatus(String name) {
-    this.name = name;
-  }
+  private HolologEntityRegistry() {}
 
-  @Override
-  public String getSerializedName() {
-    return name;
-  }
-
-  @Override
-  public String toString() {
-    return name;
-  }
-
-  public HolologStatus cycle() {
-    return switch (this) {
-      case READY -> PLAYING;
-      case PLAYING -> ENDED;
-      case ENDED -> READY;
-    };
-  }
-
-  public boolean isActive() {
-    return this == PLAYING || this == ENDED;
+  public static void setHolologHumanoidEntityType(EntityType<HolologHumanoidEntity> entityType) {
+    HOLOLOG_HUMANOID_ENTITY_TYPE = entityType;
   }
 }
