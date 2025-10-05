@@ -20,8 +20,11 @@
 package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
+import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.entity.HoloCubeBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RecyclerBlockEntityRegistry;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -44,6 +47,14 @@ public class ForgeModBlockEntities {
                       RecyclerBlockEntity::new, RecyclerBlockRegistry.RECYCLER_BLOCK)
                   .build(null));
 
+  public static final RegistryObject<BlockEntityType<HoloCubeBlockEntity>> HOLOCUBE_BLOCK_ENTITY =
+      BLOCK_ENTITY_TYPES.register(
+          HoloCubeBlockEntity.ID,
+          () ->
+              BlockEntityType.Builder.of(
+                      HoloCubeBlockEntity::new, ForgeModBlocks.HOLOCUBE_BLOCK.get())
+                  .build(null));
+
   private ForgeModBlockEntities() {}
 
   public static void register(IEventBus eventBus) {
@@ -53,6 +64,7 @@ public class ForgeModBlockEntities {
         (RegisterEvent event) -> {
           if (event.getRegistryKey().equals(ForgeRegistries.BLOCK_ENTITY_TYPES.getRegistryKey())) {
             RecyclerBlockEntityRegistry.setBlockEntityType(RECYCLER_BLOCK_ENTITY.get());
+            HoloCubeBlockEntityRegistry.setBlockEntityType(HOLOCUBE_BLOCK_ENTITY.get());
           }
         });
   }

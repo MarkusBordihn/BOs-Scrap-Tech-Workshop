@@ -21,8 +21,10 @@ package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.hololog.HolologBlockRegistry;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -68,6 +70,12 @@ public class FabricModBlockItems {
                     ScrapPileBlockRegistry.SCRAP_PILE_BLOCK,
                     new Item.Properties(),
                     ScrapPileVariant.TECH));
+
+    // Register holocube block item
+    ModBlockItems.HOLOCUBE_BLOCK_ITEM =
+        registerBlockItem(
+            HoloCubeItem.ID,
+            () -> new HoloCubeItem(HolologBlockRegistry.HOLOCUBE_BLOCK, new Item.Properties()));
   }
 
   private static Supplier<BlockItem> registerBlockItem(

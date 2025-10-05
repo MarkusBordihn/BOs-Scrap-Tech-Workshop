@@ -23,6 +23,7 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
 import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -67,6 +68,11 @@ public class ForgeModBlockItems {
                   new Item.Properties(),
                   ScrapPileVariant.TECH));
 
+  public static final RegistryObject<BlockItem> HOLOCUBE_BLOCK_ITEM =
+      BLOCK_ITEMS.register(
+          HoloCubeItem.ID,
+          () -> new HoloCubeItem(ForgeModBlocks.HOLOCUBE_BLOCK.get(), new Item.Properties()));
+
   private ForgeModBlockItems() {}
 
   public static void register(IEventBus eventBus) {
@@ -75,5 +81,6 @@ public class ForgeModBlockItems {
     ModBlockItems.MIXED_SCRAP_PILE_BLOCK_ITEM = MIXED_SCRAP_PILE_BLOCK_ITEM::get;
     ModBlockItems.METAL_SCRAP_PILE_BLOCK_ITEM = METAL_SCRAP_PILE_BLOCK_ITEM::get;
     ModBlockItems.TECH_SCRAP_PILE_BLOCK_ITEM = TECH_SCRAP_PILE_BLOCK_ITEM::get;
+    ModBlockItems.HOLOCUBE_BLOCK_ITEM = HOLOCUBE_BLOCK_ITEM::get;
   }
 }

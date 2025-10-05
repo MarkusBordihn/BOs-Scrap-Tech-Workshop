@@ -20,6 +20,7 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -75,6 +76,13 @@ public class ModCreativeTabs {
 
               // Tool Items
               output.accept(ModItems.SCRAP_MULTITOOL.get());
+
+              // HoloCubes with different holologs
+              ItemStack holoCubeStack = new ItemStack(ModBlockItems.HOLOCUBE_BLOCK_ITEM.get());
+              HoloCubeItem.setHolologId(
+                  holoCubeStack,
+                  new ResourceLocation(Constants.MOD_ID, "holologs/intro/introduction"));
+              output.accept(holoCubeStack);
 
               output.accept(ModBlockItems.RECYCLER_BLOCK_ITEM.get());
               output.accept(ModBlockItems.MIXED_SCRAP_PILE_BLOCK_ITEM.get());

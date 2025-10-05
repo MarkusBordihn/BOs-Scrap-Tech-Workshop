@@ -17,26 +17,42 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.server;
+package de.markusbordihn.scraptechworkshop.data.hololog;
 
-import de.markusbordihn.scraptechworkshop.config.Config;
-import de.markusbordihn.scraptechworkshop.saveddata.HoloCubeStorage;
-import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.StringRepresentable;
 
-public class ServerEvents {
-  public static void handleServerStartedEvent(MinecraftServer minecraftServer) {
-    // Initialize persistent storage
-    HoloCubeStorage.init(minecraftServer.overworld());
+public enum HolologStatus implements StringRepresentable {
+  READY("ready"),
+  PLAYING("playing"),
+  PAUSED("paused"),
+  ENDED("ended");
+
+  private final String name;
+
+  HolologStatus(String name) {
+    this.name = name;
   }
 
-  public static void handleServerStartingEvent(MinecraftServer minecraftServer) {
-    Config.registerDeferred(true);
+  @Override
+  public String getSerializedName() {
+    return name;
   }
 
-  public static void handleServerStartTickEvent(MinecraftServer minecraftServer) {
-    ScrapPileSpawner.tick(minecraftServer);
+  @Override
+  public String toString() {
+    return name;
   }
 
-  public static void handleServerEndTickEvent(MinecraftServer minecraftServer) {}
+  public HolologStatus cycle() {
+    return switch (this) {
+      case READY -> PLAYING;
+      case PLAYING -> PAUSED;
+      case PAUSED -> PLAYING;
+      case ENDED -> READY;
+    };
+  }
+
+  public boolean isActive() {
+    return this == PLAYING || this == ENDED;
+  }
 }

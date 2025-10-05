@@ -17,26 +17,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.server;
+package de.markusbordihn.scraptechworkshop.registry.block.entity;
 
-import de.markusbordihn.scraptechworkshop.config.Config;
-import de.markusbordihn.scraptechworkshop.saveddata.HoloCubeStorage;
-import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
-import net.minecraft.server.MinecraftServer;
+import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
-public class ServerEvents {
-  public static void handleServerStartedEvent(MinecraftServer minecraftServer) {
-    // Initialize persistent storage
-    HoloCubeStorage.init(minecraftServer.overworld());
+public class HoloCubeBlockEntityRegistry {
+  public static BlockEntityType<HoloCubeBlockEntity> HOLOCUBE_BLOCK_ENTITY_TYPE;
+
+  private HoloCubeBlockEntityRegistry() {}
+
+  public static void setBlockEntityType(BlockEntityType<HoloCubeBlockEntity> type) {
+    HOLOCUBE_BLOCK_ENTITY_TYPE = type;
+    HoloCubeBlockEntity.TYPE = type;
   }
-
-  public static void handleServerStartingEvent(MinecraftServer minecraftServer) {
-    Config.registerDeferred(true);
-  }
-
-  public static void handleServerStartTickEvent(MinecraftServer minecraftServer) {
-    ScrapPileSpawner.tick(minecraftServer);
-  }
-
-  public static void handleServerEndTickEvent(MinecraftServer minecraftServer) {}
 }

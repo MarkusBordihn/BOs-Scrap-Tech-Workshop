@@ -17,26 +17,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.server;
+package de.markusbordihn.scraptechworkshop.registry.block.hololog;
 
-import de.markusbordihn.scraptechworkshop.config.Config;
-import de.markusbordihn.scraptechworkshop.saveddata.HoloCubeStorage;
-import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
-import net.minecraft.server.MinecraftServer;
+import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 
-public class ServerEvents {
-  public static void handleServerStartedEvent(MinecraftServer minecraftServer) {
-    // Initialize persistent storage
-    HoloCubeStorage.init(minecraftServer.overworld());
-  }
+public class HolologBlockRegistry {
 
-  public static void handleServerStartingEvent(MinecraftServer minecraftServer) {
-    Config.registerDeferred(true);
-  }
+  public static final HoloCubeBlock HOLOCUBE_BLOCK =
+      new HoloCubeBlock(
+          BlockBehaviour.Properties.of()
+              .mapColor(MapColor.COLOR_CYAN)
+              .strength(0.5F, 0.5F)
+              .sound(SoundType.GLASS)
+              .lightLevel(state -> 7)
+              .pushReaction(PushReaction.DESTROY)
+              .noOcclusion());
 
-  public static void handleServerStartTickEvent(MinecraftServer minecraftServer) {
-    ScrapPileSpawner.tick(minecraftServer);
-  }
-
-  public static void handleServerEndTickEvent(MinecraftServer minecraftServer) {}
+  private HolologBlockRegistry() {}
 }

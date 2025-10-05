@@ -17,26 +17,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.server;
+package de.markusbordihn.scraptechworkshop.player;
 
-import de.markusbordihn.scraptechworkshop.config.Config;
-import de.markusbordihn.scraptechworkshop.saveddata.HoloCubeStorage;
-import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
-import net.minecraft.server.MinecraftServer;
+import de.markusbordihn.scraptechworkshop.Constants;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
-public class ServerEvents {
-  public static void handleServerStartedEvent(MinecraftServer minecraftServer) {
-    // Initialize persistent storage
-    HoloCubeStorage.init(minecraftServer.overworld());
+@Mod.EventBusSubscriber(modid = Constants.MOD_ID)
+public class ForgePlayerEventHandler {
+
+  @SubscribeEvent
+  public static void onPlayerJoin(PlayerEvent.PlayerLoggedInEvent event) {
+    if (event.getEntity() instanceof ServerPlayer player) {
+      PlayerEvents.handlePlayerJoin(player);
+    }
   }
-
-  public static void handleServerStartingEvent(MinecraftServer minecraftServer) {
-    Config.registerDeferred(true);
-  }
-
-  public static void handleServerStartTickEvent(MinecraftServer minecraftServer) {
-    ScrapPileSpawner.tick(minecraftServer);
-  }
-
-  public static void handleServerEndTickEvent(MinecraftServer minecraftServer) {}
 }

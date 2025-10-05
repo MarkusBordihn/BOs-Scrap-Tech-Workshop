@@ -64,6 +64,9 @@ public class ModItems {
   public static Supplier<Item> ENERGY_CELL_BLOCK;
   public static Supplier<Item> CIRCUIT_BOARD;
 
+  // Hololog Items
+  public static Supplier<Item> HOLOCUBE;
+
   public static ResourceLocation getItemId(String name) {
     return new ResourceLocation(Constants.MOD_ID, name);
   }

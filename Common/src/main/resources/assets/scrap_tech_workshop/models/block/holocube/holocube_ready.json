@@ -1,0 +1,6 @@
+{
+  "parent": "scrap_tech_workshop:block/holocube/holocube_default",
+  "textures": {
+    "holocube": "scrap_tech_workshop:block/holocube/holocube"
+  }
+}

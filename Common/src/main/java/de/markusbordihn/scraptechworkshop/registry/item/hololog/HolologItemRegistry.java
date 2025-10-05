@@ -17,26 +17,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.server;
+package de.markusbordihn.scraptechworkshop.registry.item.hololog;
 
-import de.markusbordihn.scraptechworkshop.config.Config;
-import de.markusbordihn.scraptechworkshop.saveddata.HoloCubeStorage;
-import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
-import net.minecraft.server.MinecraftServer;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
+import net.minecraft.world.item.Item;
 
-public class ServerEvents {
-  public static void handleServerStartedEvent(MinecraftServer minecraftServer) {
-    // Initialize persistent storage
-    HoloCubeStorage.init(minecraftServer.overworld());
-  }
+public class HolologItemRegistry {
 
-  public static void handleServerStartingEvent(MinecraftServer minecraftServer) {
-    Config.registerDeferred(true);
-  }
+  public static final HoloCubeItem HOLOCUBE_ITEM =
+      new HoloCubeItem(
+          de.markusbordihn.scraptechworkshop.registry.block.hololog.HolologBlockRegistry
+              .HOLOCUBE_BLOCK,
+          new Item.Properties());
 
-  public static void handleServerStartTickEvent(MinecraftServer minecraftServer) {
-    ScrapPileSpawner.tick(minecraftServer);
-  }
-
-  public static void handleServerEndTickEvent(MinecraftServer minecraftServer) {}
+  private HolologItemRegistry() {}
 }

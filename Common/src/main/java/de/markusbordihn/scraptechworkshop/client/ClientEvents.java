@@ -17,26 +17,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.server;
+package de.markusbordihn.scraptechworkshop.client;
 
-import de.markusbordihn.scraptechworkshop.config.Config;
-import de.markusbordihn.scraptechworkshop.saveddata.HoloCubeStorage;
-import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
-import net.minecraft.server.MinecraftServer;
+import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.client.hololog.HolologPlayer;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class ServerEvents {
-  public static void handleServerStartedEvent(MinecraftServer minecraftServer) {
-    // Initialize persistent storage
-    HoloCubeStorage.init(minecraftServer.overworld());
+public class ClientEvents {
+
+  private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
+
+  private ClientEvents() {}
+
+  public static void handleClientDisconnect() {
+    log.debug("Client disconnecting - stopping all hololog players");
+    HolologPlayer.stopAll();
   }
-
-  public static void handleServerStartingEvent(MinecraftServer minecraftServer) {
-    Config.registerDeferred(true);
-  }
-
-  public static void handleServerStartTickEvent(MinecraftServer minecraftServer) {
-    ScrapPileSpawner.tick(minecraftServer);
-  }
-
-  public static void handleServerEndTickEvent(MinecraftServer minecraftServer) {}
 }
