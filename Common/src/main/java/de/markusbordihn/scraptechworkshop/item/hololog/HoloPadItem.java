@@ -20,12 +20,11 @@
 package de.markusbordihn.scraptechworkshop.item.hololog;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.client.screen.HoloPadScreen;
+import de.markusbordihn.scraptechworkshop.client.ClientHelper;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import java.util.List;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -97,7 +96,7 @@ public class HoloPadItem extends Item {
           player.getName().getString(),
           holoLogId);
     } else {
-      Minecraft.getInstance().setScreen(new HoloPadScreen(holoLogId));
+      ClientHelper.openHoloPadScreen(holoLogId);
     }
 
     return InteractionResultHolder.sidedSuccess(stack, level.isClientSide);
