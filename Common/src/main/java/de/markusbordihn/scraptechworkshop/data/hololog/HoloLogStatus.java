@@ -17,25 +17,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.data.hololog;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.function.Supplier;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.util.StringRepresentable;
 
-public class ModBlockItems {
+public enum HoloLogStatus implements StringRepresentable {
+  READY("ready"),
+  PLAYING("playing"),
+  ENDED("ended");
 
-  // Scrap Pile Block Items
-  public static Supplier<BlockItem> RECYCLER;
-  public static Supplier<BlockItem> MIXED_SCRAP_PILE;
-  public static Supplier<BlockItem> METAL_SCRAP_PILE;
-  public static Supplier<BlockItem> TECH_SCRAP_PILE;
+  private final String name;
 
-  // Hololog Block Items
-  public static Supplier<BlockItem> HOLO_CUBE;
+  HoloLogStatus(String name) {
+    this.name = name;
+  }
 
-  public static ResourceLocation getBlockItemId(String name) {
-    return new ResourceLocation(Constants.MOD_ID, name);
+  @Override
+  public String getSerializedName() {
+    return name;
+  }
+
+  @Override
+  public String toString() {
+    return name;
+  }
+
+  public HoloLogStatus cycle() {
+    return switch (this) {
+      case READY -> PLAYING;
+      case PLAYING -> ENDED;
+      case ENDED -> READY;
+    };
+  }
+
+  public boolean isActive() {
+    return this == PLAYING || this == ENDED;
   }
 }

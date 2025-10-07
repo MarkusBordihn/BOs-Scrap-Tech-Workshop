@@ -20,8 +20,8 @@
 package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.entity.hololog.HolologHumanoidEntity;
-import de.markusbordihn.scraptechworkshop.registry.entity.HolologEntityRegistry;
+import de.markusbordihn.scraptechworkshop.entity.hololog.HoloLogHumanoidEntity;
+import de.markusbordihn.scraptechworkshop.registry.entity.HoloLogEntityRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -35,22 +35,22 @@ public class FabricModEntities {
 
   public static void registerEntities() {
     // Register HolologHumanoid Entity
-    EntityType<HolologHumanoidEntity> holologHumanoidEntityType =
-        EntityType.Builder.of(HolologHumanoidEntity::new, MobCategory.MISC)
+    EntityType<HoloLogHumanoidEntity> holologHumanoidEntityType =
+        EntityType.Builder.of(HoloLogHumanoidEntity::new, MobCategory.MISC)
             .sized(0.6f, 1.8f)
             .clientTrackingRange(10)
-            .build(HolologHumanoidEntity.ID);
+            .build(HoloLogHumanoidEntity.ID);
 
     Registry.register(
         BuiltInRegistries.ENTITY_TYPE,
-        new ResourceLocation(Constants.MOD_ID, HolologHumanoidEntity.ID),
+        new ResourceLocation(Constants.MOD_ID, HoloLogHumanoidEntity.ID),
         holologHumanoidEntityType);
 
     // Register default attributes
     FabricDefaultAttributeRegistry.register(
-        holologHumanoidEntityType, HolologHumanoidEntity.createAttributes());
+        holologHumanoidEntityType, HoloLogHumanoidEntity.createAttributes());
 
     // Set the entity type in the common registry
-    HolologEntityRegistry.setHolologHumanoidEntityType(holologHumanoidEntityType);
+    HoloLogEntityRegistry.setHoloLogHumanoidEntityType(holologHumanoidEntityType);
   }
 }

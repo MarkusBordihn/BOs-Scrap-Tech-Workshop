@@ -21,7 +21,7 @@ package de.markusbordihn.scraptechworkshop.block.hololog;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
-import de.markusbordihn.scraptechworkshop.data.hololog.HolologStatus;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogStatus;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -57,27 +57,28 @@ import org.apache.logging.log4j.Logger;
 
 public class HoloCubeBlock extends BaseEntityBlock {
 
-  public static final String ID = "holocube";
+  public static final String ID = "holo_cube";
   public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-  public static final EnumProperty<HolologStatus> STATUS =
-      EnumProperty.create("status", HolologStatus.class);
+  public static final EnumProperty<HoloLogStatus> STATUS =
+      EnumProperty.create("status", HoloLogStatus.class);
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
   private static final VoxelShape SHAPE = Shapes.box(0.3125, 0.0, 0.3125, 0.6875, 0.375, 0.6875);
 
-  public HoloCubeBlock(Properties properties) {
+  public HoloCubeBlock(final Properties properties) {
     super(properties);
     this.registerDefaultState(
         this.stateDefinition
             .any()
             .setValue(FACING, Direction.NORTH)
-            .setValue(STATUS, HolologStatus.READY));
+            .setValue(STATUS, HoloLogStatus.READY));
   }
 
-  public static void updateStatus(Level level, BlockPos pos, HolologStatus newStatus) {
-    BlockState currentState = level.getBlockState(pos);
+  public static void updateStatus(
+      final Level level, final BlockPos blockPos, final HoloLogStatus newStatus) {
+    BlockState currentState = level.getBlockState(blockPos);
     if (currentState.getBlock() instanceof HoloCubeBlock
         && currentState.getValue(STATUS) != newStatus) {
-      level.setBlock(pos, currentState.setValue(STATUS, newStatus), Block.UPDATE_ALL);
+      level.setBlock(blockPos, currentState.setValue(STATUS, newStatus), Block.UPDATE_ALL);
     }
   }
 
@@ -88,7 +89,7 @@ public class HoloCubeBlock extends BaseEntityBlock {
 
   @Override
   public VoxelShape getShape(
-      BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+      BlockState state, BlockGetter level, BlockPos blockPos, CollisionContext context) {
     return SHAPE;
   }
 
@@ -98,8 +99,8 @@ public class HoloCubeBlock extends BaseEntityBlock {
   }
 
   @Override
-  public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-    return new HoloCubeBlockEntity(pos, state);
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState state) {
+    return new HoloCubeBlockEntity(blockPos, state);
   }
 
   @Override
@@ -123,30 +124,30 @@ public class HoloCubeBlock extends BaseEntityBlock {
       return InteractionResult.SUCCESS;
     }
 
-    if (!(level.getBlockEntity(pos) instanceof HoloCubeBlockEntity blockEntity)) {
+    if (!(level.getBlockEntity(pos) instanceof HoloCubeBlockEntity holoCubeBlockEntity)) {
       log.warn("No HoloCubeBlockEntity found at {}", pos);
       return InteractionResult.FAIL;
     }
 
-    ResourceLocation holologId = blockEntity.getHolologId();
-    if (holologId == null) {
-      player.displayClientMessage(Component.literal("No hololog data found!"), true);
-      log.warn("[{}] No hololog ID found", blockEntity.getCubeUUID());
+    ResourceLocation holoLogId = holoCubeBlockEntity.getHoloLogId();
+    if (holoLogId == null) {
+      player.displayClientMessage(Component.literal("No holo-log data found!"), true);
+      log.warn("[{}] No holo-log ID found", holoCubeBlockEntity.getCubeUUID());
       return InteractionResult.FAIL;
     }
 
-    HolologStatus currentStatus = state.getValue(STATUS);
-    HolologStatus newStatus = currentStatus.cycle();
+    HoloLogStatus currentStatus = state.getValue(STATUS);
+    HoloLogStatus newStatus = currentStatus.cycle();
 
     // Check distance when activating (changing to PLAYING)
-    if (currentStatus != HolologStatus.PLAYING && newStatus == HolologStatus.PLAYING) {
+    if (currentStatus != HoloLogStatus.PLAYING && newStatus == HoloLogStatus.PLAYING) {
       double distance = player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
       if (distance > 32.0 * 32.0) {
         player.displayClientMessage(
             Component.literal("You must be within 32 blocks to activate the hololog!"), true);
         log.debug(
             "[{}] Player {} too far away ({} blocks) to activate",
-            blockEntity.getCubeUUID(),
+            holoCubeBlockEntity.getCubeUUID(),
             player.getName().getString(),
             Math.sqrt(distance));
         return InteractionResult.FAIL;
@@ -155,7 +156,7 @@ public class HoloCubeBlock extends BaseEntityBlock {
 
     log.debug(
         "[{}] Player {} changed status from {} to {}",
-        blockEntity.getCubeUUID(),
+        holoCubeBlockEntity.getCubeUUID(),
         player.getName().getString(),
         currentStatus,
         newStatus);
@@ -167,7 +168,7 @@ public class HoloCubeBlock extends BaseEntityBlock {
   public BlockState getStateForPlacement(BlockPlaceContext context) {
     return this.defaultBlockState()
         .setValue(FACING, context.getHorizontalDirection().getOpposite())
-        .setValue(STATUS, HolologStatus.READY);
+        .setValue(STATUS, HoloLogStatus.READY);
   }
 
   @Override
@@ -182,46 +183,46 @@ public class HoloCubeBlock extends BaseEntityBlock {
 
   @Override
   public void onRemove(
-      BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+      BlockState state, Level level, BlockPos blockPos, BlockState newState, boolean isMoving) {
     if (!state.is(newState.getBlock())) {
       if (level.isClientSide
-          && level.getBlockEntity(pos) instanceof HoloCubeBlockEntity blockEntity) {
+          && level.getBlockEntity(blockPos) instanceof HoloCubeBlockEntity blockEntity) {
         blockEntity.cleanup();
       }
-      super.onRemove(state, level, pos, newState, isMoving);
+      super.onRemove(state, level, blockPos, newState, isMoving);
     }
   }
 
   @Override
   public void playerWillDestroy(
       Level level,
-      BlockPos pos,
-      BlockState state,
+      BlockPos blockPos,
+      BlockState blockState,
       net.minecraft.world.entity.player.Player player) {
     if (!level.isClientSide && !player.isCreative()) {
-      if (level.getBlockEntity(pos) instanceof HoloCubeBlockEntity blockEntity) {
-        ResourceLocation holologId = blockEntity.getHolologId();
-        if (holologId != null) {
-          ItemStack stack = HoloCubeItem.create(holologId);
-          popResource(level, pos, stack);
+      if (level.getBlockEntity(blockPos) instanceof HoloCubeBlockEntity blockEntity) {
+        ResourceLocation holoLogId = blockEntity.getHoloLogId();
+        if (holoLogId != null) {
+          ItemStack stack = HoloCubeItem.create(holoLogId);
+          popResource(level, blockPos, stack);
         }
       }
     }
-    super.playerWillDestroy(level, pos, state, player);
+    super.playerWillDestroy(level, blockPos, blockState, player);
   }
 
   @Override
   public void setPlacedBy(
-      Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-    super.setPlacedBy(level, pos, state, placer, stack);
+      Level level, BlockPos blockPos, BlockState blockState, LivingEntity placer, ItemStack stack) {
+    super.setPlacedBy(level, blockPos, blockState, placer, stack);
 
-    if (level.getBlockEntity(pos) instanceof HoloCubeBlockEntity blockEntity) {
-      ResourceLocation holologId = HoloCubeItem.getHolologId(stack);
-      if (holologId != null) {
-        blockEntity.setHolologId(holologId);
-        log.info("[{}] Placed with hololog: {}", blockEntity.getCubeUUID(), holologId);
+    if (level.getBlockEntity(blockPos) instanceof HoloCubeBlockEntity holoCubeBlockEntity) {
+      ResourceLocation holoLogId = HoloCubeItem.getHoloLogId(stack);
+      if (holoLogId != null) {
+        holoCubeBlockEntity.setHoloLogId(holoLogId);
+        log.info("[{}] Placed with holo-log: {}", holoCubeBlockEntity.getCubeUUID(), holoLogId);
       } else {
-        log.warn("[{}] Placed without hololog ID", blockEntity.getCubeUUID());
+        log.warn("[{}] Placed without holo-log ID", holoCubeBlockEntity.getCubeUUID());
       }
     }
   }

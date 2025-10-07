@@ -24,7 +24,7 @@ import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
-import de.markusbordihn.scraptechworkshop.registry.block.hololog.HolologBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -37,14 +37,14 @@ public class FabricModBlockItems {
 
   public static void registerBlockItems() {
     // Register recycler block item
-    ModBlockItems.RECYCLER_BLOCK_ITEM =
+    ModBlockItems.RECYCLER =
         registerBlockItem(
             RecyclerBlock.ID,
             () ->
                 new RecyclerBlockItem(RecyclerBlockRegistry.RECYCLER_BLOCK, new Item.Properties()));
 
     // Register scrap pile block items
-    ModBlockItems.MIXED_SCRAP_PILE_BLOCK_ITEM =
+    ModBlockItems.MIXED_SCRAP_PILE =
         registerBlockItem(
             ScrapPileBlockItem.MIXED_ID,
             () ->
@@ -53,7 +53,7 @@ public class FabricModBlockItems {
                     new Item.Properties(),
                     ScrapPileVariant.MIXED));
 
-    ModBlockItems.METAL_SCRAP_PILE_BLOCK_ITEM =
+    ModBlockItems.METAL_SCRAP_PILE =
         registerBlockItem(
             ScrapPileBlockItem.METAL_ID,
             () ->
@@ -62,7 +62,7 @@ public class FabricModBlockItems {
                     new Item.Properties(),
                     ScrapPileVariant.METAL));
 
-    ModBlockItems.TECH_SCRAP_PILE_BLOCK_ITEM =
+    ModBlockItems.TECH_SCRAP_PILE =
         registerBlockItem(
             ScrapPileBlockItem.TECH_ID,
             () ->
@@ -71,11 +71,9 @@ public class FabricModBlockItems {
                     new Item.Properties(),
                     ScrapPileVariant.TECH));
 
-    // Register holocube block item
-    ModBlockItems.HOLOCUBE_BLOCK_ITEM =
-        registerBlockItem(
-            HoloCubeItem.ID,
-            () -> new HoloCubeItem(HolologBlockRegistry.HOLOCUBE_BLOCK, new Item.Properties()));
+    // Hololog Items
+    ModBlockItems.HOLO_CUBE =
+        registerBlockItem(HoloCubeItem.ID, () -> HoloLogItemRegistry.HOLO_CUBE_ITEM);
   }
 
   private static Supplier<BlockItem> registerBlockItem(

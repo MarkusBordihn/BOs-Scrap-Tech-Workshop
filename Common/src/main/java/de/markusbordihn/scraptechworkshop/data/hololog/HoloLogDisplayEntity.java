@@ -17,25 +17,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.data.hololog;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.function.Supplier;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
 
-public class ModBlockItems {
+public record HoloLogDisplayEntity(
+    DisplayType type,
+    ResourceLocation id,
+    float scale,
+    float rotationSpeed,
+    float rotationX,
+    float rotationY,
+    float rotationZ,
+    ResourceLocation texture,
+    boolean slim) {
 
-  // Scrap Pile Block Items
-  public static Supplier<BlockItem> RECYCLER;
-  public static Supplier<BlockItem> MIXED_SCRAP_PILE;
-  public static Supplier<BlockItem> METAL_SCRAP_PILE;
-  public static Supplier<BlockItem> TECH_SCRAP_PILE;
-
-  // Hololog Block Items
-  public static Supplier<BlockItem> HOLO_CUBE;
-
-  public static ResourceLocation getBlockItemId(String name) {
-    return new ResourceLocation(Constants.MOD_ID, name);
-  }
+  public static final HoloLogDisplayEntity DEFAULT_VILLAGER =
+      new HoloLogDisplayEntity(
+          DisplayType.ENTITY,
+          new ResourceLocation("minecraft", "villager"),
+          0.5f,
+          1.0f,
+          0.0f,
+          0.0f,
+          0.0f,
+          null,
+          false);
 }

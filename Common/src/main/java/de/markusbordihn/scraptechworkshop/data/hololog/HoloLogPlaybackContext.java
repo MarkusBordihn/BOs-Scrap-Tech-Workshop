@@ -17,25 +17,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.data.hololog;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.function.Supplier;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
-public class ModBlockItems {
+public interface HoloLogPlaybackContext {
 
-  // Scrap Pile Block Items
-  public static Supplier<BlockItem> RECYCLER;
-  public static Supplier<BlockItem> MIXED_SCRAP_PILE;
-  public static Supplier<BlockItem> METAL_SCRAP_PILE;
-  public static Supplier<BlockItem> TECH_SCRAP_PILE;
+  ContextType contextType();
 
-  // Hololog Block Items
-  public static Supplier<BlockItem> HOLO_CUBE;
+  Level getLevel();
 
-  public static ResourceLocation getBlockItemId(String name) {
-    return new ResourceLocation(Constants.MOD_ID, name);
-  }
+  Vec3 getEffectPosition();
 }

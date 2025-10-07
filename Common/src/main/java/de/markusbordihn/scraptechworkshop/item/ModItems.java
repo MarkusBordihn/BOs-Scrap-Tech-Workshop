@@ -25,6 +25,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 public class ModItems {
+
   // Basic Scrap Items
   public static Supplier<Item> BIO_SCRAP;
   public static Supplier<Item> CERAMIC_SCRAP;
@@ -40,14 +41,14 @@ public class ModItems {
   public static Supplier<Item> MINERAL_SCRAP;
   public static Supplier<Item> PLASTIC_SCRAP;
   public static Supplier<Item> RUBBER_SCRAP;
-  public static Supplier<Item> TECH_SCRAP;
   public static Supplier<Item> WOOD_SCRAP;
 
   // Additional Tech Scrap Items
+  public static Supplier<Item> CAPACITOR_SCRAP;
   public static Supplier<Item> CIRCUIT_SCRAP;
   public static Supplier<Item> COIL_SCRAP;
-  public static Supplier<Item> CAPACITOR_SCRAP;
   public static Supplier<Item> ENERGY_CELL_SCRAP;
+  public static Supplier<Item> TECH_SCRAP;
 
   // Additional Material and Synthetic Scrap Items
   public static Supplier<Item> ALLOY_SCRAP;
@@ -65,7 +66,7 @@ public class ModItems {
   public static Supplier<Item> CIRCUIT_BOARD;
 
   // Hololog Items
-  public static Supplier<Item> HOLOCUBE;
+  public static Supplier<Item> HOLO_PAD;
 
   public static ResourceLocation getItemId(String name) {
     return new ResourceLocation(Constants.MOD_ID, name);

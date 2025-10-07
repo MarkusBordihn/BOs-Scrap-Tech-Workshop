@@ -28,7 +28,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record HoloCubePlayerData(
     UUID playerUUID,
-    ResourceLocation holologId,
+    ResourceLocation holoLogId,
     long receivedTimestamp,
     Optional<BlockPos> placedAt,
     Optional<Long> playedTimestamp) {
@@ -43,8 +43,8 @@ public record HoloCubePlayerData(
                           .fieldOf("playerUUID")
                           .forGetter(HoloCubePlayerData::playerUUID),
                       ResourceLocation.CODEC
-                          .fieldOf("holologId")
-                          .forGetter(HoloCubePlayerData::holologId),
+                          .fieldOf("holoLogId")
+                          .forGetter(HoloCubePlayerData::holoLogId),
                       Codec.LONG
                           .fieldOf("receivedTimestamp")
                           .forGetter(HoloCubePlayerData::receivedTimestamp),
@@ -56,22 +56,8 @@ public record HoloCubePlayerData(
                           .forGetter(HoloCubePlayerData::playedTimestamp))
                   .apply(instance, HoloCubePlayerData::new));
 
-  public static HoloCubePlayerData create(UUID playerUUID, ResourceLocation holologId) {
+  public static HoloCubePlayerData create(UUID playerUUID, ResourceLocation holoLogId) {
     return new HoloCubePlayerData(
-        playerUUID, holologId, System.currentTimeMillis(), Optional.empty(), Optional.empty());
-  }
-
-  public HoloCubePlayerData withPlacedAt(BlockPos pos) {
-    return new HoloCubePlayerData(
-        playerUUID, holologId, receivedTimestamp, Optional.of(pos), playedTimestamp);
-  }
-
-  public HoloCubePlayerData withPlayedTimestamp(long timestamp) {
-    return new HoloCubePlayerData(
-        playerUUID, holologId, receivedTimestamp, placedAt, Optional.of(timestamp));
-  }
-
-  public boolean hasBeenPlayed() {
-    return playedTimestamp.isPresent();
+        playerUUID, holoLogId, System.currentTimeMillis(), Optional.empty(), Optional.empty());
   }
 }

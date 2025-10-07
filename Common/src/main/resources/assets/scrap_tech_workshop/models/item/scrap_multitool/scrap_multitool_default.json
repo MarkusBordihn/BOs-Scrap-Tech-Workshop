@@ -6,7 +6,7 @@
     "particle": "scrap_tech_workshop:item/tool/scrap_multitool/coat_default",
     "coat": "scrap_tech_workshop:item/tool/scrap_multitool/coat_default",
     "holder": "scrap_tech_workshop:item/tool/scrap_multitool/holder_default",
-    "display": "scrap_tech_workshop:item/tool/scrap_multitool/display/battery/display_default",
+    "display": "scrap_tech_workshop:item/tool/scrap_multitool/display/display_default",
     "hologram_rod": "scrap_tech_workshop:item/tool/scrap_multitool/hologram/rod/hologram_rod_empty",
     "hologram_symbol": "scrap_tech_workshop:item/tool/scrap_multitool/hologram/symbol/hologram_symbol_empty"
   }

@@ -17,48 +17,97 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.client.hololog;
+package de.markusbordihn.scraptechworkshop.client.renderer.hololog;
 
-import de.markusbordihn.scraptechworkshop.data.hololog.HolologData;
-import de.markusbordihn.scraptechworkshop.data.hololog.HolologPlaybackContext;
+import de.markusbordihn.scraptechworkshop.data.hololog.ContextType;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogEffects;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogParticle;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogPlaybackContext;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogSound;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.FastColor;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3f;
 
-public final class HolologPlayerEffects {
+public final class HoloLogPlayerEffects {
 
   private static final double PARTICLE_SPAWN_SPREAD = 0.5;
   private static final double PARTICLE_VELOCITY_HORIZONTAL = 0.02;
   private static final double PARTICLE_VELOCITY_VERTICAL = 0.05;
 
-  private HolologPlayerEffects() {}
+  private HoloLogPlayerEffects() {}
 
   public static void playEffects(
-      HolologData.HolologEffects effects, HolologPlaybackContext context, Vec3 effectPos) {
+      final HoloLogEffects effects, final HoloLogPlaybackContext context, final Vec3 effectPos) {
     if (!(context.getLevel() instanceof ClientLevel)) {
       return;
     }
 
-    for (HolologData.HolologSound sound : effects.sfx()) {
-      context.playSound(sound.id(), sound.volume(), sound.pitch());
+    for (HoloLogSound sound : effects.sfx()) {
+      playSound(sound.id(), sound.volume(), sound.pitch(), context);
     }
 
-    for (HolologData.HolologParticle particle : effects.fx()) {
+    for (HoloLogParticle particle : effects.fx()) {
       spawnParticles(particle, effectPos, context);
     }
   }
 
+  public static void playSound(
+      final ResourceLocation soundId,
+      final float volume,
+      final float pitch,
+      final HoloLogPlaybackContext context) {
+    SoundEvent sound = SoundEvent.createVariableRangeEvent(soundId);
+
+    if (context.contextType() == de.markusbordihn.scraptechworkshop.data.hololog.ContextType.UI) {
+      net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+      if (mc.player != null) {
+        Vec3 playerPos = mc.player.position();
+        Level level = context.getLevel();
+        level.playLocalSound(
+            playerPos.x, playerPos.y, playerPos.z, sound, SoundSource.BLOCKS, volume, pitch, false);
+      }
+    } else {
+      Vec3 pos = context.getEffectPosition();
+      Level level = context.getLevel();
+      level.playLocalSound(pos.x, pos.y, pos.z, sound, SoundSource.BLOCKS, volume, pitch, false);
+    }
+  }
+
+  public static void spawnParticle(
+      final ParticleOptions particle,
+      final Vec3 pos,
+      final Vec3 speed,
+      final HoloLogPlaybackContext context) {
+    if (context.getLevel() instanceof ClientLevel clientLevel) {
+      clientLevel.addParticle(particle, pos.x, pos.y, pos.z, speed.x, speed.y, speed.z);
+    }
+  }
+
   private static void spawnParticles(
-      HolologData.HolologParticle particle, Vec3 pos, HolologPlaybackContext context) {
+      final HoloLogParticle particle, final Vec3 pos, final HoloLogPlaybackContext context) {
     ParticleOptions particleType = getParticleType(particle);
+
+    // For UI context, spawn particles at player position
+    Vec3 spawnBasePos = pos;
+    if (context.contextType() == ContextType.UI) {
+      Minecraft minecraft = net.minecraft.client.Minecraft.getInstance();
+      if (minecraft.player != null) {
+        spawnBasePos = minecraft.player.position().add(0, 1.5, 0);
+      }
+    }
 
     for (int i = 0; i < particle.count(); i++) {
       Vec3 spawnPos =
-          pos.add(
+          spawnBasePos.add(
               (Math.random() - 0.5) * PARTICLE_SPAWN_SPREAD,
               (Math.random() - 0.5) * PARTICLE_SPAWN_SPREAD,
               (Math.random() - 0.5) * PARTICLE_SPAWN_SPREAD);
@@ -69,11 +118,11 @@ public final class HolologPlayerEffects {
               Math.random() * PARTICLE_VELOCITY_VERTICAL,
               (Math.random() - 0.5) * PARTICLE_VELOCITY_HORIZONTAL);
 
-      context.spawnParticle(particleType, spawnPos, velocity);
+      spawnParticle(particleType, spawnPos, velocity, context);
     }
   }
 
-  private static ParticleOptions getParticleType(HolologData.HolologParticle particle) {
+  private static ParticleOptions getParticleType(final HoloLogParticle particle) {
     String particleId = particle.id().getPath();
 
     if ("dust".equals(particleId) && particle.color() != null) {
@@ -90,17 +139,17 @@ public final class HolologPlayerEffects {
     };
   }
 
-  private static Vector3f parseColor(String hexColor) {
+  private static Vector3f parseColor(final String hexColor) {
     if (hexColor == null || hexColor.isEmpty()) {
       return new Vector3f(1.0f, 1.0f, 1.0f);
     }
 
     try {
       int color = Integer.parseInt(hexColor.replace("#", ""), 16);
-      float r = FastColor.ARGB32.red(color | 0xFF000000) / 255.0f;
-      float g = FastColor.ARGB32.green(color | 0xFF000000) / 255.0f;
-      float b = FastColor.ARGB32.blue(color | 0xFF000000) / 255.0f;
-      return new Vector3f(r, g, b);
+      return new Vector3f(
+          FastColor.ARGB32.red(color | 0xFF000000) / 255.0f,
+          FastColor.ARGB32.green(color | 0xFF000000) / 255.0f,
+          FastColor.ARGB32.blue(color | 0xFF000000) / 255.0f);
     } catch (NumberFormatException e) {
       return new Vector3f(1.0f, 1.0f, 1.0f);
     }

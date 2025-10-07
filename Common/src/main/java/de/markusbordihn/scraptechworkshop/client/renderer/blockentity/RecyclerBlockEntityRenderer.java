@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.client.renderer;
+package de.markusbordihn.scraptechworkshop.client.renderer.blockentity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -72,12 +72,12 @@ public class RecyclerBlockEntityRenderer implements BlockEntityRenderer<Recycler
 
   @Override
   public void render(
-      RecyclerBlockEntity blockEntity,
-      float partialTick,
-      PoseStack poseStack,
-      MultiBufferSource bufferSource,
-      int packedLight,
-      int packedOverlay) {
+      final RecyclerBlockEntity blockEntity,
+      final float partialTick,
+      final PoseStack poseStack,
+      final MultiBufferSource bufferSource,
+      final int packedLight,
+      final int packedOverlay) {
 
     Level level = blockEntity.getLevel();
     if (level == null || !level.isClientSide) {
@@ -121,15 +121,15 @@ public class RecyclerBlockEntityRenderer implements BlockEntityRenderer<Recycler
   }
 
   private void renderAnimatedItem(
-      RecyclerBlockEntity blockEntity,
-      float partialTick,
-      PoseStack poseStack,
-      MultiBufferSource bufferSource,
-      int packedLight,
-      int packedOverlay,
-      ItemStack inputStack,
-      Level level,
-      float progress) {
+      final RecyclerBlockEntity blockEntity,
+      final float partialTick,
+      final PoseStack poseStack,
+      final MultiBufferSource bufferSource,
+      final int packedLight,
+      final int packedOverlay,
+      final ItemStack inputStack,
+      final Level level,
+      final float progress) {
     poseStack.pushPose();
     poseStack.translate(ITEM_X_OFFSET, ITEM_Y_OFFSET, ITEM_Z_OFFSET);
 
@@ -172,7 +172,7 @@ public class RecyclerBlockEntityRenderer implements BlockEntityRenderer<Recycler
   }
 
   private void addParticleEffects(
-      RecyclerBlockEntity blockEntity, Level level, ItemStack inputStack) {
+      final RecyclerBlockEntity blockEntity, final Level level, final ItemStack inputStack) {
     long gameTime = level.getGameTime();
     if ((gameTime % PARTICLE_SPAWN_INTERVAL) != 0) {
       return;
@@ -213,7 +213,8 @@ public class RecyclerBlockEntityRenderer implements BlockEntityRenderer<Recycler
     }
   }
 
-  private float getProcessingProgress(RecyclerBlockEntity blockEntity, float partialTick) {
+  private float getProcessingProgress(
+      final RecyclerBlockEntity blockEntity, final float partialTick) {
     int progress = blockEntity.getContainerData().get(PROGRESS_DATA_INDEX);
     int maxProgress = blockEntity.getContainerData().get(MAX_PROGRESS_DATA_INDEX);
 
@@ -224,14 +225,14 @@ public class RecyclerBlockEntityRenderer implements BlockEntityRenderer<Recycler
     return Math.min(1.0f, (progress + partialTick) / maxProgress);
   }
 
-  private boolean isSolidBlockAbove(Level level, BlockPos pos) {
+  private boolean isSolidBlockAbove(final Level level, final BlockPos pos) {
     BlockPos abovePos = pos.above();
     BlockState stateAbove = level.getBlockState(abovePos);
 
     return stateAbove.isSolidRender(level, abovePos);
   }
 
-  private boolean isPlayerNearbyCached(Level level, BlockPos pos) {
+  private boolean isPlayerNearbyCached(final Level level, final BlockPos pos) {
     long currentTime = level.getGameTime();
     if (lastProximityCheck == -1
         || currentTime - lastProximityCheck >= PROXIMITY_CHECK_INTERVAL
@@ -245,18 +246,16 @@ public class RecyclerBlockEntityRenderer implements BlockEntityRenderer<Recycler
     return cachedPlayerNearby;
   }
 
-  private boolean calculatePlayerNearby(Level level, BlockPos pos) {
+  private boolean calculatePlayerNearby(final Level level, final BlockPos pos) {
     Minecraft minecraft = Minecraft.getInstance();
     Player player = minecraft.player;
     if (player == null) {
       return false;
     }
-
     double deltaX = player.getX() - (pos.getX() + 0.5);
     double deltaY = player.getY() - (pos.getY() + 0.5);
     double deltaZ = player.getZ() - (pos.getZ() + 0.5);
     double distanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
-
     return distanceSquared <= CLOSE_RENDER_DISTANCE_SQUARED;
   }
 }

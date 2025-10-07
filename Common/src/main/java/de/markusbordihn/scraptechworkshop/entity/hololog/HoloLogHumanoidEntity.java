@@ -32,19 +32,20 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
-public class HolologHumanoidEntity extends PathfinderMob {
+public class HoloLogHumanoidEntity extends PathfinderMob {
 
-  public static final String ID = "hololog_humanoid";
+  public static final String ID = "holo_log_humanoid";
 
   private static final EntityDataAccessor<String> TEXTURE =
-      SynchedEntityData.defineId(HolologHumanoidEntity.class, EntityDataSerializers.STRING);
+      SynchedEntityData.defineId(HoloLogHumanoidEntity.class, EntityDataSerializers.STRING);
 
   private static final EntityDataAccessor<Boolean> SLIM =
-      SynchedEntityData.defineId(HolologHumanoidEntity.class, EntityDataSerializers.BOOLEAN);
+      SynchedEntityData.defineId(HoloLogHumanoidEntity.class, EntityDataSerializers.BOOLEAN);
 
   private ResourceLocation textureLocation;
 
-  public HolologHumanoidEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
+  public HoloLogHumanoidEntity(
+      final EntityType<? extends PathfinderMob> entityType, final Level level) {
     super(entityType, level);
     this.setNoAi(true);
     this.setNoGravity(true);
@@ -58,13 +59,6 @@ public class HolologHumanoidEntity extends PathfinderMob {
         .add(Attributes.MOVEMENT_SPEED, 0.0D);
   }
 
-  @Override
-  protected void defineSynchedData() {
-    super.defineSynchedData();
-    this.entityData.define(TEXTURE, "");
-    this.entityData.define(SLIM, false);
-  }
-
   public ResourceLocation getTexture() {
     if (this.textureLocation == null) {
       String textureString = this.entityData.get(TEXTURE);
@@ -75,7 +69,7 @@ public class HolologHumanoidEntity extends PathfinderMob {
     return this.textureLocation;
   }
 
-  public void setTexture(ResourceLocation texture) {
+  public void setTexture(final ResourceLocation texture) {
     if (texture != null) {
       this.textureLocation = texture;
       this.entityData.set(TEXTURE, texture.toString());
@@ -86,31 +80,38 @@ public class HolologHumanoidEntity extends PathfinderMob {
     return this.entityData.get(SLIM);
   }
 
-  public void setSlim(boolean slim) {
+  public void setSlim(final boolean slim) {
     this.entityData.set(SLIM, slim);
   }
 
   @Override
-  public void addAdditionalSaveData(CompoundTag tag) {
-    super.addAdditionalSaveData(tag);
-    if (this.textureLocation != null) {
-      tag.putString("Texture", this.textureLocation.toString());
-    }
-    tag.putBoolean("Slim", this.entityData.get(SLIM));
+  protected void defineSynchedData() {
+    super.defineSynchedData();
+    this.entityData.define(TEXTURE, "");
+    this.entityData.define(SLIM, false);
   }
 
   @Override
-  public void readAdditionalSaveData(CompoundTag tag) {
-    super.readAdditionalSaveData(tag);
-    if (tag.contains("Texture")) {
-      String textureString = tag.getString("Texture");
+  public void addAdditionalSaveData(CompoundTag compoundTag) {
+    super.addAdditionalSaveData(compoundTag);
+    if (this.textureLocation != null) {
+      compoundTag.putString("Texture", this.textureLocation.toString());
+    }
+    compoundTag.putBoolean("Slim", this.entityData.get(SLIM));
+  }
+
+  @Override
+  public void readAdditionalSaveData(CompoundTag compoundTag) {
+    super.readAdditionalSaveData(compoundTag);
+    if (compoundTag.contains("Texture")) {
+      String textureString = compoundTag.getString("Texture");
       if (!textureString.isEmpty()) {
         this.textureLocation = new ResourceLocation(textureString);
         this.entityData.set(TEXTURE, textureString);
       }
     }
-    if (tag.contains("Slim")) {
-      this.entityData.set(SLIM, tag.getBoolean("Slim"));
+    if (compoundTag.contains("Slim")) {
+      this.entityData.set(SLIM, compoundTag.getBoolean("Slim"));
     }
   }
 
@@ -133,7 +134,7 @@ public class HolologHumanoidEntity extends PathfinderMob {
   }
 
   @Override
-  protected void doPush(Entity entity) {
+  protected void doPush(final Entity entity) {
     // No pushing
   }
 
@@ -148,7 +149,7 @@ public class HolologHumanoidEntity extends PathfinderMob {
   }
 
   @Override
-  public boolean hurt(DamageSource source, float amount) {
+  public boolean hurt(final DamageSource source, final float amount) {
     return false;
   }
 }

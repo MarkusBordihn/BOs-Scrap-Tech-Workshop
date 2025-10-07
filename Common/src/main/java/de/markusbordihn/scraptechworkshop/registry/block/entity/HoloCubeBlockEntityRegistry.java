@@ -23,12 +23,12 @@ import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class HoloCubeBlockEntityRegistry {
-  public static BlockEntityType<HoloCubeBlockEntity> HOLOCUBE_BLOCK_ENTITY_TYPE;
+  public static BlockEntityType<HoloCubeBlockEntity> HOLO_CUBE_BLOCK_ENTITY_TYPE;
 
   private HoloCubeBlockEntityRegistry() {}
 
-  public static void setBlockEntityType(BlockEntityType<HoloCubeBlockEntity> type) {
-    HOLOCUBE_BLOCK_ENTITY_TYPE = type;
+  public static void setBlockEntityType(final BlockEntityType<HoloCubeBlockEntity> type) {
+    HOLO_CUBE_BLOCK_ENTITY_TYPE = type;
     HoloCubeBlockEntity.TYPE = type;
   }
 }

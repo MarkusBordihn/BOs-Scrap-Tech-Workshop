@@ -17,40 +17,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.data.hololog;
+package de.markusbordihn.scraptechworkshop.registry.block.hololog;
 
-import net.minecraft.util.StringRepresentable;
+import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 
-public enum HolologStatus implements StringRepresentable {
-  READY("ready"),
-  PLAYING("playing"),
-  ENDED("ended");
+public class HoloLogBlockRegistry {
 
-  private final String name;
+  public static final HoloCubeBlock HOLO_CUBE_BLOCK =
+      new HoloCubeBlock(
+          BlockBehaviour.Properties.of()
+              .mapColor(MapColor.COLOR_CYAN)
+              .strength(0.5F, 0.5F)
+              .sound(SoundType.GLASS)
+              .lightLevel(state -> 7)
+              .pushReaction(PushReaction.DESTROY)
+              .noOcclusion());
 
-  HolologStatus(String name) {
-    this.name = name;
-  }
-
-  @Override
-  public String getSerializedName() {
-    return name;
-  }
-
-  @Override
-  public String toString() {
-    return name;
-  }
-
-  public HolologStatus cycle() {
-    return switch (this) {
-      case READY -> PLAYING;
-      case PLAYING -> ENDED;
-      case ENDED -> READY;
-    };
-  }
-
-  public boolean isActive() {
-    return this == PLAYING || this == ENDED;
-  }
+  private HoloLogBlockRegistry() {}
 }

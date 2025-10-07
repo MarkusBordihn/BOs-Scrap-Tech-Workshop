@@ -23,7 +23,6 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.data.holocube.HoloCubePlayerData;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
@@ -34,14 +33,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class HoloCubeStorage extends SavedData {
-  public static final String DATA_NAME = Constants.MOD_ID + "_holocubes";
+  public static final String DATA_NAME = Constants.MOD_ID + "_holo_cubes";
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
-  private static final String HOLOCUBES_TAG = "HoloCubes";
+  private static final String HOLO_CUBES_TAG = "HoloCubes";
 
   private static HoloCubeStorage instance;
   private final List<HoloCubePlayerData> holoCubeList;
 
-  public HoloCubeStorage(List<HoloCubePlayerData> holoCubes) {
+  public HoloCubeStorage(final List<HoloCubePlayerData> holoCubes) {
     log.info("Creating new HoloCubeStorage with {} entries", holoCubes.size());
     this.holoCubeList = new ArrayList<>(holoCubes);
   }
@@ -50,7 +49,7 @@ public class HoloCubeStorage extends SavedData {
     this(new ArrayList<>());
   }
 
-  public static void init(ServerLevel serverLevel) {
+  public static void init(final ServerLevel serverLevel) {
     if (serverLevel == null) {
       log.error("Cannot initialize HoloCubeStorage without a valid level!");
       return;
@@ -66,91 +65,44 @@ public class HoloCubeStorage extends SavedData {
     return instance;
   }
 
-  public static HoloCubeStorage get(ServerLevel level) {
+  public static HoloCubeStorage get(final ServerLevel serverLevel) {
     if (instance == null) {
       instance =
-          level
+          serverLevel
               .getDataStorage()
               .computeIfAbsent(HoloCubeStorage::load, HoloCubeStorage::new, DATA_NAME);
     }
     return instance;
   }
 
-  public static HoloCubeStorage load(CompoundTag compoundTag) {
+  public static HoloCubeStorage load(final CompoundTag compoundTag) {
     List<HoloCubePlayerData> loadedData =
         HoloCubePlayerData.CODEC
             .listOf()
-            .parse(NbtOps.INSTANCE, compoundTag.get(HOLOCUBES_TAG))
+            .parse(NbtOps.INSTANCE, compoundTag.get(HOLO_CUBES_TAG))
             .resultOrPartial(error -> log.error("Failed to decode holocube data: {}", error))
             .orElse(new ArrayList<>());
 
     return new HoloCubeStorage(loadedData);
   }
 
-  public static void clearInstance() {
-    log.info("Clearing HoloCubeStorage instance");
-    instance = null;
-  }
-
-  public boolean hasReceivedHoloCube(UUID playerUUID, ResourceLocation holologId) {
+  public boolean hasReceivedHoloCube(final UUID playerUUID, final ResourceLocation holoLogId) {
     return holoCubeList.stream()
         .anyMatch(
-            data -> data.playerUUID().equals(playerUUID) && data.holologId().equals(holologId));
+            data -> data.playerUUID().equals(playerUUID) && data.holoLogId().equals(holoLogId));
   }
 
-  public void addHoloCube(HoloCubePlayerData data) {
-    if (data == null) {
+  public void addHoloCube(final HoloCubePlayerData holoCubePlayerData) {
+    if (holoCubePlayerData == null) {
       log.warn("Cannot add null holocube data");
       return;
     }
-    holoCubeList.add(data);
+    holoCubeList.add(holoCubePlayerData);
     log.info(
         "Added holocube {} for player {} at {}",
-        data.holologId(),
-        data.playerUUID(),
-        data.receivedTimestamp());
-    this.setDirty();
-  }
-
-  public void updateHoloCube(HoloCubePlayerData updatedData) {
-    if (updatedData == null) {
-      log.warn("Cannot update with null holocube data");
-      return;
-    }
-    for (int i = 0; i < holoCubeList.size(); i++) {
-      HoloCubePlayerData data = holoCubeList.get(i);
-      if (data.playerUUID().equals(updatedData.playerUUID())
-          && data.holologId().equals(updatedData.holologId())) {
-        holoCubeList.set(i, updatedData);
-        log.info(
-            "Updated holocube {} for player {}", updatedData.holologId(), updatedData.playerUUID());
-        this.setDirty();
-        return;
-      }
-    }
-    log.warn(
-        "Holocube not found for update: {} for player {}",
-        updatedData.holologId(),
-        updatedData.playerUUID());
-  }
-
-  public Optional<HoloCubePlayerData> getHoloCubeData(UUID playerUUID, ResourceLocation holologId) {
-    return holoCubeList.stream()
-        .filter(data -> data.playerUUID().equals(playerUUID) && data.holologId().equals(holologId))
-        .findFirst();
-  }
-
-  public List<HoloCubePlayerData> getPlayerHoloCubes(UUID playerUUID) {
-    return holoCubeList.stream().filter(data -> data.playerUUID().equals(playerUUID)).toList();
-  }
-
-  public List<HoloCubePlayerData> getAllHoloCubes() {
-    return new ArrayList<>(holoCubeList);
-  }
-
-  public void clear() {
-    holoCubeList.clear();
-    log.info("Cleared all holocube data");
+        holoCubePlayerData.holoLogId(),
+        holoCubePlayerData.playerUUID(),
+        holoCubePlayerData.receivedTimestamp());
     this.setDirty();
   }
 
@@ -160,7 +112,7 @@ public class HoloCubeStorage extends SavedData {
         .listOf()
         .encodeStart(NbtOps.INSTANCE, holoCubeList)
         .resultOrPartial(error -> log.error("Failed to encode holocube data: {}", error))
-        .ifPresent(tag -> compoundTag.put(HOLOCUBES_TAG, tag));
+        .ifPresent(tag -> compoundTag.put(HOLO_CUBES_TAG, tag));
 
     return compoundTag;
   }

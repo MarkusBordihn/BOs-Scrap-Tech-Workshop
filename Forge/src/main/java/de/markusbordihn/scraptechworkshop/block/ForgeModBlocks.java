@@ -23,7 +23,7 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
-import de.markusbordihn.scraptechworkshop.registry.block.hololog.HolologBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -41,8 +41,8 @@ public class ForgeModBlocks {
   public static final RegistryObject<Block> SCRAP_PILE_BLOCK =
       BLOCKS.register(ScrapPileBlock.ID, () -> ScrapPileBlockRegistry.SCRAP_PILE_BLOCK);
 
-  public static final RegistryObject<Block> HOLOCUBE_BLOCK =
-      BLOCKS.register(HoloCubeBlock.ID, () -> HolologBlockRegistry.HOLOCUBE_BLOCK);
+  public static final RegistryObject<Block> HOLO_CUBE_BLOCK =
+      BLOCKS.register(HoloCubeBlock.ID, () -> HoloLogBlockRegistry.HOLO_CUBE_BLOCK);
 
   private ForgeModBlocks() {}
 

@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.item;
 import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.AlloyScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.BioScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
@@ -37,8 +38,10 @@ import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
+import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;
+import de.markusbordihn.scraptechworkshop.tabs.ModCreativeTabs;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -132,9 +135,23 @@ public class FabricModItems {
     ModItems.CIRCUIT_BOARD =
         registerItem(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
 
+    // Hololog Items
+    ModItems.HOLO_PAD = registerItem(HoloPadItem.ID, () -> HoloLogItemRegistry.HOLO_PAD_ITEM);
+
+    // Register Creative Mode Tabs
     Registry.register(
         BuiltInRegistries.CREATIVE_MODE_TAB,
         ModCreativeTabs.SCRAP_TECH_WORKSHOP_TAB.location(),
         ModCreativeTabs.createMainTab().build());
+
+    Registry.register(
+        BuiltInRegistries.CREATIVE_MODE_TAB,
+        ModCreativeTabs.HOLO_CUBE_TAB.location(),
+        ModCreativeTabs.createHoloCubeTab().build());
+
+    Registry.register(
+        BuiltInRegistries.CREATIVE_MODE_TAB,
+        ModCreativeTabs.HOLO_PAD_TAB.location(),
+        ModCreativeTabs.createHoloPadTab().build());
   }
 }

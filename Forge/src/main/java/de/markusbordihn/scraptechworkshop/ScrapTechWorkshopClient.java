@@ -21,11 +21,12 @@ package de.markusbordihn.scraptechworkshop;
 
 import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
-import de.markusbordihn.scraptechworkshop.client.renderer.HoloCubeBlockEntityRenderer;
-import de.markusbordihn.scraptechworkshop.client.renderer.RecyclerBlockEntityRenderer;
-import de.markusbordihn.scraptechworkshop.client.renderer.entity.HolologHumanoidRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.HoloCubeBlockEntityRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.RecyclerBlockEntityRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.entity.HoloLogHumanoidRenderer;
 import de.markusbordihn.scraptechworkshop.client.screen.ClientScreens;
-import de.markusbordihn.scraptechworkshop.registry.entity.HolologEntityRegistry;
+import de.markusbordihn.scraptechworkshop.item.ForgeModItems;
+import de.markusbordihn.scraptechworkshop.registry.entity.HoloLogEntityRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -41,12 +42,14 @@ public class ScrapTechWorkshopClient {
 
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
-  public ScrapTechWorkshopClient(IEventBus modEventBus) {
+  public ScrapTechWorkshopClient(final IEventBus modEventBus) {
     log.info("Initializing {} (Forge-Client) ...", Constants.MOD_NAME);
+
+    ForgeModItems.CREATIVE_MODE_TABS.register(modEventBus);
   }
 
   @SubscribeEvent
-  public static void onClientSetup(FMLClientSetupEvent event) {
+  public static void onClientSetup(final FMLClientSetupEvent event) {
     event.enqueueWork(ClientScreens::registerScreens);
   }
 
@@ -55,6 +58,6 @@ public class ScrapTechWorkshopClient {
     event.registerBlockEntityRenderer(RecyclerBlockEntity.TYPE, RecyclerBlockEntityRenderer::new);
     event.registerBlockEntityRenderer(HoloCubeBlockEntity.TYPE, HoloCubeBlockEntityRenderer::new);
     event.registerEntityRenderer(
-        HolologEntityRegistry.HOLOLOG_HUMANOID_ENTITY_TYPE, HolologHumanoidRenderer::new);
+        HoloLogEntityRegistry.HOLO_LOG_HUMANOID_ENTITY_TYPE, HoloLogHumanoidRenderer::new);
   }
 }

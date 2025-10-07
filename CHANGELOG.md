@@ -7,6 +7,15 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v0.5.0
+
+- Refactored holo log player for better timing and handling.
+- Fixed register issue with holocube block entity.
+- Fixed multi-tool menu not opening in Fabric.
+- Added holo pad model, texture and menu.
+- Improved holocube texture, model and handling.
+- General code improvements, clean-up and refactoring.
+
 ### v0.4.0
 
 - Fixed serveral hololog and holocube related issues.

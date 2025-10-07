@@ -20,8 +20,8 @@
 package de.markusbordihn.scraptechworkshop.client;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.client.hololog.HolologPlayer;
-import de.markusbordihn.scraptechworkshop.data.hololog.HolologParser;
+import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogPlayerManager;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogParser;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -37,7 +37,7 @@ public class ClientEventHandler {
   @SubscribeEvent
   public static void onClientTick(TickEvent.ClientTickEvent event) {
     if (event.phase == TickEvent.Phase.END) {
-      HolologPlayer.tickAll();
+      HoloLogPlayerManager.tickAll();
     }
   }
 
@@ -68,7 +68,7 @@ class ClientModEventHandler {
               .thenRunAsync(
                   () -> {
                     log.info("Reloading holologs after resource pack change...");
-                    HolologParser.clearCache();
+                    HoloLogParser.clearCache();
                   },
                   executor2);
         });

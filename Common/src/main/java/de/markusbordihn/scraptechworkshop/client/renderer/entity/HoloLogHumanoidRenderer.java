@@ -20,8 +20,7 @@
 package de.markusbordihn.scraptechworkshop.client.renderer.entity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.entity.hololog.HolologHumanoidEntity;
+import de.markusbordihn.scraptechworkshop.entity.hololog.HoloLogHumanoidEntity;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.model.geom.ModelLayers;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -29,37 +28,42 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class HolologHumanoidRenderer
-    extends MobRenderer<HolologHumanoidEntity, PlayerModel<HolologHumanoidEntity>> {
+public class HoloLogHumanoidRenderer
+    extends MobRenderer<HoloLogHumanoidEntity, PlayerModel<HoloLogHumanoidEntity>> {
 
-  private static final ResourceLocation DEFAULT_TEXTURE =
-      new ResourceLocation(Constants.MOD_ID, "textures/entity/hololog/hololog_humanoid.png");
+  private static final ResourceLocation DEFAULT_TEXTURE_STEVE =
+      new ResourceLocation("textures/entity/player/wide/steve.png");
+  private static final ResourceLocation DEFAULT_TEXTURE_ALEX =
+      new ResourceLocation("textures/entity/player/slim/alex.png");
 
-  private final PlayerModel<HolologHumanoidEntity> modelClassic;
-  private final PlayerModel<HolologHumanoidEntity> modelSlim;
+  private final PlayerModel<HoloLogHumanoidEntity> modelClassic;
+  private final PlayerModel<HoloLogHumanoidEntity> modelSlim;
 
-  public HolologHumanoidRenderer(EntityRendererProvider.Context context) {
+  public HoloLogHumanoidRenderer(final EntityRendererProvider.Context context) {
     super(context, new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER), false), 0.0f);
     this.modelClassic = new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER), false);
     this.modelSlim = new PlayerModel<>(context.bakeLayer(ModelLayers.PLAYER_SLIM), true);
   }
 
   @Override
-  public ResourceLocation getTextureLocation(HolologHumanoidEntity entity) {
+  public ResourceLocation getTextureLocation(HoloLogHumanoidEntity entity) {
     ResourceLocation customTexture = entity.getTexture();
-    return customTexture != null ? customTexture : DEFAULT_TEXTURE;
+    if (customTexture != null) {
+      return customTexture;
+    }
+    return entity.isSlim() ? DEFAULT_TEXTURE_ALEX : DEFAULT_TEXTURE_STEVE;
   }
 
   @Override
   public void render(
-      HolologHumanoidEntity entity,
+      HoloLogHumanoidEntity entity,
       float entityYaw,
       float partialTicks,
       PoseStack poseStack,
       MultiBufferSource buffer,
       int packedLight) {
 
-    PlayerModel<HolologHumanoidEntity> model = entity.isSlim() ? this.modelSlim : this.modelClassic;
+    PlayerModel<HoloLogHumanoidEntity> model = entity.isSlim() ? this.modelSlim : this.modelClassic;
     this.model = model;
     model.setAllVisible(true);
 

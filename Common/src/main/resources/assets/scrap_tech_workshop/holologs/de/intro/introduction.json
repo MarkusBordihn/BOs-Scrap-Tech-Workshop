@@ -4,7 +4,7 @@
   "subtitle": "Die Alte Welt",
   "titleColor": "#00FFAA",
   "subtitleColor": "#AAAAAA",
-  "lineDelayTicks": 65,
+  "lineDelay": 3.25,
   "voiceOver": "scrap_tech_workshop:holologs/de/intro/introduction",
   "displayHoloEntity": {
     "id": "scrap_tech_workshop:hololog_humanoid",
@@ -97,14 +97,20 @@
       "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
     },
     {
-      "lineDelayTicks": 95
+      "lineDelay": 4.75,
+      "displayBlock": {"id": "minecraft:crafting_table", "scale": 0.45, "rotationSpeed": 0.5},
+      "playSound": [
+        {"id": "minecraft:block.beacon.ambient", "volume": 0.3},
+        {"id": "minecraft:block.note_block.pling", "volume": 0.2, "pitch": 1.8}
+      ],
+      "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA", "count": 2}]
     },
     {
       "text": "Das Zeitalter polierter Legierungen"
     },
     {
       "text": "und perfekter Maschinen ist vorbei.",
-      "displayItem": {"id": "minecraft:broken_elytra", "scale": 0.6},
+      "displayItem": {"id": "minecraft:damaged_anvil", "scale": 0.6},
       "playSound": [{"id": "minecraft:entity.elder_guardian.curse", "volume": 0.2, "pitch": 0.75}],
       "showParticle": [{"id": "minecraft:smoke", "count": 6}]
     },

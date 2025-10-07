@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item.multitool;
+package de.markusbordihn.scraptechworkshop.item.tool;
 
 import de.markusbordihn.scraptechworkshop.config.MultitoolConfig;
 import de.markusbordihn.scraptechworkshop.data.energy.EnergyData;
@@ -26,7 +26,6 @@ import de.markusbordihn.scraptechworkshop.data.multitool.ScrapMultitoolData;
 import de.markusbordihn.scraptechworkshop.data.multitool.ToolMode;
 import de.markusbordihn.scraptechworkshop.energy.EnergyManager;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
@@ -38,7 +37,7 @@ import net.minecraft.world.phys.Vec3;
 
 public record ToolModeDetector(ItemStack itemStack) {
 
-  public ToolMode getToolModeForBlock(BlockState state) {
+  public ToolMode getToolModeForBlock(final BlockState state) {
     if (state.is(BlockTags.MINEABLE_WITH_AXE)) return ToolMode.AXE;
     if (state.is(BlockTags.MINEABLE_WITH_PICKAXE)) return ToolMode.PICKAXE;
     if (state.is(BlockTags.MINEABLE_WITH_SHOVEL)) return ToolMode.SHOVEL;
@@ -46,11 +45,7 @@ public record ToolModeDetector(ItemStack itemStack) {
     return ToolMode.NONE;
   }
 
-  public ToolMode getToolModeForEntity(LivingEntity entity) {
-    return entity != null ? ToolMode.SWORD : ToolMode.NONE;
-  }
-
-  public void updateToolMode(Player player, BlockState targetBlock) {
+  public void updateToolMode(final Player player, final BlockState targetBlock) {
     ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
     EnergyData energyData = EnergyManager.getEnergyData(itemStack, MultitoolConfig.energyMax);
 
@@ -90,7 +85,7 @@ public record ToolModeDetector(ItemStack itemStack) {
     }
   }
 
-  public BlockState getTargetBlock(Level level, Player player) {
+  public BlockState getTargetBlock(final Level level, final Player player) {
     Vec3 start = player.getEyePosition(1.0F);
     Vec3 direction = player.getLookAngle();
     Vec3 end = start.add(direction.scale(MultitoolConfig.raycastDistance));
@@ -98,7 +93,6 @@ public record ToolModeDetector(ItemStack itemStack) {
     BlockHitResult hitResult =
         level.clip(
             new ClipContext(start, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
-
     if (hitResult.getType() == HitResult.Type.BLOCK) {
       return level.getBlockState(hitResult.getBlockPos());
     }

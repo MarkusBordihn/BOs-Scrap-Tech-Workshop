@@ -27,7 +27,7 @@ import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.HoloCubeBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RecyclerBlockEntityRegistry;
-import de.markusbordihn.scraptechworkshop.registry.block.hololog.HolologBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -38,30 +38,24 @@ public class FabricModBlockEntities {
   private FabricModBlockEntities() {}
 
   public static void registerBlockEntities() {
-    // Register recycler block entity with proper type creation
+    // Register recycler block
     BlockEntityType<RecyclerBlockEntity> recyclerBlockEntityType =
         BlockEntityType.Builder.of(RecyclerBlockEntity::new, RecyclerBlockRegistry.RECYCLER_BLOCK)
             .build(null);
-
     Registry.register(
         BuiltInRegistries.BLOCK_ENTITY_TYPE,
         new ResourceLocation(Constants.MOD_ID, RecyclerBlock.ID),
         recyclerBlockEntityType);
-
-    // Set the block entity type in the common registry
     RecyclerBlockEntityRegistry.setBlockEntityType(recyclerBlockEntityType);
 
     // Register holocube block entity
     BlockEntityType<HoloCubeBlockEntity> holoCubeBlockEntityType =
-        BlockEntityType.Builder.of(HoloCubeBlockEntity::new, HolologBlockRegistry.HOLOCUBE_BLOCK)
+        BlockEntityType.Builder.of(HoloCubeBlockEntity::new, HoloLogBlockRegistry.HOLO_CUBE_BLOCK)
             .build(null);
-
     Registry.register(
         BuiltInRegistries.BLOCK_ENTITY_TYPE,
         new ResourceLocation(Constants.MOD_ID, HoloCubeBlock.ID),
         holoCubeBlockEntityType);
-
-    // Set the block entity type in the common registry
     HoloCubeBlockEntityRegistry.setBlockEntityType(holoCubeBlockEntityType);
   }
 }

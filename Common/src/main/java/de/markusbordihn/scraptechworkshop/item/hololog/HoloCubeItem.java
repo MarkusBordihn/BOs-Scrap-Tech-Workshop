@@ -32,52 +32,52 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 public class HoloCubeItem extends BlockItem {
-  public static final String ID = "holocube";
-  private static final String HOLOLOG_ID_TAG = "HolologId";
+  public static final String ID = "holo_cube";
+  private static final String HOLO_LOG_ID_TAG = "HoloLogId";
 
-  public HoloCubeItem(Block block, Properties properties) {
+  public HoloCubeItem(final Block block, final Properties properties) {
     super(block, properties);
   }
 
-  public static ItemStack create(ResourceLocation holologId) {
-    ItemStack stack = new ItemStack(ModBlockItems.HOLOCUBE_BLOCK_ITEM.get());
-    setHolologId(stack, holologId);
+  public static ItemStack create(final ResourceLocation holoLogId) {
+    ItemStack stack = new ItemStack(ModBlockItems.HOLO_CUBE.get());
+    setHoloLogId(stack, holoLogId);
     return stack;
   }
 
-  public static void setHolologId(ItemStack stack, ResourceLocation holologId) {
-    CompoundTag tag = stack.getOrCreateTag();
-    tag.putString(HOLOLOG_ID_TAG, holologId.toString());
+  public static void setHoloLogId(final ItemStack itemStack, final ResourceLocation holoLogId) {
+    CompoundTag tag = itemStack.getOrCreateTag();
+    tag.putString(HOLO_LOG_ID_TAG, holoLogId.toString());
   }
 
-  public static ResourceLocation getHolologId(ItemStack stack) {
-    CompoundTag tag = stack.getTag();
-    if (tag == null || !tag.contains(HOLOLOG_ID_TAG)) {
+  public static ResourceLocation getHoloLogId(final ItemStack itemStack) {
+    CompoundTag tag = itemStack.getTag();
+    if (tag == null || !tag.contains(HOLO_LOG_ID_TAG)) {
       return null;
     }
-    return new ResourceLocation(tag.getString(HOLOLOG_ID_TAG));
+    return new ResourceLocation(tag.getString(HOLO_LOG_ID_TAG));
   }
 
   @Override
   public void appendHoverText(
-      ItemStack stack, Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
-    super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
+      ItemStack itemStack, Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+    super.appendHoverText(itemStack, level, tooltipComponents, isAdvanced);
 
     tooltipComponents.add(
-        Component.translatable(Constants.ITEM_PREFIX + "holocube.description")
+        Component.translatable(Constants.ITEM_PREFIX + "holo_cube.description")
             .withStyle(style -> style.withColor(0x999999)));
 
-    ResourceLocation holologId = getHolologId(stack);
-    if (holologId != null) {
+    ResourceLocation holoLogId = getHoloLogId(itemStack);
+    if (holoLogId != null) {
       tooltipComponents.add(
           Component.translatable(
-              Constants.TOOLTIP_PREFIX + "holocube.hololog", holologId.toString()));
+              Constants.TOOLTIP_PREFIX + "holo_cube.holo_log", holoLogId.toString()));
     } else {
-      tooltipComponents.add(Component.translatable(Constants.TOOLTIP_PREFIX + "holocube.empty"));
+      tooltipComponents.add(Component.translatable(Constants.TOOLTIP_PREFIX + "holo_cube.empty"));
     }
 
     tooltipComponents.add(
-        Component.translatable(Constants.ITEM_PREFIX + "holocube.usage")
+        Component.translatable(Constants.ITEM_PREFIX + "holo_cube.usage")
             .withStyle(style -> style.withColor(0x5555FF).withItalic(true)));
   }
 }

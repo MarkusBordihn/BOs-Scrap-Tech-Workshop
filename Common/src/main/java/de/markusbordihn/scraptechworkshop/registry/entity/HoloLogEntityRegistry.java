@@ -17,25 +17,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.registry.entity;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.function.Supplier;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
+import de.markusbordihn.scraptechworkshop.entity.hololog.HoloLogHumanoidEntity;
+import net.minecraft.world.entity.EntityType;
 
-public class ModBlockItems {
+public class HoloLogEntityRegistry {
 
-  // Scrap Pile Block Items
-  public static Supplier<BlockItem> RECYCLER;
-  public static Supplier<BlockItem> MIXED_SCRAP_PILE;
-  public static Supplier<BlockItem> METAL_SCRAP_PILE;
-  public static Supplier<BlockItem> TECH_SCRAP_PILE;
+  public static EntityType<HoloLogHumanoidEntity> HOLO_LOG_HUMANOID_ENTITY_TYPE;
 
-  // Hololog Block Items
-  public static Supplier<BlockItem> HOLO_CUBE;
+  private HoloLogEntityRegistry() {}
 
-  public static ResourceLocation getBlockItemId(String name) {
-    return new ResourceLocation(Constants.MOD_ID, name);
+  public static void setHoloLogHumanoidEntityType(
+      final EntityType<HoloLogHumanoidEntity> entityType) {
+    HOLO_LOG_HUMANOID_ENTITY_TYPE = entityType;
   }
 }

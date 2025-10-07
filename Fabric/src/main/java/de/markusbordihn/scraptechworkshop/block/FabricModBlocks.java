@@ -23,7 +23,7 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
-import de.markusbordihn.scraptechworkshop.registry.block.hololog.HolologBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -49,6 +49,6 @@ public class FabricModBlocks {
     Registry.register(
         BuiltInRegistries.BLOCK,
         new ResourceLocation(Constants.MOD_ID, HoloCubeBlock.ID),
-        HolologBlockRegistry.HOLOCUBE_BLOCK);
+        HoloLogBlockRegistry.HOLO_CUBE_BLOCK);
   }
 }

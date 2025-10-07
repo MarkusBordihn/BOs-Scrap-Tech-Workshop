@@ -20,8 +20,8 @@
 package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.entity.hololog.HolologHumanoidEntity;
-import de.markusbordihn.scraptechworkshop.registry.entity.HolologEntityRegistry;
+import de.markusbordihn.scraptechworkshop.entity.hololog.HoloLogHumanoidEntity;
+import de.markusbordihn.scraptechworkshop.registry.entity.HoloLogEntityRegistry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -37,14 +37,14 @@ public class ForgeModEntities {
       DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Constants.MOD_ID);
 
   // Entity registrations
-  public static final RegistryObject<EntityType<HolologHumanoidEntity>> HOLOLOG_HUMANOID =
+  public static final RegistryObject<EntityType<HoloLogHumanoidEntity>> HOLOLOG_HUMANOID =
       ENTITY_TYPES.register(
-          HolologHumanoidEntity.ID,
+          HoloLogHumanoidEntity.ID,
           () ->
-              EntityType.Builder.of(HolologHumanoidEntity::new, MobCategory.MISC)
+              EntityType.Builder.of(HoloLogHumanoidEntity::new, MobCategory.MISC)
                   .sized(0.6f, 1.8f)
                   .clientTrackingRange(10)
-                  .build(HolologHumanoidEntity.ID));
+                  .build(HoloLogHumanoidEntity.ID));
 
   private ForgeModEntities() {}
 
@@ -54,7 +54,7 @@ public class ForgeModEntities {
     eventBus.addListener(
         (RegisterEvent event) -> {
           if (event.getRegistryKey().equals(ForgeRegistries.ENTITY_TYPES.getRegistryKey())) {
-            HolologEntityRegistry.setHolologHumanoidEntityType(HOLOLOG_HUMANOID.get());
+            HoloLogEntityRegistry.setHoloLogHumanoidEntityType(HOLOLOG_HUMANOID.get());
           }
         });
 
@@ -62,6 +62,6 @@ public class ForgeModEntities {
   }
 
   private static void registerEntityAttributes(EntityAttributeCreationEvent event) {
-    event.put(HOLOLOG_HUMANOID.get(), HolologHumanoidEntity.createAttributes().build());
+    event.put(HOLOLOG_HUMANOID.get(), HoloLogHumanoidEntity.createAttributes().build());
   }
 }

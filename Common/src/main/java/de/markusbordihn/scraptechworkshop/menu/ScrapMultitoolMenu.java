@@ -24,7 +24,7 @@ import de.markusbordihn.scraptechworkshop.data.multitool.DisplayMode;
 import de.markusbordihn.scraptechworkshop.data.multitool.ScrapMultitoolData;
 import de.markusbordihn.scraptechworkshop.data.multitool.ToolMode;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
-import de.markusbordihn.scraptechworkshop.item.tool.multitool.ScrapMultitoolItem;
+import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
 import de.markusbordihn.scraptechworkshop.menu.slots.MultitoolBatterySlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.MultitoolModuleSlot;
 import net.minecraft.network.FriendlyByteBuf;
@@ -57,7 +57,7 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
   public static final int PLAYER_HOTBAR_Y = 196;
   public static final int PLAYER_HOTBAR_SLOTS = 9;
 
-  public static final int TOTAL_TOOL_SLOTS = 1 + MODULE_SLOTS_COUNT; // Battery + Modules
+  public static final int TOTAL_TOOL_SLOTS = 1 + MODULE_SLOTS_COUNT;
 
   // Note: MenuType will be registered by platform-specific code
   public static MenuType<ScrapMultitoolMenu> TYPE;
@@ -69,7 +69,7 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
   private boolean initialized = false;
 
   public ScrapMultitoolMenu(
-      int windowId, Inventory playerInventory, FriendlyByteBuf additionalData) {
+      final int windowId, final Inventory playerInventory, final FriendlyByteBuf additionalData) {
     this(
         windowId,
         playerInventory,
@@ -83,11 +83,11 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
   }
 
   public ScrapMultitoolMenu(
-      int windowId,
-      Inventory playerInventory,
-      ItemStack multitoolStack,
-      InteractionHand hand,
-      int slotIndex) {
+      final int windowId,
+      final Inventory playerInventory,
+      final ItemStack multitoolStack,
+      final InteractionHand hand,
+      final int slotIndex) {
     super(TYPE, windowId);
     this.multitoolStack = multitoolStack;
     this.hand = hand;
@@ -105,7 +105,7 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
     addPlayerHotbar(playerInventory);
   }
 
-  private SimpleContainer createToolContainer(ScrapMultitoolItem multitool) {
+  private SimpleContainer createToolContainer(final ScrapMultitoolItem multitool) {
     ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(multitoolStack);
     SimpleContainer container =
         new SimpleContainer(TOTAL_TOOL_SLOTS) {
@@ -142,24 +142,27 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
     }
   }
 
-  private void addPlayerInventory(Inventory playerInventory) {
+  private void addPlayerInventory(final Inventory playerInventory) {
     for (int row = 0; row < PLAYER_INVENTORY_ROWS; ++row) {
       for (int col = 0; col < PLAYER_INVENTORY_COLUMNS; ++col) {
-        this.addSlot(new Slot(playerInventory, col + row * 9 + 9, 8 + col * 18, 138 + row * 18));
+        this.addSlot(
+            new Slot(
+                playerInventory,
+                col + row * 9 + 9,
+                PLAYER_INVENTORY_START_X + col * 18,
+                PLAYER_INVENTORY_START_Y + row * 18));
       }
     }
   }
 
-  private void addPlayerHotbar(Inventory playerInventory) {
+  private void addPlayerHotbar(final Inventory playerInventory) {
     for (int col = 0; col < PLAYER_HOTBAR_SLOTS; ++col) {
       int x = PLAYER_HOTBAR_START_X + col * SLOT_SPACING;
       final int index = col;
-
       this.addSlot(
           new Slot(playerInventory, index, x, PLAYER_HOTBAR_Y) {
             @Override
             public boolean mayPickup(Player player) {
-              // Prevent picking up the multitool from hotbar while GUI is open
               return index != toolSlotIndex;
             }
           });
@@ -269,9 +272,9 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
     return itemStack;
   }
 
-  private boolean isValidModule(ItemStack stack) {
-    return stack.getItem().toString().contains("module")
-        || stack.getItem().toString().contains("upgrade");
+  private boolean isValidModule(final ItemStack itemStack) {
+    return itemStack.getItem().toString().contains("module")
+        || itemStack.getItem().toString().contains("upgrade");
   }
 
   @Override
@@ -291,7 +294,6 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
 
   private void updateMultitoolInPlayerInventory() {
     Player player = null;
-
     for (Slot slot : slots) {
       if (slot.container instanceof Inventory inventory && inventory.player != null) {
         player = inventory.player;
@@ -312,7 +314,7 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
     updateMultitoolInPlayerInventoryForPlayer(player);
   }
 
-  private void updateMultitoolInPlayerInventoryForPlayer(Player player) {
+  private void updateMultitoolInPlayerInventoryForPlayer(final Player player) {
     ItemStack actualMultitoolStack = player.getItemInHand(hand);
     if (!(actualMultitoolStack.getItem() instanceof ScrapMultitoolItem)) {
       return;
@@ -348,10 +350,6 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
     return multitoolStack;
   }
 
-  public InteractionHand getHand() {
-    return hand;
-  }
-
   public int getCurrentEnergyFromBattery() {
     ItemStack battery = toolContainer.getItem(0);
     if (battery.getItem() instanceof EnergyCellItem batteryItem) {
@@ -383,10 +381,5 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
       return Math.round(percentage * 100);
     }
     return 0;
-  }
-
-  public boolean hasBatteryInSlot() {
-    ItemStack battery = toolContainer.getItem(0);
-    return battery.getItem() instanceof EnergyCellItem;
   }
 }

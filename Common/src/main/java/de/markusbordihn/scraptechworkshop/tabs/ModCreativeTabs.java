@@ -17,10 +17,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.tabs;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
+import de.markusbordihn.scraptechworkshop.item.ModBlockItems;
+import de.markusbordihn.scraptechworkshop.item.ModItems;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -34,6 +36,14 @@ public class ModCreativeTabs {
       ResourceKey.create(
           Registries.CREATIVE_MODE_TAB,
           new ResourceLocation(Constants.MOD_ID, "scrap_tech_workshop"));
+
+  public static final ResourceKey<CreativeModeTab> HOLO_CUBE_TAB =
+      ResourceKey.create(
+          Registries.CREATIVE_MODE_TAB, new ResourceLocation(Constants.MOD_ID, "holo_cubes"));
+
+  public static final ResourceKey<CreativeModeTab> HOLO_PAD_TAB =
+      ResourceKey.create(
+          Registries.CREATIVE_MODE_TAB, new ResourceLocation(Constants.MOD_ID, "holo_pads"));
 
   public static CreativeModeTab.Builder createMainTab() {
     return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
@@ -77,17 +87,35 @@ public class ModCreativeTabs {
               // Tool Items
               output.accept(ModItems.SCRAP_MULTITOOL.get());
 
-              // HoloCubes with different holologs
-              ItemStack holoCubeStack = new ItemStack(ModBlockItems.HOLOCUBE_BLOCK_ITEM.get());
-              HoloCubeItem.setHolologId(
-                  holoCubeStack,
-                  new ResourceLocation(Constants.MOD_ID, "holologs/intro/introduction"));
-              output.accept(holoCubeStack);
+              // Recycler Block Item
+              output.accept(ModBlockItems.RECYCLER.get());
 
-              output.accept(ModBlockItems.RECYCLER_BLOCK_ITEM.get());
-              output.accept(ModBlockItems.MIXED_SCRAP_PILE_BLOCK_ITEM.get());
-              output.accept(ModBlockItems.METAL_SCRAP_PILE_BLOCK_ITEM.get());
-              output.accept(ModBlockItems.TECH_SCRAP_PILE_BLOCK_ITEM.get());
+              // Scrap Pile Block Items
+              output.accept(ModBlockItems.MIXED_SCRAP_PILE.get());
+              output.accept(ModBlockItems.METAL_SCRAP_PILE.get());
+              output.accept(ModBlockItems.TECH_SCRAP_PILE.get());
+            });
+  }
+
+  public static CreativeModeTab.Builder createHoloCubeTab() {
+    return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
+        .title(Component.translatable("itemGroup.scrap_tech_workshop.holo_cubes"))
+        .icon(() -> new ItemStack(ModBlockItems.HOLO_CUBE.get()))
+        .displayItems(
+            (parameters, output) -> {
+              output.accept(ModBlockItems.HOLO_CUBE.get());
+            });
+  }
+
+  public static CreativeModeTab.Builder createHoloPadTab() {
+    return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
+        .title(Component.translatable("itemGroup.scrap_tech_workshop.holo_pads"))
+        .icon(() -> new ItemStack(ModItems.HOLO_PAD.get()))
+        .displayItems(
+            (parameters, output) -> {
+              output.accept(
+                  HoloPadItem.create(
+                      new ResourceLocation(Constants.MOD_ID, "holologs/intro/introduction")));
             });
   }
 }

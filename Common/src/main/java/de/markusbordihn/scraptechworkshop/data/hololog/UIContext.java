@@ -17,18 +17,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.registry.item.hololog;
+package de.markusbordihn.scraptechworkshop.data.hololog;
 
-import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
-public class HolologItemRegistry {
+public record UIContext(Level level, Vec3 position) implements HoloLogPlaybackContext {
+  @Override
+  public ContextType contextType() {
+    return ContextType.UI;
+  }
 
-  public static final HoloCubeItem HOLOCUBE_ITEM =
-      new HoloCubeItem(
-          de.markusbordihn.scraptechworkshop.registry.block.hololog.HolologBlockRegistry
-              .HOLOCUBE_BLOCK,
-          new Item.Properties());
+  @Override
+  public Level getLevel() {
+    return level;
+  }
 
-  private HolologItemRegistry() {}
+  @Override
+  public Vec3 getEffectPosition() {
+    return position;
+  }
 }

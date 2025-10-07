@@ -22,11 +22,12 @@ package de.markusbordihn.scraptechworkshop.block.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
-import de.markusbordihn.scraptechworkshop.client.hololog.HolologPlayer;
-import de.markusbordihn.scraptechworkshop.data.hololog.HolologData;
-import de.markusbordihn.scraptechworkshop.data.hololog.HolologParser;
-import de.markusbordihn.scraptechworkshop.data.hololog.HolologPlaybackContext;
-import de.markusbordihn.scraptechworkshop.data.hololog.HolologStatus;
+import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogBlockPlayer;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogData;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogPlaybackContext;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogStatus;
+import de.markusbordihn.scraptechworkshop.data.hololog.WorldContext;
 import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
@@ -50,7 +51,7 @@ public class HoloCubeBlockEntity extends BlockEntity {
   private static final String PLAYER_UUID_TAG = "PlayerUUID";
   private static final String LAST_STATUS_TAG = "LastStatus";
   private static final String ENDED_TICK_TAG = "EndedTick";
-  private static final ResourceLocation DEFAULT_HOLOLOG =
+  private static final ResourceLocation DEFAULT_HOLO_LOG =
       new ResourceLocation(Constants.MOD_ID, "holologs/intro/introduction");
 
   private static final double MAX_PLAYER_DISTANCE = 32.0;
@@ -59,10 +60,10 @@ public class HoloCubeBlockEntity extends BlockEntity {
   public static BlockEntityType<HoloCubeBlockEntity> TYPE;
 
   private UUID cubeUUID;
-  private ResourceLocation holologId;
+  private ResourceLocation holoLogId;
   private UUID playerUUID;
-  private UUID currentPlayerId;
-  private HolologStatus lastKnownStatus = HolologStatus.READY;
+  private HoloLogBlockPlayer player;
+  private HoloLogStatus lastKnownStatus = HoloLogStatus.READY;
   private long endedAtTick = -1;
 
   public HoloCubeBlockEntity(BlockPos pos, BlockState state) {
@@ -71,32 +72,35 @@ public class HoloCubeBlockEntity extends BlockEntity {
   }
 
   public static void tick(
-      Level level, BlockPos pos, BlockState state, HoloCubeBlockEntity blockEntity) {
+      final Level level,
+      final BlockPos blockPos,
+      final BlockState blockState,
+      final HoloCubeBlockEntity blockEntity) {
 
     if (!level.isClientSide) {
       return;
     }
 
-    HolologStatus status = state.getValue(HoloCubeBlock.STATUS);
-    ResourceLocation holologId = blockEntity.getHolologId();
+    HoloLogStatus status = blockState.getValue(HoloCubeBlock.STATUS);
+    ResourceLocation holoLogId = blockEntity.getHoloLogId();
 
-    if (holologId == null) {
-      if (status != HolologStatus.READY) {
+    if (holoLogId == null) {
+      if (status != HoloLogStatus.READY) {
         log.warn(
             "[{}] Hololog ID is null but status is {}, resetting to READY",
             blockEntity.cubeUUID,
             status);
-        HoloCubeBlock.updateStatus(level, pos, HolologStatus.READY);
+        HoloCubeBlock.updateStatus(level, blockPos, HoloLogStatus.READY);
       }
       return;
     }
 
-    if (status == HolologStatus.ENDED) {
+    if (status == HoloLogStatus.ENDED) {
       if (blockEntity.endedAtTick < 0) {
         blockEntity.endedAtTick = level.getGameTime();
       } else if (level.getGameTime() - blockEntity.endedAtTick > AUTO_RESET_TICKS) {
         log.debug("[{}] Auto-resetting from ENDED to READY", blockEntity.cubeUUID);
-        HoloCubeBlock.updateStatus(level, pos, HolologStatus.READY);
+        HoloCubeBlock.updateStatus(level, blockPos, HoloLogStatus.READY);
         blockEntity.endedAtTick = -1;
         blockEntity.stopPlayback();
       }
@@ -105,43 +109,49 @@ public class HoloCubeBlockEntity extends BlockEntity {
       blockEntity.endedAtTick = -1;
     }
 
-    boolean playerInRange = hasNonSpectatorPlayerInRange(level, pos);
-    if (status == HolologStatus.PLAYING) {
+    boolean playerInRange = hasNonSpectatorPlayerInRange(level, blockPos);
+    if (status == HoloLogStatus.PLAYING) {
       log.trace(
-          "[{}] PLAYING - currentPlayerId: {}, playerInRange: {}",
+          "[{}] PLAYING - player exists: {}, playerInRange: {}",
           blockEntity.cubeUUID,
-          blockEntity.currentPlayerId,
+          blockEntity.player != null,
           playerInRange);
 
-      if (!playerInRange && blockEntity.currentPlayerId != null) {
+      if (!playerInRange && blockEntity.player != null) {
         log.debug("[{}] No player in range, stopping playback", blockEntity.cubeUUID);
-        HoloCubeBlock.updateStatus(level, pos, HolologStatus.READY);
+        HoloCubeBlock.updateStatus(level, blockPos, HoloLogStatus.READY);
         blockEntity.stopPlayback();
         return;
       }
 
-      if (blockEntity.currentPlayerId == null && playerInRange) {
-        log.info("[{}] Starting playback for hololog: {}", blockEntity.cubeUUID, holologId);
-        blockEntity.startPlayback(level, pos, holologId);
+      if (blockEntity.player == null && playerInRange) {
+        log.info("[{}] Starting playback for hololog: {}", blockEntity.cubeUUID, holoLogId);
+        blockEntity.startPlayback(level, blockPos, holoLogId);
       }
-    } else if (status == HolologStatus.READY && blockEntity.currentPlayerId != null) {
+    } else if (status == HoloLogStatus.READY && blockEntity.player != null) {
       blockEntity.stopPlayback();
+    }
+
+    // Tick the player if it exists and is playing
+    if (blockEntity.player != null && blockEntity.player.isPlaying()) {
+      blockEntity.player.tick();
     }
 
     blockEntity.lastKnownStatus = status;
   }
 
-  private static boolean hasNonSpectatorPlayerInRange(Level level, BlockPos pos) {
+  private static boolean hasNonSpectatorPlayerInRange(final Level level, final BlockPos blockPos) {
     return level.players().stream()
         .filter(player -> !player.isSpectator())
         .anyMatch(
             player -> {
               double distance =
-                  player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+                  player.distanceToSqr(
+                      blockPos.getX() + 0.5, blockPos.getY() + 0.5, blockPos.getZ() + 0.5);
               boolean inRange = distance <= MAX_PLAYER_DISTANCE * MAX_PLAYER_DISTANCE;
               if (log.isTraceEnabled()) {
                 log.trace(
-                    "Player {} at distance {:.2f} blocks (max: {}): {}",
+                    "Player {} at distance {} blocks (max: {}): {}",
                     player.getName().getString(),
                     Math.sqrt(distance),
                     MAX_PLAYER_DISTANCE,
@@ -151,11 +161,12 @@ public class HoloCubeBlockEntity extends BlockEntity {
             });
   }
 
-  private void startPlayback(Level level, BlockPos pos, ResourceLocation holologId) {
-    log.info("[{}] startPlayback() called for hololog: {}", cubeUUID, holologId);
+  private void startPlayback(
+      final Level level, final BlockPos blockPos, final ResourceLocation holoLogId) {
+    log.info("[{}] startPlayback() called for hololog: {}", cubeUUID, holoLogId);
 
-    if (holologId == null) {
-      log.error("[{}] Cannot start playback: holologId is null", cubeUUID);
+    if (holoLogId == null) {
+      log.error("[{}] Cannot start playback: holoLogId is null", cubeUUID);
       return;
     }
 
@@ -164,65 +175,51 @@ public class HoloCubeBlockEntity extends BlockEntity {
       return;
     }
 
-    ResourceLocation localizedId = HolologParser.getLocalizedId(holologId);
-    log.debug("[{}] Localized hololog ID: {}", cubeUUID, localizedId);
-
-    Optional<HolologData> holologData = HolologParser.getHololog(localizedId);
-
-    if (holologData.isEmpty()) {
-      log.error(
-          "[{}] Failed to load hololog data for: {} (localized: {})",
-          cubeUUID,
-          holologId,
-          localizedId);
-      HoloCubeBlock.updateStatus(level, pos, HolologStatus.READY);
+    Optional<HoloLogData> optionalHoloLogData = HoloLogManager.loadHoloLog(holoLogId);
+    if (optionalHoloLogData.isEmpty()) {
+      log.error("[{}] Failed to load hololog data for: {}", cubeUUID, holoLogId);
+      HoloCubeBlock.updateStatus(level, blockPos, HoloLogStatus.READY);
       return;
     }
 
-    HolologData data = holologData.get();
-    if (data.lines().isEmpty()) {
-      log.error("[{}] Hololog has no lines: {}", cubeUUID, localizedId);
-      HoloCubeBlock.updateStatus(level, pos, HolologStatus.READY);
-      return;
-    }
-
+    HoloLogData holoLogData = optionalHoloLogData.get();
     log.info(
-        "[{}] Hololog loaded successfully: {} (lines: {}, default delay: {})",
+        "[{}] Hololog loaded successfully: {} (lines: {}, default delay: {}s)",
         cubeUUID,
-        localizedId,
-        data.lines().size(),
-        data.lineDelayTicks());
+        holoLogId,
+        holoLogData.lines().size(),
+        holoLogData.lineDelay());
 
-    HolologPlaybackContext context = new HolologPlaybackContext.WorldContext(level, pos);
-    currentPlayerId =
-        HolologPlayer.play(
-            data,
-            context,
+    HoloLogPlaybackContext holoLogPlaybackContext = new WorldContext(level, blockPos);
+
+    // Create player instance directly
+    player =
+        new HoloLogBlockPlayer(
+            holoLogData,
+            holoLogPlaybackContext,
+            UUID.randomUUID(),
             text -> {
-              var player = Minecraft.getInstance().player;
-              if (player != null && !player.isSpectator()) {
-                player.displayClientMessage(
+              var clientPlayer = Minecraft.getInstance().player;
+              if (clientPlayer != null && !clientPlayer.isSpectator()) {
+                clientPlayer.displayClientMessage(
                     net.minecraft.network.chat.Component.literal("§7[Hololog] §f" + text), false);
               }
             },
             () -> {
               log.info("[{}] Playback finished", cubeUUID);
-              HoloCubeBlock.updateStatus(level, pos, HolologStatus.ENDED);
+              HoloCubeBlock.updateStatus(level, blockPos, HoloLogStatus.ENDED);
             });
 
-    if (currentPlayerId == null) {
-      log.error("[{}] HolologPlayer.play() returned null player ID!", cubeUUID);
-      HoloCubeBlock.updateStatus(level, pos, HolologStatus.READY);
-    } else {
-      log.info("[{}] Playback started with player ID: {}", cubeUUID, currentPlayerId);
-    }
+    // Start playback
+    player.start();
+    log.info("[{}] Playback started", cubeUUID);
   }
 
   private void stopPlayback() {
-    if (currentPlayerId != null) {
+    if (player != null) {
       log.debug("[{}] Stopping playback", cubeUUID);
-      HolologPlayer.stop(currentPlayerId);
-      currentPlayerId = null;
+      player.stop();
+      player = null;
     }
   }
 
@@ -240,77 +237,68 @@ public class HoloCubeBlockEntity extends BlockEntity {
     return cubeUUID;
   }
 
-  public ResourceLocation getHolologId() {
-    return holologId != null ? holologId : DEFAULT_HOLOLOG;
+  public ResourceLocation getHoloLogId() {
+    return holoLogId != null ? holoLogId : DEFAULT_HOLO_LOG;
   }
 
-  public void setHolologId(ResourceLocation holologId) {
-    log.debug("[{}] Setting hololog ID to: {}", cubeUUID, holologId);
-    this.holologId = holologId;
-    setChanged();
-  }
-
-  public UUID getPlayerUUID() {
-    return playerUUID;
-  }
-
-  public void setPlayerUUID(UUID playerUUID) {
-    log.debug("[{}] Setting player UUID to: {}", cubeUUID, playerUUID);
-    this.playerUUID = playerUUID;
+  public void setHoloLogId(final ResourceLocation holoLogId) {
+    log.debug("[{}] Setting holo log ID to: {}", cubeUUID, holoLogId);
+    this.holoLogId = holoLogId;
     setChanged();
   }
 
   @Override
-  public void load(CompoundTag tag) {
-    super.load(tag);
+  public void load(CompoundTag compoundTag) {
+    super.load(compoundTag);
 
-    if (tag.contains(CUBE_UUID_TAG)) {
-      cubeUUID = tag.getUUID(CUBE_UUID_TAG);
+    if (compoundTag.contains(CUBE_UUID_TAG)) {
+      cubeUUID = compoundTag.getUUID(CUBE_UUID_TAG);
     }
 
-    if (tag.contains(HOLOLOG_ID_TAG)) {
+    if (compoundTag.contains(HOLOLOG_ID_TAG)) {
       try {
-        holologId = new ResourceLocation(tag.getString(HOLOLOG_ID_TAG));
+        holoLogId = new ResourceLocation(compoundTag.getString(HOLOLOG_ID_TAG));
       } catch (Exception e) {
         log.warn("[{}] Failed to load hololog ID: {}", cubeUUID, e.getMessage());
-        holologId = DEFAULT_HOLOLOG;
+        holoLogId = DEFAULT_HOLO_LOG;
       }
     }
 
-    if (tag.contains(PLAYER_UUID_TAG)) {
-      playerUUID = tag.getUUID(PLAYER_UUID_TAG);
+    if (compoundTag.contains(PLAYER_UUID_TAG)) {
+      playerUUID = compoundTag.getUUID(PLAYER_UUID_TAG);
     }
 
-    if (tag.contains(LAST_STATUS_TAG)) {
+    if (compoundTag.contains(LAST_STATUS_TAG)) {
       try {
-        lastKnownStatus = HolologStatus.valueOf(tag.getString(LAST_STATUS_TAG).toUpperCase());
+        lastKnownStatus =
+            HoloLogStatus.valueOf(compoundTag.getString(LAST_STATUS_TAG).toUpperCase());
       } catch (Exception e) {
         log.warn("[{}] Failed to load last status: {}", cubeUUID, e.getMessage());
-        lastKnownStatus = HolologStatus.READY;
+        lastKnownStatus = HoloLogStatus.READY;
       }
     }
 
-    if (tag.contains(ENDED_TICK_TAG)) {
-      endedAtTick = tag.getLong(ENDED_TICK_TAG);
+    if (compoundTag.contains(ENDED_TICK_TAG)) {
+      endedAtTick = compoundTag.getLong(ENDED_TICK_TAG);
     }
 
     log.debug("[{}] Loaded HoloCube data", cubeUUID);
   }
 
   @Override
-  protected void saveAdditional(CompoundTag tag) {
-    super.saveAdditional(tag);
+  protected void saveAdditional(CompoundTag compoundTag) {
+    super.saveAdditional(compoundTag);
 
-    tag.putUUID(CUBE_UUID_TAG, cubeUUID);
-    tag.putString(LAST_STATUS_TAG, lastKnownStatus.name());
-    tag.putLong(ENDED_TICK_TAG, endedAtTick);
+    compoundTag.putUUID(CUBE_UUID_TAG, cubeUUID);
+    compoundTag.putString(LAST_STATUS_TAG, lastKnownStatus.name());
+    compoundTag.putLong(ENDED_TICK_TAG, endedAtTick);
 
-    if (holologId != null) {
-      tag.putString(HOLOLOG_ID_TAG, holologId.toString());
+    if (holoLogId != null) {
+      compoundTag.putString(HOLOLOG_ID_TAG, holoLogId.toString());
     }
 
     if (playerUUID != null) {
-      tag.putUUID(PLAYER_UUID_TAG, playerUUID);
+      compoundTag.putUUID(PLAYER_UUID_TAG, playerUUID);
     }
   }
 
@@ -331,6 +319,10 @@ public class HoloCubeBlockEntity extends BlockEntity {
     if (currentLevel != null && !currentLevel.isClientSide) {
       currentLevel.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
     }
+  }
+
+  public HoloLogBlockPlayer getPlayer() {
+    return player;
   }
 
   @Override

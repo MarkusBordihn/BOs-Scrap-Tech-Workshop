@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item.tool.multitool;
+package de.markusbordihn.scraptechworkshop.item.tool;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.config.MultitoolConfig;
@@ -26,7 +26,6 @@ import de.markusbordihn.scraptechworkshop.data.multitool.*;
 import de.markusbordihn.scraptechworkshop.energy.EnergyManager;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
-import de.markusbordihn.scraptechworkshop.item.multitool.ToolModeDetector;
 import de.markusbordihn.scraptechworkshop.menu.ScrapMultitoolMenuProvider;
 import java.util.List;
 import net.minecraft.core.particles.ParticleTypes;
@@ -38,6 +37,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -52,34 +52,13 @@ public class ScrapMultitoolItem extends DiggerItem {
 
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
-  public ScrapMultitoolItem(Properties properties) {
+  public ScrapMultitoolItem(final Properties properties) {
     super(
         4.0f,
         -2.4f,
         Tiers.IRON,
         BlockTags.MINEABLE_WITH_PICKAXE,
         properties.durability(MultitoolConfig.energyMax).rarity(Rarity.RARE));
-  }
-
-  public static ItemStack createWithBattery() {
-    ItemStack battery = new ItemStack(ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL.get());
-    if (battery.getItem() instanceof EnergyCellItem energyCell) {
-      energyCell.setEnergy(battery, EnergyCellItem.ENERGY_MAX / 2);
-    }
-
-    ItemStack multitool = new ItemStack(ModItems.SCRAP_MULTITOOL.get());
-    ScrapMultitoolData data = ScrapMultitoolData.createDefault().withBattery(battery);
-    data.saveToItemStack(multitool);
-
-    // Sync multitool durability to battery percentage (1:1 synchronization)
-    if (multitool.getItem() instanceof ScrapMultitoolItem multitoolItem) {
-      multitoolItem.syncEnergyWithBattery(multitool);
-    }
-
-    DisplayMode displayMode = new DisplayMode(multitool);
-    displayMode.updateModel(ToolMode.fromId(data.activeMode()), data.getBatteryLevel());
-
-    return multitool;
   }
 
   @Override
@@ -94,8 +73,6 @@ public class ScrapMultitoolItem extends DiggerItem {
       }
       data = data.withBattery(battery);
       data.saveToItemStack(itemStack);
-
-      // Sync multitool durability to battery percentage (1:1 synchronization)
       syncEnergyWithBattery(itemStack);
 
       DisplayMode displayMode = new DisplayMode(itemStack);
@@ -138,16 +115,13 @@ public class ScrapMultitoolItem extends DiggerItem {
 
   @Override
   public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-    // Auto-detect sword mode when attacking entities
-    if (attacker instanceof Player player) {
-      ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
 
-      // Switch to sword mode if not already in sword mode
+    if (attacker instanceof Player) {
+      ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
       if (!ToolMode.SWORD.getId().equals(data.activeMode())) {
         ScrapMultitoolData newData = data.withActiveMode(ToolMode.SWORD.getId());
         newData.saveToItemStack(itemStack);
 
-        // Update display model
         DisplayMode displayMode = new DisplayMode(itemStack);
         displayMode.updateModel(ToolMode.SWORD, newData.getBatteryLevel());
       }
@@ -164,7 +138,6 @@ public class ScrapMultitoolItem extends DiggerItem {
       BlockState state,
       net.minecraft.core.BlockPos pos,
       LivingEntity entity) {
-    // Update tool mode when mining
     if (entity instanceof Player player) {
       ToolModeDetector detector = new ToolModeDetector(itemStack);
       detector.updateToolMode(player, state);
@@ -172,12 +145,10 @@ public class ScrapMultitoolItem extends DiggerItem {
 
     ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
     if (consumeEnergyFromBattery(itemStack, data, MultitoolConfig.energyPerBlock)) {
-      // Update display after energy consumption
       if (entity instanceof Player player) {
         ToolModeDetector detector = new ToolModeDetector(itemStack);
         detector.updateToolMode(player, state);
       }
-
       return true;
     }
     return false;
@@ -216,7 +187,6 @@ public class ScrapMultitoolItem extends DiggerItem {
             0.1,
             0.02);
       }
-
       level.playSound(
           null,
           player.blockPosition(),
@@ -253,10 +223,15 @@ public class ScrapMultitoolItem extends DiggerItem {
   private void openMultitoolScreen(Player player, ItemStack stack, InteractionHand hand) {
     if (Constants.IS_FABRIC) {
       try {
-        // Fabric-specific screen opening logic would go here
-        log.warn("Fabric screen opening not yet implemented");
+        Class<?> fabricHandlerClass =
+            Class.forName("de.markusbordihn.scraptechworkshop.menu.ScrapMultitoolScreenHandler");
+        Object fabricHandler =
+            fabricHandlerClass
+                .getConstructor(ItemStack.class, InteractionHand.class)
+                .newInstance(stack, hand);
+        player.openMenu((MenuProvider) fabricHandler);
       } catch (Exception e) {
-        log.error("Failed to open multitool screen", e);
+        log.error("Failed to open multitool screen on Fabric: {}", e.getMessage());
       }
     } else {
       player.openMenu(new ScrapMultitoolMenuProvider(stack, hand));

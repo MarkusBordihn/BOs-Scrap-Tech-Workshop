@@ -17,25 +17,11 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.registry.block.hololog;
+package de.markusbordihn.scraptechworkshop.data.hololog;
 
-import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.PushReaction;
-
-public class HolologBlockRegistry {
-
-  public static final HoloCubeBlock HOLOCUBE_BLOCK =
-      new HoloCubeBlock(
-          BlockBehaviour.Properties.of()
-              .mapColor(MapColor.COLOR_CYAN)
-              .strength(0.5F, 0.5F)
-              .sound(SoundType.GLASS)
-              .lightLevel(state -> 7)
-              .pushReaction(PushReaction.DESTROY)
-              .noOcclusion());
-
-  private HolologBlockRegistry() {}
-}
+public record HoloLogLine(
+    String text,
+    HoloLogDisplayEntity displayEntity,
+    HoloLogEffects effects,
+    float lineDelay,
+    float startTime) {}

@@ -23,7 +23,7 @@ import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;
 import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
-import de.markusbordihn.scraptechworkshop.item.tool.multitool.ScrapMultitoolItem;
+import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
 import net.minecraft.world.item.Item;
 
 public class ToolItemRegistry {

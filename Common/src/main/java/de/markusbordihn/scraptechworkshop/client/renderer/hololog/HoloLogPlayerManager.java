@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.client.hololog;
+package de.markusbordihn.scraptechworkshop.client.renderer.hololog;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import java.util.HashMap;
@@ -27,54 +27,54 @@ import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public final class HolologPlayerManager {
+public final class HoloLogPlayerManager {
 
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
-  private static final Map<UUID, HolologPlayer> ACTIVE_PLAYERS = new HashMap<>();
-  private static final Map<ResourceLocation, UUID> ACTIVE_HOLOLOG_IDS = new HashMap<>();
+  private static final Map<UUID, HoloLogPlaybackBase> ACTIVE_PLAYERS = new HashMap<>();
+  private static final Map<String, UUID> ACTIVE_HOLOLOG_KEYS = new HashMap<>();
 
-  private HolologPlayerManager() {}
+  private HoloLogPlayerManager() {}
 
-  public static UUID register(HolologPlayer player, ResourceLocation holologId) {
-    UUID existingPlayerId = ACTIVE_HOLOLOG_IDS.get(holologId);
+  private static String createKey(
+      ResourceLocation holoLogId, Class<? extends HoloLogPlaybackBase> playerType) {
+    return holoLogId.toString() + ":" + playerType.getSimpleName();
+  }
+
+  public static UUID register(final HoloLogPlaybackBase player, final ResourceLocation holoLogId) {
+    String key = createKey(holoLogId, player.getClass());
+    UUID existingPlayerId = ACTIVE_HOLOLOG_KEYS.get(key);
     if (existingPlayerId != null && ACTIVE_PLAYERS.containsKey(existingPlayerId)) {
       log.debug(
-          "Hololog {} is already playing with ID {}, reusing existing player",
-          holologId,
+          "Hololog {} with type {} is already playing with ID {}, reusing existing player",
+          holoLogId,
+          player.getClass().getSimpleName(),
           existingPlayerId);
       return existingPlayerId;
     }
 
     UUID id = UUID.randomUUID();
     ACTIVE_PLAYERS.put(id, player);
-    ACTIVE_HOLOLOG_IDS.put(holologId, id);
-    log.info("Registered hololog player {} for hololog: {}", id, holologId);
+    ACTIVE_HOLOLOG_KEYS.put(key, id);
+    log.info(
+        "Registered {} player {} for hololog: {}",
+        player.getClass().getSimpleName(),
+        id,
+        holoLogId);
     return id;
   }
 
-  public static HolologPlayer get(UUID playerId) {
+  public static HoloLogPlaybackBase get(final UUID playerId) {
     return ACTIVE_PLAYERS.get(playerId);
-  }
-
-  public static void remove(UUID playerId) {
-    HolologPlayer player = ACTIVE_PLAYERS.remove(playerId);
-    if (player != null) {
-      ACTIVE_HOLOLOG_IDS.values().removeIf(id -> id.equals(playerId));
-      log.debug("Removed hololog player: {}", playerId);
-    }
   }
 
   public static void stopAll() {
     ACTIVE_PLAYERS.values().forEach(player -> player.stop());
     ACTIVE_PLAYERS.clear();
-    ACTIVE_HOLOLOG_IDS.clear();
+    ACTIVE_HOLOLOG_KEYS.clear();
     log.debug("Stopped all hololog players");
   }
 
   public static void tickAll() {
-    if (ACTIVE_PLAYERS.isEmpty()) {
-      log.trace("Ticking {} active hololog players", ACTIVE_PLAYERS.size());
-    }
     ACTIVE_PLAYERS
         .values()
         .removeIf(
@@ -82,22 +82,11 @@ public final class HolologPlayerManager {
               if (player.isPlaying()) {
                 player.tick();
               }
-              boolean shouldRemove = player.isStopped() && player.hasPlayedEndEffects();
+              boolean shouldRemove = player.isStopped();
               if (shouldRemove) {
                 log.debug("Removing completed hololog player");
               }
               return shouldRemove;
             });
-  }
-
-  public static int getCurrentLine(ResourceLocation holologId) {
-    UUID playerId = ACTIVE_HOLOLOG_IDS.get(holologId);
-    if (playerId != null) {
-      HolologPlayer player = ACTIVE_PLAYERS.get(playerId);
-      if (player != null) {
-        return player.getCurrentLine();
-      }
-    }
-    return -1;
   }
 }

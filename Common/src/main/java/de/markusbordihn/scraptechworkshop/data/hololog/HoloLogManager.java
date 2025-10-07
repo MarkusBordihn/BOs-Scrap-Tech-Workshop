@@ -17,23 +17,50 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.client;
+package de.markusbordihn.scraptechworkshop.data.hololog;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogPlayerAudio;
-import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogPlayerManager;
+import java.util.Optional;
+import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ClientEvents {
-
+public class HoloLogManager {
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
-  private ClientEvents() {}
+  private HoloLogManager() {}
 
-  public static void handleClientDisconnect() {
-    log.debug("Client disconnecting - stopping all hololog players");
-    HoloLogPlayerAudio.stopAll();
-    HoloLogPlayerManager.stopAll();
+  public static Optional<HoloLogData> loadHoloLog(final ResourceLocation holoLogId) {
+    if (holoLogId == null) {
+      log.warn("Cannot load hololog: holoLogId is null");
+      return Optional.empty();
+    }
+
+    ResourceLocation localizedId = HoloLogParser.getLocalizedId(holoLogId);
+
+    Optional<HoloLogData> holoLogData = HoloLogParser.getHoloLog(localizedId);
+
+    if (holoLogData.isEmpty()) {
+      log.error("Hololog not found: {} (localized: {})", holoLogId, localizedId);
+      return Optional.empty();
+    }
+
+    HoloLogData data = holoLogData.get();
+    if (data.lines().isEmpty()) {
+      log.error("Hololog has no lines: {} (localized: {})", holoLogId, localizedId);
+      return Optional.empty();
+    }
+
+    return holoLogData;
+  }
+
+  public static boolean isValidHoloLog(final ResourceLocation holoLogId) {
+    if (holoLogId == null) {
+      return false;
+    }
+
+    ResourceLocation localizedId = HoloLogParser.getLocalizedId(holoLogId);
+    Optional<HoloLogData> holoLogData = HoloLogParser.getHoloLog(localizedId);
+    return holoLogData.isPresent() && !holoLogData.get().lines().isEmpty();
   }
 }

@@ -47,12 +47,12 @@ public class ForgeModBlockEntities {
                       RecyclerBlockEntity::new, RecyclerBlockRegistry.RECYCLER_BLOCK)
                   .build(null));
 
-  public static final RegistryObject<BlockEntityType<HoloCubeBlockEntity>> HOLOCUBE_BLOCK_ENTITY =
+  public static final RegistryObject<BlockEntityType<HoloCubeBlockEntity>> HOLO_CUBE_BLOCK_ENTITY =
       BLOCK_ENTITY_TYPES.register(
           HoloCubeBlockEntity.ID,
           () ->
               BlockEntityType.Builder.of(
-                      HoloCubeBlockEntity::new, ForgeModBlocks.HOLOCUBE_BLOCK.get())
+                      HoloCubeBlockEntity::new, ForgeModBlocks.HOLO_CUBE_BLOCK.get())
                   .build(null));
 
   private ForgeModBlockEntities() {}
@@ -64,7 +64,7 @@ public class ForgeModBlockEntities {
         (RegisterEvent event) -> {
           if (event.getRegistryKey().equals(ForgeRegistries.BLOCK_ENTITY_TYPES.getRegistryKey())) {
             RecyclerBlockEntityRegistry.setBlockEntityType(RECYCLER_BLOCK_ENTITY.get());
-            HoloCubeBlockEntityRegistry.setBlockEntityType(HOLOCUBE_BLOCK_ENTITY.get());
+            HoloCubeBlockEntityRegistry.setBlockEntityType(HOLO_CUBE_BLOCK_ENTITY.get());
           }
         });
   }

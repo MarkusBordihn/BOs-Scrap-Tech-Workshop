@@ -17,25 +17,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.data.hololog;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.function.Supplier;
+import java.util.List;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
 
-public class ModBlockItems {
+public record HoloLogData(
+    ResourceLocation id,
+    String title,
+    String subtitle,
+    String titleColor,
+    String subtitleColor,
+    float lineDelay,
+    float charDelay,
+    ResourceLocation voiceOver,
+    HoloLogDisplayEntity displayEntity,
+    HoloLogEffects start,
+    List<HoloLogLine> lines,
+    HoloLogEffects end) {
 
-  // Scrap Pile Block Items
-  public static Supplier<BlockItem> RECYCLER;
-  public static Supplier<BlockItem> MIXED_SCRAP_PILE;
-  public static Supplier<BlockItem> METAL_SCRAP_PILE;
-  public static Supplier<BlockItem> TECH_SCRAP_PILE;
+  public boolean hasVoiceOver() {
+    return voiceOver != null;
+  }
 
-  // Hololog Block Items
-  public static Supplier<BlockItem> HOLO_CUBE;
-
-  public static ResourceLocation getBlockItemId(String name) {
-    return new ResourceLocation(Constants.MOD_ID, name);
+  public float getTotalDuration() {
+    if (lines.isEmpty()) {
+      return 0.0f;
+    }
+    HoloLogLine lastLine = lines.get(lines.size() - 1);
+    return lastLine.startTime() + (lastLine.lineDelay() > 0 ? lastLine.lineDelay() : lineDelay);
   }
 }

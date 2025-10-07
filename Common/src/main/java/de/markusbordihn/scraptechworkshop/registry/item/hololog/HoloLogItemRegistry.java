@@ -17,18 +17,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.registry.entity;
+package de.markusbordihn.scraptechworkshop.registry.item.hololog;
 
-import de.markusbordihn.scraptechworkshop.entity.hololog.HolologHumanoidEntity;
-import net.minecraft.world.entity.EntityType;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
+import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
+import net.minecraft.world.item.Item;
 
-public class HolologEntityRegistry {
+public class HoloLogItemRegistry {
 
-  public static EntityType<HolologHumanoidEntity> HOLOLOG_HUMANOID_ENTITY_TYPE;
+  public static final HoloCubeItem HOLO_CUBE_ITEM =
+      new HoloCubeItem(HoloLogBlockRegistry.HOLO_CUBE_BLOCK, new Item.Properties());
 
-  private HolologEntityRegistry() {}
+  public static final HoloPadItem HOLO_PAD_ITEM = new HoloPadItem(new Item.Properties());
 
-  public static void setHolologHumanoidEntityType(EntityType<HolologHumanoidEntity> entityType) {
-    HOLOLOG_HUMANOID_ENTITY_TYPE = entityType;
-  }
+  private HoloLogItemRegistry() {}
 }

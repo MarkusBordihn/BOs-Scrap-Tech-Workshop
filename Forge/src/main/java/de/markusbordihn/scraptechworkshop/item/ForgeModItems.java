@@ -24,6 +24,7 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.AlloyScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.BioScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
@@ -39,8 +40,10 @@ import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
+import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;
+import de.markusbordihn.scraptechworkshop.tabs.ModCreativeTabs;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -135,45 +138,51 @@ public class ForgeModItems {
   public static final RegistryObject<Item> CIRCUIT_BOARD =
       ITEMS.register(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
 
+  // Hololog Items
+  public static final RegistryObject<Item> HOLO_PAD =
+      ITEMS.register(HoloPadItem.ID, () -> HoloLogItemRegistry.HOLO_PAD_ITEM);
+
+  // Creative Mode Tabs
   public static final RegistryObject<CreativeModeTab> SCRAP_TECH_WORKSHOP_TAB =
       CREATIVE_MODE_TABS.register("scrap_tech_workshop", ModCreativeTabs.createMainTab()::build);
 
+  public static final RegistryObject<CreativeModeTab> HOLO_CUBE_TAB =
+      CREATIVE_MODE_TABS.register("holocubes", ModCreativeTabs.createHoloCubeTab()::build);
+
+  public static final RegistryObject<CreativeModeTab> HOLO_PAD_TAB =
+      CREATIVE_MODE_TABS.register("holopads", ModCreativeTabs.createHoloPadTab()::build);
+
   public static void register(IEventBus eventBus) {
+    ITEMS.register(eventBus);
     CREATIVE_MODE_TABS.register(eventBus);
 
-    ITEMS.register(eventBus);
-
-    // Metal Scrap Items
-    ModItems.ALLOY_SCRAP = SCRAP_ALLOY;
-    ModItems.METAL_SCRAP = SCRAP_METAL;
-    ModItems.GOLD_SCRAP = SCRAP_GOLD;
-    ModItems.IRON_SCRAP = SCRAP_IRON;
-    ModItems.COPPER_SCRAP = SCRAP_COPPER;
-
-    // Other Scrap Items
+    // Basic Scrap Items
+    ModItems.BIO_SCRAP = SCRAP_BIO;
     ModItems.CERAMIC_SCRAP = SCRAP_CERAMIC;
+    ModItems.COPPER_SCRAP = SCRAP_COPPER;
     ModItems.CRYSTAL_SCRAP = SCRAP_CRYSTAL;
     ModItems.FASTENER_SCRAP = SCRAP_FASTENER;
-    ModItems.INSULATION_SCRAP = SCRAP_INSULATION;
-    ModItems.LUMINOUS_SCRAP = SCRAP_LUMINOUS;
-    ModItems.PLASTIC_SCRAP = SCRAP_PLASTIC;
-
-    // Additional Material Scrap Items
-    ModItems.MINERAL_SCRAP = SCRAP_MINERAL;
-    ModItems.WOOD_SCRAP = SCRAP_WOOD;
-    ModItems.RUBBER_SCRAP = SCRAP_RUBBER;
-    ModItems.GLASS_SCRAP = SCRAP_GLASS;
-
-    // Organic and Textile Scrap Items
     ModItems.FIBER_SCRAP = SCRAP_FIBER;
-    ModItems.BIO_SCRAP = SCRAP_BIO;
+    ModItems.GLASS_SCRAP = SCRAP_GLASS;
+    ModItems.GOLD_SCRAP = SCRAP_GOLD;
+    ModItems.IRON_SCRAP = SCRAP_IRON;
+    ModItems.LUMINOUS_SCRAP = SCRAP_LUMINOUS;
+    ModItems.METAL_SCRAP = SCRAP_METAL;
+    ModItems.MINERAL_SCRAP = SCRAP_MINERAL;
+    ModItems.PLASTIC_SCRAP = SCRAP_PLASTIC;
+    ModItems.RUBBER_SCRAP = SCRAP_RUBBER;
+    ModItems.WOOD_SCRAP = SCRAP_WOOD;
 
     // Tech Scrap Items
-    ModItems.TECH_SCRAP = TECH_SCRAP;
+    ModItems.CAPACITOR_SCRAP = CAPACITOR_SCRAP;
     ModItems.CIRCUIT_SCRAP = CIRCUIT_SCRAP;
     ModItems.COIL_SCRAP = COIL_SCRAP;
-    ModItems.CAPACITOR_SCRAP = CAPACITOR_SCRAP;
     ModItems.ENERGY_CELL_SCRAP = ENERGY_CELL_SCRAP;
+    ModItems.TECH_SCRAP = TECH_SCRAP;
+
+    // Additional Material and Synthetic Scrap Items
+    ModItems.ALLOY_SCRAP = SCRAP_ALLOY;
+    ModItems.INSULATION_SCRAP = SCRAP_INSULATION;
 
     // Tool Items
     ModItems.SCRAP_MULTITOOL = SCRAP_MULTITOOL;
@@ -185,5 +194,8 @@ public class ForgeModItems {
     ModItems.EMPTY_ENERGY_CELL = EMPTY_ENERGY_CELL;
     ModItems.ENERGY_CELL_BLOCK = ENERGY_CELL_BLOCK;
     ModItems.CIRCUIT_BOARD = CIRCUIT_BOARD;
+
+    // Hololog Items
+    ModItems.HOLO_PAD = HOLO_PAD;
   }
 }

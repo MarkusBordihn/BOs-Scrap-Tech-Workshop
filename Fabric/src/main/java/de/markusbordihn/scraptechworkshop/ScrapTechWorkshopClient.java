@@ -22,12 +22,12 @@ package de.markusbordihn.scraptechworkshop;
 import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.client.ClientEventHandler;
-import de.markusbordihn.scraptechworkshop.client.renderer.HoloCubeBlockEntityRenderer;
-import de.markusbordihn.scraptechworkshop.client.renderer.RecyclerBlockEntityRenderer;
-import de.markusbordihn.scraptechworkshop.client.renderer.entity.HolologHumanoidRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.HoloCubeBlockEntityRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.RecyclerBlockEntityRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.entity.HoloLogHumanoidRenderer;
 import de.markusbordihn.scraptechworkshop.client.screen.ClientScreens;
-import de.markusbordihn.scraptechworkshop.registry.block.hololog.HolologBlockRegistry;
-import de.markusbordihn.scraptechworkshop.registry.entity.HolologEntityRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.entity.HoloLogEntityRegistry;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -52,11 +52,11 @@ public class ScrapTechWorkshopClient implements ClientModInitializer {
 
     // Register entity renderers
     EntityRendererRegistry.register(
-        HolologEntityRegistry.HOLOLOG_HUMANOID_ENTITY_TYPE, HolologHumanoidRenderer::new);
+        HoloLogEntityRegistry.HOLO_LOG_HUMANOID_ENTITY_TYPE, HoloLogHumanoidRenderer::new);
 
     // Set render layers for transparent blocks
     BlockRenderLayerMap.INSTANCE.putBlock(
-        HolologBlockRegistry.HOLOCUBE_BLOCK, RenderType.translucent());
+        HoloLogBlockRegistry.HOLO_CUBE_BLOCK, RenderType.translucent());
 
     // Register client event handlers
     ClientEventHandler.register();

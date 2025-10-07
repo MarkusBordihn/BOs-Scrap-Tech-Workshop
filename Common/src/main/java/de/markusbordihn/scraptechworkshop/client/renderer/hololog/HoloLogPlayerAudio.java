@@ -17,10 +17,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.client.hololog;
+package de.markusbordihn.scraptechworkshop.client.renderer.hololog;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.data.hololog.HolologPlaybackContext;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogPlaybackContext;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -33,14 +33,16 @@ import net.minecraft.sounds.SoundSource;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public final class HolologPlayerAudio {
+public final class HoloLogPlayerAudio {
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
   private static final Map<UUID, SoundInstance> ACTIVE_VOICE_OVERS = new HashMap<>();
 
-  private HolologPlayerAudio() {}
+  private HoloLogPlayerAudio() {}
 
   public static void playVoiceOver(
-      UUID playerId, ResourceLocation voiceOverId, HolologPlaybackContext context) {
+      final UUID playerId,
+      final ResourceLocation voiceOverId,
+      final HoloLogPlaybackContext context) {
     if (voiceOverId == null) {
       log.debug("No voice-over specified for player {}", playerId);
       return;
@@ -64,7 +66,6 @@ public final class HolologPlayerAudio {
       }
 
       SoundEvent soundEvent = SoundEvent.createVariableRangeEvent(soundEventId);
-
       SimpleSoundInstance soundInstance =
           new SimpleSoundInstance(
               soundEvent.getLocation(),
@@ -93,7 +94,7 @@ public final class HolologPlayerAudio {
     }
   }
 
-  public static void stopVoiceOver(UUID playerId) {
+  public static void stopVoiceOver(final UUID playerId) {
     SoundInstance soundInstance = ACTIVE_VOICE_OVERS.remove(playerId);
     if (soundInstance != null) {
       try {
