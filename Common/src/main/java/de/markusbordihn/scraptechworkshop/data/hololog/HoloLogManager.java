@@ -20,15 +20,61 @@
 package de.markusbordihn.scraptechworkshop.data.hololog;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class HoloLogManager {
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
+  private static final Map<ResourceLocation, CachedHoloLogData> CACHE = new ConcurrentHashMap<>();
+  private static final Set<ResourceLocation> LOGGED_PATHS = ConcurrentHashMap.newKeySet();
+  private static final long CACHE_TTL_MS = 5 * 60 * 1000;
 
   private HoloLogManager() {}
+
+  private static ResourceLocation getLocalizedId(final ResourceLocation id) {
+    try {
+      String[] parts = id.getPath().split("/", 2);
+      if (parts.length < 2) {
+        return id;
+      }
+
+      String languageCode =
+          Minecraft.getInstance().getLanguageManager().getSelected().split("_")[0];
+      ResourceLocation localizedId =
+          new ResourceLocation(id.getNamespace(), parts[0] + "/" + languageCode + "/" + parts[1]);
+
+      if (HoloLogParser.holoLogExists(localizedId)) {
+        return localizedId;
+      }
+
+      if (!languageCode.equals("en")) {
+        ResourceLocation englishId =
+            new ResourceLocation(id.getNamespace(), parts[0] + "/" + "en" + "/" + parts[1]);
+        if (HoloLogParser.holoLogExists(englishId)) {
+          if (LOGGED_PATHS.add(id)) {
+            log.debug("Using English fallback hololog: {}", englishId);
+          }
+          return englishId;
+        }
+      }
+
+      if (LOGGED_PATHS.add(id)) {
+        log.debug("Using original hololog path: {}", id);
+      }
+      return id;
+    } catch (Exception e) {
+      if (LOGGED_PATHS.add(id)) {
+        log.debug("Cannot access client (server-side?), using original path: {}", id);
+      }
+      return id;
+    }
+  }
 
   public static Optional<HoloLogData> loadHoloLog(final ResourceLocation holoLogId) {
     if (holoLogId == null) {
@@ -36,7 +82,18 @@ public class HoloLogManager {
       return Optional.empty();
     }
 
-    ResourceLocation localizedId = HoloLogParser.getLocalizedId(holoLogId);
+    ResourceLocation localizedId = getLocalizedId(holoLogId);
+
+    CachedHoloLogData cached = CACHE.get(localizedId);
+    if (cached != null && !cached.isExpired()) {
+      log.trace("Cache hit for hololog: {}", localizedId);
+      return Optional.of(cached.data());
+    }
+
+    if (cached != null && cached.isExpired()) {
+      log.debug("Cache expired for hololog: {}, reloading...", localizedId);
+      CACHE.remove(localizedId);
+    }
 
     Optional<HoloLogData> holoLogData = HoloLogParser.getHoloLog(localizedId);
 
@@ -51,7 +108,10 @@ public class HoloLogManager {
       return Optional.empty();
     }
 
-    return holoLogData;
+    CACHE.put(localizedId, new CachedHoloLogData(data, System.currentTimeMillis()));
+    log.debug("Cached hololog: {} (TTL: {}ms)", localizedId, CACHE_TTL_MS);
+
+    return Optional.of(data);
   }
 
   public static boolean isValidHoloLog(final ResourceLocation holoLogId) {
@@ -59,8 +119,33 @@ public class HoloLogManager {
       return false;
     }
 
-    ResourceLocation localizedId = HoloLogParser.getLocalizedId(holoLogId);
-    Optional<HoloLogData> holoLogData = HoloLogParser.getHoloLog(localizedId);
+    Optional<HoloLogData> holoLogData = loadHoloLog(holoLogId);
     return holoLogData.isPresent() && !holoLogData.get().lines().isEmpty();
+  }
+
+  public static void clearCache() {
+    int size = CACHE.size();
+    CACHE.clear();
+    LOGGED_PATHS.clear();
+    log.info("Cleared hololog cache ({} entries)", size);
+  }
+
+  public static int getCacheSize() {
+    return CACHE.size();
+  }
+
+  public static void removeExpiredEntries() {
+    int initialSize = CACHE.size();
+    CACHE.entrySet().removeIf(entry -> entry.getValue().isExpired());
+    int removed = initialSize - CACHE.size();
+    if (removed > 0) {
+      log.debug("Removed {} expired hololog cache entries", removed);
+    }
+  }
+
+  private record CachedHoloLogData(HoloLogData data, long timestamp) {
+    public boolean isExpired() {
+      return System.currentTimeMillis() - timestamp > CACHE_TTL_MS;
+    }
   }
 }

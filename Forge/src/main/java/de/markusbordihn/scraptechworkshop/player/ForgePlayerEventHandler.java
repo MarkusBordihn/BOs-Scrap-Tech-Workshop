@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.player;
 import de.markusbordihn.scraptechworkshop.Constants;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -33,5 +34,10 @@ public class ForgePlayerEventHandler {
     if (event.getEntity() instanceof ServerPlayer player) {
       PlayerEvents.handlePlayerJoin(player);
     }
+  }
+
+  @SubscribeEvent
+  public static void onServerStopping(ServerStoppingEvent event) {
+    PlayerEvents.handleServerStopping();
   }
 }

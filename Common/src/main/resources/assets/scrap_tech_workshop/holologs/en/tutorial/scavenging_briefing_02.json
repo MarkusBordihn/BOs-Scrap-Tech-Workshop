@@ -1,0 +1,82 @@
+{
+  "id": "scrap_tech_workshop:holologs/en/tutorial/scavenging_briefing_02",
+  "title": "Scavenging Briefing 02",
+  "subtitle": "Assemble a Basic Energy Cell.",
+  "titleColor": "#00FFAA",
+  "subtitleColor": "#AAAAAA",
+  "lineDelay": 3.0,
+  "voiceOver": "scrap_tech_workshop:holologs/en/tutorial/scavenging_briefing_02",
+  "voiceOverDelay": 3.0,
+  "displayHoloEntity": {
+    "id": "scrap_tech_workshop:hololog_humanoid",
+    "texture": "scrap_tech_workshop:textures/entity/hololog/hololog_humanoid.png",
+    "scale": 0.5
+  },
+  "start": {
+    "playSound": [{"id": "minecraft:block.note_block.hat", "volume": 0.8}],
+    "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
+  },
+  "lines": [
+    {
+      "text": "Energy system protocol active.",
+      "playSound": [{"id": "minecraft:block.beacon.power_select", "volume": 0.7}]
+    },
+    {"text": "The Energy Cell is the core of modern technology."},
+    {"text": "It stores power for tools, machines, and devices."},
+    {
+      "text": "Craft an Energy Cell from recovered scrap parts.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"}
+    },
+    {
+      "text": "Here's how it's assembled:",
+      "displayRecipe": {
+        "recipe": "scrap_tech_workshop:energy_cell",
+        "scale": 1.2
+      },
+      "playSound": [{"id": "minecraft:block.anvil.use", "volume": 0.6}],
+      "lineDelay": 4.5
+    },
+    {
+      "text": "You need capacitors, plastic, and circuit scrap.",
+      "displayItem": {"id": "scrap_tech_workshop:capacitor_scrap"}
+    },
+    {
+      "text": "Together they form a stable energy core.",
+      "displayItem": {"id": "scrap_tech_workshop:circuit_scrap"}
+    },
+    {"text": "Cells degrade through heavy use or overcharge."},
+    {
+      "text": "Slightly damaged cells retain part of their charge.",
+      "displayItem": {"id": "scrap_tech_workshop:slightly_damaged_energy_cell"}
+    },
+    {
+      "text": "Heavily damaged ones can be recycled or restored.",
+      "displayItem": {"id": "scrap_tech_workshop:damaged_energy_cell"}
+    },
+    {
+      "text": "The Recycler breaks down damaged cells into parts.",
+      "displayBlock": {"id": "scrap_tech_workshop:recycler"},
+      "playSound": [{"id": "minecraft:block.piston.contract", "volume": 0.5}]
+    },
+    {"text": "Or combine fragments to assemble a new cell."},
+    {"text": "Stable power flow is essential for progress."},
+    {"text": "Without energy, even the best tools stay silent."},
+    {
+      "text": "Always keep at least one charged cell in reserve.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"},
+      "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8}]
+    },
+    {
+      "text": "Next objective: construct the Scrap Multitool.",
+      "displayItem": {"id": "scrap_tech_workshop:scrap_multitool"}
+    },
+    {"text": "It draws its power directly from the Energy Cell."}
+  ],
+  "end": {
+    "playSound": [
+      {"id": "minecraft:block.beacon.deactivate", "volume": 0.9},
+      {"id": "minecraft:ui.toast.in"}
+    ],
+    "showParticle": [{"id": "minecraft:flash"}]
+  }
+}

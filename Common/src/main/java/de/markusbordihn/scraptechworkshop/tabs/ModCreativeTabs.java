@@ -22,7 +22,6 @@ package de.markusbordihn.scraptechworkshop.tabs;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.item.ModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
-import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -103,7 +102,12 @@ public class ModCreativeTabs {
         .icon(() -> new ItemStack(ModBlockItems.HOLO_CUBE.get()))
         .displayItems(
             (parameters, output) -> {
-              output.accept(ModBlockItems.HOLO_CUBE.get());
+              for (de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem item :
+                  de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry
+                      .getHoloCubeItems()
+                      .values()) {
+                output.accept(item);
+              }
             });
   }
 
@@ -113,9 +117,12 @@ public class ModCreativeTabs {
         .icon(() -> new ItemStack(ModItems.HOLO_PAD.get()))
         .displayItems(
             (parameters, output) -> {
-              output.accept(
-                  HoloPadItem.create(
-                      new ResourceLocation(Constants.MOD_ID, "holologs/intro/introduction")));
+              for (de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem item :
+                  de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry
+                      .getHoloPadItems()
+                      .values()) {
+                output.accept(item);
+              }
             });
   }
 }

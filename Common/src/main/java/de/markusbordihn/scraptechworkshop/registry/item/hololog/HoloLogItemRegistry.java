@@ -22,14 +22,49 @@ package de.markusbordihn.scraptechworkshop.registry.item.hololog;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
 import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.function.Supplier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 public class HoloLogItemRegistry {
 
-  public static final HoloCubeItem HOLO_CUBE_ITEM =
-      new HoloCubeItem(HoloLogBlockRegistry.HOLO_CUBE_BLOCK, new Item.Properties());
-
-  public static final HoloPadItem HOLO_PAD_ITEM = new HoloPadItem(new Item.Properties());
+  private static final Map<String, HoloPadItem> HOLO_PAD_ITEMS = new LinkedHashMap<>();
+  private static final Map<String, HoloCubeItem> HOLO_CUBE_ITEMS = new LinkedHashMap<>();
+  private static final Map<ResourceLocation, HoloCubeItem> HOLO_LOG_TO_CUBE_ITEM =
+      new LinkedHashMap<>();
 
   private HoloLogItemRegistry() {}
+
+  public static Supplier<HoloPadItem> createHoloPadSupplier(String id, ResourceLocation holoLogId) {
+    return () -> {
+      HoloPadItem item = new HoloPadItem(holoLogId, new Item.Properties());
+      HOLO_PAD_ITEMS.put(id, item);
+      return item;
+    };
+  }
+
+  public static Supplier<HoloCubeItem> createHoloCubeSupplier(
+      String id, ResourceLocation holoLogId) {
+    return () -> {
+      HoloCubeItem item =
+          new HoloCubeItem(holoLogId, HoloLogBlockRegistry.HOLO_CUBE_BLOCK, new Item.Properties());
+      HOLO_CUBE_ITEMS.put(id, item);
+      HOLO_LOG_TO_CUBE_ITEM.put(holoLogId, item);
+      return item;
+    };
+  }
+
+  public static Map<String, HoloPadItem> getHoloPadItems() {
+    return HOLO_PAD_ITEMS;
+  }
+
+  public static Map<String, HoloCubeItem> getHoloCubeItems() {
+    return HOLO_CUBE_ITEMS;
+  }
+
+  public static HoloCubeItem getHoloCubeItemByHoloLog(ResourceLocation holoLogId) {
+    return HOLO_LOG_TO_CUBE_ITEM.get(holoLogId);
+  }
 }

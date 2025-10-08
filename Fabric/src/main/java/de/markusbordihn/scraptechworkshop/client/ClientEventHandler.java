@@ -21,7 +21,7 @@ package de.markusbordihn.scraptechworkshop.client;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogPlayerManager;
-import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogParser;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
@@ -60,7 +60,7 @@ public class ClientEventHandler {
               @Override
               public void onResourceManagerReload(ResourceManager resourceManager) {
                 log.info("Reloading holologs after resource pack change...");
-                HoloLogParser.clearCache();
+                HoloLogManager.clearCache();
               }
             });
   }

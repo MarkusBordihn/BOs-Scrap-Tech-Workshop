@@ -1,0 +1,84 @@
+{
+  "id": "scrap_tech_workshop:holologs/de/tutorial/scavenging_briefing_01",
+  "title": "Bergungs-Briefing 01",
+  "subtitle": "Finde und sammle verwertbaren Schrott.",
+  "titleColor": "#00FFAA",
+  "subtitleColor": "#AAAAAA",
+  "lineDelay": 3.0,
+  "voiceOver": "scrap_tech_workshop:holologs/de/tutorial/scavenging_briefing_01",
+  "voiceOverDelay": 3.0,
+  "displayHoloEntity": {
+    "id": "scrap_tech_workshop:hololog_humanoid",
+    "texture": "scrap_tech_workshop:textures/entity/hololog/hololog_humanoid.png",
+    "scale": 0.5
+  },
+  "start": {
+    "playSound": [{"id": "minecraft:block.note_block.hat", "volume": 0.8}],
+    "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
+  },
+  "lines": [
+    {
+      "text": "Verbindung hergestellt.",
+      "playSound": [{"id": "minecraft:block.beacon.power_select", "volume": 0.7}]
+    },
+    {"text": "Schrott ist die Grundlage jedes Wiederaufbaus."},
+    {"text": "Er kann aus verschiedenen Quellen gewonnen werden."},
+    {
+      "text": "1) Beim Abbauen von Blöcken und Trümmern.",
+      "displayBlock": {"id": "minecraft:stone"},
+      "playSound": [{"id": "minecraft:block.stone.break", "volume": 0.5}]
+    },
+    {"text": "Stein und Geröll enthalten oft Metallfragmente."},
+    {
+      "text": "2) Natürliche Schrotthaufen.",
+      "displayItem": {"id": "scrap_tech_workshop:mixed_scrap_pile"},
+      "playSound": [{"id": "minecraft:block.gravel.place", "volume": 0.4}]
+    },
+    {"text": "Gemischte Haufen → etwas von allem."},
+    {
+      "text": "Metallhaufen → Legierungen und Befestigungsteile.",
+      "displayItem": {"id": "scrap_tech_workshop:metal_scrap_pile"}
+    },
+    {
+      "text": "Technikhaufen → Schaltkreise, Spulen und Kondensatoren.",
+      "displayItem": {"id": "scrap_tech_workshop:tech_scrap_pile"}
+    },
+    {
+      "text": "3) Kisten und Ruinen.",
+      "displayBlock": {"id": "minecraft:chest"},
+      "playSound": [{"id": "minecraft:block.chest.open", "volume": 0.6}]
+    },
+    {"text": "Je seltener die Struktur, desto wertvoller der Schrott."},
+    {
+      "text": "Suche nach Spulen, Kondensatoren oder Zellfragmenten.",
+      "displayItem": {"id": "scrap_tech_workshop:capacitor_scrap"}
+    },
+    {
+      "text": "4) Wasserquellen und Angeln.",
+      "displayItem": {"id": "minecraft:fishing_rod"},
+      "playSound": [{"id": "minecraft:entity.fishing_bobber.splash", "volume": 0.5}]
+    },
+    {
+      "text": "Häufig zu finden: Glas, Gummi und Faserschrott.",
+      "displayItem": {"id": "scrap_tech_workshop:glass_scrap"}
+    },
+    {"text": "Sammle zuerst. Veredle später."},
+    {
+      "text": "Baue aus gesammelten Fragmenten eine Energiezelle.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"},
+      "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8}]
+    },
+    {"text": "Sie ist der Kern jeder neuen Technologie."},
+    {"text": "Alles beginnt mit dieser Zelle."},
+    {"text": "Überall verstreut findest du weitere Holopads."},
+    {"text": "Sie enthalten Baupläne und Anweisungen."},
+    {"text": "Achte beim Erkunden auf ihre schwachen Signale."}
+  ],
+  "end": {
+    "playSound": [
+      {"id": "minecraft:block.beacon.deactivate", "volume": 0.9},
+      {"id": "minecraft:ui.toast.in"}
+    ],
+    "showParticle": [{"id": "minecraft:flash"}]
+  }
+}

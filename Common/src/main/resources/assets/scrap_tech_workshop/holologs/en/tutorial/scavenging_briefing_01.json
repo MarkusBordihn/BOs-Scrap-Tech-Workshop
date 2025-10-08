@@ -1,0 +1,84 @@
+{
+  "id": "scrap_tech_workshop:holologs/en/tutorial/scavenging_briefing_01",
+  "title": "Scavenging Briefing 01",
+  "subtitle": "Locate and collect usable scrap materials.",
+  "titleColor": "#00FFAA",
+  "subtitleColor": "#AAAAAA",
+  "lineDelay": 2.8,
+  "voiceOver": "scrap_tech_workshop:holologs/en/tutorial/scavenging_briefing_01",
+  "voiceOverDelay": 2.8,
+  "displayHoloEntity": {
+    "id": "scrap_tech_workshop:hololog_humanoid",
+    "texture": "scrap_tech_workshop:textures/entity/hololog/hololog_humanoid.png",
+    "scale": 0.5
+  },
+  "start": {
+    "playSound": [{"id": "minecraft:block.note_block.hat", "volume": 0.8}],
+    "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
+  },
+  "lines": [
+    {
+      "text": "Connection established.",
+      "playSound": [{"id": "minecraft:block.beacon.power_select", "volume": 0.7}]
+    },
+    {"text": "Scrap is the foundation of every rebuild."},
+    {"text": "You can recover it from several sources."},
+    {
+      "text": "1) Mining blocks and debris.",
+      "displayBlock": {"id": "minecraft:stone"},
+      "playSound": [{"id": "minecraft:block.stone.break", "volume": 0.5}]
+    },
+    {"text": "Stone and rubble often yield metal fragments."},
+    {
+      "text": "2) Natural scrap piles.",
+      "displayItem": {"id": "scrap_tech_workshop:mixed_scrap_pile"},
+      "playSound": [{"id": "minecraft:block.gravel.place", "volume": 0.4}]
+    },
+    {"text": "Mixed piles → a little of everything."},
+    {
+      "text": "Metal piles → alloys and fasteners.",
+      "displayItem": {"id": "scrap_tech_workshop:metal_scrap_pile"}
+    },
+    {
+      "text": "Tech piles → circuits, coils, and capacitors.",
+      "displayItem": {"id": "scrap_tech_workshop:tech_scrap_pile"}
+    },
+    {
+      "text": "3) Chests and ruins.",
+      "displayBlock": {"id": "minecraft:chest"},
+      "playSound": [{"id": "minecraft:block.chest.open", "volume": 0.6}]
+    },
+    {"text": "The rarer the structure, the better the scrap."},
+    {
+      "text": "Search for coils, capacitors or cell fragments.",
+      "displayItem": {"id": "scrap_tech_workshop:capacitor_scrap"}
+    },
+    {
+      "text": "4) Water sources and fishing.",
+      "displayItem": {"id": "minecraft:fishing_rod"},
+      "playSound": [{"id": "minecraft:entity.fishing_bobber.splash", "volume": 0.5}]
+    },
+    {
+      "text": "Common finds: glass, rubber, and fiber scrap.",
+      "displayItem": {"id": "scrap_tech_workshop:glass_scrap"}
+    },
+    {"text": "Collect first. Refine later."},
+    {
+      "text": "Craft an Energy Cell from collected fragments.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"},
+      "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8}]
+    },
+    {"text": "It is the core of all future technology."},
+    {"text": "Everything begins with this cell."},
+    {"text": "More Holopads are scattered across the world."},
+    {"text": "They contain blueprints and instructions."},
+    {"text": "Watch for their faint signals while exploring."}
+  ],
+  "end": {
+    "playSound": [
+      {"id": "minecraft:block.beacon.deactivate", "volume": 0.9},
+      {"id": "minecraft:ui.toast.in"}
+    ],
+    "showParticle": [{"id": "minecraft:flash"}]
+  }
+}

@@ -1,8 +1,7 @@
 /*
  * Copyright 2025 Markus Bordihn
- import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
-import de.markusbordihn.scraptechworkshop.registry.item.scraps.ScrapItemRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;* Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
  * associated documentation files (the "Software"), to deal in the Software without restriction,
  * including without limitation the rights to use, copy, modify, merge, publish, distribute,
  * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
@@ -41,9 +40,13 @@ import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;
 import de.markusbordihn.scraptechworkshop.tabs.ModCreativeTabs;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -137,20 +140,28 @@ public class ForgeModItems {
       ITEMS.register(EnergyCellBlockItem.ID, () -> ToolItemRegistry.ENERGY_CELL_BLOCK_ITEM);
   public static final RegistryObject<Item> CIRCUIT_BOARD =
       ITEMS.register(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
-
-  // Hololog Items
-  public static final RegistryObject<Item> HOLO_PAD =
-      ITEMS.register(HoloPadItem.ID, () -> HoloLogItemRegistry.HOLO_PAD_ITEM);
-
   // Creative Mode Tabs
   public static final RegistryObject<CreativeModeTab> SCRAP_TECH_WORKSHOP_TAB =
       CREATIVE_MODE_TABS.register("scrap_tech_workshop", ModCreativeTabs.createMainTab()::build);
-
   public static final RegistryObject<CreativeModeTab> HOLO_CUBE_TAB =
-      CREATIVE_MODE_TABS.register("holocubes", ModCreativeTabs.createHoloCubeTab()::build);
-
+      CREATIVE_MODE_TABS.register("holo_cubes", ModCreativeTabs.createHoloCubeTab()::build);
   public static final RegistryObject<CreativeModeTab> HOLO_PAD_TAB =
-      CREATIVE_MODE_TABS.register("holopads", ModCreativeTabs.createHoloPadTab()::build);
+      CREATIVE_MODE_TABS.register("holo_pads", ModCreativeTabs.createHoloPadTab()::build);
+  private static final Map<String, RegistryObject<Item>> HOLO_PAD_REGISTRY_OBJECTS =
+      new LinkedHashMap<>();
+
+  static {
+    for (Map.Entry<String, ResourceLocation> entry :
+        HoloLogRegistry.getHoloPadRegistry().entrySet()) {
+      String itemId = entry.getKey();
+      ResourceLocation holoLogId = entry.getValue();
+      RegistryObject<Item> registryObject =
+          ITEMS.register(
+              HoloPadItem.ID_PREFIX + itemId,
+              HoloLogItemRegistry.createHoloPadSupplier(itemId, holoLogId));
+      HOLO_PAD_REGISTRY_OBJECTS.put(itemId, registryObject);
+    }
+  }
 
   public static void register(IEventBus eventBus) {
     ITEMS.register(eventBus);
@@ -195,7 +206,8 @@ public class ForgeModItems {
     ModItems.ENERGY_CELL_BLOCK = ENERGY_CELL_BLOCK;
     ModItems.CIRCUIT_BOARD = CIRCUIT_BOARD;
 
-    // Hololog Items
-    ModItems.HOLO_PAD = HOLO_PAD;
+    if (!HOLO_PAD_REGISTRY_OBJECTS.isEmpty()) {
+      ModItems.HOLO_PAD = HOLO_PAD_REGISTRY_OBJECTS.values().iterator().next();
+    }
   }
 }

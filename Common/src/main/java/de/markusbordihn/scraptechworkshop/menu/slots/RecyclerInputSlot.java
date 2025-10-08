@@ -26,7 +26,7 @@ import net.minecraft.world.item.ItemStack;
 public class RecyclerInputSlot extends Slot {
 
   public RecyclerInputSlot(RecyclerBlockEntity blockEntity, int slot, int x, int y) {
-    super(blockEntity, slot, x, y);
+    super(blockEntity.getContainer(), slot, x, y);
   }
 
   @Override

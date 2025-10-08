@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.data.hololog;
 public record HoloLogLine(
     String text,
     HoloLogDisplayEntity displayEntity,
+    HoloLogDisplayRecipe displayRecipe,
     HoloLogEffects effects,
     float lineDelay,
     float startTime) {}

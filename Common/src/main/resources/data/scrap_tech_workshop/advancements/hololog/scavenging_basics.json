@@ -1,0 +1,31 @@
+{
+  "parent": "scrap_tech_workshop:hololog/first_contact",
+  "display": {
+    "icon": {
+      "item": "scrap_tech_workshop:holo_pad_scavenging_briefing_01"
+    },
+    "title": {
+      "translate": "advancement.scrap_tech_workshop.scavenging_basics.title"
+    },
+    "description": {
+      "translate": "advancement.scrap_tech_workshop.scavenging_basics.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "used_holocube": {
+      "trigger": "minecraft:using_item",
+      "conditions": {
+        "item": {
+          "items": ["scrap_tech_workshop:holo_pad_scavenging_briefing_01"]
+        }
+      }
+    }
+  },
+  "rewards": {
+    "experience": 15
+  }
+}

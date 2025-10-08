@@ -20,9 +20,8 @@
 package de.markusbordihn.scraptechworkshop.item.hololog;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.item.ModBlockItems;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
 import java.util.List;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
@@ -32,30 +31,25 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 public class HoloCubeItem extends BlockItem {
-  public static final String ID = "holo_cube";
-  private static final String HOLO_LOG_ID_TAG = "HoloLogId";
+  public static final String ID_PREFIX = "holo_cube_";
 
-  public HoloCubeItem(final Block block, final Properties properties) {
+  private final ResourceLocation holoLogId;
+
+  public HoloCubeItem(
+      final ResourceLocation holoLogId, final Block block, final Properties properties) {
     super(block, properties);
+    this.holoLogId = holoLogId;
   }
 
-  public static ItemStack create(final ResourceLocation holoLogId) {
-    ItemStack stack = new ItemStack(ModBlockItems.HOLO_CUBE.get());
-    setHoloLogId(stack, holoLogId);
-    return stack;
+  public ResourceLocation getHoloLogId() {
+    return holoLogId;
   }
 
-  public static void setHoloLogId(final ItemStack itemStack, final ResourceLocation holoLogId) {
-    CompoundTag tag = itemStack.getOrCreateTag();
-    tag.putString(HOLO_LOG_ID_TAG, holoLogId.toString());
-  }
-
-  public static ResourceLocation getHoloLogId(final ItemStack itemStack) {
-    CompoundTag tag = itemStack.getTag();
-    if (tag == null || !tag.contains(HOLO_LOG_ID_TAG)) {
-      return null;
-    }
-    return new ResourceLocation(tag.getString(HOLO_LOG_ID_TAG));
+  @Override
+  public Component getName(ItemStack stack) {
+    return HoloLogManager.loadHoloLog(holoLogId)
+        .map(data -> (Component) Component.literal("HoloCube: " + data.title()))
+        .orElse(super.getName(stack));
   }
 
   @Override
@@ -67,14 +61,9 @@ public class HoloCubeItem extends BlockItem {
         Component.translatable(Constants.ITEM_PREFIX + "holo_cube.description")
             .withStyle(style -> style.withColor(0x999999)));
 
-    ResourceLocation holoLogId = getHoloLogId(itemStack);
-    if (holoLogId != null) {
-      tooltipComponents.add(
-          Component.translatable(
-              Constants.TOOLTIP_PREFIX + "holo_cube.holo_log", holoLogId.toString()));
-    } else {
-      tooltipComponents.add(Component.translatable(Constants.TOOLTIP_PREFIX + "holo_cube.empty"));
-    }
+    tooltipComponents.add(
+        Component.translatable(
+            Constants.TOOLTIP_PREFIX + "holo_cube.holo_log", holoLogId.toString()));
 
     tooltipComponents.add(
         Component.translatable(Constants.ITEM_PREFIX + "holo_cube.usage")

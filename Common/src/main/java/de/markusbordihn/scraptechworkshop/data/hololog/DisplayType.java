@@ -23,5 +23,6 @@ public enum DisplayType {
   ENTITY,
   BLOCK,
   ITEM,
-  HOLO_ENTITY
+  HOLO_ENTITY,
+  RECIPE
 }

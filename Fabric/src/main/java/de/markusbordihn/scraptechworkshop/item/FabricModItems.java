@@ -39,17 +39,21 @@ import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;
 import de.markusbordihn.scraptechworkshop.tabs.ModCreativeTabs;
+import java.util.Map;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 public class FabricModItems {
 
-  @SuppressWarnings("unchecked")
+  private FabricModItems() {}
+
   public static <T extends Item> Supplier<T> registerItem(String name, Supplier<T> itemSupplier) {
     T item =
         Registry.register(BuiltInRegistries.ITEM, ModItems.getItemId(name), itemSupplier.get());
@@ -135,10 +139,26 @@ public class FabricModItems {
     ModItems.CIRCUIT_BOARD =
         registerItem(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
 
-    // Hololog Items
-    ModItems.HOLO_PAD = registerItem(HoloPadItem.ID, () -> HoloLogItemRegistry.HOLO_PAD_ITEM);
+    // Holo Pad Items
+    for (Map.Entry<String, ResourceLocation> entry :
+        HoloLogRegistry.getHoloPadRegistry().entrySet()) {
+      if (ModItems.HOLO_PAD == null) {
+        ModItems.HOLO_PAD =
+            registerItem(
+                HoloPadItem.ID_PREFIX + entry.getKey(),
+                () ->
+                    HoloLogItemRegistry.createHoloPadSupplier(entry.getKey(), entry.getValue())
+                        .get());
+      } else {
+        registerItem(
+            HoloPadItem.ID_PREFIX + entry.getKey(),
+            () ->
+                HoloLogItemRegistry.createHoloPadSupplier(entry.getKey(), entry.getValue()).get());
+      }
+    }
+  }
 
-    // Register Creative Mode Tabs
+  public static void registerCreativeModeTabs() {
     Registry.register(
         BuiltInRegistries.CREATIVE_MODE_TAB,
         ModCreativeTabs.SCRAP_TECH_WORKSHOP_TAB.location(),

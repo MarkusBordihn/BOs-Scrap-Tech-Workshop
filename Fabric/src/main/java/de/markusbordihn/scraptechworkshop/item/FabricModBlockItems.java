@@ -25,9 +25,12 @@ import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
+import java.util.Map;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 
@@ -71,9 +74,23 @@ public class FabricModBlockItems {
                     new Item.Properties(),
                     ScrapPileVariant.TECH));
 
-    // Hololog Items
-    ModBlockItems.HOLO_CUBE =
-        registerBlockItem(HoloCubeItem.ID, () -> HoloLogItemRegistry.HOLO_CUBE_ITEM);
+    // Register HoloCube Block Items
+    for (Map.Entry<String, ResourceLocation> entry :
+        HoloLogRegistry.getHoloCubeRegistry().entrySet()) {
+      if (ModBlockItems.HOLO_CUBE == null) {
+        ModBlockItems.HOLO_CUBE =
+            registerBlockItem(
+                HoloCubeItem.ID_PREFIX + entry.getKey(),
+                () ->
+                    HoloLogItemRegistry.createHoloCubeSupplier(entry.getKey(), entry.getValue())
+                        .get());
+      } else {
+        registerBlockItem(
+            HoloCubeItem.ID_PREFIX + entry.getKey(),
+            () ->
+                HoloLogItemRegistry.createHoloCubeSupplier(entry.getKey(), entry.getValue()).get());
+      }
+    }
   }
 
   private static Supplier<BlockItem> registerBlockItem(

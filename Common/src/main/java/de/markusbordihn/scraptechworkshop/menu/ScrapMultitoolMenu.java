@@ -19,12 +19,14 @@
 
 package de.markusbordihn.scraptechworkshop.menu;
 
-import de.markusbordihn.scraptechworkshop.config.MultitoolConfig;
 import de.markusbordihn.scraptechworkshop.data.multitool.DisplayMode;
 import de.markusbordihn.scraptechworkshop.data.multitool.ScrapMultitoolData;
 import de.markusbordihn.scraptechworkshop.data.multitool.ToolMode;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
+import de.markusbordihn.scraptechworkshop.menu.multitool.MultitoolBatteryInfo;
+import de.markusbordihn.scraptechworkshop.menu.multitool.MultitoolContainerFactory;
+import de.markusbordihn.scraptechworkshop.menu.multitool.MultitoolDataSaver;
 import de.markusbordihn.scraptechworkshop.menu.slots.MultitoolBatterySlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.MultitoolModuleSlot;
 import net.minecraft.network.FriendlyByteBuf;
@@ -40,24 +42,21 @@ import net.minecraft.world.item.ItemStack;
 
 public class ScrapMultitoolMenu extends AbstractContainerMenu {
 
-  public static final int BATTERY_SLOT_X = 100;
-  public static final int BATTERY_SLOT_Y = 20;
-  public static final int SLOT_SPACING = 18;
-
-  public static final int MODULE_SLOTS_START_X = 64;
-  public static final int MODULE_SLOTS_Y = 50;
-  public static final int MODULE_SLOTS_COUNT = ScrapMultitoolData.MODULE_SLOTS;
-
-  public static final int PLAYER_INVENTORY_START_X = 8;
-  public static final int PLAYER_INVENTORY_START_Y = 138;
-  public static final int PLAYER_INVENTORY_ROWS = 3;
-  public static final int PLAYER_INVENTORY_COLUMNS = 9;
-
-  public static final int PLAYER_HOTBAR_START_X = 8;
-  public static final int PLAYER_HOTBAR_Y = 196;
-  public static final int PLAYER_HOTBAR_SLOTS = 9;
-
-  public static final int TOTAL_TOOL_SLOTS = 1 + MODULE_SLOTS_COUNT;
+  // Layout constants
+  private static final int BATTERY_SLOT_X = 100;
+  private static final int BATTERY_SLOT_Y = 20;
+  private static final int MODULE_SLOTS_START_X = 64;
+  private static final int MODULE_SLOTS_Y = 50;
+  private static final int MODULE_SLOTS_COUNT = ScrapMultitoolData.MODULE_SLOTS;
+  private static final int PLAYER_INVENTORY_START_X = 8;
+  private static final int PLAYER_INVENTORY_START_Y = 138;
+  private static final int PLAYER_INVENTORY_ROWS = 3;
+  private static final int PLAYER_INVENTORY_COLUMNS = 9;
+  private static final int PLAYER_HOTBAR_START_X = 8;
+  private static final int PLAYER_HOTBAR_Y = 196;
+  private static final int PLAYER_HOTBAR_SLOTS = 9;
+  private static final int SLOT_SPACING = 18;
+  private static final int TOTAL_TOOL_SLOTS = 1 + MODULE_SLOTS_COUNT;
 
   // Note: MenuType will be registered by platform-specific code
   public static MenuType<ScrapMultitoolMenu> TYPE;
@@ -98,36 +97,24 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
       throw new IllegalArgumentException("Invalid multitool ItemStack");
     }
 
-    this.toolContainer = createToolContainer(multitool);
+    // Create container with lambda that references the final toolContainer
+    SimpleContainer tempContainer =
+        MultitoolContainerFactory.createToolContainer(multitoolStack, () -> {});
+    this.toolContainer = tempContainer;
+
+    // Now set up the change listener that uses the initialized toolContainer
+    tempContainer.addListener(
+        container -> {
+          if (initialized) {
+            MultitoolDataSaver.saveToMultitool(multitoolStack, toolContainer);
+          }
+        });
 
     addToolSlots();
     addPlayerInventory(playerInventory);
     addPlayerHotbar(playerInventory);
-  }
-
-  private SimpleContainer createToolContainer(final ScrapMultitoolItem multitool) {
-    ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(multitoolStack);
-    SimpleContainer container =
-        new SimpleContainer(TOTAL_TOOL_SLOTS) {
-          @Override
-          public void setChanged() {
-            super.setChanged();
-            if (initialized) {
-              saveToMultitool();
-            }
-          }
-        };
-
-    container.setItem(0, data.battery());
-    for (int i = 0; i < data.modules().length; i++) {
-      ItemStack module = data.modules()[i];
-      if (module != null) {
-        container.setItem(i + 1, module);
-      }
-    }
 
     initialized = true;
-    return container;
   }
 
   private void addToolSlots() {
@@ -167,36 +154,6 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
             }
           });
     }
-  }
-
-  private void saveToMultitool() {
-    if (!(multitoolStack.getItem() instanceof ScrapMultitoolItem) || toolContainer == null) {
-      return;
-    }
-
-    ItemStack[] modules = new ItemStack[MODULE_SLOTS_COUNT];
-    for (int i = 0; i < modules.length; i++) {
-      modules[i] = toolContainer.getItem(i + 1);
-    }
-
-    ScrapMultitoolData currentData = ScrapMultitoolData.fromItemStack(multitoolStack);
-    ScrapMultitoolData newData =
-        new ScrapMultitoolData(
-            toolContainer.getItem(0),
-            modules,
-            currentData.hologramColor(),
-            currentData.hudEnabled(),
-            currentData.toolPriority(),
-            currentData.activeMode());
-
-    newData.saveToItemStack(multitoolStack);
-
-    if (multitoolStack.getItem() instanceof ScrapMultitoolItem multitoolItem) {
-      multitoolItem.syncEnergyWithBattery(multitoolStack);
-    }
-
-    DisplayMode displayMode = new DisplayMode(multitoolStack);
-    displayMode.updateModel(ToolMode.fromId(newData.activeMode()), newData.getBatteryLevel());
   }
 
   @Override
@@ -351,35 +308,14 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
   }
 
   public int getCurrentEnergyFromBattery() {
-    ItemStack battery = toolContainer.getItem(0);
-    if (battery.getItem() instanceof EnergyCellItem batteryItem) {
-      int batteryEnergy = batteryItem.getEnergy(battery);
-      if (batteryEnergy <= 1) {
-        return 0;
-      }
-      return batteryEnergy;
-    }
-    return 0;
+    return MultitoolBatteryInfo.getCurrentEnergy(toolContainer);
   }
 
   public int getMaxEnergyFromBattery() {
-    ItemStack battery = toolContainer.getItem(0);
-    if (battery.getItem() instanceof EnergyCellItem) {
-      return EnergyCellItem.ENERGY_MAX;
-    }
-    return MultitoolConfig.energyMax;
+    return MultitoolBatteryInfo.getMaxEnergy(toolContainer);
   }
 
   public int getBatteryPercentageFromSlot() {
-    ItemStack battery = toolContainer.getItem(0);
-    if (battery.getItem() instanceof EnergyCellItem batteryItem) {
-      int batteryEnergy = batteryItem.getEnergy(battery);
-      if (batteryEnergy <= 1) {
-        return 0;
-      }
-      float percentage = batteryItem.getEnergyPercentage(battery);
-      return Math.round(percentage * 100);
-    }
-    return 0;
+    return MultitoolBatteryInfo.getPercentage(toolContainer);
   }
 }

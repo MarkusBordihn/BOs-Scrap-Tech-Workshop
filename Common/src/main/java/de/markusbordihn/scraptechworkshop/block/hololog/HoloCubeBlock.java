@@ -23,6 +23,7 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogStatus;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
+import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -203,8 +204,16 @@ public class HoloCubeBlock extends BaseEntityBlock {
       if (level.getBlockEntity(blockPos) instanceof HoloCubeBlockEntity blockEntity) {
         ResourceLocation holoLogId = blockEntity.getHoloLogId();
         if (holoLogId != null) {
-          ItemStack stack = HoloCubeItem.create(holoLogId);
-          popResource(level, blockPos, stack);
+          HoloCubeItem holoCubeItem = HoloLogItemRegistry.getHoloCubeItemByHoloLog(holoLogId);
+          if (holoCubeItem != null) {
+            ItemStack stack = new ItemStack(holoCubeItem);
+            popResource(level, blockPos, stack);
+          } else {
+            log.warn(
+                "[{}] No HoloCube item found for HoloLog: {}",
+                blockEntity.getCubeUUID(),
+                holoLogId);
+          }
         }
       }
     }
@@ -217,10 +226,18 @@ public class HoloCubeBlock extends BaseEntityBlock {
     super.setPlacedBy(level, blockPos, blockState, placer, stack);
 
     if (level.getBlockEntity(blockPos) instanceof HoloCubeBlockEntity holoCubeBlockEntity) {
-      ResourceLocation holoLogId = HoloCubeItem.getHoloLogId(stack);
-      if (holoLogId != null) {
+      if (stack.getItem() instanceof HoloCubeItem holoCubeItem) {
+        ResourceLocation holoLogId = holoCubeItem.getHoloLogId();
         holoCubeBlockEntity.setHoloLogId(holoLogId);
         log.info("[{}] Placed with holo-log: {}", holoCubeBlockEntity.getCubeUUID(), holoLogId);
+
+        // Auto-start the introduction holocube on first placement
+        if (holoLogId.equals(
+            new ResourceLocation(Constants.MOD_ID, "holologs/intro/introduction"))) {
+          level.setBlock(
+              blockPos, blockState.setValue(STATUS, HoloLogStatus.PLAYING), Block.UPDATE_ALL);
+          log.info("[{}] Auto-started introduction holocube", holoCubeBlockEntity.getCubeUUID());
+        }
       } else {
         log.warn("[{}] Placed without holo-log ID", holoCubeBlockEntity.getCubeUUID());
       }

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -58,6 +59,8 @@ public class HoloLogScreenPlayer extends HoloLogPlaybackBase {
   private int currentCharIndex = 0;
   private float elapsedTimeSinceLastChar = 0.0f;
   private float elapsedTime = 0.0f;
+  private float endDelayTimer = 0.0f;
+  private boolean waitingForEndDelay = false;
   private int ticksSinceLastCheck = 0;
 
   public HoloLogScreenPlayer(
@@ -75,10 +78,10 @@ public class HoloLogScreenPlayer extends HoloLogPlaybackBase {
     currentCharIndex = 0;
     elapsedTimeSinceLastChar = 0.0f;
     elapsedTime = 0.0f;
+    endDelayTimer = 0.0f;
+    waitingForEndDelay = false;
     ticksSinceLastCheck = 0;
     log.info("[HolologScreenPlayer] Playback started: {} lines", holoLogData.lines().size());
-
-    startVoiceOver();
   }
 
   @Override
@@ -113,6 +116,9 @@ public class HoloLogScreenPlayer extends HoloLogPlaybackBase {
       elapsedTime += CHECK_INTERVAL;
       elapsedTimeSinceLastChar += CHECK_INTERVAL;
       ticksSinceLastCheck = 0;
+
+      // Try to start voice-over if not already started
+      startVoiceOver(elapsedTime);
 
       if (currentLineIndex < holoLogData.lines().size()) {
         float charDelay = holoLogData.charDelay();
@@ -150,7 +156,18 @@ public class HoloLogScreenPlayer extends HoloLogPlaybackBase {
       }
 
       if (currentLineIndex >= holoLogData.lines().size()) {
-        completePlayback();
+        if (!waitingForEndDelay) {
+          waitingForEndDelay = true;
+          endDelayTimer = 0.0f;
+          log.debug("All lines finished, waiting {}s before end effects", holoLogData.endDelay());
+        }
+      }
+
+      if (waitingForEndDelay) {
+        endDelayTimer += CHECK_INTERVAL;
+        if (endDelayTimer >= holoLogData.endDelay()) {
+          completePlayback();
+        }
       }
     }
   }
@@ -263,9 +280,10 @@ public class HoloLogScreenPlayer extends HoloLogPlaybackBase {
     Block block = BuiltInRegistries.BLOCK.get(blockId);
     if (block != null && block != Blocks.AIR) {
       Minecraft mc = Minecraft.getInstance();
+      int fullBright = LightTexture.FULL_BRIGHT;
       mc.getBlockRenderer()
           .renderSingleBlock(
-              block.defaultBlockState(), poseStack, buffer, lightLevel, OverlayTexture.NO_OVERLAY);
+              block.defaultBlockState(), poseStack, buffer, fullBright, OverlayTexture.NO_OVERLAY);
       if (buffer instanceof MultiBufferSource.BufferSource bufferSource) {
         bufferSource.endBatch();
       }

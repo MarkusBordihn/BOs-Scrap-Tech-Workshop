@@ -21,7 +21,7 @@ package de.markusbordihn.scraptechworkshop.client;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogPlayerManager;
-import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogParser;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
@@ -68,7 +68,7 @@ class ClientModEventHandler {
               .thenRunAsync(
                   () -> {
                     log.info("Reloading holologs after resource pack change...");
-                    HoloLogParser.clearCache();
+                    HoloLogManager.clearCache();
                   },
                   executor2);
         });

@@ -28,7 +28,7 @@
     },
     {
       "text": "Der Himmel brannte,",
-      "displayBlock": {"id": "minecraft:fire", "scale": 0.3, "rotationSpeed": 0.0},
+      "displayBlock": {"id": "minecraft:fire", "rotationSpeed": 0.0},
       "playSound": [{"id": "minecraft:block.note_block.snare", "volume": 0.7}],
       "showParticle": [{"id": "minecraft:dust", "color": "#FF5500"}]
     },
@@ -39,17 +39,17 @@
     },
     {
       "text": "und was wir einst Technologie nannten",
-      "displayBlock": {"id": "minecraft:redstone_block", "scale": 0.4}
+      "displayBlock": {"id": "minecraft:redstone_block"}
     },
     {
       "text": "wurde im Feuer zerschmettert.",
-      "displayBlock": {"id": "minecraft:blackstone", "scale": 0.4},
+      "displayBlock": {"id": "minecraft:blackstone"},
       "playSound": [{"id": "minecraft:entity.blaze.burn", "volume": 0.35, "pitch": 0.9}],
       "showParticle": [{"id": "minecraft:smoke", "count": 8}]
     },
     {
       "text": "Was übrig blieb… liegt zerbrochen.",
-      "displayItem": {"id": "scrap_tech_workshop:metal_scrap", "scale": 0.6},
+      "displayItem": {"id": "scrap_tech_workshop:metal_scrap"},
       "playSound": [{"id": "minecraft:block.redstone_torch.burnout", "volume": 0.7}],
       "showParticle": [{"id": "minecraft:portal", "count": 6}]
     },
@@ -58,7 +58,7 @@
     },
     {
       "text": "zersplitterte Spulen,",
-      "displayItem": {"id": "scrap_tech_workshop:coil_scrap", "scale": 0.5},
+      "displayItem": {"id": "scrap_tech_workshop:coil_scrap"},
       "playSound": [{"id": "minecraft:block.glass.break", "volume": 0.3, "pitch": 0.8}]
     },
     {
@@ -92,13 +92,13 @@
     },
     {
       "text": "ist eine Chance zum Wiederaufbau.",
-      "displayBlock": {"id": "minecraft:crafting_table", "scale": 0.45},
+      "displayBlock": {"id": "minecraft:crafting_table"},
       "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8, "pitch": 0.9}],
       "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
     },
     {
       "lineDelay": 4.75,
-      "displayBlock": {"id": "minecraft:crafting_table", "scale": 0.45, "rotationSpeed": 0.5},
+      "displayBlock": {"id": "minecraft:crafting_table", "rotationSpeed": 0.5},
       "playSound": [
         {"id": "minecraft:block.beacon.ambient", "volume": 0.3},
         {"id": "minecraft:block.note_block.pling", "volume": 0.2, "pitch": 1.8}
@@ -110,13 +110,13 @@
     },
     {
       "text": "und perfekter Maschinen ist vorbei.",
-      "displayItem": {"id": "minecraft:damaged_anvil", "scale": 0.6},
+      "displayItem": {"id": "minecraft:damaged_anvil"},
       "playSound": [{"id": "minecraft:entity.elder_guardian.curse", "volume": 0.2, "pitch": 0.75}],
       "showParticle": [{"id": "minecraft:smoke", "count": 6}]
     },
     {
       "text": "Jetzt wird die Zukunft aus Fragmenten geschmiedet.",
-      "displayItem": {"id": "scrap_tech_workshop:alloy_scrap", "scale": 0.5},
+      "displayItem": {"id": "scrap_tech_workshop:alloy_scrap"},
       "playSound": [
         {"id": "minecraft:block.note_block.hat", "volume": 0.8},
         {"id": "minecraft:entity.enderman.teleport", "volume": 0.15, "pitch": 1.6}
@@ -125,15 +125,22 @@
     },
     {
       "text": "Aus Wrackteilen.",
-      "displayItem": {"id": "scrap_tech_workshop:tech_scrap", "scale": 0.4},
+      "displayItem": {"id": "scrap_tech_workshop:tech_scrap"},
       "playSound": [{"id": "minecraft:ui.toast.in"}],
       "showParticle": [{"id": "minecraft:crit", "count": 10}]
     },
     {
       "text": "Aus Schrott.",
-      "displayItem": {"id": "scrap_tech_workshop:iron_scrap", "scale": 0.4},
+      "displayItem": {"id": "scrap_tech_workshop:iron_scrap"},
       "playSound": [{"id": "minecraft:block.beacon.deactivate"}],
       "showParticle": [{"id": "minecraft:flash"}]
+    },
+    {
+      "text": "💡 Tipp: Schau in dein Inventar nach neuen Gegenständen",
+      "displayItem": {"id": "scrap_tech_workshop:holo_pad_scavenging_briefing_01"},
+      "lineDelay": 4.0,
+      "playSound": [{"id": "minecraft:block.note_block.pling", "volume": 0.5, "pitch": 1.5}],
+      "showParticle": [{"id": "minecraft:dust", "color": "#FFFF00", "count": 5}]
     }
   ],
   "end": {

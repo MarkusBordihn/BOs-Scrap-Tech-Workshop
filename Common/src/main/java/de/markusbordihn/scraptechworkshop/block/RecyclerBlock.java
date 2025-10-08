@@ -135,7 +135,6 @@ public class RecyclerBlock extends BaseEntityBlock {
           fabricFactoryClass =
               Class.forName("de.markusbordihn.scraptechworkshop.menu.BlockBaseScreenHandler");
         } catch (ClassNotFoundException e) {
-          // Fall back to BaseScreenHandler if BlockBaseScreenHandler doesn't exist yet
           fabricFactoryClass =
               Class.forName("de.markusbordihn.scraptechworkshop.menu.BaseScreenHandler");
         }
@@ -157,7 +156,6 @@ public class RecyclerBlock extends BaseEntityBlock {
                 .getConstructor(RecyclerBlockEntity.class)
                 .newInstance(recyclerBlockEntity);
 
-        // Try openGui method (newer Forge versions)
         Class<?> networkHooksClass = Class.forName("net.minecraftforge.network.NetworkHooks");
         try {
           java.lang.reflect.Method openGuiMethod =
@@ -196,7 +194,7 @@ public class RecyclerBlock extends BaseEntityBlock {
     if (!state.is(newState.getBlock())) {
       BlockEntity blockEntity = level.getBlockEntity(pos);
       if (blockEntity instanceof RecyclerBlockEntity recyclerBlockEntity) {
-        Containers.dropContents(level, pos, recyclerBlockEntity);
+        Containers.dropContents(level, pos, recyclerBlockEntity.getContainer());
       }
       super.onRemove(state, level, pos, newState, isMoving);
     }

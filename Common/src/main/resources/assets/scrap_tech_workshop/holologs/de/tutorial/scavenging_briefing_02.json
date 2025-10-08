@@ -1,0 +1,82 @@
+{
+  "id": "scrap_tech_workshop:holologs/de/tutorial/scavenging_briefing_02",
+  "title": "Bergungs-Briefing 02",
+  "subtitle": "Stelle eine einfache Energiezelle her.",
+  "titleColor": "#00FFAA",
+  "subtitleColor": "#AAAAAA",
+  "lineDelay": 3.1,
+  "voiceOver": "scrap_tech_workshop:holologs/de/tutorial/scavenging_briefing_02",
+  "voiceOverDelay": 3.1,
+  "displayHoloEntity": {
+    "id": "scrap_tech_workshop:hololog_humanoid",
+    "texture": "scrap_tech_workshop:textures/entity/hololog/hololog_humanoid.png",
+    "scale": 0.5
+  },
+  "start": {
+    "playSound": [{"id": "minecraft:block.note_block.hat", "volume": 0.8}],
+    "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
+  },
+  "lines": [
+    {
+      "text": "Energiesystem-Protokoll aktiv.",
+      "playSound": [{"id": "minecraft:block.beacon.power_select", "volume": 0.7}]
+    },
+    {"text": "Die Energiezelle ist der Kern moderner Technologie."},
+    {"text": "Sie gibt Energie für Werkzeuge, Maschinen und Geräte."},
+    {
+      "text": "Fertige eine Energiezelle aus Schrottteilen.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"}
+    },
+    {
+      "text": "So wird sie hergestellt:",
+      "displayRecipe": {
+        "recipe": "scrap_tech_workshop:energy_cell",
+        "scale": 1.2
+      },
+      "playSound": [{"id": "minecraft:block.anvil.use", "volume": 0.6}],
+      "lineDelay": 4.5
+    },
+    {
+      "text": "Du brauchst Kondensatoren, Kunststoff, Schaltkreise.",
+      "displayItem": {"id": "scrap_tech_workshop:capacitor_scrap"}
+    },
+    {
+      "text": "Zusammen bilden sie einen stabilen Energiekern.",
+      "displayItem": {"id": "scrap_tech_workshop:circuit_scrap"}
+    },
+    {"text": "Zellen verschleißen bei Nutzung oder Überlastung."},
+    {
+      "text": "Leicht beschädigte Zellen speichern weniger Energie.",
+      "displayItem": {"id": "scrap_tech_workshop:slightly_damaged_energy_cell"}
+    },
+    {
+      "text": "Stark beschädigte kannst du recyceln oder reparieren.",
+      "displayItem": {"id": "scrap_tech_workshop:damaged_energy_cell"}
+    },
+    {
+      "text": "Der Recycler zerlegt defekte Zellen in Komponenten.",
+      "displayBlock": {"id": "scrap_tech_workshop:recycler"},
+      "playSound": [{"id": "minecraft:block.piston.contract", "volume": 0.5}]
+    },
+    {"text": "Oder nutze die Fragmente, um neue Zellen zu fertigen."},
+    {"text": "Stabile Energie ist Voraussetzung für Fortschritt."},
+    {"text": "Ohne sie bleiben selbst beste Werkzeuge nutzlos."},
+    {
+      "text": "Halte immer eine geladene Zelle in Reserve.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"},
+      "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8}]
+    },
+    {
+      "text": "Nächstes Ziel: das Schrott-Multitool herstellen.",
+      "displayItem": {"id": "scrap_tech_workshop:scrap_multitool"}
+    },
+    {"text": "Es nutzt die Energiezelle als zentrale Stromquelle."}
+  ],
+  "end": {
+    "playSound": [
+      {"id": "minecraft:block.beacon.deactivate", "volume": 0.9},
+      {"id": "minecraft:ui.toast.in"}
+    ],
+    "showParticle": [{"id": "minecraft:flash"}]
+  }
+}

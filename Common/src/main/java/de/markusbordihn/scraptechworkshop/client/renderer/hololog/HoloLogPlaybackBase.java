@@ -23,6 +23,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogData;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogDisplayEntity;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogDisplayRecipe;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogLine;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogPlaybackContext;
 import java.util.UUID;
@@ -83,11 +84,14 @@ public abstract class HoloLogPlaybackBase {
 
   protected abstract void onPlaybackStop();
 
-  protected void startVoiceOver() {
+  protected void startVoiceOver(float currentTime) {
     if (!voiceOverStarted && holoLogData.hasVoiceOver()) {
-      HoloLogPlayerAudio.playVoiceOver(playerId, holoLogData.voiceOver(), context);
-      voiceOverStarted = true;
-      log.debug("Started voice-over");
+      if (currentTime >= holoLogData.voiceOverDelay()) {
+        HoloLogPlayerAudio.playVoiceOver(playerId, holoLogData.voiceOver(), context);
+        voiceOverStarted = true;
+        log.debug(
+            "Started voice-over at {}s (delay: {}s)", currentTime, holoLogData.voiceOverDelay());
+      }
     }
   }
 
@@ -122,6 +126,18 @@ public abstract class HoloLogPlaybackBase {
     }
 
     return holoLogData.displayEntity();
+  }
+
+  public HoloLogDisplayRecipe getCurrentDisplayRecipe() {
+    int displayLineIndex = getDisplayLineIndex();
+    if (displayLineIndex >= 0 && displayLineIndex < holoLogData.lines().size()) {
+      HoloLogLine line = holoLogData.lines().get(displayLineIndex);
+      if (line.displayRecipe() != null) {
+        return line.displayRecipe();
+      }
+    }
+
+    return holoLogData.displayRecipe();
   }
 
   protected int getDisplayLineIndex() {
@@ -198,6 +214,9 @@ public abstract class HoloLogPlaybackBase {
             renderItem(poseStack, displayEntity.id(), lightLevel);
           }
           break;
+        case RECIPE:
+          // Recipe rendering is handled separately in the screen
+          break;
       }
     } catch (Exception e) {
       log.error("Failed to render display entity: {}", e.getMessage());
@@ -247,6 +266,9 @@ public abstract class HoloLogPlaybackBase {
           if (displayEntity.id() != null) {
             renderItem(poseStack, buffer, displayEntity.id(), lightLevel);
           }
+          break;
+        case RECIPE:
+          // Recipe rendering is handled separately in the screen
           break;
       }
     } catch (Exception e) {

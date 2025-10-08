@@ -56,6 +56,8 @@ public class HoloLogBlockPlayer extends HoloLogPlaybackBase {
   private final Map<ResourceLocation, Entity> entityCache = new HashMap<>();
   private final float ticksPerCheck;
   private float elapsedTime = 0.0f;
+  private float endDelayTimer = 0.0f;
+  private boolean waitingForEndDelay = false;
   private int ticksSinceLastCheck = 0;
 
   public HoloLogBlockPlayer(
@@ -72,6 +74,8 @@ public class HoloLogBlockPlayer extends HoloLogPlaybackBase {
   @Override
   protected void onPlaybackStart() {
     elapsedTime = 0.0f;
+    endDelayTimer = 0.0f;
+    waitingForEndDelay = false;
     ticksSinceLastCheck = 0;
 
     if (textDisplay != null) {
@@ -120,12 +124,12 @@ public class HoloLogBlockPlayer extends HoloLogPlaybackBase {
       elapsedTime += CHECK_INTERVAL;
       ticksSinceLastCheck = 0;
 
+      // Try to start voice-over if not already started
+      startVoiceOver(elapsedTime);
+
       if (currentLineIndex < holoLogData.lines().size()) {
         HoloLogLine line = holoLogData.lines().get(currentLineIndex);
         if (elapsedTime >= line.startTime()) {
-          if (currentLineIndex == 0) {
-            startVoiceOver();
-          }
           float effectiveDelay = line.lineDelay() > 0 ? line.lineDelay() : holoLogData.lineDelay();
           log.debug(
               "Displaying line {}/{}: '{}' at {}s (start time: {}s, delay: {}s)",
@@ -145,7 +149,18 @@ public class HoloLogBlockPlayer extends HoloLogPlaybackBase {
       }
 
       if (currentLineIndex >= holoLogData.lines().size()) {
-        completePlayback();
+        if (!waitingForEndDelay) {
+          waitingForEndDelay = true;
+          endDelayTimer = 0.0f;
+          log.debug("All lines finished, waiting {}s before end effects", holoLogData.endDelay());
+        }
+      }
+
+      if (waitingForEndDelay) {
+        endDelayTimer += CHECK_INTERVAL;
+        if (endDelayTimer >= holoLogData.endDelay()) {
+          completePlayback();
+        }
       }
     }
   }

@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.menu;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.RecyclerSlots;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
 import de.markusbordihn.scraptechworkshop.menu.slots.DummySlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.RecyclerInputSlot;
@@ -90,7 +91,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
     super(TYPE, windowId);
     this.level = playerInventory.player.level();
     this.data = data != null ? data : new SimpleContainerData(CONTAINER_DATA_SIZE);
-    this.dummyContainer = new SimpleContainer(RecyclerBlockEntity.TOTAL_SLOTS);
+    this.dummyContainer = new SimpleContainer(RecyclerSlots.TOTAL_SLOTS);
 
     if (entity instanceof RecyclerBlockEntity recyclerEntity) {
       this.blockEntity = recyclerEntity;
@@ -105,7 +106,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
       this.blockPos = null;
     }
 
-    checkContainerSize(playerInventory, RecyclerBlockEntity.TOTAL_SLOTS);
+    checkContainerSize(playerInventory, RecyclerSlots.TOTAL_SLOTS);
     addRecyclerSlots();
     addPlayerInventory(playerInventory);
     addPlayerHotbar(playerInventory);
@@ -164,7 +165,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
               entityToUse, 11, UPGRADE_SLOT_START_X + SLOT_SPACING, UPGRADE_SLOT_Y));
     } else {
       // Add dummy slots if no block entity
-      for (int i = 0; i < RecyclerBlockEntity.TOTAL_SLOTS; i++) {
+      for (int i = 0; i < RecyclerSlots.TOTAL_SLOTS; i++) {
         this.addSlot(new DummySlot(dummyContainer, i, -1000, -1000));
       }
     }
@@ -225,30 +226,27 @@ public class RecyclerMenu extends AbstractContainerMenu {
       ItemStack slotStack = slot.getItem();
       itemStack = slotStack.copy();
       int playerInventoryEnd =
-          RecyclerBlockEntity.TOTAL_SLOTS + (PLAYER_INVENTORY_ROWS * PLAYER_INVENTORY_COLUMNS);
+          RecyclerSlots.TOTAL_SLOTS + (PLAYER_INVENTORY_ROWS * PLAYER_INVENTORY_COLUMNS);
       int playerHotbarEnd = playerInventoryEnd + PLAYER_HOTBAR_SLOTS;
 
       if (blockEntity != null) {
-        int inputEnd = RecyclerBlockEntity.INPUT_SLOTS;
-        int outputEnd = inputEnd + RecyclerBlockEntity.OUTPUT_SLOTS;
-        int upgradeEnd = outputEnd + RecyclerBlockEntity.UPGRADE_SLOTS;
+        int inputEnd = RecyclerSlots.INPUT_SLOTS;
+        int outputEnd = inputEnd + RecyclerSlots.OUTPUT_SLOTS;
+        int upgradeEnd = outputEnd + RecyclerSlots.UPGRADE_SLOTS;
 
         if (index < inputEnd) {
           // Moving from input slots
-          if (!this.moveItemStackTo(
-              slotStack, RecyclerBlockEntity.TOTAL_SLOTS, playerHotbarEnd, false)) {
+          if (!this.moveItemStackTo(slotStack, RecyclerSlots.TOTAL_SLOTS, playerHotbarEnd, false)) {
             return ItemStack.EMPTY;
           }
         } else if (index < outputEnd) {
           // Moving from output slots
-          if (!this.moveItemStackTo(
-              slotStack, RecyclerBlockEntity.TOTAL_SLOTS, playerHotbarEnd, false)) {
+          if (!this.moveItemStackTo(slotStack, RecyclerSlots.TOTAL_SLOTS, playerHotbarEnd, false)) {
             return ItemStack.EMPTY;
           }
         } else if (index < upgradeEnd) {
           // Moving from upgrade slots
-          if (!this.moveItemStackTo(
-              slotStack, RecyclerBlockEntity.TOTAL_SLOTS, playerHotbarEnd, false)) {
+          if (!this.moveItemStackTo(slotStack, RecyclerSlots.TOTAL_SLOTS, playerHotbarEnd, false)) {
             return ItemStack.EMPTY;
           }
         } else if (index < playerInventoryEnd) {
@@ -263,7 +261,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
           if (!this.moveItemStackTo(slotStack, 0, inputEnd, false)
               && !this.moveItemStackTo(slotStack, outputEnd, upgradeEnd, false)
               && !this.moveItemStackTo(
-                  slotStack, RecyclerBlockEntity.TOTAL_SLOTS, playerInventoryEnd, false)) {
+                  slotStack, RecyclerSlots.TOTAL_SLOTS, playerInventoryEnd, false)) {
             return ItemStack.EMPTY;
           }
         }
@@ -277,7 +275,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
         } else if (index < playerHotbarEnd) {
           // Moving from player hotbar to inventory
           if (!this.moveItemStackTo(
-              slotStack, RecyclerBlockEntity.TOTAL_SLOTS, playerInventoryEnd, false)) {
+              slotStack, RecyclerSlots.TOTAL_SLOTS, playerInventoryEnd, false)) {
             return ItemStack.EMPTY;
           }
         }

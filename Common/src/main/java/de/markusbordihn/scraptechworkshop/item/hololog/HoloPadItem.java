@@ -22,10 +22,8 @@ package de.markusbordihn.scraptechworkshop.item.hololog;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.ClientHelper;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
-import de.markusbordihn.scraptechworkshop.item.ModItems;
 import java.util.List;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -40,47 +38,24 @@ import org.apache.logging.log4j.Logger;
 
 public class HoloPadItem extends Item {
 
-  public static final String ID = "holo_pad";
+  public static final String ID_PREFIX = "holo_pad_";
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
-  private static final String HOLOLOG_ID_TAG = "HoloLogId";
   private static final String TRANSLATION_KEY_PREFIX = "item.scrap_tech_workshop.holo_pad";
 
-  public HoloPadItem(final Properties properties) {
+  private final ResourceLocation holoLogId;
+
+  public HoloPadItem(final ResourceLocation holoLogId, final Properties properties) {
     super(properties);
+    this.holoLogId = holoLogId;
   }
 
-  public static ItemStack create(final ResourceLocation holoLogId) {
-    ItemStack stack = new ItemStack(ModItems.HOLO_PAD.get());
-    setHoloLogId(stack, holoLogId);
-    return stack;
-  }
-
-  public static ResourceLocation getHoloLogId(final ItemStack stack) {
-    CompoundTag tag = stack.getTag();
-    if (tag == null || !tag.contains(HOLOLOG_ID_TAG)) {
-      return null;
-    }
-    return new ResourceLocation(tag.getString(HOLOLOG_ID_TAG));
-  }
-
-  public static void setHoloLogId(final ItemStack stack, final ResourceLocation holoLogId) {
-    stack.getOrCreateTag().putString(HOLOLOG_ID_TAG, holoLogId.toString());
+  public ResourceLocation getHoloLogId() {
+    return holoLogId;
   }
 
   @Override
   public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
     ItemStack stack = player.getItemInHand(hand);
-    ResourceLocation holoLogId = getHoloLogId(stack);
-
-    if (holoLogId == null) {
-      if (!level.isClientSide) {
-        player.displayClientMessage(
-            Component.translatable(TRANSLATION_KEY_PREFIX + ".no_hololog")
-                .withStyle(ChatFormatting.RED),
-            true);
-      }
-      return InteractionResultHolder.fail(stack);
-    }
 
     if (!level.isClientSide) {
       if (!HoloLogManager.isValidHoloLog(holoLogId)) {
@@ -103,33 +78,33 @@ public class HoloPadItem extends Item {
   }
 
   @Override
+  public Component getName(ItemStack stack) {
+    return HoloLogManager.loadHoloLog(holoLogId)
+        .map(data -> (Component) Component.literal("HoloPad: " + data.title()))
+        .orElse(super.getName(stack));
+  }
+
+  @Override
   public void appendHoverText(
       ItemStack stack, Level level, List<Component> tooltipComponents, TooltipFlag flag) {
     super.appendHoverText(stack, level, tooltipComponents, flag);
 
-    ResourceLocation holoLogId = getHoloLogId(stack);
-    if (holoLogId != null) {
-      tooltipComponents.add(
-          Component.translatable(TRANSLATION_KEY_PREFIX + ".holo_log")
-              .append(Component.literal(": " + holoLogId))
-              .withStyle(ChatFormatting.GRAY));
-      HoloLogManager.loadHoloLog(holoLogId)
-          .ifPresent(
-              data -> {
+    HoloLogManager.loadHoloLog(holoLogId)
+        .ifPresent(
+            data -> {
+              tooltipComponents.add(
+                  Component.literal("\"" + data.title() + "\"").withStyle(ChatFormatting.AQUA));
+              if (data.subtitle() != null && !data.subtitle().isEmpty()) {
                 tooltipComponents.add(
-                    Component.literal("\"" + data.title() + "\"").withStyle(ChatFormatting.AQUA));
-                if (data.subtitle() != null && !data.subtitle().isEmpty()) {
-                  tooltipComponents.add(
-                      Component.literal(data.subtitle()).withStyle(ChatFormatting.DARK_GRAY));
-                }
-              });
-    } else {
-      tooltipComponents.add(
-          Component.translatable(TRANSLATION_KEY_PREFIX + ".empty")
-              .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
-    }
+                    Component.literal(data.subtitle()).withStyle(ChatFormatting.DARK_GRAY));
+              }
+            });
     tooltipComponents.add(
         Component.translatable(TRANSLATION_KEY_PREFIX + ".description")
+            .withStyle(ChatFormatting.GRAY));
+    tooltipComponents.add(
+        Component.translatable(TRANSLATION_KEY_PREFIX + ".holo_log")
+            .append(Component.literal(": " + holoLogId))
             .withStyle(ChatFormatting.GRAY));
   }
 }

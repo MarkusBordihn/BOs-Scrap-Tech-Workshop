@@ -75,6 +75,11 @@ public class HoloCubeStorage extends SavedData {
     return instance;
   }
 
+  public static void reset() {
+    log.info("Resetting Holo Cube Storage instance ...");
+    instance = null;
+  }
+
   public static HoloCubeStorage load(final CompoundTag compoundTag) {
     List<HoloCubePlayerData> loadedData =
         HoloCubePlayerData.CODEC

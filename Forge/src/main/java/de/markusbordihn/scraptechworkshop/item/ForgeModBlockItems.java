@@ -25,6 +25,10 @@ import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -69,9 +73,21 @@ public class ForgeModBlockItems {
                   new Item.Properties(),
                   ScrapPileVariant.TECH));
 
-  // Hololog Items
-  public static final RegistryObject<BlockItem> HOLO_CUBE_BLOCK_ITEM =
-      BLOCK_ITEMS.register(HoloCubeItem.ID, () -> HoloLogItemRegistry.HOLO_CUBE_ITEM);
+  private static final Map<String, RegistryObject<BlockItem>> HOLO_CUBE_REGISTRY_OBJECTS =
+      new LinkedHashMap<>();
+
+  static {
+    for (Map.Entry<String, ResourceLocation> entry :
+        HoloLogRegistry.getHoloCubeRegistry().entrySet()) {
+      String itemId = entry.getKey();
+      ResourceLocation holoLogId = entry.getValue();
+      RegistryObject<BlockItem> registryObject =
+          BLOCK_ITEMS.register(
+              HoloCubeItem.ID_PREFIX + itemId,
+              HoloLogItemRegistry.createHoloCubeSupplier(itemId, holoLogId));
+      HOLO_CUBE_REGISTRY_OBJECTS.put(itemId, registryObject);
+    }
+  }
 
   private ForgeModBlockItems() {}
 
@@ -82,6 +98,9 @@ public class ForgeModBlockItems {
     ModBlockItems.MIXED_SCRAP_PILE = MIXED_SCRAP_PILE_BLOCK_ITEM;
     ModBlockItems.METAL_SCRAP_PILE = METAL_SCRAP_PILE_BLOCK_ITEM;
     ModBlockItems.TECH_SCRAP_PILE = TECH_SCRAP_PILE_BLOCK_ITEM;
-    ModBlockItems.HOLO_CUBE = HOLO_CUBE_BLOCK_ITEM;
+
+    if (!HOLO_CUBE_REGISTRY_OBJECTS.isEmpty()) {
+      ModBlockItems.HOLO_CUBE = HOLO_CUBE_REGISTRY_OBJECTS.values().iterator().next();
+    }
   }
 }

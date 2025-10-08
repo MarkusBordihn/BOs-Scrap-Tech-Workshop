@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.player;
 
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 
 public class FabricPlayerEventHandler {
@@ -29,6 +30,11 @@ public class FabricPlayerEventHandler {
     ServerPlayConnectionEvents.JOIN.register(
         (handler, sender, server) -> {
           PlayerEvents.handlePlayerJoin(handler.getPlayer());
+        });
+
+    ServerLifecycleEvents.SERVER_STOPPING.register(
+        server -> {
+          PlayerEvents.handleServerStopping();
         });
   }
 }

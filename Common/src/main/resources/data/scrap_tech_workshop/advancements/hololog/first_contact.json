@@ -1,0 +1,39 @@
+{
+  "parent": "scrap_tech_workshop:hololog/root",
+  "display": {
+    "icon": {
+      "item": "scrap_tech_workshop:holo_cube_introduction"
+    },
+    "title": {
+      "translate": "advancement.scrap_tech_workshop.first_contact.title"
+    },
+    "description": {
+      "translate": "advancement.scrap_tech_workshop.first_contact.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "activated_holocube": {
+      "trigger": "minecraft:placed_block",
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": ["scrap_tech_workshop:holo_cube"]
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "function": "scrap_tech_workshop:advancements/hololog/first_contact_reward",
+    "experience": 10
+  }
+}

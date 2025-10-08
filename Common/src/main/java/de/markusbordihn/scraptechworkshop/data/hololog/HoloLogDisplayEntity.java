@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.data.hololog;
 
+import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 
 public record HoloLogDisplayEntity(
@@ -32,15 +33,56 @@ public record HoloLogDisplayEntity(
     ResourceLocation texture,
     boolean slim) {
 
+  // JSON field names
+  private static final String FIELD_ID = "id";
+  private static final String FIELD_SCALE = "scale";
+  private static final String FIELD_ROTATION_SPEED = "rotationSpeed";
+  private static final String FIELD_ROTATION_X = "rotationX";
+  private static final String FIELD_ROTATION_Y = "rotationY";
+  private static final String FIELD_ROTATION_Z = "rotationZ";
+  private static final String FIELD_TEXTURE = "texture";
+  private static final String FIELD_SLIM = "slim";
+
+  // Default values
+  private static final float DEFAULT_SCALE = 0.5f;
+  private static final float DEFAULT_ROTATION_SPEED_ENTITY = 0.0f;
+  private static final float DEFAULT_ROTATION_SPEED_NON_ENTITY = 1.0f;
+  private static final float DEFAULT_ROTATION = 0.0f;
+
   public static final HoloLogDisplayEntity DEFAULT_VILLAGER =
       new HoloLogDisplayEntity(
           DisplayType.ENTITY,
           new ResourceLocation("minecraft", "villager"),
-          0.5f,
-          1.0f,
-          0.0f,
-          0.0f,
-          0.0f,
+          DEFAULT_SCALE,
+          DEFAULT_ROTATION_SPEED_NON_ENTITY,
+          DEFAULT_ROTATION,
+          DEFAULT_ROTATION,
+          DEFAULT_ROTATION,
           null,
           false);
+
+  public static HoloLogDisplayEntity fromJson(JsonObject json, DisplayType type) {
+    ResourceLocation id = new ResourceLocation(json.get(FIELD_ID).getAsString());
+    float scale = json.has(FIELD_SCALE) ? json.get(FIELD_SCALE).getAsFloat() : DEFAULT_SCALE;
+    float rotationSpeed =
+        (type != DisplayType.ENTITY && json.has(FIELD_ROTATION_SPEED))
+            ? json.get(FIELD_ROTATION_SPEED).getAsFloat()
+            : (type == DisplayType.ENTITY
+                ? DEFAULT_ROTATION_SPEED_ENTITY
+                : DEFAULT_ROTATION_SPEED_NON_ENTITY);
+    float rotationX =
+        json.has(FIELD_ROTATION_X) ? json.get(FIELD_ROTATION_X).getAsFloat() : DEFAULT_ROTATION;
+    float rotationY =
+        json.has(FIELD_ROTATION_Y) ? json.get(FIELD_ROTATION_Y).getAsFloat() : DEFAULT_ROTATION;
+    float rotationZ =
+        json.has(FIELD_ROTATION_Z) ? json.get(FIELD_ROTATION_Z).getAsFloat() : DEFAULT_ROTATION;
+    ResourceLocation texture =
+        json.has(FIELD_TEXTURE)
+            ? new ResourceLocation(json.get(FIELD_TEXTURE).getAsString())
+            : null;
+    boolean slim = json.has(FIELD_SLIM) && json.get(FIELD_SLIM).getAsBoolean();
+
+    return new HoloLogDisplayEntity(
+        type, id, scale, rotationSpeed, rotationX, rotationY, rotationZ, texture, slim);
+  }
 }

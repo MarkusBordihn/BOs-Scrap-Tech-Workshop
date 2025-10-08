@@ -7,6 +7,17 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v0.6.0
+
+- Fixed holo pad design and improved size.
+- Fixed holo log timing issues and uncached parsing of holo log files.
+- Fixed edge case were holo cube is not given to players in singleplayer mode.
+- Added basic advancement system.
+- Added holo log recipe display in the holo pads menu.
+- Added holo log scavenging_briefing_01 with voice over.
+- Added holo log scavenging_briefing_02 with voice over.
+- Refactored holopad and holo log code for better support and handling.
+
 ### v0.5.0
 
 - Refactored holo log player for better timing and handling.

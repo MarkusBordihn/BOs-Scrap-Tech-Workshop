@@ -27,11 +27,13 @@ import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogScreenP
 import de.markusbordihn.scraptechworkshop.data.hololog.DisplayType;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogData;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogDisplayEntity;
+import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogDisplayRecipe;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogLine;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
 import de.markusbordihn.scraptechworkshop.data.hololog.UIContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -39,6 +41,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.phys.Vec3;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -50,14 +54,14 @@ public class HoloPadScreen extends Screen {
   private static final ResourceLocation HOLOPAD_TEXTURE =
       new ResourceLocation(Constants.MOD_ID, "textures/gui/holo_pad.png");
 
-  private static final int TEXTURE_WIDTH = 256;
+  private static final int TEXTURE_WIDTH = 512;
   private static final int TEXTURE_HEIGHT = 256;
-  private static final int SCREEN_WIDTH = 250;
+  private static final int SCREEN_WIDTH = 325;
   private static final int SCREEN_HEIGHT = 250;
 
   private static final int HOLOGRAM_AREA_X = 16;
   private static final int HOLOGRAM_AREA_Y = 16;
-  private static final int HOLOGRAM_AREA_WIDTH = 218;
+  private static final int HOLOGRAM_AREA_WIDTH = 293;
   private static final int HOLOGRAM_AREA_HEIGHT = 100;
   private static final int HOLOGRAM_AREA_CENTER_Y_OFFSET = 0;
 
@@ -66,7 +70,7 @@ public class HoloPadScreen extends Screen {
 
   private static final int TEXT_AREA_X = 12;
   private static final int TEXT_AREA_Y = 118;
-  private static final int TEXT_AREA_WIDTH = 218;
+  private static final int TEXT_AREA_WIDTH = 293;
   private static final int TEXT_AREA_HEIGHT = 120;
   private static final int TEXT_PADDING = 4;
   private static final int TITLE_SPACING = 2;
@@ -74,7 +78,7 @@ public class HoloPadScreen extends Screen {
   private static final int LINE_SPACING = 2;
   private static final int SCROLL_BUTTON_WIDTH = 12;
   private static final int SCROLL_BUTTON_HEIGHT = 17;
-  private static final int SCROLL_BUTTON_X_OFFSET = 218;
+  private static final int SCROLL_BUTTON_X_OFFSET = 293;
 
   private static final float HOLOGRAM_SCALE_FACTOR = 35.0f;
   private static final float HOLOGRAM_ITEM_SCALE_MULTIPLIER = 2.5f;
@@ -96,6 +100,8 @@ public class HoloPadScreen extends Screen {
   private int scrollOffset;
   private int leftPos;
   private int topPos;
+  private Button replayButton;
+  private boolean playbackCompleted = false;
 
   public HoloPadScreen(final ResourceLocation holoLogId) {
     super(Component.translatable(Constants.ITEM_PREFIX + "holo_pad"));
@@ -109,6 +115,7 @@ public class HoloPadScreen extends Screen {
     this.topPos = (this.height - SCREEN_HEIGHT) / 2;
 
     addScrollButtons();
+    addReplayButton();
 
     if (player != null) {
       return;
@@ -146,6 +153,21 @@ public class HoloPadScreen extends Screen {
             .build());
   }
 
+  private void addReplayButton() {
+    int buttonWidth = 80;
+    int buttonHeight = 20;
+    int buttonX = leftPos + HOLOGRAM_AREA_X + (HOLOGRAM_AREA_WIDTH - buttonWidth) / 2;
+    int buttonY = topPos + HOLOGRAM_AREA_Y + (HOLOGRAM_AREA_HEIGHT - buttonHeight) / 2 - 15;
+    replayButton =
+        Button.builder(
+                Component.translatable("gui.scrap_tech_workshop.holo_pad.replay"),
+                button -> replayHololog())
+            .bounds(buttonX, buttonY, buttonWidth, buttonHeight)
+            .build();
+    replayButton.visible = false;
+    this.addRenderableWidget(replayButton);
+  }
+
   private void scrollUp() {
     scrollOffset = Math.max(0, scrollOffset - 10);
   }
@@ -161,12 +183,40 @@ public class HoloPadScreen extends Screen {
       return;
     }
 
-    // Create player instance directly - no global manager needed
+    // Create player instance with completion callback
     player =
         new HoloLogScreenPlayer(
-            data, new UIContext(minecraft.level, Vec3.ZERO), UUID.randomUUID(), null);
+            data,
+            new UIContext(minecraft.level, Vec3.ZERO),
+            UUID.randomUUID(),
+            this::onPlaybackComplete);
     player.start();
+    playbackCompleted = false;
+
+    // Hide replay button if visible
+    if (replayButton != null) {
+      replayButton.visible = false;
+    }
+
     log.info("{} Started hololog playback for: {}", Constants.LOG_NAME, holoLogId);
+  }
+
+  private void onPlaybackComplete() {
+    playbackCompleted = true;
+    log.info("{} Hololog playback completed: {}", Constants.LOG_NAME, holoLogId);
+
+    // Show replay button
+    if (replayButton != null) {
+      replayButton.visible = true;
+    }
+  }
+
+  private void replayHololog() {
+    log.info("{} Replaying hololog: {}", Constants.LOG_NAME, holoLogId);
+    scrollOffset = 0; // Reset scroll
+    if (holoLogData != null) {
+      startHoloLogPlayback(holoLogData);
+    }
   }
 
   private void prepareTextLines() {
@@ -233,7 +283,12 @@ public class HoloPadScreen extends Screen {
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
     renderDefaultBackground(guiGraphics, leftPos, topPos);
-    renderHologram(guiGraphics, leftPos, topPos, partialTick);
+
+    // Only render hologram if playback is active
+    if (!playbackCompleted) {
+      renderHologram(guiGraphics, leftPos, topPos, partialTick);
+    }
+
     renderHolologTitleArea(guiGraphics, leftPos, topPos);
     renderText(guiGraphics, leftPos, topPos);
 
@@ -270,6 +325,13 @@ public class HoloPadScreen extends Screen {
       return;
     }
 
+    // Check if we should render a recipe instead
+    HoloLogDisplayRecipe displayRecipe = player.getCurrentDisplayRecipe();
+    if (displayRecipe != null) {
+      renderRecipe(guiGraphics, x, y, displayRecipe);
+      return;
+    }
+
     HoloLogDisplayEntity displayEntity = player.getCurrentDisplayEntity();
     if (displayEntity == null) {
       return;
@@ -282,7 +344,7 @@ public class HoloPadScreen extends Screen {
     int centerY = y + HOLOGRAM_AREA_Y + HOLOGRAM_AREA_HEIGHT / 2 + HOLOGRAM_AREA_CENTER_Y_OFFSET;
 
     if (displayEntity.type() == DisplayType.ITEM) {
-      centerY -= 5;
+      centerY -= 10; // Move items up a bit more
     } else if (displayEntity.type() == DisplayType.ENTITY
         || displayEntity.type() == DisplayType.HOLO_ENTITY) {
       centerY += HOLOGRAM_ENTITY_Y_OFFSET;
@@ -453,6 +515,108 @@ public class HoloPadScreen extends Screen {
         textY + (TEXT_AREA_HEIGHT - TEXT_PADDING * 2 - font.lineHeight) / 2,
         COLOR_SUBTITLE_TEXT,
         false);
+  }
+
+  private void renderRecipe(
+      final GuiGraphics guiGraphics,
+      final int x,
+      final int y,
+      final HoloLogDisplayRecipe displayRecipe) {
+    if (minecraft == null || minecraft.level == null) {
+      return;
+    }
+
+    // Get the recipe from the recipe manager
+    Optional<? extends Recipe<?>> recipeOpt =
+        minecraft.level.getRecipeManager().byKey(displayRecipe.recipeId());
+    if (recipeOpt.isEmpty()) {
+      log.warn("Recipe not found: {}", displayRecipe.recipeId());
+      return;
+    }
+    Recipe<?> recipe = recipeOpt.get();
+
+    // Calculate positions (moved up by 15 pixels)
+    int centerX = x + HOLOGRAM_AREA_X + HOLOGRAM_AREA_WIDTH / 2;
+    int centerY = y + HOLOGRAM_AREA_Y + HOLOGRAM_AREA_HEIGHT / 2 - 15;
+
+    // Get recipe inputs and outputs
+    List<ItemStack> inputs = new ArrayList<>();
+    try {
+      // For most recipes, get the ingredients (show all ingredients, not grouped)
+      if (!recipe.getIngredients().isEmpty()) {
+        recipe
+            .getIngredients()
+            .forEach(
+                ingredient -> {
+                  ItemStack[] items = ingredient.getItems();
+                  if (items.length > 0) {
+                    inputs.add(items[0]);
+                  }
+                });
+      }
+    } catch (Exception e) {
+      log.error("Failed to get recipe inputs: {}", e.getMessage());
+    }
+
+    ItemStack output = recipe.getResultItem(minecraft.level.registryAccess());
+
+    int itemSize = 24;
+    int spacing = 12;
+    float inputScale = 1.5f * displayRecipe.scale();
+    int gridSize = (int) Math.ceil(Math.sqrt(inputs.size()));
+    int totalGridWidth = gridSize * itemSize + (gridSize - 1) * 4;
+    int totalGridHeight = gridSize * itemSize + (gridSize - 1) * 4;
+    int inputStartX = centerX - totalGridWidth - spacing - 10;
+    int inputStartY = centerY - totalGridHeight / 2;
+
+    PoseStack poseStack = guiGraphics.pose();
+
+    for (int i = 0; i < inputs.size(); i++) {
+      ItemStack input = inputs.get(i);
+      if (!input.isEmpty()) {
+        int gridX = i % gridSize;
+        int gridY = i / gridSize;
+        int xPos = inputStartX + gridX * (itemSize + 4);
+        int yPos = inputStartY + gridY * (itemSize + 4);
+
+        poseStack.pushPose();
+        poseStack.translate(xPos, yPos, 0);
+        poseStack.scale(inputScale, inputScale, 1.0f);
+        guiGraphics.renderItem(input, 0, 0);
+        guiGraphics.renderItemDecorations(font, input, 0, 0);
+        poseStack.popPose();
+      }
+    }
+
+    // Render arrow - larger and more prominent
+    String arrow = "→";
+    float arrowScale = 2.5f; // Make arrow much larger
+    poseStack.pushPose();
+
+    // Center the scaled arrow
+    int arrowWidth = (int) (font.width(arrow) * arrowScale);
+    int arrowHeight = (int) (font.lineHeight * arrowScale);
+    int arrowX = centerX - arrowWidth / 2;
+    int arrowY = centerY - arrowHeight / 2;
+
+    poseStack.translate(arrowX, arrowY, 0);
+    poseStack.scale(arrowScale, arrowScale, 1.0f);
+    guiGraphics.drawString(font, arrow, 0, 0, COLOR_TITLE_TEXT, false);
+    poseStack.popPose();
+
+    // Render output
+    if (!output.isEmpty()) {
+      int outputX = centerX + spacing + 10;
+      int outputY = centerY - itemSize / 2;
+      // Scale the output item
+      float outputScale = 1.8f * displayRecipe.scale();
+      poseStack.pushPose();
+      poseStack.translate(outputX, outputY, 0);
+      poseStack.scale(outputScale, outputScale, 1.0f);
+      guiGraphics.renderItem(output, 0, 0);
+      guiGraphics.renderItemDecorations(font, output, 0, 0);
+      poseStack.popPose();
+    }
   }
 
   private int calculateTotalTextHeight() {
