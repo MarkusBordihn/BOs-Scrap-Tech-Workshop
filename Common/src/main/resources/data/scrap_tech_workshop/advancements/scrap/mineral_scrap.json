@@ -1,0 +1,30 @@
+{
+  "parent": "scrap_tech_workshop:scrap/mineral",
+  "display": {
+    "icon": {
+      "item": "scrap_tech_workshop:crystal_scrap"
+    },
+    "title": {
+      "translate": "advancement.scrap_tech_workshop.scrap.crystal.title"
+    },
+    "description": {
+      "translate": "advancement.scrap_tech_workshop.scrap.crystal.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_mineral_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap/mineral"
+          }
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "parent": "scrap_tech_workshop:root",
+  "display": {
+    "icon": {
+      "item": "scrap_tech_workshop:tech_scrap"
+    },
+    "title": {
+      "translate": "advancement.scrap_tech_workshop.scrap.technology.title"
+    },
+    "description": {
+      "translate": "advancement.scrap_tech_workshop.scrap.technology.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_tech_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap/technology"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  }
+}

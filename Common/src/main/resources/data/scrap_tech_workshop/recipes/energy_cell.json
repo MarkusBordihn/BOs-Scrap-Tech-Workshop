@@ -3,12 +3,12 @@
   "group": "scrap_tech_workshop_components",
   "pattern": [
     "CP",
-    "cc"
+    "TT"
   ],
   "key": {
     "C": {"tag": "scrap_tech_workshop:scrap/tech/capacitor"},
     "P": {"tag": "scrap_tech_workshop:scrap/plastic"},
-    "c": {"tag": "scrap_tech_workshop:scrap/tech/circuit"}
+    "T": {"tag": "scrap_tech_workshop:scrap/tech/circuit"}
   },
   "result": {
     "item": "scrap_tech_workshop:energy_cell",

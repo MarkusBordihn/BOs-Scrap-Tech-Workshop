@@ -16,13 +16,8 @@
     "hidden": false
   },
   "criteria": {
-    "used_holocube": {
-      "trigger": "minecraft:using_item",
-      "conditions": {
-        "item": {
-          "items": ["scrap_tech_workshop:holo_pad_scavenging_briefing_01"]
-        }
-      }
+    "viewed_hololog": {
+      "trigger": "minecraft:impossible"
     }
   },
   "rewards": {

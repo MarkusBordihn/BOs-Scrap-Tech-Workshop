@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "de.markusbordihn.scraptechworkshop.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": ["FishingHookCustomRodsMixin", "FishingHookMixin"],
+  "client": [
+    "client.FishingHookRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

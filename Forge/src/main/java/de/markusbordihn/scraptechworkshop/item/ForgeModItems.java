@@ -126,6 +126,12 @@ public class ForgeModItems {
   public static final RegistryObject<Item> SCRAP_MULTITOOL =
       ITEMS.register("scrap_multitool", () -> ToolItemRegistry.SCRAP_MULTITOOL_ITEM);
 
+  // Fishing Rod Items
+  public static final RegistryObject<Item> SCRAP_FISHING_ROD =
+      ITEMS.register("scrap_fishing_rod", () -> ToolItemRegistry.SCRAP_FISHING_ROD_ITEM);
+  public static final RegistryObject<Item> MAGNET_FISHING_ROD =
+      ITEMS.register("magnet_fishing_rod", () -> ToolItemRegistry.MAGNET_FISHING_ROD_ITEM);
+
   // Component Items
   public static final RegistryObject<Item> ENERGY_CELL =
       ITEMS.register(EnergyCellItem.ID, () -> ToolItemRegistry.ENERGY_CELL_ITEM);
@@ -197,6 +203,10 @@ public class ForgeModItems {
 
     // Tool Items
     ModItems.SCRAP_MULTITOOL = SCRAP_MULTITOOL;
+
+    // Fishing Rod Items
+    ModItems.SCRAP_FISHING_ROD = SCRAP_FISHING_ROD;
+    ModItems.MAGNET_FISHING_ROD = MAGNET_FISHING_ROD;
 
     // Component Items
     ModItems.ENERGY_CELL = ENERGY_CELL;

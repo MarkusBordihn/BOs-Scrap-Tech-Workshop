@@ -24,8 +24,12 @@ import de.markusbordihn.scraptechworkshop.client.ClientHelper;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
 import java.util.List;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -70,6 +74,30 @@ public class HoloPadItem extends Item {
           Constants.LOG_NAME,
           player.getName().getString(),
           holoLogId);
+
+      // Grant advancement for scavenging basics HoloPad
+      if (player instanceof ServerPlayer serverPlayer
+          && holoLogId.equals(
+              new ResourceLocation(Constants.MOD_ID, "holologs/tutorial/scavenging_briefing_01"))) {
+        MinecraftServer server = serverPlayer.getServer();
+        if (server != null) {
+          Advancement advancement =
+              server
+                  .getAdvancements()
+                  .getAdvancement(
+                      new ResourceLocation(Constants.MOD_ID, "hololog/scavenging_basics"));
+          if (advancement != null) {
+            AdvancementProgress progress =
+                serverPlayer.getAdvancements().getOrStartProgress(advancement);
+            if (!progress.isDone()) {
+              for (String criterion : progress.getRemainingCriteria()) {
+                serverPlayer.getAdvancements().award(advancement, criterion);
+              }
+            }
+          }
+        }
+      }
+
     } else {
       ClientHelper.openHoloPadScreen(holoLogId);
     }

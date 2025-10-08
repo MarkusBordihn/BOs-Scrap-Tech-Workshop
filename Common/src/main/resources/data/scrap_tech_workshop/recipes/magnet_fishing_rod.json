@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "group": "scrap_tech_workshop_tools",
+  "pattern": [
+    "  c",
+    " ic",
+    "t s"
+  ],
+  "key": {
+    "c": {"tag": "scrap_tech_workshop:scrap/tech/coil"},
+    "i": {"tag": "scrap_tech_workshop:scrap/iron"},
+    "s": {"item": "minecraft:string"},
+    "t": {"item": "minecraft:stick"}
+  },
+  "result": {
+    "item": "scrap_tech_workshop:magnet_fishing_rod",
+    "count": 1
+  }
+}

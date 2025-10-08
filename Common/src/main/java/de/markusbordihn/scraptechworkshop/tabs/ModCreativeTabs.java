@@ -86,6 +86,10 @@ public class ModCreativeTabs {
               // Tool Items
               output.accept(ModItems.SCRAP_MULTITOOL.get());
 
+              // Fishing Rod Items
+              output.accept(ModItems.SCRAP_FISHING_ROD.get());
+              output.accept(ModItems.MAGNET_FISHING_ROD.get());
+
               // Recycler Block Item
               output.accept(ModBlockItems.RECYCLER.get());
 

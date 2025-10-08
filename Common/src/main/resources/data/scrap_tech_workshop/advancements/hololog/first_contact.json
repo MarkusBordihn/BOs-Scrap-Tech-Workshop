@@ -33,7 +33,7 @@
     }
   },
   "rewards": {
-    "function": "scrap_tech_workshop:advancements/hololog/first_contact_reward",
+    "function": "scrap_tech_workshop:advancements/hololog/give_holo_pad_scavenging_briefing_01",
     "experience": 10
   }
 }

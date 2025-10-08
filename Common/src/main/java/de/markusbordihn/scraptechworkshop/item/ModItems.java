@@ -57,6 +57,10 @@ public class ModItems {
   // Tool Items
   public static Supplier<Item> SCRAP_MULTITOOL;
 
+  // Fishing Rod Items
+  public static Supplier<Item> SCRAP_FISHING_ROD;
+  public static Supplier<Item> MAGNET_FISHING_ROD;
+
   // Component Items
   public static Supplier<Item> ENERGY_CELL;
   public static Supplier<Item> SLIGHTLY_DAMAGED_ENERGY_CELL;

@@ -22,12 +22,17 @@ package de.markusbordihn.scraptechworkshop.client;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogPlayerManager;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
+import de.markusbordihn.scraptechworkshop.item.ItemPropertyFunctions;
+import de.markusbordihn.scraptechworkshop.item.ModItems;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -53,6 +58,22 @@ public class ClientEventHandler {
     value = Dist.CLIENT)
 class ClientModEventHandler {
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
+
+  @SubscribeEvent
+  public static void onClientSetup(FMLClientSetupEvent event) {
+    event.enqueueWork(
+        () -> {
+          ItemProperties.register(
+              ModItems.SCRAP_FISHING_ROD.get(),
+              ResourceLocation.fromNamespaceAndPath("minecraft", "cast"),
+              ItemPropertyFunctions::getFishingRodCastValue);
+
+          ItemProperties.register(
+              ModItems.MAGNET_FISHING_ROD.get(),
+              ResourceLocation.fromNamespaceAndPath("minecraft", "cast"),
+              ItemPropertyFunctions::getFishingRodCastValue);
+        });
+  }
 
   @SubscribeEvent
   public static void onRegisterReloadListeners(RegisterClientReloadListenersEvent event) {

@@ -22,10 +22,13 @@ package de.markusbordihn.scraptechworkshop.client;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogPlayerManager;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
+import de.markusbordihn.scraptechworkshop.item.ItemPropertyFunctions;
+import de.markusbordihn.scraptechworkshop.item.ModItems;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
@@ -39,6 +42,8 @@ public class ClientEventHandler {
   private ClientEventHandler() {}
 
   public static void register() {
+    registerItemProperties();
+
     ClientTickEvents.END_CLIENT_TICK.register(
         client -> {
           HoloLogPlayerManager.tickAll();
@@ -63,5 +68,17 @@ public class ClientEventHandler {
                 HoloLogManager.clearCache();
               }
             });
+  }
+
+  private static void registerItemProperties() {
+    ItemProperties.register(
+        ModItems.SCRAP_FISHING_ROD.get(),
+        new ResourceLocation("minecraft", "cast"),
+        ItemPropertyFunctions::getFishingRodCastValue);
+
+    ItemProperties.register(
+        ModItems.MAGNET_FISHING_ROD.get(),
+        new ResourceLocation("minecraft", "cast"),
+        ItemPropertyFunctions::getFishingRodCastValue);
   }
 }

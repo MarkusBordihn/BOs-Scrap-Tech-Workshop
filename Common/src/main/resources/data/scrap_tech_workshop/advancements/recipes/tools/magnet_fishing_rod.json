@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_coil_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap/tech/coil"
+          }
+        ]
+      }
+    },
+    "has_iron_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap/iron"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "scrap_tech_workshop:magnet_fishing_rod"
+      }
+    }
+  },
+  "requirements": [
+    ["has_coil_scrap", "has_iron_scrap", "has_the_recipe"]
+  ],
+  "rewards": {
+    "recipes": [
+      "scrap_tech_workshop:magnet_fishing_rod"
+    ]
+  }
+}

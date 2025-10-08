@@ -1,19 +1,19 @@
 {
+  "parent": "scrap_tech_workshop:root",
   "display": {
     "icon": {
-      "item": "scrap_tech_workshop:tech_scrap"
+      "item": "scrap_tech_workshop:holo_cube_introduction"
     },
     "title": {
-      "translate": "advancement.scrap_tech_workshop.root.title"
+      "translate": "advancement.scrap_tech_workshop.mysterious_artifact.title"
     },
     "description": {
-      "translate": "advancement.scrap_tech_workshop.root.description"
+      "translate": "advancement.scrap_tech_workshop.mysterious_artifact.description"
     },
     "frame": "task",
     "show_toast": true,
-    "announce_to_chat": false,
-    "hidden": false,
-    "background": "minecraft:textures/block/cyan_concrete.png"
+    "announce_to_chat": true,
+    "hidden": false
   },
   "criteria": {
     "has_holocube": {
@@ -30,6 +30,6 @@
     }
   },
   "rewards": {
-    "experience": 5
+    "experience": 10
   }
 }

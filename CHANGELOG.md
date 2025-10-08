@@ -7,6 +7,15 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v0.7.0
+
+- Fixed advancement issues and automatic granting of advancements.
+- Added new advancements for better gameplay experience and guidance.
+- Added scrap fishing rod for more general scavenging.
+- Added scrap magnet fishing rod for more technology scavenging.
+- Added vanilla fishing rod support for scrap fishing.
+- Added additional configuration options for scrap fishing.
+
 ### v0.6.0
 
 - Fixed holo pad design and improved size.

@@ -1,0 +1,30 @@
+{
+  "parent": "scrap_tech_workshop:scrap/synthetic",
+  "display": {
+    "icon": {
+      "item": "scrap_tech_workshop:plastic_scrap"
+    },
+    "title": {
+      "translate": "advancement.scrap_tech_workshop.scrap.plastic.title"
+    },
+    "description": {
+      "translate": "advancement.scrap_tech_workshop.scrap.plastic.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_synthetic_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap/synthetic"
+          }
+        ]
+      }
+    }
+  }
+}

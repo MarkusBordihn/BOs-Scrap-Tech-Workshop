@@ -25,7 +25,9 @@
       "de.markusbordihn.scraptechworkshop.gametest.SmokeTest"
     ]
   },
-  "mixins": [],
+  "mixins": [
+    "scraptechworkshop.mixins.json"
+  ],
   "accessWidener": "scraptechworkshop.accesswidener",
   "depends": {
     "fabricloader": ">=0.15",

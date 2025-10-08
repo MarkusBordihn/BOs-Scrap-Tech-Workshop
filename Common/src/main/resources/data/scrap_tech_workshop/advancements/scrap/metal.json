@@ -1,0 +1,30 @@
+{
+  "parent": "scrap_tech_workshop:scrap/material",
+  "display": {
+    "icon": {
+      "item": "scrap_tech_workshop:iron_scrap"
+    },
+    "title": {
+      "translate": "advancement.scrap_tech_workshop.scrap.metal.title"
+    },
+    "description": {
+      "translate": "advancement.scrap_tech_workshop.scrap.metal.description"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "has_metal_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap/metal"
+          }
+        ]
+      }
+    }
+  }
+}

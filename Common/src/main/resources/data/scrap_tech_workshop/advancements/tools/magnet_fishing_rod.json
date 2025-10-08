@@ -1,0 +1,35 @@
+{
+  "parent": "scrap_tech_workshop:tools/scrap_fishing_rod",
+  "display": {
+    "icon": {
+      "item": "scrap_tech_workshop:magnet_fishing_rod"
+    },
+    "title": {
+      "translate": "advancement.scrap_tech_workshop.tools.magnet_fishing_rod.title"
+    },
+    "description": {
+      "translate": "advancement.scrap_tech_workshop.tools.magnet_fishing_rod.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_magnet_fishing_rod": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "scrap_tech_workshop:magnet_fishing_rod"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

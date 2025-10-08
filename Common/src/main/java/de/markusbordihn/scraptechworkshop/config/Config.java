@@ -64,6 +64,7 @@ public class Config {
     ScrapDropConfig.registerConfig();
     RecyclerConfig.registerConfig();
     ScrapPileConfig.registerConfig();
+    ScrapFishingConfig.registerConfig();
     MultitoolConfig.registerConfig();
   }
 

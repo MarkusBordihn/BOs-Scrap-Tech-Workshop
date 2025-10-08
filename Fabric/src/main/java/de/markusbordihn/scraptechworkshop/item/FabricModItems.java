@@ -124,6 +124,12 @@ public class FabricModItems {
     ModItems.SCRAP_MULTITOOL =
         registerItem("scrap_multitool", () -> ToolItemRegistry.SCRAP_MULTITOOL_ITEM);
 
+    // Fishing Rod Items
+    ModItems.SCRAP_FISHING_ROD =
+        registerItem("scrap_fishing_rod", () -> ToolItemRegistry.SCRAP_FISHING_ROD_ITEM);
+    ModItems.MAGNET_FISHING_ROD =
+        registerItem("magnet_fishing_rod", () -> ToolItemRegistry.MAGNET_FISHING_ROD_ITEM);
+
     // Component Items
     ModItems.ENERGY_CELL = registerItem(EnergyCellItem.ID, () -> ToolItemRegistry.ENERGY_CELL_ITEM);
     ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL =

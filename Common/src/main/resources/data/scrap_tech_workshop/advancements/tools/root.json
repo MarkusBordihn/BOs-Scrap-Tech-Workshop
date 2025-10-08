@@ -1,0 +1,33 @@
+{
+  "parent": "scrap_tech_workshop:root",
+  "display": {
+    "icon": {
+      "item": "scrap_tech_workshop:scrap_multitool"
+    },
+    "title": {
+      "translate": "advancement.scrap_tech_workshop.tools.root.title"
+    },
+    "description": {
+      "translate": "advancement.scrap_tech_workshop.tools.root.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_metal_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap/metal"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 10
+  }
+}
