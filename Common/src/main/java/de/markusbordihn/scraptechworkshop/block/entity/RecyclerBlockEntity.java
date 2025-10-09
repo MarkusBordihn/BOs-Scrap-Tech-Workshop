@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.block.entity;
 import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.config.RecyclerConfig;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
+import de.markusbordihn.scraptechworkshop.item.upgrade.SpeedUpgradeItem;
 import de.markusbordihn.scraptechworkshop.menu.RecyclerMenu;
 import de.markusbordihn.scraptechworkshop.recipe.recycler.RecyclerRecipe;
 import net.minecraft.core.BlockPos;
@@ -54,6 +55,8 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
   private static final int INPUT_SLOT = 0;
   private static final int FIRST_OUTPUT_SLOT = 1;
   private static final int LAST_OUTPUT_SLOT = 9;
+  private static final int FIRST_UPGRADE_SLOT = 10;
+  private static final int LAST_UPGRADE_SLOT = 11;
 
   // NBT tags
   private static final String PROGRESS_TAG = "Progress";
@@ -101,37 +104,44 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
   private RecyclerRecipe currentRecipe = null;
   private int tickCounter = 0;
 
-  public RecyclerBlockEntity(BlockPos pos, BlockState blockState) {
-    super(TYPE, pos, blockState);
+  public RecyclerBlockEntity(final BlockPos blockPos, final BlockState blockState) {
+    super(TYPE, blockPos, blockState);
     this.container = new RecyclerContainer(TOTAL_SLOTS, this::setChanged);
   }
 
   public static void tick(
-      Level level, BlockPos pos, BlockState state, RecyclerBlockEntity blockEntity) {
+      final Level level,
+      final BlockPos blockPos,
+      final BlockState blockState,
+      final RecyclerBlockEntity blockEntity) {
     if (level.isClientSide) {
       return;
     }
 
     blockEntity.tickCounter++;
-    RecyclerStatus currentStatus = state.getValue(RecyclerBlock.STATUS);
+    RecyclerStatus currentStatus = blockState.getValue(RecyclerBlock.STATUS);
+
+    // Calculate speed multiplier from upgrade slots
+    int speedMultiplier = blockEntity.getSpeedMultiplierBonus();
 
     RecyclerTickProcessor.RecyclerState recyclerState =
         new RecyclerTickProcessor.RecyclerState(
             level,
-            pos,
+            blockPos,
             blockEntity.container.getItems(),
             blockEntity.progress,
             blockEntity.maxProgress,
             blockEntity.noRecipeTimer,
             blockEntity.doneTimer,
-            blockEntity.currentRecipe);
+            blockEntity.currentRecipe,
+            speedMultiplier);
 
     RecyclerTickProcessor.TickResult result =
         switch (currentStatus) {
           case NO_RECIPE -> RecyclerTickProcessor.processNoRecipeStatus(recyclerState);
           case DONE -> RecyclerTickProcessor.processDoneStatus(recyclerState);
           case IDLE, WORKING, ERROR ->
-              RecyclerTickProcessor.processActiveStatus(recyclerState, state);
+              RecyclerTickProcessor.processActiveStatus(recyclerState, blockState);
         };
 
     blockEntity.progress = recyclerState.progress;
@@ -140,7 +150,7 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
     blockEntity.currentRecipe = recyclerState.currentRecipe;
 
     if (result.newStatus != currentStatus) {
-      RecyclerBlock.updateStatus(level, pos, result.newStatus);
+      RecyclerBlock.updateStatus(level, blockPos, result.newStatus);
     }
 
     if (result.hasChanged && blockEntity.tickCounter % RecyclerConfig.progressUpdateInterval == 0) {
@@ -206,15 +216,15 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
     return container.removeItemNoUpdate(slot);
   }
 
-  public void setItem(int slot, ItemStack itemStack) {
+  public void setItem(final int slot, final ItemStack itemStack) {
     container.setItem(slot, itemStack);
   }
 
-  public boolean stillValid(Player player) {
+  public boolean stillValid(final Player player) {
     return Container.stillValidBlockEntity(this, player);
   }
 
-  public boolean canPlaceItem(int slot, ItemStack itemStack) {
+  public boolean canPlaceItem(final int slot, final ItemStack itemStack) {
     return container.canPlaceItem(slot, itemStack);
   }
 
@@ -280,5 +290,16 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
   @Override
   public ClientboundBlockEntityDataPacket getUpdatePacket() {
     return ClientboundBlockEntityDataPacket.create(this);
+  }
+
+  private int getSpeedMultiplierBonus() {
+    int totalMultiplier = 1;
+    for (int i = FIRST_UPGRADE_SLOT; i <= LAST_UPGRADE_SLOT; i++) {
+      ItemStack stack = container.getItem(i);
+      if (!stack.isEmpty() && stack.getItem() instanceof SpeedUpgradeItem speedUpgrade) {
+        totalMultiplier += speedUpgrade.getSpeedMultiplier() - 1;
+      }
+    }
+    return totalMultiplier;
   }
 }

@@ -39,6 +39,10 @@ public class ForgeModMenus {
   public static final RegistryObject<MenuType<ScrapMultitoolMenu>> SCRAP_MULTITOOL_MENU =
       MENU_TYPES.register("scrap_multitool", () -> IForgeMenuType.create(ScrapMultitoolMenu::new));
 
+  public static final RegistryObject<MenuType<CollectorStationMenu>> COLLECTOR_STATION_MENU =
+      MENU_TYPES.register(
+          "collector_station", () -> IForgeMenuType.create(CollectorStationMenu::new));
+
   private ForgeModMenus() {}
 
   public static void register(IEventBus eventBus) {
@@ -49,6 +53,7 @@ public class ForgeModMenus {
         (net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) -> {
           RecyclerMenu.TYPE = RECYCLER_MENU.get();
           ScrapMultitoolMenu.TYPE = SCRAP_MULTITOOL_MENU.get();
+          CollectorStationMenu.TYPE = COLLECTOR_STATION_MENU.get();
         });
   }
 }

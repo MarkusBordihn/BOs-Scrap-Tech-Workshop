@@ -19,7 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.registry.block;
 
-import de.markusbordihn.scraptechworkshop.block.ScrapPileBlock;
+import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;

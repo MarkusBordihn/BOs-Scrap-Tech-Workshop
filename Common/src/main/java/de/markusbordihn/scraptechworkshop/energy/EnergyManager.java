@@ -27,31 +27,32 @@ public final class EnergyManager {
 
   private EnergyManager() {}
 
-  public static EnergyData getEnergyData(ItemStack itemStack, int maxEnergy) {
+  public static EnergyData getEnergyData(final ItemStack itemStack, final int maxEnergy) {
     return new EnergyData(itemStack, maxEnergy);
   }
 
-  public static EnergyData getEnergyData(ItemStack itemStack) {
+  public static EnergyData getEnergyData(final ItemStack itemStack) {
     return new EnergyData(itemStack);
   }
 
-  public static BatteryStatus getBatteryStatus(ItemStack itemStack) {
+  public static BatteryStatus getBatteryStatus(final ItemStack itemStack) {
     return new BatteryStatus(itemStack);
   }
 
-  public static EnergyStatus getEnergyStatus(ItemStack itemStack) {
+  public static EnergyStatus getEnergyStatus(final ItemStack itemStack) {
     return getBatteryStatus(itemStack).status();
   }
 
-  public static boolean hasEnergy(ItemStack itemStack, int maxEnergy, int amount) {
+  public static boolean hasEnergy(
+      final ItemStack itemStack, final int maxEnergy, final int amount) {
     return getEnergyData(itemStack, maxEnergy).hasEnergy(amount);
   }
 
-  public static boolean hasEnergy(ItemStack itemStack, int amount) {
+  public static boolean hasEnergy(final ItemStack itemStack, final int amount) {
     return getEnergyData(itemStack).hasEnergy(amount);
   }
 
-  public static void setEnergy(ItemStack itemStack, int maxEnergy, int energy) {
+  public static void setEnergy(final ItemStack itemStack, final int maxEnergy, final int energy) {
     EnergyData energyData =
         new EnergyData(
             Math.max(1, Math.min(energy, maxEnergy)), maxEnergy, EnergyData.DEFAULT_TRANSFER_RATE);
@@ -59,7 +60,8 @@ public final class EnergyManager {
     updateBatteryStatus(itemStack, energyData);
   }
 
-  public static void consumeEnergy(ItemStack itemStack, int maxEnergy, int amount) {
+  public static void consumeEnergy(
+      final ItemStack itemStack, final int maxEnergy, final int amount) {
     BatteryStatus batteryStatus = getBatteryStatus(itemStack);
 
     if (!batteryStatus.canDischarge()) {
@@ -72,7 +74,7 @@ public final class EnergyManager {
     updateBatteryStatus(itemStack, updatedData);
   }
 
-  public static void addEnergy(ItemStack itemStack, int maxEnergy, int amount) {
+  public static void addEnergy(final ItemStack itemStack, final int maxEnergy, final int amount) {
     BatteryStatus batteryStatus = getBatteryStatus(itemStack);
 
     if (!batteryStatus.canCharge()) {
@@ -85,7 +87,7 @@ public final class EnergyManager {
     updateBatteryStatus(itemStack, updatedData);
   }
 
-  private static void updateBatteryStatus(ItemStack itemStack, EnergyData energyData) {
+  private static void updateBatteryStatus(final ItemStack itemStack, final EnergyData energyData) {
     BatteryStatus currentStatus = getBatteryStatus(itemStack);
     EnergyStatus newStatus =
         EnergyStatus.fromEnergyLevel(energyData.current(), energyData.maximum());
@@ -96,16 +98,19 @@ public final class EnergyManager {
     }
   }
 
-  public static boolean canReceiveEnergy(ItemStack itemStack) {
+  public static boolean canReceiveEnergy(final ItemStack itemStack) {
     return getBatteryStatus(itemStack).canCharge();
   }
 
-  public static boolean canExtractEnergy(ItemStack itemStack) {
+  public static boolean canExtractEnergy(final ItemStack itemStack) {
     return getBatteryStatus(itemStack).canDischarge();
   }
 
   public static int receiveEnergy(
-      ItemStack itemStack, int maxEnergy, int maxReceive, boolean simulate) {
+      final ItemStack itemStack,
+      final int maxEnergy,
+      final int maxReceive,
+      final boolean simulate) {
     EnergyData energyData = getEnergyData(itemStack, maxEnergy);
     int canReceive = Math.min(maxReceive, energyData.maximum() - energyData.current());
 
@@ -117,7 +122,10 @@ public final class EnergyManager {
   }
 
   public static int extractEnergy(
-      ItemStack itemStack, int maxEnergy, int maxExtract, boolean simulate) {
+      final ItemStack itemStack,
+      final int maxEnergy,
+      final int maxExtract,
+      final boolean simulate) {
     EnergyData energyData = getEnergyData(itemStack, maxEnergy);
     int canExtract = Math.min(maxExtract, energyData.current());
 
@@ -128,23 +136,24 @@ public final class EnergyManager {
     return canExtract;
   }
 
-  public static int getEnergyStored(ItemStack itemStack, int maxEnergy) {
+  public static int getEnergyStored(final ItemStack itemStack, final int maxEnergy) {
     return getEnergyData(itemStack, maxEnergy).current();
   }
 
-  public static int getEnergyStored(ItemStack itemStack) {
+  public static int getEnergyStored(final ItemStack itemStack) {
     return getEnergyData(itemStack).current();
   }
 
-  public static int getMaxEnergyStored(ItemStack itemStack, int maxEnergy) {
+  public static int getMaxEnergyStored(final ItemStack itemStack, final int maxEnergy) {
     return maxEnergy;
   }
 
-  public static int getMaxEnergyStored(ItemStack itemStack) {
+  public static int getMaxEnergyStored(final ItemStack itemStack) {
     return getEnergyData(itemStack).maximum();
   }
 
-  public static void syncFromBattery(ItemStack itemStack, int maxEnergy, ItemStack battery) {
+  public static void syncFromBattery(
+      final ItemStack itemStack, final int maxEnergy, final ItemStack battery) {
     if (battery.getItem() instanceof EnergyCellItem batteryItem) {
       int batteryEnergy = batteryItem.getEnergy(battery);
       EnergyData currentData = getEnergyData(itemStack, maxEnergy);
@@ -158,7 +167,7 @@ public final class EnergyManager {
   }
 
   public static void consumeWithBatteryBackup(
-      ItemStack itemStack, int maxEnergy, int amount, ItemStack battery) {
+      final ItemStack itemStack, final int maxEnergy, int amount, final ItemStack battery) {
     EnergyData energyData = getEnergyData(itemStack, maxEnergy);
 
     if (energyData.hasEnergy(amount)) {
@@ -181,5 +190,30 @@ public final class EnergyManager {
 
     EnergyData updatedData = energyData.consume(Math.max(1, energyData.current() - amount));
     updatedData.writeToItemStack(itemStack);
+  }
+
+  public static boolean hasEnergyFromBattery(
+      final ItemStack itemStack, final int maxEnergy, final ItemStack battery, final int amount) {
+    if (!(battery.getItem() instanceof EnergyCellItem batteryItem)) {
+      return false;
+    }
+    return batteryItem.getEnergy(battery) >= amount;
+  }
+
+  public static void syncEnergyWithBattery(
+      final ItemStack itemStack, final int maxEnergy, final ItemStack battery) {
+    if (battery.getItem() instanceof EnergyCellItem batteryItem) {
+      int batteryEnergy = batteryItem.getEnergy(battery);
+      if (batteryEnergy <= 1) {
+        setEnergy(itemStack, maxEnergy, 0);
+        return;
+      }
+
+      float energyRatio = (float) batteryEnergy / EnergyCellItem.ENERGY_MAX;
+      int multitoolEnergy = Math.round(maxEnergy * energyRatio);
+      setEnergy(itemStack, maxEnergy, multitoolEnergy);
+    } else {
+      setEnergy(itemStack, maxEnergy, 0);
+    }
   }
 }

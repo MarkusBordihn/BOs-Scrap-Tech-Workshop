@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "active=false,facing=north,half=lower": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station"
+    },
+    "active=false,facing=east,half=lower": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+      "y": 90
+    },
+    "active=false,facing=south,half=lower": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+      "y": 180
+    },
+    "active=false,facing=west,half=lower": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+      "y": 270
+    },
+    "active=true,facing=north,half=lower": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_active"
+    },
+    "active=true,facing=east,half=lower": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_active",
+      "y": 90
+    },
+    "active=true,facing=south,half=lower": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_active",
+      "y": 180
+    },
+    "active=true,facing=west,half=lower": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_active",
+      "y": 270
+    },
+    "active=false,facing=north,half=upper": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_upper"
+    },
+    "active=false,facing=east,half=upper": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_upper",
+      "y": 90
+    },
+    "active=false,facing=south,half=upper": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_upper",
+      "y": 180
+    },
+    "active=false,facing=west,half=upper": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_upper",
+      "y": 270
+    },
+    "active=true,facing=north,half=upper": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_active_upper"
+    },
+    "active=true,facing=east,half=upper": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_active_upper",
+      "y": 90
+    },
+    "active=true,facing=south,half=upper": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_active_upper",
+      "y": 180
+    },
+    "active=true,facing=west,half=upper": {
+      "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_active_upper",
+      "y": 270
+    }
+  }
+}

@@ -30,6 +30,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -42,6 +44,7 @@ public record ToolModeDetector(ItemStack itemStack) {
     if (state.is(BlockTags.MINEABLE_WITH_PICKAXE)) return ToolMode.PICKAXE;
     if (state.is(BlockTags.MINEABLE_WITH_SHOVEL)) return ToolMode.SHOVEL;
     if (state.is(BlockTags.MINEABLE_WITH_HOE)) return ToolMode.HOE;
+    if (canBeHoed(state)) return ToolMode.HOE;
     return ToolMode.NONE;
   }
 
@@ -54,7 +57,6 @@ public record ToolModeDetector(ItemStack itemStack) {
         ScrapMultitoolData newData = data.withActiveMode(ToolMode.DEFAULT.getId());
         newData.saveToItemStack(itemStack);
 
-        // Update display model when switching to default mode
         DisplayMode displayMode = new DisplayMode(itemStack);
         displayMode.updateModel(ToolMode.DEFAULT, newData.getBatteryLevel());
       }
@@ -70,7 +72,7 @@ public record ToolModeDetector(ItemStack itemStack) {
         newMode = ToolMode.PICKAXE;
       } else if (targetBlock.is(BlockTags.MINEABLE_WITH_SHOVEL)) {
         newMode = ToolMode.SHOVEL;
-      } else if (targetBlock.is(BlockTags.MINEABLE_WITH_HOE)) {
+      } else if (targetBlock.is(BlockTags.MINEABLE_WITH_HOE) || canBeHoed(targetBlock)) {
         newMode = ToolMode.HOE;
       }
     }
@@ -79,7 +81,6 @@ public record ToolModeDetector(ItemStack itemStack) {
       ScrapMultitoolData newData = data.withActiveMode(newMode.getId());
       newData.saveToItemStack(itemStack);
 
-      // Update display model after mode change
       DisplayMode displayMode = new DisplayMode(itemStack);
       displayMode.updateModel(newMode, newData.getBatteryLevel());
     }
@@ -98,5 +99,14 @@ public record ToolModeDetector(ItemStack itemStack) {
     }
 
     return null;
+  }
+
+  private boolean canBeHoed(final BlockState state) {
+    Block block = state.getBlock();
+    return block == Blocks.GRASS_BLOCK
+        || block == Blocks.DIRT
+        || block == Blocks.COARSE_DIRT
+        || block == Blocks.DIRT_PATH
+        || block == Blocks.ROOTED_DIRT;
   }
 }

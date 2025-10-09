@@ -7,6 +7,17 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v0.9.0
+
+- Fixed multi-tool mode switching issues.
+- Fixed multi-tool mode missing secondary action.
+- Fixed multi-tool holo texture for pickaxe and hoe modes.
+- Fixed magnet fishing rod recipe issue.
+- Added multi-tool secondary action rotation for blocks.
+- Added EnergyCellConsumer interface for better energy handling.
+- Added basic scrap collector station (unfished).
+- Added experimental creative speed upgrade.
+
 ### v0.8.0
 
 - Fixed holo log end effects and timing issues.

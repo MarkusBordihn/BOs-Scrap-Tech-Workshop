@@ -27,7 +27,7 @@ import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
 import de.markusbordihn.scraptechworkshop.menu.multitool.MultitoolBatteryInfo;
 import de.markusbordihn.scraptechworkshop.menu.multitool.MultitoolContainerFactory;
 import de.markusbordihn.scraptechworkshop.menu.multitool.MultitoolDataSaver;
-import de.markusbordihn.scraptechworkshop.menu.slots.MultitoolBatterySlot;
+import de.markusbordihn.scraptechworkshop.menu.slots.EnergyCellSlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.MultitoolModuleSlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
@@ -119,7 +119,7 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
 
   private void addToolSlots() {
     // Battery slot
-    this.addSlot(new MultitoolBatterySlot(toolContainer, 0, BATTERY_SLOT_X, BATTERY_SLOT_Y));
+    this.addSlot(new EnergyCellSlot(toolContainer, 0, BATTERY_SLOT_X, BATTERY_SLOT_Y));
 
     // Module slots
     for (int i = 0; i < MODULE_SLOTS_COUNT; i++) {
@@ -243,7 +243,6 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
   public void slotsChanged(Container container) {
     super.slotsChanged(container);
 
-    // Only update when it's our tool container and we're initialized
     if (container == toolContainer && initialized) {
       updateMultitoolInPlayerInventory();
     }
@@ -296,7 +295,7 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
 
     // Always sync energy: either from battery or reset to 0 if no battery
     if (actualMultitoolStack.getItem() instanceof ScrapMultitoolItem multitoolItem) {
-      multitoolItem.syncEnergyWithBattery(actualMultitoolStack);
+      multitoolItem.syncEnergyDisplay(actualMultitoolStack);
     }
 
     DisplayMode displayMode = new DisplayMode(actualMultitoolStack);

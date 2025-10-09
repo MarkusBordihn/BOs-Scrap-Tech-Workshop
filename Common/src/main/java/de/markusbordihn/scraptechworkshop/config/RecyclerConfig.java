@@ -31,7 +31,7 @@ public class RecyclerConfig extends Config {
  Recycler Configuration
 
  This configuration file allows you to define the general settings for the Recycler system.
- processTime: Time in ticks for processing items (default: 200)
+ processTime: Time in ticks for processing items (default: 2000, ~100 seconds at 20 TPS)
  enableEnergy: Whether the recycler requires energy (default: false)
  energyPerOperation: Energy required per operation when energy is enabled (default: 200)
  durabilityScaling: Whether processing time scales with item durability (default: true)
@@ -44,7 +44,7 @@ public class RecyclerConfig extends Config {
 """;
 
   // Default values
-  public static final int DEFAULT_PROCESS_TIME = 200;
+  public static final int DEFAULT_PROCESS_TIME = 2000;
   public static final boolean DEFAULT_ENABLE_ENERGY = false;
   public static final int DEFAULT_ENERGY_PER_OPERATION = 200;
   public static final boolean DEFAULT_DURABILITY_SCALING = true;

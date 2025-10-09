@@ -53,7 +53,7 @@ public class MultitoolDataSaver {
     newData.saveToItemStack(multitoolStack);
 
     if (multitoolStack.getItem() instanceof ScrapMultitoolItem multitoolItem) {
-      multitoolItem.syncEnergyWithBattery(multitoolStack);
+      multitoolItem.syncEnergyDisplay(multitoolStack);
     }
 
     DisplayMode displayMode = new DisplayMode(multitoolStack);

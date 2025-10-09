@@ -20,7 +20,7 @@
 package de.markusbordihn.scraptechworkshop.spawner;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.block.ScrapPileBlock;
+import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileBlock;
 import de.markusbordihn.scraptechworkshop.config.ScrapPileConfig;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
@@ -51,7 +51,7 @@ public class ScrapPileSpawner {
 
   protected ScrapPileSpawner() {}
 
-  public static void tick(MinecraftServer minecraftServer) {
+  public static void tick(final MinecraftServer minecraftServer) {
 
     if (ScrapPileConfig.spawnIntervalTicks <= 0) {
       return;
@@ -70,7 +70,7 @@ public class ScrapPileSpawner {
     }
   }
 
-  public static void tick(ServerLevel level) {
+  public static void tick(final ServerLevel level) {
     if (!ScrapPileConfig.spawnEnabled || level.players().isEmpty()) {
       return;
     }
@@ -97,7 +97,7 @@ public class ScrapPileSpawner {
         .removeIf(entry -> currentTime - entry.getValue() > ACTIVITY_VALIDITY_MS);
   }
 
-  private static int getAdaptiveSpawnAttempts(ServerLevel level) {
+  private static int getAdaptiveSpawnAttempts(final ServerLevel level) {
     int baseAttempts = ScrapPileConfig.spawnAttemptsPerTick;
     double mspt = level.getServer().getAverageTickTime();
     if (mspt > 40.0) {
@@ -111,7 +111,7 @@ public class ScrapPileSpawner {
     return baseAttempts;
   }
 
-  private static void trySpawnScrapPile(ServerLevel level) {
+  private static void trySpawnScrapPile(final ServerLevel level) {
     if (level.players().isEmpty()) {
       return;
     }
@@ -167,7 +167,7 @@ public class ScrapPileSpawner {
     }
   }
 
-  private static int getCachedScrapPileCount(ServerLevel level, ChunkPos chunkPos) {
+  private static int getCachedScrapPileCount(final ServerLevel level, final ChunkPos chunkPos) {
     long currentTime = System.currentTimeMillis();
     Long cacheTime = chunkCountTimestamps.get(chunkPos);
 
@@ -181,12 +181,12 @@ public class ScrapPileSpawner {
     return count;
   }
 
-  private static void incrementChunkCount(ChunkPos chunkPos) {
+  private static void incrementChunkCount(final ChunkPos chunkPos) {
     chunkScrapCounts.merge(chunkPos, 1, Integer::sum);
     chunkCountTimestamps.put(chunkPos, System.currentTimeMillis());
   }
 
-  public static void decrementChunkCount(ChunkPos chunkPos) {
+  public static void decrementChunkCount(final ChunkPos chunkPos) {
     Integer current = chunkScrapCounts.get(chunkPos);
     if (current != null && current > 0) {
       chunkScrapCounts.put(chunkPos, current - 1);
@@ -195,12 +195,12 @@ public class ScrapPileSpawner {
   }
 
   /** Record player activity in a chunk to influence spawning decisions */
-  public static void recordPlayerActivity(ChunkPos chunkPos) {
+  public static void recordPlayerActivity(final ChunkPos chunkPos) {
     chunkPlayerActivity.put(chunkPos, System.currentTimeMillis());
   }
 
   /** Check if a chunk has recent player activity */
-  private static boolean hasRecentPlayerActivity(ChunkPos chunkPos) {
+  private static boolean hasRecentPlayerActivity(final ChunkPos chunkPos) {
     Long lastActivity = chunkPlayerActivity.get(chunkPos);
     if (lastActivity == null) {
       return false;
@@ -208,7 +208,7 @@ public class ScrapPileSpawner {
     return System.currentTimeMillis() - lastActivity < ACTIVITY_VALIDITY_MS;
   }
 
-  private static int countScrapPilesInChunk(ServerLevel level, ChunkPos chunkPos) {
+  private static int countScrapPilesInChunk(final ServerLevel level, final ChunkPos chunkPos) {
     if (!level.hasChunk(chunkPos.x, chunkPos.z)) {
       return 0;
     }
@@ -235,7 +235,8 @@ public class ScrapPileSpawner {
     return count;
   }
 
-  private static BlockPos findSuitableSpawnLocation(ServerLevel level, ChunkPos chunkPos) {
+  private static BlockPos findSuitableSpawnLocation(
+      final ServerLevel level, final ChunkPos chunkPos) {
     RandomSource random = level.random;
 
     for (int attempt = 0; attempt < 6; attempt++) {
@@ -259,7 +260,7 @@ public class ScrapPileSpawner {
     return null;
   }
 
-  private static boolean isSuitableSpawnLocation(ServerLevel level, BlockPos blockPos) {
+  private static boolean isSuitableSpawnLocation(final ServerLevel level, final BlockPos blockPos) {
     try {
       BlockState groundState = level.getBlockState(blockPos.below());
       BlockState airState = level.getBlockState(blockPos);
@@ -292,12 +293,13 @@ public class ScrapPileSpawner {
     }
   }
 
-  private static void spawnScrapPile(ServerLevel level, BlockPos blockPos) {
+  private static void spawnScrapPile(final ServerLevel serverLevel, final BlockPos blockPos) {
     try {
-      RandomSource random = level.random;
-      ScrapPileVariant variant = getRandomVariant(random, level, blockPos);
+      RandomSource random = serverLevel.random;
+      ScrapPileVariant variant = getRandomVariant(random, serverLevel, blockPos);
       int size = random.nextFloat() < 0.75f ? 1 : (random.nextFloat() < 0.8f ? 2 : 3);
-      boolean waterlogged = level.getBlockState(blockPos).getFluidState().getType() == Fluids.WATER;
+      boolean waterlogged =
+          serverLevel.getBlockState(blockPos).getFluidState().getType() == Fluids.WATER;
 
       BlockState scrapPileState =
           ScrapPileBlockRegistry.SCRAP_PILE_BLOCK
@@ -306,13 +308,13 @@ public class ScrapPileSpawner {
               .setValue(ScrapPileBlock.VARIANT, variant)
               .setValue(ScrapPileBlock.WATERLOGGED, waterlogged);
 
-      level.setBlock(blockPos, scrapPileState, Block.UPDATE_ALL);
+      serverLevel.setBlock(blockPos, scrapPileState, Block.UPDATE_ALL);
 
       if (log.isDebugEnabled()) {
         log.debug(
             "Spawned scrap pile at {} in dimension {} - Size: {}, Variant: {}, Waterlogged: {}",
             blockPos,
-            level.dimension().location(),
+            serverLevel.dimension().location(),
             size,
             variant,
             waterlogged);
@@ -323,7 +325,7 @@ public class ScrapPileSpawner {
   }
 
   private static ScrapPileVariant getRandomVariant(
-      RandomSource random, ServerLevel serverLevel, BlockPos blockPos) {
+      final RandomSource random, final ServerLevel serverLevel, final BlockPos blockPos) {
     int depth = blockPos.getY();
 
     // Very deep (below Y=-32) heavily favors tech

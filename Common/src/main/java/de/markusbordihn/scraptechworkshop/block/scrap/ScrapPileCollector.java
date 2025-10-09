@@ -19,7 +19,6 @@
 
 package de.markusbordihn.scraptechworkshop.block.scrap;
 
-import de.markusbordihn.scraptechworkshop.block.ScrapPileBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.effects.ParticleEffects;
 import de.markusbordihn.scraptechworkshop.loot.ScrapLootTables;

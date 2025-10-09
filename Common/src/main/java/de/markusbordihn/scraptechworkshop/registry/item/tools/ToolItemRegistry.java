@@ -26,6 +26,7 @@ import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.tool.MagnetFishingRodItem;
 import de.markusbordihn.scraptechworkshop.item.tool.ScrapFishingRodItem;
 import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
+import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeSpeedUpgradeItem;
 import net.minecraft.world.item.Item;
 
 public class ToolItemRegistry {
@@ -52,6 +53,10 @@ public class ToolItemRegistry {
       new EnergyCellBlockItem(new Item.Properties());
   public static final CircuitBoardItem CIRCUIT_BOARD_ITEM =
       new CircuitBoardItem(new Item.Properties());
+
+  // Upgrade Items
+  public static final CreativeSpeedUpgradeItem CREATIVE_SPEED_UPGRADE_ITEM =
+      new CreativeSpeedUpgradeItem(new Item.Properties());
 
   private ToolItemRegistry() {}
 }

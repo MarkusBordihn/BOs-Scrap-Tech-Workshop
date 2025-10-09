@@ -21,13 +21,18 @@ package de.markusbordihn.scraptechworkshop.item.tool;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.config.MultitoolConfig;
+import de.markusbordihn.scraptechworkshop.data.block.StrippableBlocks;
 import de.markusbordihn.scraptechworkshop.data.energy.EnergyData;
 import de.markusbordihn.scraptechworkshop.data.multitool.*;
+import de.markusbordihn.scraptechworkshop.energy.EnergyCellConsumer;
 import de.markusbordihn.scraptechworkshop.energy.EnergyManager;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.menu.ScrapMultitoolMenuProvider;
+import de.markusbordihn.scraptechworkshop.processing.*;
 import java.util.List;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -43,12 +48,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ScrapMultitoolItem extends DiggerItem {
+public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer {
 
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
@@ -59,6 +65,11 @@ public class ScrapMultitoolItem extends DiggerItem {
         Tiers.IRON,
         BlockTags.MINEABLE_WITH_PICKAXE,
         properties.durability(MultitoolConfig.energyMax).rarity(Rarity.RARE));
+  }
+
+  @Override
+  public int getMaxEnergy() {
+    return MultitoolConfig.energyMax;
   }
 
   @Override
@@ -73,7 +84,7 @@ public class ScrapMultitoolItem extends DiggerItem {
       }
       data = data.withBattery(battery);
       data.saveToItemStack(itemStack);
-      syncEnergyWithBattery(itemStack);
+      syncEnergyDisplay(itemStack);
 
       DisplayMode displayMode = new DisplayMode(itemStack);
       displayMode.updateModel(ToolMode.fromId(data.activeMode()), data.getBatteryLevel());
@@ -85,7 +96,7 @@ public class ScrapMultitoolItem extends DiggerItem {
     ToolModeDetector detector = new ToolModeDetector(itemStack);
     detector.updateToolMode(null, state);
 
-    if (!hasEnergyFromBattery(itemStack, MultitoolConfig.energyPerBlock)) {
+    if (!hasEnergy(itemStack, MultitoolConfig.energyPerBlock)) {
       return 1.0f;
     }
 
@@ -128,23 +139,18 @@ public class ScrapMultitoolItem extends DiggerItem {
     }
 
     ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
-    return consumeEnergyFromBattery(itemStack, data, MultitoolConfig.energyPerAttack);
+    return consumeEnergy(itemStack, MultitoolConfig.energyPerAttack);
   }
 
   @Override
   public boolean mineBlock(
-      ItemStack itemStack,
-      Level level,
-      BlockState state,
-      net.minecraft.core.BlockPos pos,
-      LivingEntity entity) {
+      ItemStack itemStack, Level level, BlockState state, BlockPos pos, LivingEntity entity) {
     if (entity instanceof Player player) {
       ToolModeDetector detector = new ToolModeDetector(itemStack);
       detector.updateToolMode(player, state);
     }
 
-    ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
-    if (consumeEnergyFromBattery(itemStack, data, MultitoolConfig.energyPerBlock)) {
+    if (consumeEnergy(itemStack, MultitoolConfig.energyPerBlock)) {
       if (entity instanceof Player player) {
         ToolModeDetector detector = new ToolModeDetector(itemStack);
         detector.updateToolMode(player, state);
@@ -169,8 +175,7 @@ public class ScrapMultitoolItem extends DiggerItem {
       detector.updateToolMode(player, targetBlock);
     }
 
-    ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
-    if (!level.isClientSide && hasEnergyFromBattery(itemStack, MultitoolConfig.energyPerUse)) {
+    if (!level.isClientSide && hasEnergy(itemStack, MultitoolConfig.energyPerUse)) {
       Vec3 playerPos = player.position().add(0, 1, 0);
       Vec3 lookDirection = player.getLookAngle();
       Vec3 particlePos = playerPos.add(lookDirection.scale(1.5));
@@ -195,7 +200,7 @@ public class ScrapMultitoolItem extends DiggerItem {
           0.5f,
           1.2f);
 
-      consumeEnergyFromBattery(itemStack, data, MultitoolConfig.energyPerUse);
+      consumeEnergy(itemStack, MultitoolConfig.energyPerUse);
     }
 
     return InteractionResultHolder.pass(itemStack);
@@ -203,14 +208,94 @@ public class ScrapMultitoolItem extends DiggerItem {
 
   @Override
   public InteractionResult useOn(UseOnContext context) {
-    if (context.getPlayer() != null && context.getPlayer().isShiftKeyDown()) {
+    Player player = context.getPlayer();
+    if (player != null && player.isShiftKeyDown()) {
       return InteractionResult.PASS;
     }
-    return super.useOn(context);
+
+    ItemStack itemStack = context.getItemInHand();
+    if (!hasEnergy(itemStack, MultitoolConfig.energyPerUse)) {
+      return InteractionResult.PASS;
+    }
+
+    Level level = context.getLevel();
+    BlockPos pos = context.getClickedPos();
+    BlockState state = level.getBlockState(pos);
+    Block block = state.getBlock();
+
+    ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
+    ToolMode activeMode = ToolMode.fromId(data.activeMode());
+    InteractionResult result = InteractionResult.PASS;
+    ToolMode usedMode = null;
+
+    if (BlockInteractionProcessor.isCycleableBlock(block)
+        && context.getClickedFace() != Direction.DOWN) {
+      result = BlockInteractionProcessor.processCycleableBlock(context, state);
+      if (result.consumesAction()) {
+        // Determine which tool mode to use based on the block type
+        if (StrippableBlocks.isCycleableWood(block)) {
+          usedMode = ToolMode.AXE;
+        } else if (block == Blocks.DIRT_PATH || state.getBlock() == Blocks.FARMLAND) {
+          usedMode = ToolMode.HOE;
+        } else {
+          usedMode = ToolMode.SHOVEL;
+        }
+      }
+    } else {
+      result =
+          switch (activeMode) {
+            case AXE -> {
+              usedMode = ToolMode.AXE;
+              yield AxeInteractionHandler.processAxeInteraction(context);
+            }
+            case SHOVEL -> {
+              usedMode = ToolMode.SHOVEL;
+              yield ShovelInteractionHandler.processInteraction(context);
+            }
+            case SWORD -> {
+              usedMode = ToolMode.SWORD;
+              yield SwordInteractionHandler.processInteraction(context);
+            }
+            default -> InteractionResult.PASS;
+          };
+
+      if (result == InteractionResult.PASS && activeMode != ToolMode.AXE) {
+        result = AxeInteractionHandler.processAxeInteraction(context);
+        if (result != InteractionResult.PASS) {
+          usedMode = ToolMode.AXE;
+        }
+      }
+      if (result == InteractionResult.PASS && activeMode != ToolMode.SHOVEL) {
+        result = ShovelInteractionHandler.processInteraction(context);
+        if (result != InteractionResult.PASS) {
+          usedMode = ToolMode.SHOVEL;
+        }
+      }
+      if (result == InteractionResult.PASS && activeMode != ToolMode.SWORD) {
+        result = SwordInteractionHandler.processInteraction(context);
+        if (result != InteractionResult.PASS) {
+          usedMode = ToolMode.SWORD;
+        }
+      }
+    }
+
+    if (result.consumesAction() && usedMode != null && usedMode != activeMode) {
+      ScrapMultitoolData newData = data.withActiveMode(usedMode.getId());
+      newData.saveToItemStack(itemStack);
+
+      DisplayMode displayMode = new DisplayMode(itemStack);
+      displayMode.updateModel(usedMode, newData.getBatteryLevel());
+
+      consumeEnergy(itemStack, MultitoolConfig.energyPerUse);
+    } else if (result.consumesAction()) {
+      consumeEnergy(itemStack, MultitoolConfig.energyPerUse);
+    }
+
+    return result != InteractionResult.PASS ? result : super.useOn(context);
   }
 
-  private float getPoweredSpeed(ToolMode mode) {
-    return switch (mode) {
+  private float getPoweredSpeed(final ToolMode toolMode) {
+    return switch (toolMode) {
       case PICKAXE -> 6.0f;
       case AXE -> 6.0f;
       case SHOVEL -> 6.0f;
@@ -220,7 +305,8 @@ public class ScrapMultitoolItem extends DiggerItem {
     };
   }
 
-  private void openMultitoolScreen(Player player, ItemStack stack, InteractionHand hand) {
+  private void openMultitoolScreen(
+      final Player player, final ItemStack itemStack, final InteractionHand interactionHand) {
     if (Constants.IS_FABRIC) {
       try {
         Class<?> fabricHandlerClass =
@@ -228,13 +314,13 @@ public class ScrapMultitoolItem extends DiggerItem {
         Object fabricHandler =
             fabricHandlerClass
                 .getConstructor(ItemStack.class, InteractionHand.class)
-                .newInstance(stack, hand);
+                .newInstance(itemStack, interactionHand);
         player.openMenu((MenuProvider) fabricHandler);
       } catch (Exception e) {
         log.error("Failed to open multitool screen on Fabric: {}", e.getMessage());
       }
     } else {
-      player.openMenu(new ScrapMultitoolMenuProvider(stack, hand));
+      player.openMenu(new ScrapMultitoolMenuProvider(itemStack, interactionHand));
     }
   }
 
@@ -268,29 +354,10 @@ public class ScrapMultitoolItem extends DiggerItem {
           Component.literal("Battery: Installed").withStyle(style -> style.withColor(0x00FF00)));
     }
 
-    String mode = data.activeMode();
-    ToolMode activeMode = ToolMode.fromId(mode);
-    Component modeComponent =
-        switch (activeMode) {
-          case AXE ->
-              Component.literal("Mode: Axe (Auto-detected)")
-                  .withStyle(style -> style.withColor(0xFF8800));
-          case PICKAXE ->
-              Component.literal("Mode: Pickaxe (Auto-detected)")
-                  .withStyle(style -> style.withColor(0x888888));
-          case SHOVEL ->
-              Component.literal("Mode: Shovel (Auto-detected)")
-                  .withStyle(style -> style.withColor(0xBB8844));
-          case HOE ->
-              Component.literal("Mode: Hoe (Auto-detected)")
-                  .withStyle(style -> style.withColor(0x00AA00));
-          case SWORD ->
-              Component.literal("Mode: Sword (Combat)")
-                  .withStyle(style -> style.withColor(0xFF0000));
-          default ->
-              Component.literal("Mode: Normal").withStyle(style -> style.withColor(0xAAAAAA));
-        };
-    tooltipComponents.add(modeComponent);
+    ToolMode activeMode = ToolMode.fromId(data.activeMode());
+    tooltipComponents.add(
+        Component.translatable(activeMode.getTranslationKey())
+            .withStyle(style -> style.withColor(activeMode.getColor())));
 
     tooltipComponents.add(
         Component.literal("Shift + Right-click to configure")
@@ -307,71 +374,5 @@ public class ScrapMultitoolItem extends DiggerItem {
   @Override
   public boolean isEnchantable(ItemStack itemStack) {
     return false;
-  }
-
-  public void syncEnergyWithBattery(ItemStack itemStack) {
-    ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
-
-    if (data.hasBattery()) {
-      ItemStack battery = data.battery();
-      if (battery.getItem() instanceof EnergyCellItem batteryItem) {
-        int batteryEnergy = batteryItem.getEnergy(battery);
-        if (batteryEnergy <= 1) {
-          ItemStack emptyBattery = batteryItem.createEmptyBattery();
-          ScrapMultitoolData updatedData = data.withBattery(emptyBattery);
-          updatedData.saveToItemStack(itemStack);
-          EnergyManager.setEnergy(itemStack, MultitoolConfig.energyMax, 0);
-          return;
-        }
-
-        // Only sync display energy without consuming battery
-        float energyRatio = (float) batteryEnergy / EnergyCellItem.ENERGY_MAX;
-        int multitoolEnergy = Math.round(MultitoolConfig.energyMax * energyRatio);
-        EnergyManager.setEnergy(itemStack, MultitoolConfig.energyMax, multitoolEnergy);
-      } else {
-        EnergyManager.setEnergy(itemStack, MultitoolConfig.energyMax, 0);
-      }
-    } else {
-      EnergyManager.setEnergy(itemStack, MultitoolConfig.energyMax, 0);
-    }
-  }
-
-  private boolean consumeEnergyFromBattery(
-      ItemStack itemStack, ScrapMultitoolData data, int amount) {
-    if (!data.hasBattery()) {
-      return false;
-    }
-
-    ItemStack battery = data.battery();
-    if (!(battery.getItem() instanceof EnergyCellItem)) {
-      return false;
-    }
-
-    int batteryEnergy = ((EnergyCellItem) battery.getItem()).getEnergy(battery);
-    if (batteryEnergy < amount) {
-      return false;
-    }
-
-    EnergyManager.consumeWithBatteryBackup(itemStack, MultitoolConfig.energyMax, amount, battery);
-
-    ScrapMultitoolData updatedData = data.withBattery(battery);
-    updatedData.saveToItemStack(itemStack);
-
-    syncEnergyWithBattery(itemStack);
-    return true;
-  }
-
-  private boolean hasEnergyFromBattery(ItemStack itemStack, int amount) {
-    ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
-    if (!data.hasBattery()) {
-      return false;
-    }
-
-    ItemStack battery = data.battery();
-    if (!(battery.getItem() instanceof EnergyCellItem batteryItem)) {
-      return false;
-    }
-
-    return batteryItem.getEnergy(battery) >= amount;
   }
 }

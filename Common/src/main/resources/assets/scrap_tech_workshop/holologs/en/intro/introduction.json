@@ -131,7 +131,7 @@
     },
     {
       "text": "From scrap.",
-      "displayItem": {"id": "scrap_tech_workshop:iron_scrap"},
+      "displayItem": {"id": "scrap_tech_workshop:iron_scrap"}
     },
     {
       "text": "💡 Tip: Check your inventory for new items",

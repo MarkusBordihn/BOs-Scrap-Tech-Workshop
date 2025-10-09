@@ -90,10 +90,7 @@ public class HoloLogParser {
             new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8))) {
           JsonObject json = GSON.fromJson(reader, JsonObject.class);
           HoloLogData data = HoloLogData.fromJson(json);
-
-          // Validate line lengths for HoloPad display (max 57 characters recommended)
           validateLineLengths(data, id);
-
           log.debug("Parsed hololog: {}", id);
           return Optional.of(data);
         } finally {
@@ -107,11 +104,12 @@ public class HoloLogParser {
     return Optional.empty();
   }
 
-  private static void validateLineLengths(HoloLogData data, ResourceLocation id) {
-    final int MAX_LINE_LENGTH = 57;
+  private static void validateLineLengths(
+      final HoloLogData holoLogData, final ResourceLocation id) {
+    final int MAX_LINE_LENGTH = 65;
 
-    for (int i = 0; i < data.lines().size(); i++) {
-      String text = data.lines().get(i).text();
+    for (int i = 0; i < holoLogData.lines().size(); i++) {
+      String text = holoLogData.lines().get(i).text();
       if (text != null && text.length() > MAX_LINE_LENGTH) {
         log.warn(
             "Hololog '{}' line {} exceeds recommended length: {} characters (max {}): \"{}\"",

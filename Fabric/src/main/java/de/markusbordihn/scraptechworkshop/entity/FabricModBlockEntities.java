@@ -21,10 +21,13 @@ package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
+import de.markusbordihn.scraptechworkshop.block.entity.CollectorStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
+import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.entity.CollectorStationBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.HoloCubeBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RecyclerBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
@@ -57,5 +60,17 @@ public class FabricModBlockEntities {
         new ResourceLocation(Constants.MOD_ID, HoloCubeBlock.ID),
         holoCubeBlockEntityType);
     HoloCubeBlockEntityRegistry.setBlockEntityType(holoCubeBlockEntityType);
+
+    // Register collector station block entity
+    BlockEntityType<CollectorStationBlockEntity> collectorStationBlockEntityType =
+        BlockEntityType.Builder.of(
+                CollectorStationBlockEntity::new,
+                CollectorStationBlockRegistry.BASIC_SCRAP_COLLECTOR_STATION_BLOCK)
+            .build(null);
+    Registry.register(
+        BuiltInRegistries.BLOCK_ENTITY_TYPE,
+        new ResourceLocation(Constants.MOD_ID, "collector_station"),
+        collectorStationBlockEntityType);
+    CollectorStationBlockEntityRegistry.setBlockEntityType(collectorStationBlockEntityType);
   }
 }

@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "scrap_tech_workshop:gold_scrap",
+    {"id": "#c:scrap/metal/gold", "required": false}
+  ]
+}

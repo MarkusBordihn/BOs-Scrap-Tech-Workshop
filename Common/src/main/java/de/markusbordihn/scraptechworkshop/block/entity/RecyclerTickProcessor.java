@@ -85,7 +85,8 @@ public class RecyclerTickProcessor {
     if (state.currentRecipe != null
         && RecyclerRecipeHandler.canProcessRecipe(
             state.currentRecipe, state.getInputStack(), state.items)) {
-      state.progress++;
+      // Apply speed multiplier bonus from upgrade items
+      state.progress += state.speedMultiplier;
       newStatus = RecyclerStatus.WORKING;
       hasChanged = true;
 
@@ -185,6 +186,7 @@ public class RecyclerTickProcessor {
     public final BlockPos pos;
     public final ItemStack[] items;
     public final int maxProgress;
+    public final int speedMultiplier;
     public int progress;
     public int noRecipeTimer;
     public int doneTimer;
@@ -198,7 +200,8 @@ public class RecyclerTickProcessor {
         int maxProgress,
         int noRecipeTimer,
         int doneTimer,
-        RecyclerRecipe currentRecipe) {
+        RecyclerRecipe currentRecipe,
+        int speedMultiplier) {
       this.level = level;
       this.pos = pos;
       this.items = items;
@@ -207,6 +210,7 @@ public class RecyclerTickProcessor {
       this.noRecipeTimer = noRecipeTimer;
       this.doneTimer = doneTimer;
       this.currentRecipe = currentRecipe;
+      this.speedMultiplier = speedMultiplier;
     }
 
     public ItemStack getInputStack() {

@@ -21,6 +21,8 @@ package de.markusbordihn.scraptechworkshop.block;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
+import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileBlock;
+import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
@@ -50,5 +52,11 @@ public class FabricModBlocks {
         BuiltInRegistries.BLOCK,
         new ResourceLocation(Constants.MOD_ID, HoloCubeBlock.ID),
         HoloLogBlockRegistry.HOLO_CUBE_BLOCK);
+
+    // Register collector station block
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, BasicScrapCollectorStationBlock.ID),
+        CollectorStationBlockRegistry.BASIC_SCRAP_COLLECTOR_STATION_BLOCK);
   }
 }

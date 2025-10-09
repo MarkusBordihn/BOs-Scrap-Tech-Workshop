@@ -86,7 +86,8 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
   private ItemRenderer itemRenderer;
   private float rotationAngle = 0;
 
-  public RecyclerScreen(RecyclerMenu menu, Inventory playerInventory, Component title) {
+  public RecyclerScreen(
+      final RecyclerMenu menu, final Inventory playerInventory, final Component title) {
     super(menu, playerInventory, title);
     this.imageWidth = SCREEN_WIDTH;
     this.imageHeight = SCREEN_HEIGHT;
@@ -130,9 +131,19 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
       render3DBlock(guiGraphics, x, y, inputItem, partialTick);
     }
 
-    // Progress arrow
+    // Progress arrow frame (always visible)
+    RenderSystem.setShaderTexture(0, Constants.TEXTURE_FURNACE);
+    guiGraphics.blit(
+        Constants.TEXTURE_FURNACE,
+        x + PROGRESS_ARROW_X,
+        y + PROGRESS_ARROW_Y,
+        176,
+        14,
+        26,
+        PROGRESS_ARROW_HEIGHT);
+
+    // Progress arrow fill (only when crafting)
     if (menu.isCrafting()) {
-      RenderSystem.setShaderTexture(0, Constants.TEXTURE_FURNACE);
       guiGraphics.blit(
           Constants.TEXTURE_FURNACE,
           x + PROGRESS_ARROW_X,
@@ -145,7 +156,11 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
   }
 
   private void render3DBlock(
-      GuiGraphics guiGraphics, int x, int y, ItemStack inputItem, float partialTick) {
+      final GuiGraphics guiGraphics,
+      final int x,
+      final int y,
+      final ItemStack inputItem,
+      final float partialTick) {
     PoseStack poseStack = guiGraphics.pose();
     poseStack.pushPose();
 

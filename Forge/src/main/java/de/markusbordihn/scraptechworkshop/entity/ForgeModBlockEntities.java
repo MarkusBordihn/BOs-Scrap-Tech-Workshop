@@ -21,9 +21,12 @@ package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
+import de.markusbordihn.scraptechworkshop.block.entity.CollectorStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.entity.CollectorStationBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.HoloCubeBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RecyclerBlockEntityRegistry;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -55,6 +58,16 @@ public class ForgeModBlockEntities {
                       HoloCubeBlockEntity::new, ForgeModBlocks.HOLO_CUBE_BLOCK.get())
                   .build(null));
 
+  public static final RegistryObject<BlockEntityType<CollectorStationBlockEntity>>
+      COLLECTOR_STATION_BLOCK_ENTITY =
+          BLOCK_ENTITY_TYPES.register(
+              "collector_station",
+              () ->
+                  BlockEntityType.Builder.of(
+                          CollectorStationBlockEntity::new,
+                          CollectorStationBlockRegistry.BASIC_SCRAP_COLLECTOR_STATION_BLOCK)
+                      .build(null));
+
   private ForgeModBlockEntities() {}
 
   public static void register(IEventBus eventBus) {
@@ -65,6 +78,8 @@ public class ForgeModBlockEntities {
           if (event.getRegistryKey().equals(ForgeRegistries.BLOCK_ENTITY_TYPES.getRegistryKey())) {
             RecyclerBlockEntityRegistry.setBlockEntityType(RECYCLER_BLOCK_ENTITY.get());
             HoloCubeBlockEntityRegistry.setBlockEntityType(HOLO_CUBE_BLOCK_ENTITY.get());
+            CollectorStationBlockEntityRegistry.setBlockEntityType(
+                COLLECTOR_STATION_BLOCK_ENTITY.get());
           }
         });
   }

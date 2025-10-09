@@ -77,13 +77,12 @@ public record HoloLogData(
   private static final float DEFAULT_CHAR_DELAY = 0.05f;
   private static final float DEFAULT_VOICE_OVER_DELAY = 0.0f;
 
-  public static HoloLogData fromJson(JsonObject json) {
+  public static HoloLogData fromJson(final JsonObject json) {
     ResourceLocation id = new ResourceLocation(json.get(FIELD_ID).getAsString());
     String title = json.get(FIELD_TITLE).getAsString();
     String subtitle =
         json.has(FIELD_SUBTITLE) ? json.get(FIELD_SUBTITLE).getAsString() : DEFAULT_SUBTITLE;
-    String color =
-        json.has(FIELD_COLOR) ? json.get(FIELD_COLOR).getAsString() : DEFAULT_COLOR;
+    String color = json.has(FIELD_COLOR) ? json.get(FIELD_COLOR).getAsString() : DEFAULT_COLOR;
     String titleColor =
         json.has(FIELD_TITLE_COLOR)
             ? json.get(FIELD_TITLE_COLOR).getAsString()
@@ -141,7 +140,7 @@ public record HoloLogData(
         end);
   }
 
-  private static HoloLogDisplayEntity parseDisplayEntity(JsonObject json) {
+  private static HoloLogDisplayEntity parseDisplayEntity(final JsonObject json) {
     if (json.has(FIELD_DISPLAY_ENTITY)) {
       return HoloLogDisplayEntity.fromJson(
           json.getAsJsonObject(FIELD_DISPLAY_ENTITY), DisplayType.ENTITY);
@@ -158,7 +157,7 @@ public record HoloLogData(
     return null;
   }
 
-  private static List<HoloLogLine> parseLines(JsonObject json, float defaultLineDelay) {
+  private static List<HoloLogLine> parseLines(final JsonObject json, final float defaultLineDelay) {
     List<HoloLogLine> lines = new ArrayList<>();
     float currentTime = 0.0f;
 

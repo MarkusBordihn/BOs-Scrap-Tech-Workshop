@@ -38,6 +38,7 @@ import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
+import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeSpeedUpgradeItem;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
@@ -144,6 +145,11 @@ public class FabricModItems {
         registerItem(EnergyCellBlockItem.ID, () -> ToolItemRegistry.ENERGY_CELL_BLOCK_ITEM);
     ModItems.CIRCUIT_BOARD =
         registerItem(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
+
+    // Upgrade Items
+    ModItems.CREATIVE_SPEED_UPGRADE =
+        registerItem(
+            CreativeSpeedUpgradeItem.ID, () -> ToolItemRegistry.CREATIVE_SPEED_UPGRADE_ITEM);
 
     // Holo Pad Items
     for (Map.Entry<String, ResourceLocation> entry :

@@ -19,24 +19,30 @@
 
 package de.markusbordihn.scraptechworkshop.data.multitool;
 
+import de.markusbordihn.scraptechworkshop.Constants;
+
 public enum ToolMode {
-  DEFAULT("default", 0), // Battery level will be used for model data
-  PICKAXE("pickaxe", 7),
-  AXE("axe", 6),
-  SHOVEL("shovel", 8),
-  HOE("hoe", 9),
-  SWORD("sword", 10),
-  NONE("none", 0);
+  DEFAULT("default", 0, "mode.default", 0xAAAAAA),
+  PICKAXE("pickaxe", 7, "mode.pickaxe", 0x888888),
+  AXE("axe", 6, "mode.axe", 0xFF8800),
+  SHOVEL("shovel", 8, "mode.shovel", 0xBB8844),
+  HOE("hoe", 9, "mode.hoe", 0x00AA00),
+  SWORD("sword", 10, "mode.sword", 0xFF0000),
+  NONE("none", 0, "mode.none", 0xAAAAAA);
 
   private final String id;
   private final int modelData;
+  private final String translationKey;
+  private final int color;
 
-  ToolMode(String id, int modelData) {
+  ToolMode(final String id, final int modelData, final String translationKey, final int color) {
     this.id = id;
     this.modelData = modelData;
+    this.translationKey = Constants.ITEM_PREFIX + "scrap_multitool." + translationKey;
+    this.color = color;
   }
 
-  public static ToolMode fromId(String id) {
+  public static ToolMode fromId(final String id) {
     for (ToolMode mode : values()) {
       if (mode.id.equals(id)) {
         return mode;
@@ -51,6 +57,14 @@ public enum ToolMode {
 
   public int getModelData() {
     return modelData;
+  }
+
+  public String getTranslationKey() {
+    return translationKey;
+  }
+
+  public int getColor() {
+    return color;
   }
 
   public boolean isToolMode() {

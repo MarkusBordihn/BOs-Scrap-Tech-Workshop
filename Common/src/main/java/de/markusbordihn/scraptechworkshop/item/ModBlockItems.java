@@ -26,8 +26,11 @@ import net.minecraft.world.item.BlockItem;
 
 public class ModBlockItems {
 
-  // Scrap Pile Block Items
+  // Machine Block Items
   public static Supplier<BlockItem> RECYCLER;
+  public static Supplier<BlockItem> BASIC_SCRAP_COLLECTOR_STATION;
+
+  // Scrap Pile Block Items
   public static Supplier<BlockItem> MIXED_SCRAP_PILE;
   public static Supplier<BlockItem> METAL_SCRAP_PILE;
   public static Supplier<BlockItem> TECH_SCRAP_PILE;

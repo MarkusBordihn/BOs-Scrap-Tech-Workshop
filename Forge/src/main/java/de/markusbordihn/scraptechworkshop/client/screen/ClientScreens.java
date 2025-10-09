@@ -30,13 +30,12 @@ public class ClientScreens {
 
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
-  private ClientScreens() {
-    // Utility class
-  }
+  private ClientScreens() {}
 
   public static void registerScreens() {
     log.info("{} Client Screens ...", Constants.LOG_REGISTER_PREFIX);
     MenuScreens.register(ForgeModMenus.RECYCLER_MENU.get(), RecyclerScreen::new);
     MenuScreens.register(ForgeModMenus.SCRAP_MULTITOOL_MENU.get(), ScrapMultitoolScreen::new);
+    MenuScreens.register(ForgeModMenus.COLLECTOR_STATION_MENU.get(), CollectorStationScreen::new);
   }
 }

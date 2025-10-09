@@ -72,6 +72,9 @@ public class ModItems {
   // Hololog Items
   public static Supplier<Item> HOLO_PAD;
 
+  // Upgrade Items
+  public static Supplier<Item> CREATIVE_SPEED_UPGRADE;
+
   public static ResourceLocation getItemId(String name) {
     return new ResourceLocation(Constants.MOD_ID, name);
   }

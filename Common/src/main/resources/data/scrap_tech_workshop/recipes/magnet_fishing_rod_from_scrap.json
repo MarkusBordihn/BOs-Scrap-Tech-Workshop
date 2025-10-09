@@ -8,7 +8,7 @@
   ],
   "key": {
     "c": {"tag": "scrap_tech_workshop:scrap/tech/coil"},
-    "i": {"tag": "scrap_tech_workshop:scrap/iron"},
+    "i": {"tag": "scrap_tech_workshop:scrap/metal/iron"},
     "f": {"item": "scrap_tech_workshop:scrap_fishing_rod"}
   },
   "result": {

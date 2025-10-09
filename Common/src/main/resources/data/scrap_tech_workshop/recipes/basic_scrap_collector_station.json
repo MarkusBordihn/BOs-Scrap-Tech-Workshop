@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ICI",
+    "RER",
+    "IMI"
+  ],
+  "key": {
+    "I": {
+      "item": "scrap_tech_workshop:iron_scrap"
+    },
+    "C": {
+      "item": "scrap_tech_workshop:circuit_board"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "E": {
+      "item": "scrap_tech_workshop:energy_cell"
+    },
+    "M": {
+      "item": "scrap_tech_workshop:metal_scrap"
+    }
+  },
+  "result": {
+    "item": "scrap_tech_workshop:basic_scrap_collector_station"
+  }
+}

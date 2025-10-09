@@ -1,0 +1,308 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "half": "lower",
+        "state": "ready",
+        "facing": "north"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "ready",
+        "facing": "east"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "ready",
+        "facing": "south"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "ready",
+        "facing": "west"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "collecting",
+        "facing": "north"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_collecting",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "collecting",
+        "facing": "east"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_collecting",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "collecting",
+        "facing": "south"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_collecting",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "collecting",
+        "facing": "west"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_collecting",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "returning",
+        "facing": "north"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_collecting",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "returning",
+        "facing": "east"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_collecting",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "returning",
+        "facing": "south"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_collecting",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "returning",
+        "facing": "west"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_collecting",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "processing",
+        "facing": "north"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_processing",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "processing",
+        "facing": "east"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_processing",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "processing",
+        "facing": "south"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_processing",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "processing",
+        "facing": "west"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_processing",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "charging",
+        "facing": "north"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_charging",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "charging",
+        "facing": "east"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_charging",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "charging",
+        "facing": "south"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_charging",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "charging",
+        "facing": "west"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_charging",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "no_power",
+        "facing": "north"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "no_power",
+        "facing": "east"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "no_power",
+        "facing": "south"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "half": "lower",
+        "state": "no_power",
+        "facing": "west"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "half": "upper",
+        "facing": "north"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_upper",
+        "y": 0
+      }
+    },
+    {
+      "when": {
+        "half": "upper",
+        "facing": "east"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_upper",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "half": "upper",
+        "facing": "south"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_upper",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "half": "upper",
+        "facing": "west"
+      },
+      "apply": {
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_upper",
+        "y": 270
+      }
+    }
+  ]
+}

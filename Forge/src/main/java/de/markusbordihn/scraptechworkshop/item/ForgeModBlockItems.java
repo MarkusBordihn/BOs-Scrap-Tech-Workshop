@@ -20,6 +20,7 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.block.BasicScrapCollectorStationBlock;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
 import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
@@ -45,6 +46,13 @@ public class ForgeModBlockItems {
       BLOCK_ITEMS.register(
           RecyclerBlock.ID,
           () -> new RecyclerBlockItem(ForgeModBlocks.RECYCLER_BLOCK.get(), new Item.Properties()));
+
+  public static final RegistryObject<BlockItem> BASIC_SCRAP_COLLECTOR_STATION_BLOCK_ITEM =
+      BLOCK_ITEMS.register(
+          BasicScrapCollectorStationBlock.ID,
+          () ->
+              new BlockItem(
+                  ForgeModBlocks.BASIC_SCRAP_COLLECTOR_STATION_BLOCK.get(), new Item.Properties()));
 
   public static final RegistryObject<BlockItem> MIXED_SCRAP_PILE_BLOCK_ITEM =
       BLOCK_ITEMS.register(
@@ -95,6 +103,7 @@ public class ForgeModBlockItems {
     BLOCK_ITEMS.register(eventBus);
 
     ModBlockItems.RECYCLER = RECYCLER_BLOCK_ITEM;
+    ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION = BASIC_SCRAP_COLLECTOR_STATION_BLOCK_ITEM;
     ModBlockItems.MIXED_SCRAP_PILE = MIXED_SCRAP_PILE_BLOCK_ITEM;
     ModBlockItems.METAL_SCRAP_PILE = METAL_SCRAP_PILE_BLOCK_ITEM;
     ModBlockItems.TECH_SCRAP_PILE = TECH_SCRAP_PILE_BLOCK_ITEM;

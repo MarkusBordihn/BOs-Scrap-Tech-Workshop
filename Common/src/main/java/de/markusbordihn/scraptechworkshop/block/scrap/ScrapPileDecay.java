@@ -20,7 +20,6 @@
 package de.markusbordihn.scraptechworkshop.block.scrap;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.block.ScrapPileBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
 import net.minecraft.core.BlockPos;

@@ -77,17 +77,19 @@ public class ClientEventHandler {
 
   private static void registerItemColors() {
     log.info("{} Item Colors for HoloPads ...", Constants.LOG_REGISTER_PREFIX);
-    
+
     // Register color provider for all HoloPad items
     for (HoloPadItem item : HoloLogItemRegistry.getHoloPadItems().values()) {
-      ColorProviderRegistry.ITEM.register((stack, tintIndex) -> {
-        if (tintIndex == 0 && stack.getItem() instanceof HoloPadItem holoPad) {
-          return HoloLogManager.loadHoloLog(holoPad.getHoloLogId())
-              .map(data -> ColorUtils.parseHexColor(data.color()))
-              .orElse(0x00FFFF);
-        }
-        return 0xFFFFFF;
-      }, item);
+      ColorProviderRegistry.ITEM.register(
+          (stack, tintIndex) -> {
+            if (tintIndex == 0 && stack.getItem() instanceof HoloPadItem holoPad) {
+              return HoloLogManager.loadHoloLog(holoPad.getHoloLogId())
+                  .map(data -> ColorUtils.parseHexColor(data.color()))
+                  .orElse(0x00FFFF);
+            }
+            return 0xFFFFFF;
+          },
+          item);
     }
   }
 

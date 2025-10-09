@@ -21,6 +21,8 @@ package de.markusbordihn.scraptechworkshop.block;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
+import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileBlock;
+import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
@@ -43,6 +45,11 @@ public class ForgeModBlocks {
 
   public static final RegistryObject<Block> HOLO_CUBE_BLOCK =
       BLOCKS.register(HoloCubeBlock.ID, () -> HoloLogBlockRegistry.HOLO_CUBE_BLOCK);
+
+  public static final RegistryObject<Block> BASIC_SCRAP_COLLECTOR_STATION_BLOCK =
+      BLOCKS.register(
+          BasicScrapCollectorStationBlock.ID,
+          () -> CollectorStationBlockRegistry.BASIC_SCRAP_COLLECTOR_STATION_BLOCK);
 
   private ForgeModBlocks() {}
 

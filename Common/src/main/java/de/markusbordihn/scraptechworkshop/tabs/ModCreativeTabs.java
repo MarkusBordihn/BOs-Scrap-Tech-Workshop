@@ -90,8 +90,12 @@ public class ModCreativeTabs {
               output.accept(ModItems.SCRAP_FISHING_ROD.get());
               output.accept(ModItems.MAGNET_FISHING_ROD.get());
 
-              // Recycler Block Item
+              // Upgrade Items
+              output.accept(ModItems.CREATIVE_SPEED_UPGRADE.get());
+
+              // Block Items
               output.accept(ModBlockItems.RECYCLER.get());
+              output.accept(ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION.get());
 
               // Scrap Pile Block Items
               output.accept(ModBlockItems.MIXED_SCRAP_PILE.get());

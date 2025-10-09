@@ -8,7 +8,7 @@
   ],
   "key": {
     "c": {"tag": "scrap_tech_workshop:scrap/tech/coil"},
-    "i": {"tag": "scrap_tech_workshop:scrap/iron"},
+    "i": {"tag": "scrap_tech_workshop:scrap/metal/iron"},
     "s": {"item": "minecraft:string"},
     "t": {"item": "minecraft:stick"}
   },

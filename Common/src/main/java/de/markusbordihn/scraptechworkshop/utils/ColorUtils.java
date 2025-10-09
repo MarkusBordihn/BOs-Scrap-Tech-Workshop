@@ -21,8 +21,7 @@ package de.markusbordihn.scraptechworkshop.utils;
 
 public class ColorUtils {
 
-  private ColorUtils() {
-  }
+  private ColorUtils() {}
 
   public static int parseHexColor(final String hexColor) {
     if (hexColor == null || hexColor.isEmpty()) {

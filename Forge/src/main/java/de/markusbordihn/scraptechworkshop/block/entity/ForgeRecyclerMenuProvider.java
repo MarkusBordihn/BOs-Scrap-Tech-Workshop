@@ -22,16 +22,18 @@ package de.markusbordihn.scraptechworkshop.block.entity;
 import de.markusbordihn.scraptechworkshop.menu.RecyclerMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraftforge.network.IContainerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class ForgeRecyclerMenuProvider
-    implements net.minecraft.world.MenuProvider,
-        net.minecraftforge.network.IContainerFactory<RecyclerMenu> {
+public class ForgeRecyclerMenuProvider implements MenuProvider, IContainerFactory<RecyclerMenu> {
 
-  private static final org.apache.logging.log4j.Logger log =
-      org.apache.logging.log4j.LogManager.getLogger();
+  private static final Logger log = LogManager.getLogger();
 
   private final RecyclerBlockEntity blockEntity;
 
@@ -54,9 +56,7 @@ public class ForgeRecyclerMenuProvider
     return new RecyclerMenu(windowId, playerInventory, data);
   }
 
-  /** Writes BlockPos and container size to FriendlyByteBuf for NetworkHooks.openScreen(). */
-  public void writeScreenOpeningData(
-      net.minecraft.server.level.ServerPlayer player, FriendlyByteBuf buf) {
+  public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
     log.debug("[RECYCLER] Writing BlockPos {} to client", blockEntity.getBlockPos());
     buf.writeBlockPos(blockEntity.getBlockPos());
     buf.writeInt(blockEntity.getContainerSize());

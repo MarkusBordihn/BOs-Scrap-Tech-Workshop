@@ -17,12 +17,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block;
+package de.markusbordihn.scraptechworkshop.block.scrap;
 
-import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileCollector;
-import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileCooldownManager;
-import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileDecay;
-import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileMerger;
 import de.markusbordihn.scraptechworkshop.config.ScrapPileConfig;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.loot.ScrapLootTables;
