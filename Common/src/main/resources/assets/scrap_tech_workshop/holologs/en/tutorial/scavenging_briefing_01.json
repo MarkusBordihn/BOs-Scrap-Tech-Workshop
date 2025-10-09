@@ -2,8 +2,7 @@
   "id": "scrap_tech_workshop:holologs/en/tutorial/scavenging_briefing_01",
   "title": "Scavenging Briefing 01",
   "subtitle": "Locate and collect usable scrap materials.",
-  "titleColor": "#00FFAA",
-  "subtitleColor": "#AAAAAA",
+  "color": "#00FF88",
   "lineDelay": 2.8,
   "voiceOver": "scrap_tech_workshop:holologs/en/tutorial/scavenging_briefing_01",
   "voiceOverDelay": 2.8,
@@ -68,11 +67,26 @@
       "displayItem": {"id": "scrap_tech_workshop:energy_cell"},
       "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8}]
     },
-    {"text": "It is the core of all future technology."},
-    {"text": "Everything begins with this cell."},
-    {"text": "More Holopads are scattered across the world."},
-    {"text": "They contain blueprints and instructions."},
-    {"text": "Watch for their faint signals while exploring."}
+    {
+      "text": "It is the core of all future technology.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"}
+    },
+    {
+      "text": "Everything begins with this cell.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"}
+    },
+    {
+      "text": "More Holopads are scattered across the world.",
+      "displayItem": {"id": "scrap_tech_workshop:holo_pad_scavenging_briefing_02"}
+    },
+    {
+      "text": "They contain blueprints and instructions.",
+      "displayItem": {"id": "minecraft:writable_book"}
+    },
+    {
+      "text": "Watch for their faint signals while exploring.",
+      "playSound": [{"id": "minecraft:block.note_block.chime", "volume": 0.5}]
+    }
   ],
   "end": {
     "playSound": [

@@ -1,0 +1,37 @@
+{
+  "parent": "scrap_tech_workshop:hololog/energy_basics",
+  "display": {
+    "icon": {
+      "item": "scrap_tech_workshop:holo_pad_scavenging_briefing_03"
+    },
+    "title": {
+      "translate": "advancement.scrap_tech_workshop.multitool_basics.title"
+    },
+    "description": {
+      "translate": "advancement.scrap_tech_workshop.multitool_basics.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_energy_cell": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:energy_cell"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "scrap_tech_workshop:scrap_multitool"
+    ],
+    "function": "scrap_tech_workshop:advancements/hololog/give_holo_pad_scavenging_briefing_03",
+    "experience": 25
+  }
+}

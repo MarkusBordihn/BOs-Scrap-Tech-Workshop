@@ -24,11 +24,15 @@ import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogPlayerM
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
 import de.markusbordihn.scraptechworkshop.item.ItemPropertyFunctions;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
+import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.utils.ColorUtils;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -93,5 +97,22 @@ class ClientModEventHandler {
                   },
                   executor2);
         });
+  }
+
+  @SubscribeEvent
+  public static void onRegisterItemColors(RegisterColorHandlersEvent.Item event) {
+    log.info("{} Item Colors for HoloPads ...", Constants.LOG_REGISTER_PREFIX);
+    
+    // Register color handler for all HoloPad items
+    for (HoloPadItem item : HoloLogItemRegistry.getHoloPadItems().values()) {
+      event.register((stack, tintIndex) -> {
+        if (tintIndex == 0 && stack.getItem() instanceof HoloPadItem holoPad) {
+          return HoloLogManager.loadHoloLog(holoPad.getHoloLogId())
+              .map(data -> ColorUtils.parseHexColor(data.color()))
+              .orElse(0x00FFFF);
+        }
+        return 0xFFFFFF;
+      }, item);
+    }
   }
 }

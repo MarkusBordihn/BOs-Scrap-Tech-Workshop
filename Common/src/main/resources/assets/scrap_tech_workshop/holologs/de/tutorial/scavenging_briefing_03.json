@@ -1,0 +1,160 @@
+{
+  "id": "scrap_tech_workshop:holologs/de/tutorial/scavenging_briefing_03",
+  "title": "Bergungs-Briefing 03",
+  "subtitle": "Konstruktion und Nutzung des Schrott-Multitools.",
+  "color": "#AA00FF",
+  "lineDelay": 3.1,
+  "voiceOver": "scrap_tech_workshop:holologs/de/tutorial/scavenging_briefing_03",
+  "voiceOverDelay": 3.1,
+  "displayHoloEntity": {
+    "id": "scrap_tech_workshop:hololog_humanoid",
+    "texture": "scrap_tech_workshop:textures/entity/hololog/hololog_humanoid.png",
+    "scale": 0.5
+  },
+  "start": {
+    "playSound": [{"id": "minecraft:block.note_block.hat", "volume": 0.8}],
+    "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
+  },
+  "lines": [
+    {
+      "text": "Montageprotokoll freigeschaltet.",
+      "playSound": [{"id": "minecraft:block.lever.click", "volume": 0.7}]
+    },
+    {
+      "text": "Das Schrott-Multitool ist bereit zur Konstruktion.",
+      "displayItem": {"id": "scrap_tech_workshop:scrap_multitool"}
+    },
+    {
+      "text": "Es verbindet einfache Mechanik mit wiederentdeckter Technologie.",
+      "playSound": [{"id": "minecraft:block.iron_trapdoor.open", "volume": 0.4}]
+    },
+    {
+      "text": "Holografische Energie fließt durch einen verstärkten Rahmen.",
+      "displayItem": {"id": "scrap_tech_workshop:scrap_multitool"}
+    },
+    {
+      "text": "Für den Zusammenbau folge diesem Schema:",
+      "displayRecipe": {
+        "recipe": "scrap_tech_workshop:scrap_multitool",
+        "scale": 1.2
+      },
+      "playSound": [{"id": "minecraft:block.anvil.use", "volume": 0.6}],
+      "lineDelay": 4.5
+    },
+    {
+      "text": "Metallschrott bildet Gehäuse und Griff.",
+      "displayItem": {"id": "scrap_tech_workshop:metal_scrap"},
+      "playSound": [{"id": "minecraft:block.netherite_block.place", "volume": 0.3}]
+    },
+    {
+      "text": "Schaltkreis-Schrott formt die Steuerungsmatrix.",
+      "displayItem": {"id": "scrap_tech_workshop:circuit_scrap"},
+      "playSound": [{"id": "minecraft:block.copper.place", "volume": 0.3}]
+    },
+    {
+      "text": "Quarz stabilisiert den holografischen Kern.",
+      "displayItem": {"id": "minecraft:quartz"},
+      "playSound": [{"id": "minecraft:block.amethyst_block.hit", "volume": 0.4}]
+    },
+    {
+      "text": "Eine geladene Energiezelle versorgt das Gerät mit Strom.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"},
+      "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8}]
+    },
+    {
+      "text": "Jede Energiezelle enthält bis zu zehntausend Energieeinheiten.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"}
+    },
+    {
+      "text": "Aktionen verbrauchen unterschiedlich viel Energie.",
+      "displayItem": {"id": "scrap_tech_workshop:scrap_multitool"}
+    },
+    {
+      "text": "Abbauen oder Graben kostet 2 Einheiten pro Block.",
+      "displayBlock": {"id": "minecraft:stone"},
+      "playSound": [{"id": "minecraft:block.stone.break", "volume": 0.4}]
+    },
+    {
+      "text": "Einfache Interaktionen verbrauchen 1 Einheit.",
+      "displayBlock": {"id": "minecraft:crafting_table"}
+    },
+    {
+      "text": "Kampfaktionen benötigen 5 Einheiten pro Schlag.",
+      "playSound": [{"id": "minecraft:entity.player.attack.sweep", "volume": 0.5}]
+    },
+    {
+      "text": "Wenig Energie verringert Tempo und Effizienz.",
+      "displayItem": {"id": "scrap_tech_workshop:scrap_multitool"}
+    },
+    {
+      "text": "Öffne das Interface mit Umschalt + Rechtsklick.",
+      "playSound": [{"id": "minecraft:block.iron_door.open", "volume": 0.5}]
+    },
+    {
+      "text": "Der mittlere Slot hält die eingesetzte Energiezelle.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"}
+    },
+    {
+      "text": "Darunter: vier Modul-Slots für Erweiterungen.",
+      "displayItem": {"id": "scrap_tech_workshop:scrap_multitool"}
+    },
+    {"text": "Module erweitern die Funktionen in späteren Versionen."},
+    {"text": "Behalte das Multitool in der Schnellleiste während der Nutzung."},
+    {"text": "Die Haltbarkeitsanzeige zeigt die gespeicherte Energie."},
+    {
+      "text": "Grün bedeutet voll geladen, Rot fast leer.",
+      "playSound": [{"id": "minecraft:block.note_block.pling", "volume": 0.6}]
+    },
+    {
+      "text": "Zellen synchronisieren ihren Ladezustand automatisch.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"}
+    },
+    {
+      "text": "Zellen verschleißen mit der Zeit und müssen ersetzt werden.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"}
+    },
+    {
+      "text": "Leere Zellen können im Recycler zerlegt werden.",
+      "displayBlock": {"id": "scrap_tech_workshop:recycler"},
+      "playSound": [{"id": "minecraft:block.piston.extend", "volume": 0.4}]
+    },
+    {
+      "text": "Das Multitool passt sich dem Material an, mit dem es interagiert.",
+      "displayItem": {"id": "scrap_tech_workshop:scrap_multitool"}
+    },
+    {
+      "text": "Stein, Holz, Erde und Sand → gleiche Effizienz.",
+      "displayBlock": {"id": "minecraft:oak_log"},
+      "playSound": [{"id": "minecraft:block.wood.break", "volume": 0.4}]
+    },
+    {
+      "text": "Der Kampfmodus aktiviert sich bei Angriffen auf Kreaturen.",
+      "displayEntity": {"id": "minecraft:skeleton"},
+      "playSound": [{"id": "minecraft:entity.player.attack.strong", "volume": 0.5}]
+    },
+    {
+      "text": "Jeder Treffer verbraucht zusätzliche Energie.",
+      "displayEntity": {"id": "minecraft:zombie"}
+    },
+    {
+      "text": "Ohne Energie schwächt sich die holografische Kante ab.",
+      "displayItem": {"id": "scrap_tech_workshop:scrap_multitool"}
+    },
+    {
+      "text": "Trage Ersatz-Zellen für längere Einsätze bei dir.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"}
+    },
+    {"text": "Dieses Gerät ist der erste Schritt zu modularen Werkzeugen."},
+    {
+      "text": "Warte es, rüste es auf und halte den Energiefluss aufrecht.",
+      "playSound": [{"id": "minecraft:block.beacon.ambient", "volume": 0.6}]
+    }
+  ],
+  "end": {
+    "playSound": [
+      {"id": "minecraft:block.beacon.deactivate", "volume": 0.9},
+      {"id": "minecraft:ui.toast.in"}
+    ],
+    "showParticle": [{"id": "minecraft:flash"}]
+  }
+}

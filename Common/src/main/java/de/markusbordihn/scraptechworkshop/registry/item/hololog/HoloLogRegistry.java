@@ -43,6 +43,9 @@ public class HoloLogRegistry {
     registerHoloPad(
         "scavenging_briefing_02",
         new ResourceLocation(Constants.MOD_ID, "holologs/tutorial/scavenging_briefing_02"));
+    registerHoloPad(
+        "scavenging_briefing_03",
+        new ResourceLocation(Constants.MOD_ID, "holologs/tutorial/scavenging_briefing_03"));
 
     // Register HoloCubes
     registerHoloCube(

@@ -56,12 +56,12 @@ public class HoloPadScreen extends Screen {
 
   private static final int TEXTURE_WIDTH = 512;
   private static final int TEXTURE_HEIGHT = 256;
-  private static final int SCREEN_WIDTH = 325;
+  private static final int SCREEN_WIDTH = 370;
   private static final int SCREEN_HEIGHT = 250;
 
   private static final int HOLOGRAM_AREA_X = 16;
   private static final int HOLOGRAM_AREA_Y = 16;
-  private static final int HOLOGRAM_AREA_WIDTH = 293;
+  private static final int HOLOGRAM_AREA_WIDTH = 338;
   private static final int HOLOGRAM_AREA_HEIGHT = 100;
   private static final int HOLOGRAM_AREA_CENTER_Y_OFFSET = 0;
 
@@ -70,7 +70,7 @@ public class HoloPadScreen extends Screen {
 
   private static final int TEXT_AREA_X = 12;
   private static final int TEXT_AREA_Y = 118;
-  private static final int TEXT_AREA_WIDTH = 293;
+  private static final int TEXT_AREA_WIDTH = 338;
   private static final int TEXT_AREA_HEIGHT = 120;
   private static final int TEXT_PADDING = 4;
   private static final int TITLE_SPACING = 2;
@@ -78,7 +78,7 @@ public class HoloPadScreen extends Screen {
   private static final int LINE_SPACING = 2;
   private static final int SCROLL_BUTTON_WIDTH = 12;
   private static final int SCROLL_BUTTON_HEIGHT = 17;
-  private static final int SCROLL_BUTTON_X_OFFSET = 293;
+  private static final int SCROLL_BUTTON_X_OFFSET = 338;
 
   private static final float HOLOGRAM_SCALE_FACTOR = 35.0f;
   private static final float HOLOGRAM_ITEM_SCALE_MULTIPLIER = 2.5f;
@@ -101,6 +101,7 @@ public class HoloPadScreen extends Screen {
   private int leftPos;
   private int topPos;
   private Button replayButton;
+  private Button closeButton;
   private boolean playbackCompleted = false;
 
   public HoloPadScreen(final ResourceLocation holoLogId) {
@@ -116,6 +117,7 @@ public class HoloPadScreen extends Screen {
 
     addScrollButtons();
     addReplayButton();
+    addCloseButton();
 
     if (player != null) {
       return;
@@ -168,6 +170,21 @@ public class HoloPadScreen extends Screen {
     this.addRenderableWidget(replayButton);
   }
 
+  private void addCloseButton() {
+    int buttonWidth = 80;
+    int buttonHeight = 20;
+    int buttonX = leftPos + HOLOGRAM_AREA_X + (HOLOGRAM_AREA_WIDTH - buttonWidth) / 2;
+    int buttonY = topPos + HOLOGRAM_AREA_Y + (HOLOGRAM_AREA_HEIGHT - buttonHeight) / 2 + 10;
+    closeButton =
+        Button.builder(
+                Component.translatable("gui.scrap_tech_workshop.holo_pad.close"),
+                button -> this.onClose())
+            .bounds(buttonX, buttonY, buttonWidth, buttonHeight)
+            .build();
+    closeButton.visible = false;
+    this.addRenderableWidget(closeButton);
+  }
+
   private void scrollUp() {
     scrollOffset = Math.max(0, scrollOffset - 10);
   }
@@ -193,9 +210,12 @@ public class HoloPadScreen extends Screen {
     player.start();
     playbackCompleted = false;
 
-    // Hide replay button if visible
+    // Hide replay and close buttons if visible
     if (replayButton != null) {
       replayButton.visible = false;
+    }
+    if (closeButton != null) {
+      closeButton.visible = false;
     }
 
     log.info("{} Started hololog playback for: {}", Constants.LOG_NAME, holoLogId);
@@ -205,9 +225,12 @@ public class HoloPadScreen extends Screen {
     playbackCompleted = true;
     log.info("{} Hololog playback completed: {}", Constants.LOG_NAME, holoLogId);
 
-    // Show replay button
+    // Show replay and close buttons
     if (replayButton != null) {
       replayButton.visible = true;
+    }
+    if (closeButton != null) {
+      closeButton.visible = true;
     }
   }
 
@@ -297,6 +320,11 @@ public class HoloPadScreen extends Screen {
 
   @Override
   public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+    if (delta > 0) {
+      scrollUp();
+    } else if (delta < 0) {
+      scrollDown();
+    }
     return true;
   }
 

@@ -4,7 +4,7 @@
       {
         "name": "scrap_tech_workshop:holologs/de/intro/introduction",
         "stream": true,
-        "volume": 1.0,
+        "volume": 1.1,
         "pitch": 1.0
       }
     ],
@@ -15,7 +15,7 @@
       {
         "name": "scrap_tech_workshop:holologs/en/intro/introduction",
         "stream": true,
-        "volume": 1.0,
+        "volume": 1.1,
         "pitch": 1.0
       }
     ],
@@ -26,7 +26,7 @@
       {
         "name": "scrap_tech_workshop:holologs/de/tutorial/scavenging_briefing_01",
         "stream": true,
-        "volume": 1.0,
+        "volume": 1.1,
         "pitch": 1.0
       }
     ],
@@ -37,7 +37,7 @@
       {
         "name": "scrap_tech_workshop:holologs/en/tutorial/scavenging_briefing_01",
         "stream": true,
-        "volume": 1.0,
+        "volume": 1.1,
         "pitch": 1.0
       }
     ],
@@ -48,7 +48,7 @@
       {
         "name": "scrap_tech_workshop:holologs/de/tutorial/scavenging_briefing_02",
         "stream": true,
-        "volume": 1.0,
+        "volume": 1.1,
         "pitch": 1.0
       }
     ],
@@ -59,7 +59,29 @@
       {
         "name": "scrap_tech_workshop:holologs/en/tutorial/scavenging_briefing_02",
         "stream": true,
-        "volume": 1.0,
+        "volume": 1.1,
+        "pitch": 1.0
+      }
+    ],
+    "subtitle": "subtitles.scrap_tech_workshop.holologs.playing"
+  },
+  "holologs.de.tutorial.scavenging_briefing_03": {
+    "sounds": [
+      {
+        "name": "scrap_tech_workshop:holologs/de/tutorial/scavenging_briefing_03",
+        "stream": true,
+        "volume": 1.1,
+        "pitch": 1.0
+      }
+    ],
+    "subtitle": "subtitles.scrap_tech_workshop.holologs.playing"
+  },
+  "holologs.en.tutorial.scavenging_briefing_03": {
+    "sounds": [
+      {
+        "name": "scrap_tech_workshop:holologs/en/tutorial/scavenging_briefing_03",
+        "stream": true,
+        "volume": 1.1,
         "pitch": 1.0
       }
     ],

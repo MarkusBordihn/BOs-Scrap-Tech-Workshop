@@ -2,8 +2,7 @@
   "id": "scrap_tech_workshop:holologs/de/intro/introduction",
   "title": "Einführung",
   "subtitle": "Die Alte Welt",
-  "titleColor": "#00FFAA",
-  "subtitleColor": "#AAAAAA",
+  "color": "#00FFFF",
   "lineDelay": 3.25,
   "voiceOver": "scrap_tech_workshop:holologs/de/intro/introduction",
   "displayHoloEntity": {
@@ -131,9 +130,7 @@
     },
     {
       "text": "Aus Schrott.",
-      "displayItem": {"id": "scrap_tech_workshop:iron_scrap"},
-      "playSound": [{"id": "minecraft:block.beacon.deactivate"}],
-      "showParticle": [{"id": "minecraft:flash"}]
+      "displayItem": {"id": "scrap_tech_workshop:iron_scrap"}
     },
     {
       "text": "💡 Tipp: Schau in dein Inventar nach neuen Gegenständen",

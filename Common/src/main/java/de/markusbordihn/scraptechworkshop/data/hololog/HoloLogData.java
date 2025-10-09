@@ -30,6 +30,7 @@ public record HoloLogData(
     ResourceLocation id,
     String title,
     String subtitle,
+    String color,
     String titleColor,
     String subtitleColor,
     float lineDelay,
@@ -47,6 +48,7 @@ public record HoloLogData(
   private static final String FIELD_ID = "id";
   private static final String FIELD_TITLE = "title";
   private static final String FIELD_SUBTITLE = "subtitle";
+  private static final String FIELD_COLOR = "color";
   private static final String FIELD_TITLE_COLOR = "titleColor";
   private static final String FIELD_SUBTITLE_COLOR = "subtitleColor";
   private static final String FIELD_LINE_DELAY = "lineDelay";
@@ -68,7 +70,8 @@ public record HoloLogData(
 
   // Default values
   private static final String DEFAULT_SUBTITLE = "";
-  private static final String DEFAULT_TITLE_COLOR = "#FFFFFF";
+  private static final String DEFAULT_COLOR = "#00FFFF";
+  private static final String DEFAULT_TITLE_COLOR = "#00FFFF";
   private static final String DEFAULT_SUBTITLE_COLOR = "#AAAAAA";
   private static final float DEFAULT_LINE_DELAY = 2.0f;
   private static final float DEFAULT_CHAR_DELAY = 0.05f;
@@ -79,6 +82,8 @@ public record HoloLogData(
     String title = json.get(FIELD_TITLE).getAsString();
     String subtitle =
         json.has(FIELD_SUBTITLE) ? json.get(FIELD_SUBTITLE).getAsString() : DEFAULT_SUBTITLE;
+    String color =
+        json.has(FIELD_COLOR) ? json.get(FIELD_COLOR).getAsString() : DEFAULT_COLOR;
     String titleColor =
         json.has(FIELD_TITLE_COLOR)
             ? json.get(FIELD_TITLE_COLOR).getAsString()
@@ -121,6 +126,7 @@ public record HoloLogData(
         id,
         title,
         subtitle,
+        color,
         titleColor,
         subtitleColor,
         lineDelay,

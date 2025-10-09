@@ -2,17 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "group": "scrap_tech_workshop_tools",
   "pattern": [
-    " m",
-    " c",
-    " e"
+    " q ",
+    "mc ",
+    " e "
   ],
   "key": {
-    "m": {"tag": "scrap_tech_workshop:scrap/metal"},
-    "c": {"tag": "scrap_tech_workshop:scrap/tech/circuit"},
-    "e": {"item": "scrap_tech_workshop:energy_cell"}
+    "m": { "tag": "scrap_tech_workshop:scrap/metal" },
+    "q": { "item": "minecraft:quartz" },
+    "c": { "tag": "scrap_tech_workshop:scrap/tech/circuit" },
+    "e": { "item": "scrap_tech_workshop:energy_cell" }
   },
   "result": {
     "item": "scrap_tech_workshop:scrap_multitool",
+        "nbt": "{CustomModelData:3}",
     "count": 1
   }
 }
