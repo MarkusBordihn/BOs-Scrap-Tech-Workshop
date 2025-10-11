@@ -19,14 +19,22 @@
 
 package de.markusbordihn.scraptechworkshop;
 
-import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
-import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.client.model.BaseRobotModel;
+import de.markusbordihn.scraptechworkshop.client.model.MixedScrapRobotModel;
 import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.HoloCubeBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.RecyclerBlockEntityRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.collectorstation.CollectorStationBlockEntityRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.entity.CollectorStationRobotRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.entity.HoloLogHumanoidRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.entity.MixedScrapRobotRenderer;
 import de.markusbordihn.scraptechworkshop.client.screen.ClientScreens;
 import de.markusbordihn.scraptechworkshop.item.ForgeModItems;
+import de.markusbordihn.scraptechworkshop.registry.entity.CollectorStationRobotEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.entity.HoloLogEntityRegistry;
+import de.markusbordihn.scraptechworkshop.registry.entity.MixedScrapRobotEntityRegistry;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -57,7 +65,25 @@ public class ScrapTechWorkshopClient {
   public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
     event.registerBlockEntityRenderer(RecyclerBlockEntity.TYPE, RecyclerBlockEntityRenderer::new);
     event.registerBlockEntityRenderer(HoloCubeBlockEntity.TYPE, HoloCubeBlockEntityRenderer::new);
+    event.registerBlockEntityRenderer(
+        CollectorStationBlockEntity.TYPE, CollectorStationBlockEntityRenderer::new);
     event.registerEntityRenderer(
         HoloLogEntityRegistry.HOLO_LOG_HUMANOID_ENTITY_TYPE, HoloLogHumanoidRenderer::new);
+    event.registerEntityRenderer(
+        CollectorStationRobotEntityRegistry.COLLECTOR_STATION_ROBOT_ENTITY_TYPE,
+        CollectorStationRobotRenderer::new);
+    event.registerEntityRenderer(
+        CollectorStationRobotEntityRegistry.COLLECTOR_STATION_ROBOT_STATIC_ENTITY_TYPE,
+        CollectorStationRobotRenderer::new);
+    event.registerEntityRenderer(
+        MixedScrapRobotEntityRegistry.MIXED_SCRAP_ROBOT_ENTITY_TYPE, MixedScrapRobotRenderer::new);
+  }
+
+  @SubscribeEvent
+  public static void onRegisterLayerDefinitions(
+      EntityRenderersEvent.RegisterLayerDefinitions event) {
+    event.registerLayerDefinition(BaseRobotModel.LAYER_LOCATION, BaseRobotModel::createBodyLayer);
+    event.registerLayerDefinition(
+        MixedScrapRobotModel.LAYER_LOCATION, BaseRobotModel::createBodyLayer);
   }
 }

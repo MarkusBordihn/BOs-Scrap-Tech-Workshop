@@ -108,10 +108,10 @@ public class MultitoolConfig extends Config {
         Math.max(1.0f, parseConfigValue(properties, "poweredSpeedSword", poweredSpeedSword));
     poweredSpeedDefault =
         Math.max(1.0f, parseConfigValue(properties, "poweredSpeedDefault", poweredSpeedDefault));
-
     raycastDistance =
         Math.max(1, Math.min(10, parseConfigValue(properties, "raycastDistance", raycastDistance)));
 
+    // Update config file if needed
     updateConfigFileIfChanged(configFile, CONFIG_FILE_HEADER, properties, unmodifiedProperties);
   }
 

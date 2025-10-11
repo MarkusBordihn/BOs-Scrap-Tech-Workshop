@@ -19,7 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.registry.block.entity;
 
-import de.markusbordihn.scraptechworkshop.block.entity.CollectorStationBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class CollectorStationBlockEntityRegistry {

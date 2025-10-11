@@ -20,6 +20,7 @@
 package de.markusbordihn.scraptechworkshop.block;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -29,8 +30,10 @@ public class BlockEventHandler {
 
   @SubscribeEvent
   public static void onBlockBreak(BlockEvent.BreakEvent event) {
-    if (event.getLevel() instanceof ServerLevel serverLevel) {
-      BlockEvents.handleBlockBreakEvent(event.getState().getBlock(), event.getPos(), serverLevel);
+    if (event.getLevel() instanceof ServerLevel serverLevel
+        && event.getPlayer() instanceof ServerPlayer serverPlayer) {
+      BlockEvents.handleBlockBreakEvent(
+          event.getState().getBlock(), event.getPos(), serverLevel, serverPlayer);
     }
   }
 }

@@ -19,7 +19,9 @@
 
 package de.markusbordihn.scraptechworkshop.registry.block;
 
-import de.markusbordihn.scraptechworkshop.block.BasicScrapCollectorStationBlock;
+import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
+import de.markusbordihn.scraptechworkshop.block.collectorstation.CollectorStationBlock;
+import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -33,7 +35,12 @@ public class CollectorStationBlockRegistry {
               .requiresCorrectToolForDrops()
               .strength(5.0F)
               .sound(SoundType.METAL)
-              .noOcclusion());
+              .noOcclusion()
+              .lightLevel(
+                  state -> {
+                    CollectorStationStatus status = state.getValue(CollectorStationBlock.STATE);
+                    return status == CollectorStationStatus.NO_POWER ? 0 : 7;
+                  }));
 
   private CollectorStationBlockRegistry() {}
 }

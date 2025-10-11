@@ -20,9 +20,9 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.block.BasicScrapCollectorStationBlock;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
-import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
+import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
+import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;

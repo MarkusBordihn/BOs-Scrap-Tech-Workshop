@@ -32,7 +32,7 @@ public class CollectorStationConfig extends Config {
  This configuration file allows you to define the general settings for Collector Stations.
  collectionRadius: Radius in blocks where the robot will collect scraps (default: 16)
  collectingTime: Time in ticks for robot to collect scrap (default: 12000 = 10 minutes)
- returningTime: Time in ticks for robot to return with scrap (default: 600 = 30 seconds)
+ returningTime: Time in ticks for robot to return with scrap (default: 120 = 6 seconds)
  processingTime: Time in ticks to process collected scrap (default: 40 = 2 seconds)
  chargingTime: Time in ticks for robot to charge after returning (default: 1200 = 1 minute)
  checkInterval: Time in ticks between status checks (default: 20 = 1 second)
@@ -45,7 +45,7 @@ public class CollectorStationConfig extends Config {
   // Default values - Timings in ticks (20 ticks = 1 second)
   public static final int DEFAULT_COLLECTION_RADIUS = 16;
   public static final int DEFAULT_COLLECTING_TIME = 12000;
-  public static final int DEFAULT_RETURNING_TIME = 600;
+  public static final int DEFAULT_RETURNING_TIME = 300;
   public static final int DEFAULT_PROCESSING_TIME = 40;
   public static final int DEFAULT_CHARGING_TIME = 1200;
   public static final int DEFAULT_CHECK_INTERVAL = 20;

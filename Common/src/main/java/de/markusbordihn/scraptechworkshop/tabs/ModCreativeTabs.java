@@ -31,10 +31,14 @@ import net.minecraft.world.item.ItemStack;
 
 public class ModCreativeTabs {
 
-  public static final ResourceKey<CreativeModeTab> SCRAP_TECH_WORKSHOP_TAB =
+  public static final ResourceKey<CreativeModeTab> SCRAP_TAB =
+      ResourceKey.create(
+          Registries.CREATIVE_MODE_TAB, new ResourceLocation(Constants.MOD_ID, "scrap"));
+
+  public static final ResourceKey<CreativeModeTab> UPGRADES_AND_TOOLS_TAB =
       ResourceKey.create(
           Registries.CREATIVE_MODE_TAB,
-          new ResourceLocation(Constants.MOD_ID, "scrap_tech_workshop"));
+          new ResourceLocation(Constants.MOD_ID, "upgrades_and_tools"));
 
   public static final ResourceKey<CreativeModeTab> HOLO_CUBE_TAB =
       ResourceKey.create(
@@ -44,12 +48,13 @@ public class ModCreativeTabs {
       ResourceKey.create(
           Registries.CREATIVE_MODE_TAB, new ResourceLocation(Constants.MOD_ID, "holo_pads"));
 
-  public static CreativeModeTab.Builder createMainTab() {
+  public static CreativeModeTab.Builder createScrapTab() {
     return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
-        .title(Component.translatable("itemGroup.scrap_tech_workshop.main"))
+        .title(Component.translatable("itemGroup.scrap_tech_workshop.scrap"))
         .icon(() -> new ItemStack(ModItems.METAL_SCRAP.get()))
         .displayItems(
             (parameters, output) -> {
+              // Basic Scrap Items
               output.accept(ModItems.ALLOY_SCRAP.get());
               output.accept(ModItems.BIO_SCRAP.get());
               output.accept(ModItems.CERAMIC_SCRAP.get());
@@ -75,28 +80,6 @@ public class ModCreativeTabs {
               output.accept(ModItems.CAPACITOR_SCRAP.get());
               output.accept(ModItems.ENERGY_CELL_SCRAP.get());
 
-              // Component Items
-              output.accept(ModItems.ENERGY_CELL.get().getDefaultInstance());
-              output.accept(ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL.get().getDefaultInstance());
-              output.accept(ModItems.DAMAGED_ENERGY_CELL.get().getDefaultInstance());
-              output.accept(ModItems.EMPTY_ENERGY_CELL.get());
-              output.accept(ModItems.ENERGY_CELL_BLOCK.get());
-              output.accept(ModItems.CIRCUIT_BOARD.get());
-
-              // Tool Items
-              output.accept(ModItems.SCRAP_MULTITOOL.get());
-
-              // Fishing Rod Items
-              output.accept(ModItems.SCRAP_FISHING_ROD.get());
-              output.accept(ModItems.MAGNET_FISHING_ROD.get());
-
-              // Upgrade Items
-              output.accept(ModItems.CREATIVE_SPEED_UPGRADE.get());
-
-              // Block Items
-              output.accept(ModBlockItems.RECYCLER.get());
-              output.accept(ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION.get());
-
               // Scrap Pile Block Items
               output.accept(ModBlockItems.MIXED_SCRAP_PILE.get());
               output.accept(ModBlockItems.METAL_SCRAP_PILE.get());
@@ -104,8 +87,39 @@ public class ModCreativeTabs {
             });
   }
 
-  public static CreativeModeTab.Builder createHoloCubeTab() {
+  public static CreativeModeTab.Builder createUpgradesAndToolsTab() {
     return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
+        .title(Component.translatable("itemGroup.scrap_tech_workshop.upgrades_and_tools"))
+        .icon(() -> new ItemStack(ModItems.SCRAP_MULTITOOL.get()))
+        .displayItems(
+            (parameters, output) -> {
+              // Tool Items
+              output.accept(ModItems.MAGNET_FISHING_ROD.get());
+              output.accept(ModItems.SCRAP_FISHING_ROD.get());
+              output.accept(ModItems.SCRAP_MULTITOOL.get());
+
+              // Component Items
+              output.accept(ModItems.CIRCUIT_BOARD.get());
+              output.accept(ModItems.DAMAGED_ENERGY_CELL.get().getDefaultInstance());
+              output.accept(ModItems.EMPTY_ENERGY_CELL.get());
+              output.accept(ModItems.ENERGY_CELL_BLOCK.get());
+              output.accept(ModItems.ENERGY_CELL.get().getDefaultInstance());
+              output.accept(ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL.get().getDefaultInstance());
+
+              // Upgrade Items
+              output.accept(ModItems.CREATIVE_FAST_CHARGE_UPGRADE.get());
+              output.accept(ModItems.CREATIVE_SPEED_UPGRADE.get());
+              output.accept(ModItems.FAST_CHARGE_UPGRADE.get());
+              output.accept(ModItems.SPEED_UPGRADE.get());
+
+              // Block Items
+              output.accept(ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION.get());
+              output.accept(ModBlockItems.RECYCLER.get());
+            });
+  }
+
+  public static CreativeModeTab.Builder createHoloCubeTab() {
+    return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
         .title(Component.translatable("itemGroup.scrap_tech_workshop.holo_cubes"))
         .icon(() -> new ItemStack(ModBlockItems.HOLO_CUBE.get()))
         .displayItems(
@@ -120,7 +134,7 @@ public class ModCreativeTabs {
   }
 
   public static CreativeModeTab.Builder createHoloPadTab() {
-    return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
+    return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 3)
         .title(Component.translatable("itemGroup.scrap_tech_workshop.holo_pads"))
         .icon(() -> new ItemStack(ModItems.HOLO_PAD.get()))
         .displayItems(

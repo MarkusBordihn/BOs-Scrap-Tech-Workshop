@@ -19,10 +19,10 @@
 
 package de.markusbordihn.scraptechworkshop.menu;
 
-import static de.markusbordihn.scraptechworkshop.block.entity.CollectorStationBlockEntity.*;
+import static de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity.*;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.block.entity.CollectorStationBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.config.CollectorStationConfig;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.menu.slots.CollectorStationStorageSlot;
@@ -264,10 +264,10 @@ public class CollectorStationMenu extends AbstractContainerMenu {
 
   public int getMaxCollectionTime() {
     return switch (getStatus()) {
+      case 0 -> CollectorStationConfig.chargingTime; // CHARGING
       case 1 -> CollectorStationConfig.collectingTime; // COLLECTING
       case 2 -> CollectorStationConfig.returningTime; // RETURNING
       case 3 -> CollectorStationConfig.processingTime; // PROCESSING
-      case 4 -> CollectorStationConfig.chargingTime; // CHARGING
       default -> CollectorStationConfig.collectingTime; // Fallback
     };
   }

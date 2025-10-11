@@ -17,18 +17,16 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block;
+package de.markusbordihn.scraptechworkshop.block.recycler;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
+import de.markusbordihn.scraptechworkshop.menu.MenuManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -50,8 +48,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class RecyclerBlock extends BaseEntityBlock {
 
@@ -64,8 +60,6 @@ public class RecyclerBlock extends BaseEntityBlock {
       Block.box(1.0D, 0.0D, 0.0D, 15.0D, 14.0D, 16.0D);
   private static final VoxelShape SHAPE_EAST_WEST =
       Block.box(0.0D, 0.0D, 1.0D, 16.0D, 14.0D, 15.0D);
-
-  private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   public RecyclerBlock(Properties properties) {
     super(properties);
@@ -128,64 +122,7 @@ public class RecyclerBlock extends BaseEntityBlock {
   }
 
   private void openRecyclerMenu(Player player, RecyclerBlockEntity recyclerBlockEntity) {
-    if (Constants.IS_FABRIC) {
-      try {
-        Class<?> fabricFactoryClass;
-        try {
-          fabricFactoryClass =
-              Class.forName("de.markusbordihn.scraptechworkshop.menu.BlockBaseScreenHandler");
-        } catch (ClassNotFoundException e) {
-          fabricFactoryClass =
-              Class.forName("de.markusbordihn.scraptechworkshop.menu.BaseScreenHandler");
-        }
-
-        Object fabricFactory =
-            fabricFactoryClass.getConstructor(BlockEntity.class).newInstance(recyclerBlockEntity);
-        player.openMenu((MenuProvider) fabricFactory);
-      } catch (Exception e) {
-        log.error("Failed to open Recycler menu on Fabric: {}", e.getMessage());
-        player.openMenu(recyclerBlockEntity);
-      }
-    } else if (Constants.IS_FORGE) {
-      try {
-        Class<?> forgeMenuProviderClass =
-            Class.forName(
-                "de.markusbordihn.scraptechworkshop.block.entity.ForgeRecyclerMenuProvider");
-        Object menuProvider =
-            forgeMenuProviderClass
-                .getConstructor(RecyclerBlockEntity.class)
-                .newInstance(recyclerBlockEntity);
-
-        Class<?> networkHooksClass = Class.forName("net.minecraftforge.network.NetworkHooks");
-        try {
-          java.lang.reflect.Method openGuiMethod =
-              networkHooksClass.getMethod(
-                  "openGui", ServerPlayer.class, MenuProvider.class, BlockPos.class);
-
-          if (player instanceof ServerPlayer serverPlayer) {
-            openGuiMethod.invoke(
-                null, serverPlayer, menuProvider, recyclerBlockEntity.getBlockPos());
-          }
-        } catch (NoSuchMethodException e1) {
-          // Fallback to openScreen method
-          java.lang.reflect.Method openScreenMethod =
-              networkHooksClass.getMethod(
-                  "openScreen", ServerPlayer.class, MenuProvider.class, BlockPos.class);
-
-          if (player instanceof ServerPlayer serverPlayer) {
-            openScreenMethod.invoke(
-                null, serverPlayer, menuProvider, recyclerBlockEntity.getBlockPos());
-          }
-        }
-      } catch (Exception e) {
-        log.error(
-            "[RECYCLER] Failed to use Forge NetworkHooks, falling back to standard: {}",
-            e.getMessage());
-        player.openMenu(recyclerBlockEntity);
-      }
-    } else {
-      player.openMenu(recyclerBlockEntity);
-    }
+    MenuManager.openMenu(player, recyclerBlockEntity);
   }
 
   @Override

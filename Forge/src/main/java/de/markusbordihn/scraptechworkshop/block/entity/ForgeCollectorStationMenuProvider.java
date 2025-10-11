@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.block.entity;
 
+import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.menu.CollectorStationMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -30,6 +31,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.IContainerFactory;
 
+@SuppressWarnings("unused")
 public class ForgeCollectorStationMenuProvider
     implements MenuProvider, IContainerFactory<CollectorStationMenu> {
 

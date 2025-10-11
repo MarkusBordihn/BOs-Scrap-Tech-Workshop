@@ -20,7 +20,7 @@
 package de.markusbordihn.scraptechworkshop.block.hololog;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogStatus;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;

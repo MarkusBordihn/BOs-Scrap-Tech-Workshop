@@ -38,7 +38,10 @@ import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
+import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeFastChargeUpgradeItem;
 import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeSpeedUpgradeItem;
+import de.markusbordihn.scraptechworkshop.item.upgrade.FastChargeUpgradeItem;
+import de.markusbordihn.scraptechworkshop.item.upgrade.NormalSpeedUpgradeItem;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
@@ -147,9 +150,17 @@ public class FabricModItems {
         registerItem(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
 
     // Upgrade Items
+    ModItems.SPEED_UPGRADE =
+        registerItem(NormalSpeedUpgradeItem.ID, () -> ToolItemRegistry.SPEED_UPGRADE_ITEM);
     ModItems.CREATIVE_SPEED_UPGRADE =
         registerItem(
             CreativeSpeedUpgradeItem.ID, () -> ToolItemRegistry.CREATIVE_SPEED_UPGRADE_ITEM);
+    ModItems.FAST_CHARGE_UPGRADE =
+        registerItem(FastChargeUpgradeItem.ID, () -> ToolItemRegistry.FAST_CHARGE_UPGRADE_ITEM);
+    ModItems.CREATIVE_FAST_CHARGE_UPGRADE =
+        registerItem(
+            CreativeFastChargeUpgradeItem.ID,
+            () -> ToolItemRegistry.CREATIVE_FAST_CHARGE_UPGRADE_ITEM);
 
     // Holo Pad Items
     for (Map.Entry<String, ResourceLocation> entry :
@@ -173,8 +184,13 @@ public class FabricModItems {
   public static void registerCreativeModeTabs() {
     Registry.register(
         BuiltInRegistries.CREATIVE_MODE_TAB,
-        ModCreativeTabs.SCRAP_TECH_WORKSHOP_TAB.location(),
-        ModCreativeTabs.createMainTab().build());
+        ModCreativeTabs.SCRAP_TAB.location(),
+        ModCreativeTabs.createScrapTab().build());
+
+    Registry.register(
+        BuiltInRegistries.CREATIVE_MODE_TAB,
+        ModCreativeTabs.UPGRADES_AND_TOOLS_TAB.location(),
+        ModCreativeTabs.createUpgradesAndToolsTab().build());
 
     Registry.register(
         BuiltInRegistries.CREATIVE_MODE_TAB,

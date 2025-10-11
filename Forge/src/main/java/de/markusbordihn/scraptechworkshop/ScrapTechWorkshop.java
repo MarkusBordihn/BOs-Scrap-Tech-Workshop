@@ -26,7 +26,9 @@ import de.markusbordihn.scraptechworkshop.entity.ForgeModEntities;
 import de.markusbordihn.scraptechworkshop.item.ForgeModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.ForgeModItems;
 import de.markusbordihn.scraptechworkshop.loot.ModLootModifiers;
+import de.markusbordihn.scraptechworkshop.menu.ForgeMenuOpener;
 import de.markusbordihn.scraptechworkshop.menu.ForgeModMenus;
+import de.markusbordihn.scraptechworkshop.menu.MenuManager;
 import de.markusbordihn.scraptechworkshop.recipe.ForgeModRecipes;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -56,6 +58,9 @@ public class ScrapTechWorkshop {
 
     log.info("{} Configuration ...", Constants.LOG_REGISTER_PREFIX);
     Config.register(FMLEnvironment.dist == Dist.DEDICATED_SERVER);
+
+    log.info("{} Menu Manager ...", Constants.LOG_REGISTER_PREFIX);
+    MenuManager.setMenuOpener(new ForgeMenuOpener());
 
     log.info("{} Blocks ...", Constants.LOG_REGISTER_PREFIX);
     ForgeModBlocks.register(modEventBus);

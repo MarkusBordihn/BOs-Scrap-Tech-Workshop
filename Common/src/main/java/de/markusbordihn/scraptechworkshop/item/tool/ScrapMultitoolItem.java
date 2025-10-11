@@ -28,7 +28,7 @@ import de.markusbordihn.scraptechworkshop.energy.EnergyCellConsumer;
 import de.markusbordihn.scraptechworkshop.energy.EnergyManager;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
-import de.markusbordihn.scraptechworkshop.menu.ScrapMultitoolMenuProvider;
+import de.markusbordihn.scraptechworkshop.menu.MenuManager;
 import de.markusbordihn.scraptechworkshop.processing.*;
 import java.util.List;
 import net.minecraft.core.BlockPos;
@@ -42,7 +42,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
@@ -51,12 +50,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer {
-
-  private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   public ScrapMultitoolItem(final Properties properties) {
     super(
@@ -307,21 +302,7 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
 
   private void openMultitoolScreen(
       final Player player, final ItemStack itemStack, final InteractionHand interactionHand) {
-    if (Constants.IS_FABRIC) {
-      try {
-        Class<?> fabricHandlerClass =
-            Class.forName("de.markusbordihn.scraptechworkshop.menu.ScrapMultitoolScreenHandler");
-        Object fabricHandler =
-            fabricHandlerClass
-                .getConstructor(ItemStack.class, InteractionHand.class)
-                .newInstance(itemStack, interactionHand);
-        player.openMenu((MenuProvider) fabricHandler);
-      } catch (Exception e) {
-        log.error("Failed to open multitool screen on Fabric: {}", e.getMessage());
-      }
-    } else {
-      player.openMenu(new ScrapMultitoolMenuProvider(itemStack, interactionHand));
-    }
+    MenuManager.openMenu(player, itemStack, interactionHand);
   }
 
   @Override

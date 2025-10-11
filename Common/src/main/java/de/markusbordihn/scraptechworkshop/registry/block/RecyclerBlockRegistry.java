@@ -19,7 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.registry.block;
 
-import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
+import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;

@@ -39,7 +39,10 @@ import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
 import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
+import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeFastChargeUpgradeItem;
 import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeSpeedUpgradeItem;
+import de.markusbordihn.scraptechworkshop.item.upgrade.FastChargeUpgradeItem;
+import de.markusbordihn.scraptechworkshop.item.upgrade.NormalSpeedUpgradeItem;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
@@ -149,13 +152,24 @@ public class ForgeModItems {
       ITEMS.register(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
 
   // Upgrade Items
+  public static final RegistryObject<Item> SPEED_UPGRADE =
+      ITEMS.register(NormalSpeedUpgradeItem.ID, () -> ToolItemRegistry.SPEED_UPGRADE_ITEM);
   public static final RegistryObject<Item> CREATIVE_SPEED_UPGRADE =
       ITEMS.register(
           CreativeSpeedUpgradeItem.ID, () -> ToolItemRegistry.CREATIVE_SPEED_UPGRADE_ITEM);
+  public static final RegistryObject<Item> FAST_CHARGE_UPGRADE =
+      ITEMS.register(FastChargeUpgradeItem.ID, () -> ToolItemRegistry.FAST_CHARGE_UPGRADE_ITEM);
+  public static final RegistryObject<Item> CREATIVE_FAST_CHARGE_UPGRADE =
+      ITEMS.register(
+          CreativeFastChargeUpgradeItem.ID,
+          () -> ToolItemRegistry.CREATIVE_FAST_CHARGE_UPGRADE_ITEM);
 
   // Creative Mode Tabs
-  public static final RegistryObject<CreativeModeTab> SCRAP_TECH_WORKSHOP_TAB =
-      CREATIVE_MODE_TABS.register("scrap_tech_workshop", ModCreativeTabs.createMainTab()::build);
+  public static final RegistryObject<CreativeModeTab> SCRAP_TAB =
+      CREATIVE_MODE_TABS.register("scrap", ModCreativeTabs.createScrapTab()::build);
+  public static final RegistryObject<CreativeModeTab> UPGRADES_AND_TOOLS_TAB =
+      CREATIVE_MODE_TABS.register(
+          "upgrades_and_tools", ModCreativeTabs.createUpgradesAndToolsTab()::build);
   public static final RegistryObject<CreativeModeTab> HOLO_CUBE_TAB =
       CREATIVE_MODE_TABS.register("holo_cubes", ModCreativeTabs.createHoloCubeTab()::build);
   public static final RegistryObject<CreativeModeTab> HOLO_PAD_TAB =
@@ -224,7 +238,10 @@ public class ForgeModItems {
     ModItems.CIRCUIT_BOARD = CIRCUIT_BOARD;
 
     // Upgrade Items
+    ModItems.SPEED_UPGRADE = SPEED_UPGRADE;
     ModItems.CREATIVE_SPEED_UPGRADE = CREATIVE_SPEED_UPGRADE;
+    ModItems.FAST_CHARGE_UPGRADE = FAST_CHARGE_UPGRADE;
+    ModItems.CREATIVE_FAST_CHARGE_UPGRADE = CREATIVE_FAST_CHARGE_UPGRADE;
 
     if (!HOLO_PAD_REGISTRY_OBJECTS.isEmpty()) {
       ModItems.HOLO_PAD = HOLO_PAD_REGISTRY_OBJECTS.values().iterator().next();

@@ -22,11 +22,11 @@ package de.markusbordihn.scraptechworkshop.data.collectorstation;
 import net.minecraft.util.StringRepresentable;
 
 public enum CollectorStationStatus implements StringRepresentable {
-  READY("ready"),
+  CHARGING("charging"),
   COLLECTING("collecting"),
   RETURNING("returning"),
   PROCESSING("processing"),
-  CHARGING("charging"),
+  NO_STORAGE("no_storage"),
   NO_POWER("no_power");
 
   private final String name;
@@ -46,9 +46,5 @@ public enum CollectorStationStatus implements StringRepresentable {
 
   public boolean isRobotActive() {
     return this == COLLECTING || this == RETURNING;
-  }
-
-  public boolean isBusy() {
-    return this != READY && this != NO_POWER;
   }
 }

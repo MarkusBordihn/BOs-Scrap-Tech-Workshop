@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "scrap_tech_workshop:metal_scrap",
+    "scrap_tech_workshop:tech_scrap",
+    "scrap_tech_workshop:plastic_scrap",
+    "scrap_tech_workshop:wood_scrap",
+    "scrap_tech_workshop:bio_scrap"
+  ]
+}

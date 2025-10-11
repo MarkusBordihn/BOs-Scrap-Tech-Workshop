@@ -17,9 +17,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block.entity;
+package de.markusbordihn.scraptechworkshop.block.entity.recycler;
 
-import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
+import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.config.RecyclerConfig;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
 import de.markusbordihn.scraptechworkshop.item.upgrade.SpeedUpgradeItem;

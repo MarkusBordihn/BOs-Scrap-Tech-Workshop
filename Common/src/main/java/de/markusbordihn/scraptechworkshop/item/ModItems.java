@@ -73,7 +73,10 @@ public class ModItems {
   public static Supplier<Item> HOLO_PAD;
 
   // Upgrade Items
+  public static Supplier<Item> SPEED_UPGRADE;
   public static Supplier<Item> CREATIVE_SPEED_UPGRADE;
+  public static Supplier<Item> FAST_CHARGE_UPGRADE;
+  public static Supplier<Item> CREATIVE_FAST_CHARGE_UPGRADE;
 
   public static ResourceLocation getItemId(String name) {
     return new ResourceLocation(Constants.MOD_ID, name);

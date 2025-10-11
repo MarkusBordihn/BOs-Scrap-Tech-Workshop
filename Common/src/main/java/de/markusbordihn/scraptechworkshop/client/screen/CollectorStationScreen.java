@@ -31,15 +31,16 @@ import net.minecraft.world.entity.player.Inventory;
 public class CollectorStationScreen extends BaseContainerScreen<CollectorStationMenu> {
 
   private static final String TRANSLATION_KEY_PREFIX = Constants.GUI_PREFIX + "collector_station.";
-  private static final String TRANSLATION_STATUS_READY = TRANSLATION_KEY_PREFIX + "status.ready";
+  private static final String TRANSLATION_STATUS_CHARGING =
+      TRANSLATION_KEY_PREFIX + "status.charging";
   private static final String TRANSLATION_STATUS_COLLECTING =
       TRANSLATION_KEY_PREFIX + "status.collecting";
   private static final String TRANSLATION_STATUS_RETURNING =
       TRANSLATION_KEY_PREFIX + "status.returning";
   private static final String TRANSLATION_STATUS_PROCESSING =
       TRANSLATION_KEY_PREFIX + "status.processing";
-  private static final String TRANSLATION_STATUS_CHARGING =
-      TRANSLATION_KEY_PREFIX + "status.charging";
+  private static final String TRANSLATION_STATUS_NO_STORAGE =
+      TRANSLATION_KEY_PREFIX + "status.no_storage";
   private static final String TRANSLATION_STATUS_NO_POWER =
       TRANSLATION_KEY_PREFIX + "status.no_power";
 
@@ -217,8 +218,13 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
 
     // Map status ordinal to appropriate message
     switch (status) {
-      case 0: // READY
-        statusText = Component.translatable(TRANSLATION_STATUS_READY);
+      case 0: // CHARGING
+        if (maxTime > 0 && stateTimer >= 0) {
+          int percentage = (stateTimer * 100) / maxTime;
+          statusText = Component.translatable(TRANSLATION_STATUS_CHARGING, percentage);
+        } else {
+          statusText = Component.translatable(TRANSLATION_STATUS_CHARGING, 0);
+        }
         break;
       case 1: // COLLECTING
         if (maxTime > 0 && stateTimer >= 0) {
@@ -244,19 +250,14 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
           statusText = Component.translatable(TRANSLATION_STATUS_PROCESSING, 0);
         }
         break;
-      case 4: // CHARGING
-        if (maxTime > 0 && stateTimer >= 0) {
-          int percentage = (stateTimer * 100) / maxTime;
-          statusText = Component.translatable(TRANSLATION_STATUS_CHARGING, percentage);
-        } else {
-          statusText = Component.translatable(TRANSLATION_STATUS_CHARGING, 0);
-        }
+      case 4: // NO_STORAGE
+        statusText = Component.translatable(TRANSLATION_STATUS_NO_STORAGE);
         break;
       case 5: // NO_POWER
         statusText = Component.translatable(TRANSLATION_STATUS_NO_POWER);
         break;
       default:
-        statusText = Component.translatable(TRANSLATION_STATUS_READY);
+        statusText = Component.translatable(TRANSLATION_STATUS_NO_POWER);
         break;
     }
 
@@ -314,11 +315,11 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
 
   private String getStatusName(int status) {
     return switch (status) {
-      case 0 -> "Ready";
+      case 0 -> "Charging";
       case 1 -> "Collecting";
       case 2 -> "Returning";
       case 3 -> "Processing";
-      case 4 -> "Charging";
+      case 4 -> "No Storage";
       case 5 -> "No Power";
       default -> "Unknown";
     };

@@ -21,9 +21,9 @@ package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
-import de.markusbordihn.scraptechworkshop.block.entity.CollectorStationBlockEntity;
-import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
-import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.CollectorStationBlockEntityRegistry;

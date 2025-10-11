@@ -20,8 +20,13 @@
 package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.entity.collectorstationrobot.CollectorStationRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.collectorstationrobot.CollectorStationRobotStaticEntity;
 import de.markusbordihn.scraptechworkshop.entity.hololog.HoloLogHumanoidEntity;
+import de.markusbordihn.scraptechworkshop.entity.scraprobot.MixedScrapRobotEntity;
+import de.markusbordihn.scraptechworkshop.registry.entity.CollectorStationRobotEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.entity.HoloLogEntityRegistry;
+import de.markusbordihn.scraptechworkshop.registry.entity.MixedScrapRobotEntityRegistry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -46,6 +51,39 @@ public class ForgeModEntities {
                   .clientTrackingRange(10)
                   .build(HoloLogHumanoidEntity.ID));
 
+  public static final RegistryObject<EntityType<CollectorStationRobotEntity>>
+      COLLECTOR_STATION_ROBOT =
+          ENTITY_TYPES.register(
+              CollectorStationRobotEntity.ID,
+              () ->
+                  EntityType.Builder.of(CollectorStationRobotEntity::new, MobCategory.MISC)
+                      .sized(0.6f, 0.6f)
+                      .clientTrackingRange(16)
+                      .updateInterval(3)
+                      .build(CollectorStationRobotEntity.ID));
+
+  public static final RegistryObject<EntityType<CollectorStationRobotStaticEntity>>
+      COLLECTOR_STATION_ROBOT_STATIC =
+          ENTITY_TYPES.register(
+              CollectorStationRobotStaticEntity.ID,
+              () ->
+                  EntityType.Builder.of(CollectorStationRobotStaticEntity::new, MobCategory.MISC)
+                      .sized(0.6f, 0.6f)
+                      .clientTrackingRange(16)
+                      .updateInterval(1)
+                      .noSave()
+                      .noSummon()
+                      .build(CollectorStationRobotStaticEntity.ID));
+
+  public static final RegistryObject<EntityType<MixedScrapRobotEntity>> MIXED_SCRAP_ROBOT =
+      ENTITY_TYPES.register(
+          MixedScrapRobotEntity.ID,
+          () ->
+              EntityType.Builder.of(MixedScrapRobotEntity::new, MobCategory.CREATURE)
+                  .sized(0.6f, 0.6f)
+                  .clientTrackingRange(10)
+                  .build(MixedScrapRobotEntity.ID));
+
   private ForgeModEntities() {}
 
   public static void register(IEventBus eventBus) {
@@ -55,6 +93,11 @@ public class ForgeModEntities {
         (RegisterEvent event) -> {
           if (event.getRegistryKey().equals(ForgeRegistries.ENTITY_TYPES.getRegistryKey())) {
             HoloLogEntityRegistry.setHoloLogHumanoidEntityType(HOLOLOG_HUMANOID.get());
+            CollectorStationRobotEntityRegistry.setCollectorStationRobotEntityType(
+                COLLECTOR_STATION_ROBOT.get());
+            CollectorStationRobotEntityRegistry.setCollectorStationRobotStaticEntityType(
+                COLLECTOR_STATION_ROBOT_STATIC.get());
+            MixedScrapRobotEntityRegistry.setMixedScrapRobotEntityType(MIXED_SCRAP_ROBOT.get());
           }
         });
 
@@ -63,5 +106,11 @@ public class ForgeModEntities {
 
   private static void registerEntityAttributes(EntityAttributeCreationEvent event) {
     event.put(HOLOLOG_HUMANOID.get(), HoloLogHumanoidEntity.createAttributes().build());
+    event.put(
+        COLLECTOR_STATION_ROBOT.get(), CollectorStationRobotEntity.createAttributes().build());
+    event.put(
+        COLLECTOR_STATION_ROBOT_STATIC.get(),
+        CollectorStationRobotStaticEntity.createAttributes().build());
+    event.put(MIXED_SCRAP_ROBOT.get(), MixedScrapRobotEntity.createAttributes().build());
   }
 }

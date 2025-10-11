@@ -7,6 +7,16 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v0.10.0
+
+- Added experimental base robot entity and model.
+- Added experimental collector stations.
+- Added fast charge upgrade item.
+- Added client-side only entity rendering and pathing for better performance.
+- Improved multi-tool mode switching and handling.
+- Improved existing menu handling and code structure.
+- General performance improvements and optimizations.
+
 ### v0.9.0
 
 - Fixed multi-tool mode switching issues.

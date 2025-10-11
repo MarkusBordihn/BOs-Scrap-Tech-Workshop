@@ -20,9 +20,9 @@
 package de.markusbordihn.scraptechworkshop.menu;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.block.RecyclerBlock;
-import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
-import de.markusbordihn.scraptechworkshop.block.entity.RecyclerSlots;
+import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerSlots;
+import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
 import de.markusbordihn.scraptechworkshop.menu.slots.DummySlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.RecyclerInputSlot;
@@ -69,6 +69,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
   public static final int MAX_PROGRESS_DATA_INDEX = 1;
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
   private static final String LOG_PREFIX = "[RECYCLER]";
+
   // Note: MenuType will be registered by platform-specific code
   public static MenuType<RecyclerMenu> TYPE;
 
@@ -140,7 +141,6 @@ public class RecyclerMenu extends AbstractContainerMenu {
 
   private void addRecyclerSlots() {
     RecyclerBlockEntity entityToUse = getValidBlockEntity();
-
     if (entityToUse != null) {
       // Input slot
       this.addSlot(new RecyclerInputSlot(entityToUse, 0, INPUT_SLOT_X, INPUT_SLOT_Y));
@@ -172,14 +172,12 @@ public class RecyclerMenu extends AbstractContainerMenu {
   }
 
   private RecyclerBlockEntity getValidBlockEntity() {
-    // First try the stored blockEntity
-    if (blockEntity != null) {
-      return blockEntity;
+    if (this.blockEntity != null) {
+      return this.blockEntity;
     }
 
-    // If not available and we have a position, try to look it up again (for client-side delay)
-    if (blockPos != null && level != null) {
-      BlockEntity entity = level.getBlockEntity(blockPos);
+    if (this.blockPos != null && this.level != null) {
+      BlockEntity entity = this.level.getBlockEntity(this.blockPos);
       if (entity instanceof RecyclerBlockEntity recyclerEntity) {
         log.debug("{} Resolved BlockEntity on delayed lookup", LOG_PREFIX);
         return recyclerEntity;

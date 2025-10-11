@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block.entity;
+package de.markusbordihn.scraptechworkshop.block.entity.recycler;
 
 import java.util.Arrays;
 import net.minecraft.core.Direction;

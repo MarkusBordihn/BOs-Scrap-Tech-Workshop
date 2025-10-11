@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block.entity;
+package de.markusbordihn.scraptechworkshop.block.entity.collectorstation;
 
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import net.minecraft.core.Direction;

@@ -20,7 +20,9 @@
 package de.markusbordihn.scraptechworkshop.block;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
+import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileBlock;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;

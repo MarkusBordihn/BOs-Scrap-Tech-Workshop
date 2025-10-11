@@ -24,6 +24,7 @@ import de.markusbordihn.scraptechworkshop.drop.ScrapDropHandler;
 import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
 import org.apache.logging.log4j.LogManager;
@@ -34,12 +35,15 @@ public class BlockEvents {
   protected static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   public static void handleBlockBreakEvent(
-      Block block, BlockPos blockPos, ServerLevel serverLevel) {
+      Block block, BlockPos blockPos, ServerLevel serverLevel, ServerPlayer serverPlayer) {
+
     // Record player activity in this chunk for intelligent spawning
     ChunkPos chunkPos = new ChunkPos(blockPos);
     ScrapPileSpawner.recordPlayerActivity(chunkPos);
 
-    // Handle scrap drops for broken blocks
-    ScrapDropHandler.handleBlockBreak(serverLevel, blockPos, block);
+    // Handle scrap drops for broken blocks (skip if player is in creative mode)
+    if (serverPlayer == null || !serverPlayer.isCreative()) {
+      ScrapDropHandler.handleBlockBreak(serverLevel, blockPos, block);
+    }
   }
 }

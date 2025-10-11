@@ -19,7 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.registry.block.entity;
 
-import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class HoloCubeBlockEntityRegistry {

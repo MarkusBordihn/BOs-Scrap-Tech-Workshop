@@ -19,7 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.registry.block.entity;
 
-import de.markusbordihn.scraptechworkshop.block.entity.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class RecyclerBlockEntityRegistry {

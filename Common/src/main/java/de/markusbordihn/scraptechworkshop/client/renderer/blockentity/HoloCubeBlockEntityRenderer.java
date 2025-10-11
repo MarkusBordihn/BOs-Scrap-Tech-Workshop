@@ -22,7 +22,7 @@ package de.markusbordihn.scraptechworkshop.client.renderer.blockentity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.block.entity.HoloCubeBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
 import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogBlockPlayer;
 import de.markusbordihn.scraptechworkshop.data.hololog.DisplayType;

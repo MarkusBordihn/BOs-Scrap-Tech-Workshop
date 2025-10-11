@@ -21,14 +21,17 @@ package de.markusbordihn.scraptechworkshop.block;
 
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 
 public class BlockEventHandler {
 
   public static void register() {
     PlayerBlockBreakEvents.AFTER.register(
         (level, player, blockPos, blockState, blockEntity) -> {
-          if (level instanceof ServerLevel serverLevel) {
-            BlockEvents.handleBlockBreakEvent(blockState.getBlock(), blockPos, serverLevel);
+          if (level instanceof ServerLevel serverLevel
+              && player instanceof ServerPlayer serverPlayer) {
+            BlockEvents.handleBlockBreakEvent(
+                blockState.getBlock(), blockPos, serverLevel, serverPlayer);
           }
         });
   }

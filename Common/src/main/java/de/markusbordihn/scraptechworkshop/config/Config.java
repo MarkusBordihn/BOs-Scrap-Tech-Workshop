@@ -61,12 +61,13 @@ public class Config {
 
   public static void registerCommonConfig() {
     log.info("{} Registering common configuration ...", LOG_PREFIX);
-    ScrapDropConfig.registerConfig();
-    RecyclerConfig.registerConfig();
-    ScrapPileConfig.registerConfig();
-    ScrapFishingConfig.registerConfig();
-    MultitoolConfig.registerConfig();
     CollectorStationConfig.registerConfig();
+    MultitoolConfig.registerConfig();
+    RecyclerConfig.registerConfig();
+    ScrapDropConfig.registerConfig();
+    ScrapFishingConfig.registerConfig();
+    ScrapPileConfig.registerConfig();
+    ScrapRobotConfig.registerConfig();
   }
 
   public static void registerServerConfig() {

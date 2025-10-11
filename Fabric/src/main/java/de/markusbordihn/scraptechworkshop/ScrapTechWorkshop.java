@@ -27,7 +27,9 @@ import de.markusbordihn.scraptechworkshop.entity.FabricModEntities;
 import de.markusbordihn.scraptechworkshop.item.FabricModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.FabricModItems;
 import de.markusbordihn.scraptechworkshop.loot.VanillaChestLootModifier;
+import de.markusbordihn.scraptechworkshop.menu.FabricMenuOpener;
 import de.markusbordihn.scraptechworkshop.menu.FabricModMenus;
+import de.markusbordihn.scraptechworkshop.menu.MenuManager;
 import de.markusbordihn.scraptechworkshop.player.FabricPlayerEventHandler;
 import de.markusbordihn.scraptechworkshop.recipe.FabricModRecipes;
 import de.markusbordihn.scraptechworkshop.server.ServerEventHandler;
@@ -53,6 +55,9 @@ public class ScrapTechWorkshop implements ModInitializer {
 
     log.info("{} Configuration ...", Constants.LOG_REGISTER_PREFIX);
     Config.register(FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER);
+
+    log.info("{} Menu Manager ...", Constants.LOG_REGISTER_PREFIX);
+    MenuManager.setMenuOpener(new FabricMenuOpener());
 
     log.info("{} Blocks ...", Constants.LOG_REGISTER_PREFIX);
     FabricModBlocks.registerBlocks();
@@ -89,5 +94,8 @@ public class ScrapTechWorkshop implements ModInitializer {
 
     log.info("{} Server Event Handler ...", Constants.LOG_REGISTER_PREFIX);
     ServerEventHandler.registerServerEvents();
+
+    log.info("{} Entity Spawns ...", Constants.LOG_REGISTER_PREFIX);
+    de.markusbordihn.scraptechworkshop.entity.FabricEntitySpawnHandler.registerSpawns();
   }
 }

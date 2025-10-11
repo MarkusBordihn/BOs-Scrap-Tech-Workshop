@@ -17,13 +17,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block;
+package de.markusbordihn.scraptechworkshop.data.robot;
 
-public class BasicScrapCollectorStationBlock extends CollectorStationBlock {
+public enum HeadAnimation {
+  NONE(0),
+  NOD_YES(20),
+  SHAKE_NO(20);
 
-  public static final String ID = "basic_scrap_collector_station";
+  private final int animationDuration;
 
-  public BasicScrapCollectorStationBlock(final Properties properties) {
-    super(properties);
+  HeadAnimation(int animationDuration) {
+    this.animationDuration = animationDuration;
+  }
+
+  public int getAnimationDuration() {
+    return this.animationDuration;
   }
 }

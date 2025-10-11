@@ -17,9 +17,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block.entity;
+package de.markusbordihn.scraptechworkshop.block.entity.collectorstation;
 
-import de.markusbordihn.scraptechworkshop.block.CollectorStationBlock;
+import de.markusbordihn.scraptechworkshop.block.collectorstation.CollectorStationBlock;
 import de.markusbordihn.scraptechworkshop.config.CollectorStationConfig;
 import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
@@ -62,7 +62,7 @@ public class CollectorStationBlockEntity extends BlockEntity
   private static final Logger log = LogManager.getLogger();
   private static final int ENERGY_CONSUMPTION_INTERVAL = 20;
   private static final int ITEM_ADDITION_INTERVAL = 10;
-  private static final int ENERGY_CONSUMPTION_AMOUNT = 10;
+  private static final int ENERGY_CONSUMPTION_AMOUNT = 5;
   private static final int MAX_ENERGY = 5000;
 
   private static final float SOUND_VOLUME = 0.5f;
@@ -70,12 +70,9 @@ public class CollectorStationBlockEntity extends BlockEntity
 
   private static final String TRANSLATION_KEY = "container.scrap_tech_workshop.collector_station";
   private static final String ITEM_TAG_PREFIX = "Item";
-  private static final String STATUS_TAG = "Status";
   private static final String STATE_TIMER_TAG = "StateTimer";
   private static final String ENERGY_TAG = "Energy";
   private static final String BIOME_TAG = "Biome";
-  private static final String PENDING_ITEMS_TAG = "PendingItems";
-  private static final String PROCESSING_INDEX_TAG = "ProcessingIndex";
   private static final int DATA_STATUS = 0;
   private static final int DATA_STATE_TIMER = 1;
   private static final int DATA_ENERGY = 2;
@@ -83,7 +80,6 @@ public class CollectorStationBlockEntity extends BlockEntity
   private static final int DATA_COUNT = 4;
   public static BlockEntityType<CollectorStationBlockEntity> TYPE;
   private final CollectorStationContainer container;
-  private CollectorStationStatus status = CollectorStationStatus.CHARGING;
   private int stateTimer = 0;
   private int currentEnergy = 0;
   private final ContainerData containerData =
@@ -91,10 +87,10 @@ public class CollectorStationBlockEntity extends BlockEntity
         @Override
         public int get(int index) {
           return switch (index) {
-            case DATA_STATUS -> status.ordinal();
+            case DATA_STATUS -> getStatus().ordinal();
             case DATA_STATE_TIMER -> stateTimer;
             case DATA_ENERGY -> currentEnergy;
-            case DATA_POWERED -> status.isPowered() ? 1 : 0;
+            case DATA_POWERED -> getStatus().isPowered() ? 1 : 0;
             default -> 0;
           };
         }
@@ -102,7 +98,7 @@ public class CollectorStationBlockEntity extends BlockEntity
         @Override
         public void set(int index, int value) {
           switch (index) {
-            case DATA_STATUS -> status = CollectorStationStatus.values()[value];
+            case DATA_STATUS -> setStatus(CollectorStationStatus.values()[value]);
             case DATA_STATE_TIMER -> stateTimer = value;
             case DATA_ENERGY -> currentEnergy = value;
             case DATA_POWERED -> {} // Powered is derived from status
@@ -129,80 +125,105 @@ public class CollectorStationBlockEntity extends BlockEntity
       final BlockState blockState,
       final CollectorStationBlockEntity blockEntity) {
     if (level.isClientSide) {
-      return;
+      blockEntity.clientTick(level, blockPos, blockState);
+    } else {
+      blockEntity.serverTick(level, blockPos, blockState);
     }
+  }
 
-    blockEntity.serverTick(level, blockPos, blockState);
+  private void clientTick(final Level level, final BlockPos blockPos, final BlockState blockState) {
+    // Client-side robot management is handled by the entity itself via its tick() method
   }
 
   private void serverTick(final Level level, final BlockPos blockPos, final BlockState blockState) {
-    ItemStack battery = getBattery();
-    if (battery.isEmpty() || !(battery.getItem() instanceof EnergyCellItem batteryItem)) {
-      if (status != CollectorStationStatus.NO_POWER) {
-        status = CollectorStationStatus.NO_POWER;
-        stateTimer = 0;
-        updateBlockState(blockState, false);
-      }
-      return;
-    }
+    CollectorStationStatus currentStatus = getStatus();
 
-    currentEnergy = batteryItem.getEnergy(battery);
-    if (currentEnergy < CollectorStationConfig.energyPerCycle) {
-      if (status != CollectorStationStatus.NO_POWER) {
-        status = CollectorStationStatus.NO_POWER;
-        stateTimer = 0;
-        updateBlockState(blockState, false);
+    if (currentStatus == CollectorStationStatus.NO_POWER
+        || currentStatus == CollectorStationStatus.CHARGING) {
+      ItemStack battery = getBattery();
+      if (battery.isEmpty() || !(battery.getItem() instanceof EnergyCellItem batteryItem)) {
+        if (currentStatus != CollectorStationStatus.NO_POWER) {
+          setStatus(CollectorStationStatus.NO_POWER);
+          stateTimer = 0;
+        }
+        return;
       }
-      return;
+
+      currentEnergy = batteryItem.getEnergy(battery);
+      if (currentEnergy < CollectorStationConfig.energyPerCycle) {
+        if (currentStatus != CollectorStationStatus.NO_POWER) {
+          setStatus(CollectorStationStatus.NO_POWER);
+          stateTimer = 0;
+        }
+        return;
+      }
     }
 
     if (level.getGameTime() % CollectorStationConfig.checkInterval != 0) {
       return;
     }
 
-    switch (status) {
+    switch (getStatus()) {
       case NO_POWER:
-        status = CollectorStationStatus.CHARGING;
+        setStatus(CollectorStationStatus.CHARGING);
         stateTimer = 0;
         log.debug("[CollectorStation@{}] Status changed: NO_POWER -> CHARGING", blockPos);
         playSound(level, blockPos, SoundEvents.BEACON_POWER_SELECT, 0.3f, 1.2f);
-        updateBlockState(blockState, false);
         break;
 
       case CHARGING:
-        stateTimer += CollectorStationConfig.checkInterval;
-        if (stateTimer == CollectorStationConfig.checkInterval) {
+        int chargeMultiplier = getChargeMultiplierBonus();
+        stateTimer += CollectorStationConfig.checkInterval * chargeMultiplier;
+        if (stateTimer == CollectorStationConfig.checkInterval * chargeMultiplier) {
           playSound(level, blockPos, SoundEvents.BEACON_AMBIENT, 0.5f, 1.5f);
         }
 
         if (stateTimer % ENERGY_CONSUMPTION_INTERVAL == 0 && currentEnergy > 0) {
-          int energyToConsume = Math.min(ENERGY_CONSUMPTION_AMOUNT, currentEnergy);
-          batteryItem.consumeEnergy(battery, energyToConsume);
-          currentEnergy = batteryItem.getEnergy(battery);
+          ItemStack battery = getBattery();
+          if (!battery.isEmpty() && battery.getItem() instanceof EnergyCellItem batteryItem) {
+            int energyToConsume = Math.min(ENERGY_CONSUMPTION_AMOUNT, currentEnergy);
+            batteryItem.consumeEnergy(battery, energyToConsume);
+            currentEnergy = batteryItem.getEnergy(battery);
+
+            if (currentEnergy <= 1) {
+              setBattery(batteryItem.createEmptyBattery());
+              log.debug(
+                  "[CollectorStation@{}] Battery drained, replaced with empty battery", blockPos);
+            }
+          }
         }
 
         if (stateTimer >= CollectorStationConfig.chargingTime) {
-          status = CollectorStationStatus.READY;
-          stateTimer = 0;
-          log.debug(
-              "[CollectorStation@{}] Status changed: CHARGING -> READY (robot fully charged)",
-              blockPos);
-          playSound(level, blockPos, SoundEvents.EXPERIENCE_ORB_PICKUP, SOUND_VOLUME, SOUND_PITCH);
-          updateBlockState(blockState, false);
+          if (hasSpaceInStorage()) {
+            setStatus(CollectorStationStatus.COLLECTING);
+            stateTimer = 0;
+            cachedBiome = level.getBiome(blockPos).unwrapKey().get().location().toString();
+            log.debug(
+                "[CollectorStation@{}] Status changed: CHARGING -> COLLECTING (Biome: {})",
+                blockPos,
+                cachedBiome);
+            playSound(level, blockPos, SoundEvents.PISTON_EXTEND, SOUND_VOLUME, 0.8f);
+          } else {
+            setStatus(CollectorStationStatus.NO_STORAGE);
+            stateTimer = 0;
+            log.debug(
+                "[CollectorStation@{}] Status changed: CHARGING -> NO_STORAGE (storage full)",
+                blockPos);
+            playSound(level, blockPos, SoundEvents.IRON_DOOR_CLOSE, SOUND_VOLUME, 0.7f);
+          }
         }
         break;
 
-      case READY:
+      case NO_STORAGE:
         if (hasSpaceInStorage()) {
-          status = CollectorStationStatus.COLLECTING;
+          setStatus(CollectorStationStatus.COLLECTING);
           stateTimer = 0;
           cachedBiome = level.getBiome(blockPos).unwrapKey().get().location().toString();
           log.debug(
-              "[CollectorStation@{}] Status changed: READY -> COLLECTING (Biome: {})",
+              "[CollectorStation@{}] Status changed: NO_STORAGE -> COLLECTING (Biome: {})",
               blockPos,
               cachedBiome);
           playSound(level, blockPos, SoundEvents.PISTON_EXTEND, SOUND_VOLUME, 0.8f);
-          updateBlockState(blockState, true);
         }
         break;
 
@@ -210,7 +231,7 @@ public class CollectorStationBlockEntity extends BlockEntity
         int speedMultiplier = getSpeedMultiplierBonus();
         stateTimer += CollectorStationConfig.checkInterval * speedMultiplier;
         if (stateTimer >= CollectorStationConfig.collectingTime) {
-          status = CollectorStationStatus.RETURNING;
+          setStatus(CollectorStationStatus.RETURNING);
           stateTimer = 0;
           log.debug(
               "[CollectorStation@{}] Status changed: COLLECTING -> RETURNING (collected for {} ticks)",
@@ -223,7 +244,7 @@ public class CollectorStationBlockEntity extends BlockEntity
       case RETURNING:
         stateTimer += CollectorStationConfig.checkInterval;
         if (stateTimer >= CollectorStationConfig.returningTime) {
-          status = CollectorStationStatus.PROCESSING;
+          setStatus(CollectorStationStatus.PROCESSING);
           stateTimer = 0;
           processingIndex = 0;
           log.debug("[CollectorStation@{}] Status changed: RETURNING -> PROCESSING", blockPos);
@@ -249,7 +270,7 @@ public class CollectorStationBlockEntity extends BlockEntity
 
         if (stateTimer >= CollectorStationConfig.processingTime
             && processingIndex >= pendingItems.size()) {
-          status = CollectorStationStatus.CHARGING;
+          setStatus(CollectorStationStatus.CHARGING);
           stateTimer = 0;
           pendingItems.clear();
           processingIndex = 0;
@@ -275,7 +296,7 @@ public class CollectorStationBlockEntity extends BlockEntity
   }
 
   private int getSpeedMultiplierBonus() {
-    int totalMultiplier = 1; // Base speed
+    int totalMultiplier = 1;
     for (int i = FIRST_UPGRADE_SLOT; i <= LAST_UPGRADE_SLOT; i++) {
       ItemStack stack = container.getItem(i);
       if (!stack.isEmpty()
@@ -288,52 +309,52 @@ public class CollectorStationBlockEntity extends BlockEntity
     return totalMultiplier;
   }
 
+  private int getChargeMultiplierBonus() {
+    int totalMultiplier = 1;
+    for (int i = FIRST_UPGRADE_SLOT; i <= LAST_UPGRADE_SLOT; i++) {
+      ItemStack stack = container.getItem(i);
+      if (!stack.isEmpty()
+          && stack.getItem()
+              instanceof
+              de.markusbordihn.scraptechworkshop.item.upgrade.ChargeUpgradeItem chargeUpgrade) {
+        totalMultiplier += chargeUpgrade.getChargeMultiplier() - 1;
+      }
+    }
+    return totalMultiplier;
+  }
+
   private void addSingleScrapItem(final ItemStack scrap, final BlockPos blockPos) {
     if (scrap.isEmpty()) {
       return;
     }
 
-    log.debug(
-        "[CollectorStation@{}] Processing scrap: {} x{}",
-        blockPos,
-        scrap.getItem(),
-        scrap.getCount());
-
-    boolean added = false;
     for (int i = FIRST_STORAGE_SLOT; i <= LAST_STORAGE_SLOT; i++) {
       ItemStack slotStack = container.getItem(i);
       if (slotStack.isEmpty()) {
         container.setItem(i, scrap.copy());
         log.debug(
-            "[CollectorStation@{}] Added {} x{} to empty slot {}",
+            "[CollectorStation@{}] Added {} x{} to slot {}",
             blockPos,
             scrap.getItem(),
             scrap.getCount(),
             i);
-        added = true;
-        break;
+        return;
       } else if (ItemStack.isSameItemSameTags(slotStack, scrap)
           && slotStack.getCount() + scrap.getCount() <= slotStack.getMaxStackSize()) {
         slotStack.grow(scrap.getCount());
         log.debug(
-            "[CollectorStation@{}] Stacked {} x{} into slot {} (now {})",
+            "[CollectorStation@{}] Stacked {} x{} into slot {} (total: {})",
             blockPos,
             scrap.getItem(),
             scrap.getCount(),
             i,
             slotStack.getCount());
-        added = true;
-        break;
+        return;
       }
     }
 
-    if (!added) {
-      log.warn(
-          "[CollectorStation@{}] Could not add scrap {} x{} - no space available!",
-          blockPos,
-          scrap.getItem(),
-          scrap.getCount());
-    }
+    log.warn(
+        "[CollectorStation@{}] No space for {} x{}", blockPos, scrap.getItem(), scrap.getCount());
   }
 
   private void playSound(
@@ -344,13 +365,6 @@ public class CollectorStationBlockEntity extends BlockEntity
       final float pitch) {
     if (level != null && !level.isClientSide) {
       level.playSound(null, blockPos, sound, SoundSource.BLOCKS, volume, pitch);
-    }
-  }
-
-  private void updateBlockState(final BlockState blockState, final boolean active) {
-    CollectorStationStatus newState = status;
-    if (blockState.getValue(CollectorStationBlock.STATE) != newState) {
-      level.setBlock(worldPosition, blockState.setValue(CollectorStationBlock.STATE, newState), 3);
     }
   }
 
@@ -371,7 +385,24 @@ public class CollectorStationBlockEntity extends BlockEntity
   }
 
   public CollectorStationStatus getStatus() {
-    return status;
+    if (level != null && getBlockState().hasProperty(CollectorStationBlock.STATE)) {
+      return getBlockState().getValue(CollectorStationBlock.STATE);
+    }
+    return CollectorStationStatus.NO_POWER;
+  }
+
+  private void setStatus(CollectorStationStatus newStatus) {
+    if (level != null && getBlockState().hasProperty(CollectorStationBlock.STATE)) {
+      BlockState currentState = getBlockState();
+      if (currentState.getValue(CollectorStationBlock.STATE) != newStatus) {
+        level.setBlock(
+            worldPosition, currentState.setValue(CollectorStationBlock.STATE, newStatus), 3);
+      }
+    }
+  }
+
+  public int getStateTimer() {
+    return stateTimer;
   }
 
   @Override
@@ -386,7 +417,6 @@ public class CollectorStationBlockEntity extends BlockEntity
       }
     }
 
-    status = CollectorStationStatus.values()[compoundTag.getInt(STATUS_TAG)];
     stateTimer = compoundTag.getInt(STATE_TIMER_TAG);
     currentEnergy = compoundTag.getInt(ENERGY_TAG);
     cachedBiome = compoundTag.getString(BIOME_TAG);
@@ -402,7 +432,6 @@ public class CollectorStationBlockEntity extends BlockEntity
       }
     }
 
-    compoundTag.putInt(STATUS_TAG, status.ordinal());
     compoundTag.putInt(STATE_TIMER_TAG, stateTimer);
     compoundTag.putInt(ENERGY_TAG, currentEnergy);
     compoundTag.putString(BIOME_TAG, cachedBiome);

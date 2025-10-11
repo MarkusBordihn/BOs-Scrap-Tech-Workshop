@@ -17,18 +17,17 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block;
+package de.markusbordihn.scraptechworkshop.block.collectorstation;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.block.entity.CollectorStationBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.MultiBlockStructure;
+import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
+import de.markusbordihn.scraptechworkshop.menu.MenuManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -52,8 +51,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class CollectorStationBlock extends BaseEntityBlock implements MultiBlockStructure {
 
@@ -61,7 +58,17 @@ public class CollectorStationBlock extends BaseEntityBlock implements MultiBlock
   public static final EnumProperty<CollectorStationStatus> STATE =
       EnumProperty.create("state", CollectorStationStatus.class);
 
-  private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
+  // VoxelShapes for upper block
+  private static final VoxelShape SHAPE_UPPER_NORTH = Block.box(0.0, 0.0, 1.0, 16.0, 12.0, 13.0);
+  private static final VoxelShape SHAPE_UPPER_SOUTH = Block.box(0.0, 0.0, 3.0, 16.0, 12.0, 15.0);
+  private static final VoxelShape SHAPE_UPPER_WEST = Block.box(1.0, 0.0, 0.0, 13.0, 12.0, 16.0);
+  private static final VoxelShape SHAPE_UPPER_EAST = Block.box(3.0, 0.0, 0.0, 15.0, 12.0, 16.0);
+
+  // VoxelShapes for lower block
+  private static final VoxelShape SHAPE_LOWER_NORTH = Block.box(0.0, 0.0, 1.0, 16.0, 16.0, 13.0);
+  private static final VoxelShape SHAPE_LOWER_SOUTH = Block.box(0.0, 0.0, 3.0, 16.0, 16.0, 15.0);
+  private static final VoxelShape SHAPE_LOWER_WEST = Block.box(1.0, 0.0, 0.0, 13.0, 16.0, 16.0);
+  private static final VoxelShape SHAPE_LOWER_EAST = Block.box(3.0, 0.0, 0.0, 15.0, 16.0, 16.0);
 
   public CollectorStationBlock(final Properties properties) {
     super(properties);
@@ -69,7 +76,7 @@ public class CollectorStationBlock extends BaseEntityBlock implements MultiBlock
         this.stateDefinition
             .any()
             .setValue(FACING, Direction.NORTH)
-            .setValue(STATE, CollectorStationStatus.READY)
+            .setValue(STATE, CollectorStationStatus.NO_POWER)
             .setValue(HALF, DoubleBlockHalf.LOWER));
   }
 
@@ -80,20 +87,18 @@ public class CollectorStationBlock extends BaseEntityBlock implements MultiBlock
 
     if (isUpperBlock(state)) {
       return switch (facing) {
-        case NORTH -> Block.box(0.0, 0.0, 1.0, 16.0, 12.0, 13.0);
-        case SOUTH -> Block.box(0.0, 0.0, 3.0, 16.0, 12.0, 15.0);
-        case WEST -> Block.box(1.0, 0.0, 0.0, 13.0, 12.0, 16.0);
-        case EAST -> Block.box(3.0, 0.0, 0.0, 15.0, 12.0, 16.0);
-        default -> Block.box(0.0, 0.0, 1.0, 16.0, 12.0, 13.0);
+        case SOUTH -> SHAPE_UPPER_SOUTH;
+        case WEST -> SHAPE_UPPER_WEST;
+        case EAST -> SHAPE_UPPER_EAST;
+        default -> SHAPE_UPPER_NORTH;
       };
     }
 
     return switch (facing) {
-      case NORTH -> Block.box(0.0, 0.0, 1.0, 16.0, 16.0, 13.0);
-      case SOUTH -> Block.box(0.0, 0.0, 3.0, 16.0, 16.0, 15.0);
-      case WEST -> Block.box(1.0, 0.0, 0.0, 13.0, 16.0, 16.0);
-      case EAST -> Block.box(3.0, 0.0, 0.0, 15.0, 16.0, 16.0);
-      default -> Block.box(0.0, 0.0, 1.0, 16.0, 16.0, 13.0);
+      case SOUTH -> SHAPE_LOWER_SOUTH;
+      case WEST -> SHAPE_LOWER_WEST;
+      case EAST -> SHAPE_LOWER_EAST;
+      default -> SHAPE_LOWER_NORTH;
     };
   }
 
@@ -126,7 +131,6 @@ public class CollectorStationBlock extends BaseEntityBlock implements MultiBlock
 
     if (isUpperBlock(blockState)) {
       blockPos = blockPos.below();
-      blockState = level.getBlockState(blockPos);
     }
 
     if (level.getBlockEntity(blockPos) instanceof CollectorStationBlockEntity stationEntity) {
@@ -150,59 +154,7 @@ public class CollectorStationBlock extends BaseEntityBlock implements MultiBlock
   }
 
   private void openCollectorStationMenu(Player player, CollectorStationBlockEntity stationEntity) {
-    if (Constants.IS_FABRIC) {
-      try {
-        Class<?> fabricFactoryClass;
-        try {
-          fabricFactoryClass =
-              Class.forName("de.markusbordihn.scraptechworkshop.menu.BlockBaseScreenHandler");
-        } catch (ClassNotFoundException e) {
-          fabricFactoryClass =
-              Class.forName("de.markusbordihn.scraptechworkshop.menu.BaseScreenHandler");
-        }
-
-        Object fabricFactory =
-            fabricFactoryClass.getConstructor(BlockEntity.class).newInstance(stationEntity);
-        player.openMenu((MenuProvider) fabricFactory);
-      } catch (Exception e) {
-        log.error("Failed to open Collector Station menu on Fabric: {}", e.getMessage());
-        player.openMenu(stationEntity);
-      }
-    } else if (Constants.IS_FORGE) {
-      try {
-        Class<?> forgeMenuProviderClass =
-            Class.forName(
-                "de.markusbordihn.scraptechworkshop.block.entity.ForgeCollectorStationMenuProvider");
-        Object menuProvider =
-            forgeMenuProviderClass
-                .getConstructor(CollectorStationBlockEntity.class)
-                .newInstance(stationEntity);
-
-        Class<?> networkHooksClass = Class.forName("net.minecraftforge.network.NetworkHooks");
-        try {
-          java.lang.reflect.Method openGuiMethod =
-              networkHooksClass.getMethod(
-                  "openGui", ServerPlayer.class, MenuProvider.class, BlockPos.class);
-
-          if (player instanceof ServerPlayer serverPlayer) {
-            openGuiMethod.invoke(null, serverPlayer, menuProvider, stationEntity.getBlockPos());
-          }
-        } catch (NoSuchMethodException e1) {
-          java.lang.reflect.Method openScreenMethod =
-              networkHooksClass.getMethod(
-                  "openScreen", ServerPlayer.class, MenuProvider.class, BlockPos.class);
-
-          if (player instanceof ServerPlayer serverPlayer) {
-            openScreenMethod.invoke(null, serverPlayer, menuProvider, stationEntity.getBlockPos());
-          }
-        }
-      } catch (Exception e) {
-        log.error("Failed to open Collector Station menu on Forge: {}", e.getMessage());
-        player.openMenu(stationEntity);
-      }
-    } else {
-      player.openMenu(stationEntity);
-    }
+    MenuManager.openMenu(player, stationEntity);
   }
 
   @Override
@@ -234,7 +186,7 @@ public class CollectorStationBlock extends BaseEntityBlock implements MultiBlock
     if (context.getLevel().getBlockState(context.getClickedPos().above()).canBeReplaced()) {
       return this.defaultBlockState()
           .setValue(FACING, context.getHorizontalDirection().getOpposite())
-          .setValue(STATE, CollectorStationStatus.READY)
+          .setValue(STATE, CollectorStationStatus.NO_POWER)
           .setValue(HALF, DoubleBlockHalf.LOWER);
     }
     return null;

@@ -17,16 +17,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block.entity;
+package de.markusbordihn.scraptechworkshop.registry.entity;
 
-public class RecyclerSlots {
-  public static final int INPUT_SLOTS = 1;
-  public static final int OUTPUT_SLOTS = 9;
-  public static final int UPGRADE_SLOTS = 2;
-  public static final int TOTAL_SLOTS = INPUT_SLOTS + OUTPUT_SLOTS + UPGRADE_SLOTS;
-  public static final int INPUT_SLOT = 0;
-  public static final int FIRST_OUTPUT_SLOT = 1;
-  public static final int LAST_OUTPUT_SLOT = 9;
+import de.markusbordihn.scraptechworkshop.entity.scraprobot.MixedScrapRobotEntity;
+import net.minecraft.world.entity.EntityType;
 
-  private RecyclerSlots() {}
+public class MixedScrapRobotEntityRegistry {
+
+  public static EntityType<MixedScrapRobotEntity> MIXED_SCRAP_ROBOT_ENTITY_TYPE;
+
+  private MixedScrapRobotEntityRegistry() {}
+
+  public static void setMixedScrapRobotEntityType(
+      final EntityType<MixedScrapRobotEntity> entityType) {
+    MIXED_SCRAP_ROBOT_ENTITY_TYPE = entityType;
+  }
 }

@@ -26,7 +26,10 @@ import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.tool.MagnetFishingRodItem;
 import de.markusbordihn.scraptechworkshop.item.tool.ScrapFishingRodItem;
 import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
+import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeFastChargeUpgradeItem;
 import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeSpeedUpgradeItem;
+import de.markusbordihn.scraptechworkshop.item.upgrade.FastChargeUpgradeItem;
+import de.markusbordihn.scraptechworkshop.item.upgrade.NormalSpeedUpgradeItem;
 import net.minecraft.world.item.Item;
 
 public class ToolItemRegistry {
@@ -55,8 +58,14 @@ public class ToolItemRegistry {
       new CircuitBoardItem(new Item.Properties());
 
   // Upgrade Items
+  public static final NormalSpeedUpgradeItem SPEED_UPGRADE_ITEM =
+      new NormalSpeedUpgradeItem(new Item.Properties());
   public static final CreativeSpeedUpgradeItem CREATIVE_SPEED_UPGRADE_ITEM =
       new CreativeSpeedUpgradeItem(new Item.Properties());
+  public static final FastChargeUpgradeItem FAST_CHARGE_UPGRADE_ITEM =
+      new FastChargeUpgradeItem(new Item.Properties());
+  public static final CreativeFastChargeUpgradeItem CREATIVE_FAST_CHARGE_UPGRADE_ITEM =
+      new CreativeFastChargeUpgradeItem(new Item.Properties());
 
   private ToolItemRegistry() {}
 }
