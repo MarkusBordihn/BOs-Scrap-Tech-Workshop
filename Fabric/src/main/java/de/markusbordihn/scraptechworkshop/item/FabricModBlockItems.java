@@ -53,7 +53,7 @@ public class FabricModBlockItems {
         registerBlockItem(
             BasicScrapCollectorStationBlock.ID,
             () ->
-                new BlockItem(
+                new CollectorStationBlockItem(
                     CollectorStationBlockRegistry.BASIC_SCRAP_COLLECTOR_STATION_BLOCK,
                     new Item.Properties()));
 

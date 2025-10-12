@@ -17,30 +17,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.client.model;
+package de.markusbordihn.scraptechworkshop.client.renderer.entity.robot;
 
-import de.markusbordihn.scraptechworkshop.entity.scraprobot.MixedScrapRobotEntity;
-import net.minecraft.client.model.geom.ModelLayerLocation;
+import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.client.model.robot.MixedScrapRobotModel;
+import de.markusbordihn.scraptechworkshop.entity.robot.scraprobot.MixedScrapRobotEntity;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
-public class MixedScrapRobotModel extends BaseRobotModel<MixedScrapRobotEntity> {
+public class MixedScrapRobotRenderer
+    extends BaseRobotRenderer<MixedScrapRobotEntity, MixedScrapRobotModel> {
 
-  public static final ModelLayerLocation LAYER_LOCATION =
-      new ModelLayerLocation(
-          new ResourceLocation("scrap_tech_workshop", "mixed_scrap_robot"), "main");
+  private static final ResourceLocation TEXTURE =
+      new ResourceLocation(Constants.MOD_ID, "textures/entity/robot/mixed_scrap_robot/default.png");
 
-  public MixedScrapRobotModel(net.minecraft.client.model.geom.ModelPart root) {
-    super(root);
+  public MixedScrapRobotRenderer(EntityRendererProvider.Context context) {
+    super(
+        context,
+        new MixedScrapRobotModel(context.bakeLayer(MixedScrapRobotModel.LAYER_LOCATION)),
+        0.4f);
   }
 
   @Override
-  public void setupAnim(
-      MixedScrapRobotEntity entity,
-      float limbSwing,
-      float limbSwingAmount,
-      float ageInTicks,
-      float netHeadYaw,
-      float headPitch) {
-    super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+  public ResourceLocation getTextureLocation(MixedScrapRobotEntity entity) {
+    return TEXTURE;
   }
 }

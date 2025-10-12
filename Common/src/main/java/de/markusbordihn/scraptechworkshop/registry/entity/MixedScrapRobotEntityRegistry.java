@@ -19,7 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.registry.entity;
 
-import de.markusbordihn.scraptechworkshop.entity.scraprobot.MixedScrapRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.scraprobot.MixedScrapRobotEntity;
 import net.minecraft.world.entity.EntityType;
 
 public class MixedScrapRobotEntityRegistry {

@@ -23,6 +23,7 @@ import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;
 import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.item.tool.CreativeScrapMultitoolItem;
 import de.markusbordihn.scraptechworkshop.item.tool.MagnetFishingRodItem;
 import de.markusbordihn.scraptechworkshop.item.tool.ScrapFishingRodItem;
 import de.markusbordihn.scraptechworkshop.item.tool.ScrapMultitoolItem;
@@ -37,6 +38,8 @@ public class ToolItemRegistry {
   // Tool Items
   public static final ScrapMultitoolItem SCRAP_MULTITOOL_ITEM =
       new ScrapMultitoolItem(new Item.Properties());
+  public static final CreativeScrapMultitoolItem CREATIVE_SCRAP_MULTITOOL_ITEM =
+      new CreativeScrapMultitoolItem(new Item.Properties());
 
   // Fishing Rod Items
   public static final ScrapFishingRodItem SCRAP_FISHING_ROD_ITEM =

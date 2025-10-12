@@ -87,16 +87,15 @@ class ClientModEventHandler {
             profilerFiller,
             profilerFiller2,
             executor,
-            executor2) -> {
-          return preparationBarrier
-              .wait(new Object())
-              .thenRunAsync(
-                  () -> {
-                    log.info("Reloading holologs after resource pack change...");
-                    HoloLogManager.clearCache();
-                  },
-                  executor2);
-        });
+            executor2) ->
+            preparationBarrier
+                .wait(new Object())
+                .thenRunAsync(
+                    () -> {
+                      log.info("Reloading holologs after resource pack change...");
+                      HoloLogManager.clearCache();
+                    },
+                    executor2));
   }
 
   @SubscribeEvent

@@ -20,7 +20,7 @@
 package de.markusbordihn.scraptechworkshop.client.entity;
 
 import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
-import de.markusbordihn.scraptechworkshop.entity.collectorstationrobot.CollectorStationRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.collectorstationrobot.CollectorStationRobotEntity;
 import de.markusbordihn.scraptechworkshop.registry.entity.CollectorStationRobotEntityRegistry;
 import java.util.HashMap;
 import java.util.Map;

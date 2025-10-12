@@ -7,6 +7,17 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v0.11.0
+
+- Fixed multi-tool edge case issues.
+- Reworked base robot entity, model and textures.
+- Added mutli-tool creative item for better testing.
+- Added different scrap collection station textures depending on the status.
+- Added different robots for different use-cases.
+- Added natural spawn for robots in the world.
+- Improved robot pathing, movement and animations.
+- Overworked textures for better visual appearance.
+
 ### v0.10.0
 
 - Added experimental base robot entity and model.

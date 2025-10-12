@@ -129,6 +129,9 @@ public class ForgeModItems {
   // Tool Items
   public static final RegistryObject<Item> SCRAP_MULTITOOL =
       ITEMS.register("scrap_multitool", () -> ToolItemRegistry.SCRAP_MULTITOOL_ITEM);
+  public static final RegistryObject<Item> CREATIVE_SCRAP_MULTITOOL =
+      ITEMS.register(
+          "creative_scrap_multitool", () -> ToolItemRegistry.CREATIVE_SCRAP_MULTITOOL_ITEM);
 
   // Fishing Rod Items
   public static final RegistryObject<Item> SCRAP_FISHING_ROD =
@@ -224,6 +227,7 @@ public class ForgeModItems {
 
     // Tool Items
     ModItems.SCRAP_MULTITOOL = SCRAP_MULTITOOL;
+    ModItems.CREATIVE_SCRAP_MULTITOOL = CREATIVE_SCRAP_MULTITOOL;
 
     // Fishing Rod Items
     ModItems.SCRAP_FISHING_ROD = SCRAP_FISHING_ROD;

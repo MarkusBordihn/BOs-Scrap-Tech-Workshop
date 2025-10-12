@@ -17,10 +17,10 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.entity.collectorstationrobot;
+package de.markusbordihn.scraptechworkshop.entity.robot.collectorstationrobot;
 
 import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
-import de.markusbordihn.scraptechworkshop.entity.BaseRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.BaseRobotEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -38,6 +38,7 @@ public class CollectorStationRobotEntity extends BaseRobotEntity {
   private float animationPosition = 0.0F;
   private float animationSpeed = 0.0F;
   private boolean isMovingFromGoal = false;
+  private boolean isDigging = false;
 
   public CollectorStationRobotEntity(
       final EntityType<? extends BaseRobotEntity> entityType, final Level level) {
@@ -120,6 +121,14 @@ public class CollectorStationRobotEntity extends BaseRobotEntity {
 
   public void setMovingFromGoal(boolean moving) {
     this.isMovingFromGoal = moving;
+  }
+
+  public boolean isDigging() {
+    return this.isDigging;
+  }
+
+  public void setDigging(boolean digging) {
+    this.isDigging = digging;
   }
 
   @Override

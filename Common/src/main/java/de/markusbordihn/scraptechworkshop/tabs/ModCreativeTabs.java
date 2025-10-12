@@ -20,8 +20,12 @@
 package de.markusbordihn.scraptechworkshop.tabs;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.data.multitool.DisplayMode;
+import de.markusbordihn.scraptechworkshop.data.multitool.ScrapMultitoolData;
+import de.markusbordihn.scraptechworkshop.data.multitool.ToolMode;
 import de.markusbordihn.scraptechworkshop.item.ModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
+import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -90,13 +94,14 @@ public class ModCreativeTabs {
   public static CreativeModeTab.Builder createUpgradesAndToolsTab() {
     return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
         .title(Component.translatable("itemGroup.scrap_tech_workshop.upgrades_and_tools"))
-        .icon(() -> new ItemStack(ModItems.SCRAP_MULTITOOL.get()))
+        .icon(() -> new ItemStack(ModItems.CREATIVE_SCRAP_MULTITOOL.get()))
         .displayItems(
             (parameters, output) -> {
               // Tool Items
               output.accept(ModItems.MAGNET_FISHING_ROD.get());
               output.accept(ModItems.SCRAP_FISHING_ROD.get());
               output.accept(ModItems.SCRAP_MULTITOOL.get());
+              output.accept(createCreativeMultitoolWithBattery());
 
               // Component Items
               output.accept(ModItems.CIRCUIT_BOARD.get());
@@ -146,5 +151,19 @@ public class ModCreativeTabs {
                 output.accept(item);
               }
             });
+  }
+
+  private static ItemStack createCreativeMultitoolWithBattery() {
+    ItemStack multitool = new ItemStack(ModItems.CREATIVE_SCRAP_MULTITOOL.get());
+    ItemStack battery = new ItemStack(ModItems.ENERGY_CELL.get());
+    if (battery.getItem() instanceof EnergyCellItem energyCell) {
+      energyCell.setEnergy(battery, EnergyCellItem.ENERGY_MAX);
+    }
+    ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(multitool);
+    data = data.withBattery(battery);
+    data.saveToItemStack(multitool);
+    DisplayMode displayMode = new DisplayMode(multitool);
+    displayMode.updateModel(ToolMode.DEFAULT, data.getBatteryLevel());
+    return multitool;
   }
 }

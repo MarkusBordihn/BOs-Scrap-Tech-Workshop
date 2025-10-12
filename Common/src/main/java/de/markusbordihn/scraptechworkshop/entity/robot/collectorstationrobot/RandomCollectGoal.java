@@ -1,4 +1,4 @@
-package de.markusbordihn.scraptechworkshop.entity.collectorstationrobot;
+package de.markusbordihn.scraptechworkshop.entity.robot.collectorstationrobot;
 
 import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
 import de.markusbordihn.scraptechworkshop.pathfinding.ClientSideMovement;
@@ -62,6 +62,7 @@ public class RandomCollectGoal extends Goal {
     robot.setDeltaMovement(0, robot.getDeltaMovement().y, 0);
     robot.setSpeed(0);
     robot.setMovingFromGoal(false);
+    robot.setDigging(false);
   }
 
   @Override
@@ -70,9 +71,11 @@ public class RandomCollectGoal extends Goal {
 
     if (isPaused) {
       robot.setMovingFromGoal(false);
+      robot.setDigging(true);
       spawnDiggingParticles();
       if (stateTimer <= 0) {
         isPaused = false;
+        robot.setDigging(false);
         pickNewTarget();
       }
       return;

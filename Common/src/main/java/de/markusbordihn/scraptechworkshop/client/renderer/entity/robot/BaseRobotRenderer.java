@@ -17,47 +17,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.client.renderer.entity;
+package de.markusbordihn.scraptechworkshop.client.renderer.entity.robot;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.client.model.MixedScrapRobotModel;
-import de.markusbordihn.scraptechworkshop.entity.scraprobot.MixedScrapRobotEntity;
+import de.markusbordihn.scraptechworkshop.client.model.robot.BaseRobotModel;
+import de.markusbordihn.scraptechworkshop.entity.robot.BaseRobotEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class MixedScrapRobotRenderer
-    extends MobRenderer<MixedScrapRobotEntity, MixedScrapRobotModel> {
+public class BaseRobotRenderer<T extends BaseRobotEntity, M extends BaseRobotModel<T>>
+    extends MobRenderer<T, M> {
 
-  // Texture location for the robot
   protected static final ResourceLocation TEXTURE =
-      new ResourceLocation(Constants.MOD_ID, "textures/entity/collector_station_robot/default.png");
+      new ResourceLocation(Constants.MOD_ID, "textures/entity/robot/base_robot/default.png");
 
-  public MixedScrapRobotRenderer(EntityRendererProvider.Context context) {
-    super(
-        context,
-        new MixedScrapRobotModel(context.bakeLayer(MixedScrapRobotModel.LAYER_LOCATION)),
-        0.4f);
+  public BaseRobotRenderer(EntityRendererProvider.Context context, M model, float shadowRadius) {
+    super(context, model, shadowRadius);
   }
 
   @Override
-  public ResourceLocation getTextureLocation(MixedScrapRobotEntity entity) {
+  public ResourceLocation getTextureLocation(T entity) {
     return TEXTURE;
   }
 
   @Override
   public void render(
-      MixedScrapRobotEntity entity,
+      T entity,
       float entityYaw,
       float partialTicks,
       PoseStack poseStack,
       MultiBufferSource buffer,
       int packedLight) {
-    poseStack.pushPose();
-    poseStack.scale(0.8f, 0.8f, 0.8f);
     super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
-    poseStack.popPose();
   }
 }

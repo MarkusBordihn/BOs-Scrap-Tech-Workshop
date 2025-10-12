@@ -56,6 +56,7 @@ public class ModItems {
 
   // Tool Items
   public static Supplier<Item> SCRAP_MULTITOOL;
+  public static Supplier<Item> CREATIVE_SCRAP_MULTITOOL;
 
   // Fishing Rod Items
   public static Supplier<Item> SCRAP_FISHING_ROD;

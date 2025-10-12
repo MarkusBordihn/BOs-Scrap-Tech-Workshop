@@ -17,36 +17,33 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item.tool;
+package de.markusbordihn.scraptechworkshop.client.renderer.entity.robot;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.List;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.FishingRodItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
+import de.markusbordihn.scraptechworkshop.client.model.robot.BaseRobotModel;
+import de.markusbordihn.scraptechworkshop.client.model.robot.CollectorStationRobotModel;
+import de.markusbordihn.scraptechworkshop.entity.robot.BaseRobotEntity;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
-public class MagnetFishingRodItem extends FishingRodItem {
+public class CollectorStationRobotRenderer<T extends BaseRobotEntity>
+    extends BaseRobotRenderer<T, CollectorStationRobotModel<T>> {
 
-  public MagnetFishingRodItem(Properties properties) {
-    super(properties);
+  private static final ResourceLocation DEFAULT_TEXTURE =
+      new ResourceLocation(
+          Constants.MOD_ID, "textures/entity/robot/collector_station_robot/default.png");
+
+  public CollectorStationRobotRenderer(final EntityRendererProvider.Context context) {
+    super(
+        context,
+        new CollectorStationRobotModel<>(context.bakeLayer(BaseRobotModel.LAYER_LOCATION)),
+        0.3f);
+
+    // this.addLayer(new CollectorStationRobotEyesLayer<>(this));
   }
 
   @Override
-  public void appendHoverText(
-      ItemStack itemStack, Level level, List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component.translatable(Constants.ITEM_PREFIX + "magnet_fishing_rod.description"));
-    super.appendHoverText(itemStack, level, tooltip, flag);
-  }
-
-  @Override
-  public int getEnchantmentValue() {
-    return 10;
-  }
-
-  @Override
-  public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
-    return super.isValidRepairItem(toRepair, repair);
+  public ResourceLocation getTextureLocation(T entity) {
+    return DEFAULT_TEXTURE;
   }
 }

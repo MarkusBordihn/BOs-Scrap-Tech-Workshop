@@ -20,10 +20,10 @@
 package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.entity.collectorstationrobot.CollectorStationRobotEntity;
-import de.markusbordihn.scraptechworkshop.entity.collectorstationrobot.CollectorStationRobotStaticEntity;
 import de.markusbordihn.scraptechworkshop.entity.hololog.HoloLogHumanoidEntity;
-import de.markusbordihn.scraptechworkshop.entity.scraprobot.MixedScrapRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.collectorstationrobot.CollectorStationRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.collectorstationrobot.CollectorStationRobotStaticEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.scraprobot.MixedScrapRobotEntity;
 import de.markusbordihn.scraptechworkshop.registry.entity.CollectorStationRobotEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.entity.HoloLogEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.entity.MixedScrapRobotEntityRegistry;

@@ -223,44 +223,44 @@
     {
       "when": {
         "half": "lower",
-        "state": "no_power",
+        "state": "returning",
         "facing": "north"
       },
       "apply": {
-        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_returning",
         "y": 0
       }
     },
     {
       "when": {
         "half": "lower",
-        "state": "no_power",
+        "state": "returning",
         "facing": "east"
       },
       "apply": {
-        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_returning",
         "y": 90
       }
     },
     {
       "when": {
         "half": "lower",
-        "state": "no_power",
+        "state": "returning",
         "facing": "south"
       },
       "apply": {
-        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_returning",
         "y": 180
       }
     },
     {
       "when": {
         "half": "lower",
-        "state": "no_power",
+        "state": "returning",
         "facing": "west"
       },
       "apply": {
-        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station",
+        "model": "scrap_tech_workshop:block/scrap_collector_station/basic_scrap_collector_station_returning",
         "y": 270
       }
     },

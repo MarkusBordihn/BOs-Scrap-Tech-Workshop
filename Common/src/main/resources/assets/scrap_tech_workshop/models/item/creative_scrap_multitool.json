@@ -1,0 +1,65 @@
+{
+  "parent": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool",
+  "overrides": [
+    {
+      "predicate": {
+        "custom_model_data": 1
+      },
+      "model": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool_battery_100"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 2
+      },
+      "model": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool_battery_100"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 3
+      },
+      "model": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool_battery_100"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 4
+      },
+      "model": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool_battery_100"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 5
+      },
+      "model": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool_battery_100"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 6
+      },
+      "model": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool_tool_axt"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 7
+      },
+      "model": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool_tool_pickaxe"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 8
+      },
+      "model": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool_tool_shovel"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 9
+      },
+      "model": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool_tool_hoe"
+    },
+    {
+      "predicate": {
+        "custom_model_data": 10
+      },
+      "model": "scrap_tech_workshop:item/scrap_multitool/scrap_multitool_tool_sword"
+    }
+  ]
+}

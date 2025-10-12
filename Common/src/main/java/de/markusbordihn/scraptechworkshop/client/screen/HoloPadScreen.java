@@ -162,7 +162,7 @@ public class HoloPadScreen extends Screen {
     int buttonY = topPos + HOLOGRAM_AREA_Y + (HOLOGRAM_AREA_HEIGHT - buttonHeight) / 2 - 15;
     replayButton =
         Button.builder(
-                Component.translatable("gui.scrap_tech_workshop.holo_pad.replay"),
+                Component.translatable(Constants.GUI_PREFIX + "holo_pad.replay"),
                 button -> replayHololog())
             .bounds(buttonX, buttonY, buttonWidth, buttonHeight)
             .build();
@@ -177,7 +177,7 @@ public class HoloPadScreen extends Screen {
     int buttonY = topPos + HOLOGRAM_AREA_Y + (HOLOGRAM_AREA_HEIGHT - buttonHeight) / 2 + 10;
     closeButton =
         Button.builder(
-                Component.translatable("gui.scrap_tech_workshop.holo_pad.close"),
+                Component.translatable(Constants.GUI_PREFIX + "holo_pad.close"),
                 button -> this.onClose())
             .bounds(buttonX, buttonY, buttonWidth, buttonHeight)
             .build();

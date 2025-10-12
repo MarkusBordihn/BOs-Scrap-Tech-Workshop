@@ -19,7 +19,9 @@
 
 package de.markusbordihn.scraptechworkshop.item;
 
+import de.markusbordihn.scraptechworkshop.Constants;
 import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -39,7 +41,7 @@ public class RecyclerBlockItem extends BlockItem {
     super.appendHoverText(stack, level, tooltip, flag);
 
     tooltip.add(
-        Component.translatable(this.getDescriptionId() + ".description")
-            .withStyle(net.minecraft.ChatFormatting.GRAY));
+        Component.translatable(Constants.ITEM_PREFIX + "recycler.description")
+            .withStyle(ChatFormatting.GRAY));
   }
 }

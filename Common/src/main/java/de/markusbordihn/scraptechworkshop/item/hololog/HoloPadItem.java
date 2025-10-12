@@ -44,7 +44,7 @@ public class HoloPadItem extends Item {
 
   public static final String ID_PREFIX = "holo_pad_";
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
-  private static final String TRANSLATION_KEY_PREFIX = "item.scrap_tech_workshop.holo_pad";
+  private static final String TRANSLATION_KEY_PREFIX = Constants.ITEM_PREFIX + "holo_pad";
 
   private final ResourceLocation holoLogId;
 

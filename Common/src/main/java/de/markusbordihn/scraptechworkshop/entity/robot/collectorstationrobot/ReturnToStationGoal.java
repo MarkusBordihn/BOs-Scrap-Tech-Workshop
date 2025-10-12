@@ -1,17 +1,18 @@
-package de.markusbordihn.scraptechworkshop.entity.collectorstationrobot;
+package de.markusbordihn.scraptechworkshop.entity.robot.collectorstationrobot;
 
 import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
 import de.markusbordihn.scraptechworkshop.pathfinding.ClientSideMovement;
 import java.util.EnumSet;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.phys.Vec3;
 
 public class ReturnToStationGoal extends Goal {
 
   private static final double TELEPORT_DISTANCE_XZ = 64.0;
-  private static final double TELEPORT_HEIGHT_DIFF = 2.0;
-  private static final double REACH_DISTANCE = 0.3;
+  private static final double TELEPORT_RADIUS = 16.0;
+  private static final double REACH_DISTANCE = 0.25;
   private static final double LOOK_AHEAD_DISTANCE = 3.0;
   private static final int STUCK_THRESHOLD = 100;
 
@@ -52,16 +53,19 @@ public class ReturnToStationGoal extends Goal {
     this.rotationDelay = 10;
 
     BlockPos stationPos = robot.getStationPos();
-    if (stationPos == null) {
+    Direction facing = robot.getFacing();
+    if (stationPos == null || facing == null) {
       return;
     }
 
-    this.targetX = stationPos.getX() + 0.5;
-    this.targetY = stationPos.getY();
-    this.targetZ = stationPos.getZ() + 0.5;
+    // Calculate target position in front of the station (lower block)
+    BlockPos targetBlockPos = stationPos.offset(facing.getNormal());
+    this.targetX = targetBlockPos.getX() + 0.5;
+    this.targetY = targetBlockPos.getY(); // Ground level
+    this.targetZ = targetBlockPos.getZ() + 0.5;
 
     if (shouldTeleport()) {
-      teleportToStation();
+      teleportNearStation();
       this.rotationDelay = 20;
     }
   }
@@ -80,7 +84,6 @@ public class ReturnToStationGoal extends Goal {
     }
 
     double distance = robot.position().distanceTo(new Vec3(targetX, targetY, targetZ));
-
     if (distance < REACH_DISTANCE) {
       stop();
       return;
@@ -98,7 +101,6 @@ public class ReturnToStationGoal extends Goal {
     boolean isMoving =
         ClientSideMovement.moveTowards(robot, targetX, targetY, targetZ, speedModifier * 0.04);
     robot.setMovingFromGoal(isMoving);
-
     if (!isMoving) {
       handleStuck();
     } else {
@@ -110,22 +112,31 @@ public class ReturnToStationGoal extends Goal {
   private boolean shouldTeleport() {
     double distanceXZ =
         Math.sqrt(Math.pow(targetX - robot.getX(), 2) + Math.pow(targetZ - robot.getZ(), 2));
-    double heightDiff = Math.abs(targetY - robot.getY());
-    return distanceXZ > TELEPORT_DISTANCE_XZ || heightDiff > TELEPORT_HEIGHT_DIFF;
+    return distanceXZ > TELEPORT_DISTANCE_XZ;
   }
 
-  private void teleportToStation() {
+  private void teleportNearStation() {
+    double angle = robot.getRandom().nextDouble() * 2 * Math.PI;
+    double distance =
+        TELEPORT_RADIUS * 0.5 + robot.getRandom().nextDouble() * TELEPORT_RADIUS * 0.5;
+    double teleportX = targetX + Math.cos(angle) * distance;
+    double teleportZ = targetZ + Math.sin(angle) * distance;
     Vec3 safePos =
-        ClientSideMovement.findGroundPosition(robot.level(), targetX, targetY, targetZ, 5);
+        ClientSideMovement.findGroundPosition(robot.level(), teleportX, targetY, teleportZ, 5);
     if (safePos != null) {
       robot.setPos(safePos.x, safePos.y, safePos.z);
+    } else {
+      safePos = ClientSideMovement.findGroundPosition(robot.level(), targetX, targetY, targetZ, 5);
+      if (safePos != null) {
+        robot.setPos(safePos.x, safePos.y, safePos.z);
+      }
     }
   }
 
   private void handleStuck() {
     stuckCounter++;
     if (stuckCounter >= STUCK_THRESHOLD && shouldTeleport()) {
-      teleportToStation();
+      teleportNearStation();
       stuckCounter = 0;
       rotationDelay = 10;
     }
@@ -133,12 +144,11 @@ public class ReturnToStationGoal extends Goal {
 
   private void updateLookDirection() {
     robot.getMoveControl().setWantedPosition(targetX, targetY, targetZ, speedModifier);
-
     double dx = targetX - robot.getX();
     double dy = targetY - robot.getY();
     double dz = targetZ - robot.getZ();
-    double dist = Math.sqrt(dx * dx + dz * dz);
 
+    double dist = Math.sqrt(dx * dx + dz * dz);
     if (dist > 0.1) {
       double lookX = robot.getX() + (dx / dist) * LOOK_AHEAD_DISTANCE;
       double lookY = robot.getEyeY() + Math.max(0, dy * 0.3);

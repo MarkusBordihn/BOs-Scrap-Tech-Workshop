@@ -17,24 +17,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.entity.collectorstationrobot;
+package de.markusbordihn.scraptechworkshop.entity.robot.collectorstationrobot;
 
 import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
-import de.markusbordihn.scraptechworkshop.entity.BaseRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.BaseRobotEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.level.Level;
 
-/**
- * Static (non-AI) collector station robot entity for client-side rendering only. This entity has no
- * AI, no gravity, and is controlled manually for visual effects in the block entity renderer. Used
- * for the charging animation and visual feedback.
- */
 public class CollectorStationRobotStaticEntity extends BaseRobotEntity {
 
   public static final String ID = "collector_station_robot_static";
 
   private CollectorStationStatus status = CollectorStationStatus.CHARGING;
+  private float renderHeadYaw = 0.0f;
+  private float renderHeadPitch = 0.0f;
   private float renderYaw = 0.0f;
 
   public CollectorStationRobotStaticEntity(
@@ -62,7 +59,18 @@ public class CollectorStationRobotStaticEntity extends BaseRobotEntity {
     if (!level().isClientSide) {
       return;
     }
+
+    this.yRotO = this.renderYaw;
+    this.xRotO = this.getXRot();
+    this.yHeadRotO = this.renderHeadYaw;
+    this.yBodyRotO = this.renderYaw;
+
     super.tick();
+
+    this.setYRot(this.renderYaw);
+    this.yBodyRot = this.renderYaw;
+    this.yHeadRot = this.renderHeadYaw;
+    this.setXRot(this.renderHeadPitch);
   }
 
   public CollectorStationStatus getStatus() {
@@ -71,6 +79,19 @@ public class CollectorStationRobotStaticEntity extends BaseRobotEntity {
 
   public void setStatus(CollectorStationStatus newStatus) {
     this.status = newStatus;
+  }
+
+  public void setRenderYaw(float yaw) {
+    this.renderYaw = yaw;
+    this.setYRot(yaw);
+    this.yBodyRot = yaw;
+  }
+
+  public void setRenderHeadRotation(float headYaw, float headPitch) {
+    this.renderHeadYaw = headYaw;
+    this.renderHeadPitch = headPitch;
+    this.yHeadRot = headYaw;
+    this.setXRot(headPitch);
   }
 
   @Override

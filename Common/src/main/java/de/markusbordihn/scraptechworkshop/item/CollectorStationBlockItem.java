@@ -17,36 +17,38 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item.tool;
+package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.config.CollectorStationConfig;
 import java.util.List;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.FishingRodItem;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
-public class MagnetFishingRodItem extends FishingRodItem {
+public class CollectorStationBlockItem extends BlockItem {
 
-  public MagnetFishingRodItem(Properties properties) {
-    super(properties);
+  public CollectorStationBlockItem(Block block, Properties properties) {
+    super(block, properties);
   }
 
   @Override
   public void appendHoverText(
-      ItemStack itemStack, Level level, List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component.translatable(Constants.ITEM_PREFIX + "magnet_fishing_rod.description"));
-    super.appendHoverText(itemStack, level, tooltip, flag);
-  }
+      ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    super.appendHoverText(stack, level, tooltip, flag);
 
-  @Override
-  public int getEnchantmentValue() {
-    return 10;
-  }
+    tooltip.add(
+        Component.translatable(Constants.ITEM_PREFIX + "basic_scrap_collector_station.description")
+            .withStyle(ChatFormatting.GRAY));
 
-  @Override
-  public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
-    return super.isValidRepairItem(toRepair, repair);
+    tooltip.add(
+        Component.translatable(
+                Constants.ITEM_PREFIX + "basic_scrap_collector_station.tooltip",
+                CollectorStationConfig.collectionRadius)
+            .withStyle(ChatFormatting.AQUA));
   }
 }

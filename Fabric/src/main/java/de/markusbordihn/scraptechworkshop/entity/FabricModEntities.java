@@ -20,10 +20,10 @@
 package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.entity.collectorstationrobot.CollectorStationRobotEntity;
-import de.markusbordihn.scraptechworkshop.entity.collectorstationrobot.CollectorStationRobotStaticEntity;
 import de.markusbordihn.scraptechworkshop.entity.hololog.HoloLogHumanoidEntity;
-import de.markusbordihn.scraptechworkshop.entity.scraprobot.MixedScrapRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.collectorstationrobot.CollectorStationRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.collectorstationrobot.CollectorStationRobotStaticEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.scraprobot.MixedScrapRobotEntity;
 import de.markusbordihn.scraptechworkshop.registry.entity.CollectorStationRobotEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.entity.HoloLogEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.entity.MixedScrapRobotEntityRegistry;
@@ -45,17 +45,12 @@ public class FabricModEntities {
             .sized(0.6f, 1.8f)
             .clientTrackingRange(10)
             .build(HoloLogHumanoidEntity.ID);
-
     Registry.register(
         BuiltInRegistries.ENTITY_TYPE,
         new ResourceLocation(Constants.MOD_ID, HoloLogHumanoidEntity.ID),
         holologHumanoidEntityType);
-
-    // Register default attributes
     FabricDefaultAttributeRegistry.register(
         holologHumanoidEntityType, HoloLogHumanoidEntity.createAttributes());
-
-    // Set the entity type in the common registry
     HoloLogEntityRegistry.setHoloLogHumanoidEntityType(holologHumanoidEntityType);
 
     // Register CollectorStationRobot Entity (AI-controlled)
@@ -65,17 +60,12 @@ public class FabricModEntities {
             .clientTrackingRange(16)
             .updateInterval(3)
             .build(CollectorStationRobotEntity.ID);
-
     Registry.register(
         BuiltInRegistries.ENTITY_TYPE,
         new ResourceLocation(Constants.MOD_ID, CollectorStationRobotEntity.ID),
         collectorStationRobotEntityType);
-
-    // Register default attributes
     FabricDefaultAttributeRegistry.register(
         collectorStationRobotEntityType, CollectorStationRobotEntity.createAttributes());
-
-    // Set the entity type in the common registry
     CollectorStationRobotEntityRegistry.setCollectorStationRobotEntityType(
         collectorStationRobotEntityType);
 
@@ -88,18 +78,13 @@ public class FabricModEntities {
             .noSave()
             .noSummon()
             .build(CollectorStationRobotStaticEntity.ID);
-
     Registry.register(
         BuiltInRegistries.ENTITY_TYPE,
         new ResourceLocation(Constants.MOD_ID, CollectorStationRobotStaticEntity.ID),
         collectorStationRobotStaticEntityType);
-
-    // Register default attributes
     FabricDefaultAttributeRegistry.register(
         collectorStationRobotStaticEntityType,
         CollectorStationRobotStaticEntity.createAttributes());
-
-    // Set the entity type in the common registry
     CollectorStationRobotEntityRegistry.setCollectorStationRobotStaticEntityType(
         collectorStationRobotStaticEntityType);
 
@@ -109,17 +94,12 @@ public class FabricModEntities {
             .sized(0.6f, 0.6f)
             .clientTrackingRange(10)
             .build(MixedScrapRobotEntity.ID);
-
     Registry.register(
         BuiltInRegistries.ENTITY_TYPE,
         new ResourceLocation(Constants.MOD_ID, MixedScrapRobotEntity.ID),
         mixedScrapRobotEntityType);
-
-    // Register default attributes
     FabricDefaultAttributeRegistry.register(
         mixedScrapRobotEntityType, MixedScrapRobotEntity.createAttributes());
-
-    // Set the entity type in the common registry
     MixedScrapRobotEntityRegistry.setMixedScrapRobotEntityType(mixedScrapRobotEntityType);
   }
 }

@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
 import de.markusbordihn.scraptechworkshop.menu.CollectorStationMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -211,14 +212,15 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
         false);
 
     // Progress status text below progress bar
-    int status = menu.getStatus();
+    int statusOrdinal = menu.getStatus();
+    CollectorStationStatus status = CollectorStationStatus.values()[statusOrdinal];
     int stateTimer = menu.getStateTimer();
     int maxTime = menu.getMaxCollectionTime();
     Component statusText;
 
-    // Map status ordinal to appropriate message
+    // Use enum-based switch for status handling
     switch (status) {
-      case 0: // CHARGING
+      case CHARGING:
         if (maxTime > 0 && stateTimer >= 0) {
           int percentage = (stateTimer * 100) / maxTime;
           statusText = Component.translatable(TRANSLATION_STATUS_CHARGING, percentage);
@@ -226,7 +228,7 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
           statusText = Component.translatable(TRANSLATION_STATUS_CHARGING, 0);
         }
         break;
-      case 1: // COLLECTING
+      case COLLECTING:
         if (maxTime > 0 && stateTimer >= 0) {
           int percentage = (stateTimer * 100) / maxTime;
           statusText = Component.translatable(TRANSLATION_STATUS_COLLECTING, percentage);
@@ -234,7 +236,7 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
           statusText = Component.translatable(TRANSLATION_STATUS_COLLECTING, 0);
         }
         break;
-      case 2: // RETURNING
+      case RETURNING:
         if (maxTime > 0 && stateTimer >= 0) {
           int percentage = (stateTimer * 100) / maxTime;
           statusText = Component.translatable(TRANSLATION_STATUS_RETURNING, percentage);
@@ -242,7 +244,7 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
           statusText = Component.translatable(TRANSLATION_STATUS_RETURNING, 0);
         }
         break;
-      case 3: // PROCESSING
+      case PROCESSING:
         if (maxTime > 0 && stateTimer >= 0) {
           int percentage = (stateTimer * 100) / maxTime;
           statusText = Component.translatable(TRANSLATION_STATUS_PROCESSING, percentage);
@@ -250,10 +252,10 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
           statusText = Component.translatable(TRANSLATION_STATUS_PROCESSING, 0);
         }
         break;
-      case 4: // NO_STORAGE
+      case NO_STORAGE:
         statusText = Component.translatable(TRANSLATION_STATUS_NO_STORAGE);
         break;
-      case 5: // NO_POWER
+      case NO_POWER:
         statusText = Component.translatable(TRANSLATION_STATUS_NO_POWER);
         break;
       default:
@@ -313,15 +315,18 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
     }
   }
 
-  private String getStatusName(int status) {
+  private String getStatusName(int statusOrdinal) {
+    if (statusOrdinal < 0 || statusOrdinal >= CollectorStationStatus.values().length) {
+      return "Unknown";
+    }
+    CollectorStationStatus status = CollectorStationStatus.values()[statusOrdinal];
     return switch (status) {
-      case 0 -> "Charging";
-      case 1 -> "Collecting";
-      case 2 -> "Returning";
-      case 3 -> "Processing";
-      case 4 -> "No Storage";
-      case 5 -> "No Power";
-      default -> "Unknown";
+      case CHARGING -> "Charging";
+      case COLLECTING -> "Collecting";
+      case RETURNING -> "Returning";
+      case PROCESSING -> "Processing";
+      case NO_STORAGE -> "No Storage";
+      case NO_POWER -> "No Power";
     };
   }
 }

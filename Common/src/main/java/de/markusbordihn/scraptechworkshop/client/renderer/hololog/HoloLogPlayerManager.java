@@ -68,7 +68,7 @@ public final class HoloLogPlayerManager {
   }
 
   public static void stopAll() {
-    ACTIVE_PLAYERS.values().forEach(player -> player.stop());
+    ACTIVE_PLAYERS.values().forEach(HoloLogPlaybackBase::stop);
     ACTIVE_PLAYERS.clear();
     ACTIVE_HOLOLOG_KEYS.clear();
     log.debug("Stopped all hololog players");

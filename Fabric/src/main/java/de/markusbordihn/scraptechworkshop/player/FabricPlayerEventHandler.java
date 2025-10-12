@@ -28,13 +28,8 @@ public class FabricPlayerEventHandler {
 
   public static void register() {
     ServerPlayConnectionEvents.JOIN.register(
-        (handler, sender, server) -> {
-          PlayerEvents.handlePlayerJoin(handler.getPlayer());
-        });
+        (handler, sender, server) -> PlayerEvents.handlePlayerJoin(handler.getPlayer()));
 
-    ServerLifecycleEvents.SERVER_STOPPING.register(
-        server -> {
-          PlayerEvents.handleServerStopping();
-        });
+    ServerLifecycleEvents.SERVER_STOPPING.register(server -> PlayerEvents.handleServerStopping());
   }
 }

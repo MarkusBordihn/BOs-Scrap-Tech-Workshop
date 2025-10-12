@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.item.tool;
 
+import de.markusbordihn.scraptechworkshop.Constants;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.FishingRodItem;
@@ -35,7 +36,7 @@ public class ScrapFishingRodItem extends FishingRodItem {
   @Override
   public void appendHoverText(
       ItemStack itemStack, Level level, List<Component> tooltip, TooltipFlag flag) {
-    tooltip.add(Component.translatable("item.scrap_tech_workshop.scrap_fishing_rod.description"));
+    tooltip.add(Component.translatable(Constants.ITEM_PREFIX + "scrap_fishing_rod.description"));
     super.appendHoverText(itemStack, level, tooltip, flag);
   }
 

@@ -17,45 +17,51 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.client.renderer.entity;
+package de.markusbordihn.scraptechworkshop.client.renderer.entity.robot.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.client.model.BaseRobotModel;
-import de.markusbordihn.scraptechworkshop.client.model.CollectorStationRobotModel;
-import de.markusbordihn.scraptechworkshop.entity.BaseRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.BaseRobotEntity;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.RenderLayerParent;
+import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class CollectorStationRobotRenderer<T extends BaseRobotEntity>
-    extends MobRenderer<T, CollectorStationRobotModel<T>> {
+public class RobotEyesLayer<T extends BaseRobotEntity, M extends EntityModel<T>>
+    extends RenderLayer<T, M> {
 
-  private static final ResourceLocation DEFAULT_TEXTURE =
-      new ResourceLocation(Constants.MOD_ID, "textures/entity/collector_station_robot/default.png");
-
-  public CollectorStationRobotRenderer(final EntityRendererProvider.Context context) {
-    super(
-        context,
-        new CollectorStationRobotModel<>(context.bakeLayer(BaseRobotModel.LAYER_LOCATION)),
-        0.3f);
-  }
-
-  @Override
-  public ResourceLocation getTextureLocation(T entity) {
-    return DEFAULT_TEXTURE;
+  public RobotEyesLayer(RenderLayerParent<T, M> parent) {
+    super(parent);
   }
 
   @Override
   public void render(
-      T entity,
-      float entityYaw,
-      float partialTicks,
       PoseStack poseStack,
       MultiBufferSource buffer,
-      int packedLight) {
+      int packedLight,
+      T entity,
+      float limbSwing,
+      float limbSwingAmount,
+      float partialTicks,
+      float ageInTicks,
+      float netHeadYaw,
+      float headPitch) {
 
-    super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
+    ResourceLocation eyeTexture = getEyeTexture(entity);
+    RenderType renderType = RenderType.eyes(eyeTexture);
+
+    VertexConsumer vertexConsumer = buffer.getBuffer(renderType);
+    this.getParentModel()
+        .renderToBuffer(
+            poseStack, vertexConsumer, 15728880, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+  }
+
+  protected ResourceLocation getEyeTexture(T entity) {
+    return new ResourceLocation(
+        Constants.MOD_ID, "textures/entity/robot/collector_station_robot/eyes_default.png");
   }
 }

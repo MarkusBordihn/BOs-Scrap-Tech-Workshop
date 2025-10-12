@@ -127,6 +127,9 @@ public class FabricModItems {
     // Tool Items
     ModItems.SCRAP_MULTITOOL =
         registerItem("scrap_multitool", () -> ToolItemRegistry.SCRAP_MULTITOOL_ITEM);
+    ModItems.CREATIVE_SCRAP_MULTITOOL =
+        registerItem(
+            "creative_scrap_multitool", () -> ToolItemRegistry.CREATIVE_SCRAP_MULTITOOL_ITEM);
 
     // Fishing Rod Items
     ModItems.SCRAP_FISHING_ROD =

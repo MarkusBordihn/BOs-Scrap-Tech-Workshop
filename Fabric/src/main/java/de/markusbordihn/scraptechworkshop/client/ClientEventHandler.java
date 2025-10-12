@@ -49,15 +49,10 @@ public class ClientEventHandler {
     registerItemProperties();
     registerItemColors();
 
-    ClientTickEvents.END_CLIENT_TICK.register(
-        client -> {
-          HoloLogPlayerManager.tickAll();
-        });
+    ClientTickEvents.END_CLIENT_TICK.register(client -> HoloLogPlayerManager.tickAll());
 
     ClientPlayConnectionEvents.DISCONNECT.register(
-        (handler, client) -> {
-          ClientEvents.handleClientDisconnect();
-        });
+        (handler, client) -> ClientEvents.handleClientDisconnect());
 
     ResourceManagerHelper.get(PackType.CLIENT_RESOURCES)
         .registerReloadListener(

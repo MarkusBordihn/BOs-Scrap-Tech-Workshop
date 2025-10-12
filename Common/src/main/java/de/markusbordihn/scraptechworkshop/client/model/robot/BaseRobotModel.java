@@ -17,12 +17,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.client.model;
+package de.markusbordihn.scraptechworkshop.client.model.robot;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.entity.BaseRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.BaseRobotEntity;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -41,6 +41,8 @@ public class BaseRobotModel<T extends BaseRobotEntity> extends EntityModel<T> {
       new ModelLayerLocation(new ResourceLocation(Constants.MOD_ID, "base_robot"), "main");
   protected final ModelPart left_arm;
   protected final ModelPart right_arm;
+  protected final ModelPart left_hand;
+  protected final ModelPart right_hand;
   protected final ModelPart left_front_wheel;
   protected final ModelPart left_back_wheel;
   protected final ModelPart right_front_wheel;
@@ -57,7 +59,9 @@ public class BaseRobotModel<T extends BaseRobotEntity> extends EntityModel<T> {
     this.body = root.getChild("body");
     this.arms = root.getChild("arms");
     this.left_arm = this.arms.getChild("left_arm");
+    this.left_hand = this.left_arm.getChild("left_hand");
     this.right_arm = this.arms.getChild("right_arm");
+    this.right_hand = this.right_arm.getChild("right_hand");
     this.wheels = root.getChild("wheels");
     this.left_wheel = this.wheels.getChild("left_wheel");
     this.left_front_wheel = this.left_wheel.getChild("left_front_wheel");
@@ -70,47 +74,72 @@ public class BaseRobotModel<T extends BaseRobotEntity> extends EntityModel<T> {
   public static LayerDefinition createBodyLayer() {
     MeshDefinition meshdefinition = new MeshDefinition();
     PartDefinition partdefinition = meshdefinition.getRoot();
+
+    // Head with antenna
     partdefinition.addOrReplaceChild(
         "head",
         CubeListBuilder.create()
-            .texOffs(24, 30)
+            .texOffs(0, 4)
             .addBox(2.0F, -4.75F, -3.0F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
             .texOffs(0, 0)
             .addBox(-4.0F, -2.0F, -4.0F, 8.0F, 4.0F, 8.0F, new CubeDeformation(0.0F)),
         PartPose.offset(0.0F, 15.0F, 0.0F));
 
+    // Body
     partdefinition.addOrReplaceChild(
         "body",
         CubeListBuilder.create()
-            .texOffs(0, 30)
+            .texOffs(18, 13)
             .addBox(-1.5F, -1.875F, -1.5F, 3.0F, 2.0F, 3.0F, new CubeDeformation(0.0F))
             .texOffs(0, 12)
             .addBox(-3.0F, -0.625F, -3.0F, 6.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)),
         PartPose.offset(0.0F, 18.125F, 0.0F));
 
+    // Arms with hands
     PartDefinition arms =
         partdefinition.addOrReplaceChild(
             "arms", CubeListBuilder.create(), PartPose.offset(0.0F, 24.0F, 0.0F));
-    arms.addOrReplaceChild(
-        "left_arm",
-        CubeListBuilder.create()
-            .texOffs(28, 30)
-            .mirror()
-            .addBox(-1.0F, -0.75F, -0.5F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
-            .mirror(false),
-        PartPose.offset(-3.0F, -5.5F, 0.0F));
-    arms.addOrReplaceChild(
-        "right_arm",
-        CubeListBuilder.create()
-            .texOffs(28, 30)
-            .addBox(0.0F, -0.75F, -0.5F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)),
-        PartPose.offset(3.0F, -5.5F, 0.0F));
 
+    PartDefinition left_arm =
+        arms.addOrReplaceChild(
+            "left_arm", CubeListBuilder.create(), PartPose.offset(-3.0F, -5.25F, 0.0F));
+    left_arm.addOrReplaceChild(
+        "cube_r1",
+        CubeListBuilder.create()
+            .texOffs(4, 4)
+            .mirror()
+            .addBox(-1.0F, -0.5F, -0.5F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.0F))
+            .mirror(false),
+        PartPose.offsetAndRotation(0.0F, -0.25F, -0.5F, -1.5708F, 0.0F, 0.0F));
+    left_arm.addOrReplaceChild(
+        "left_hand",
+        CubeListBuilder.create()
+            .texOffs(22, 21)
+            .addBox(-1.0F, -1.05F, -4.5F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)),
+        PartPose.offset(0.0F, -0.25F, -0.5F));
+
+    PartDefinition right_arm =
+        arms.addOrReplaceChild(
+            "right_arm", CubeListBuilder.create(), PartPose.offset(3.0F, -5.25F, 0.0F));
+    right_arm.addOrReplaceChild(
+        "cube_r2",
+        CubeListBuilder.create()
+            .texOffs(4, 4)
+            .addBox(0.0F, -0.5F, -0.5F, 1.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)),
+        PartPose.offsetAndRotation(0.0F, -0.25F, -0.5F, -1.5708F, 0.0F, 0.0F));
+    right_arm.addOrReplaceChild(
+        "right_hand",
+        CubeListBuilder.create()
+            .texOffs(22, 21)
+            .addBox(0.0F, -1.3F, -5.0F, 1.0F, 2.0F, 2.0F, new CubeDeformation(0.0F)),
+        PartPose.offset(0.0F, 0.0F, 0.0F));
+
+    // Wheels
     PartDefinition wheels =
         partdefinition.addOrReplaceChild(
             "wheels",
             CubeListBuilder.create()
-                .texOffs(24, 12)
+                .texOffs(10, 21)
                 .addBox(-2.0F, -1.0F, -2.0F, 4.0F, 2.0F, 4.0F, new CubeDeformation(0.0F)),
             PartPose.offset(0.0F, 21.5F, 0.0F));
 
@@ -124,13 +153,13 @@ public class BaseRobotModel<T extends BaseRobotEntity> extends EntityModel<T> {
     left_wheel.addOrReplaceChild(
         "left_front_wheel",
         CubeListBuilder.create()
-            .texOffs(12, 21)
+            .texOffs(24, 4)
             .addBox(-2.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(-0.001F)),
         PartPose.offset(0.0F, 0.0F, -3.0F));
     left_wheel.addOrReplaceChild(
         "left_back_wheel",
         CubeListBuilder.create()
-            .texOffs(12, 21)
+            .texOffs(24, 4)
             .addBox(-2.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(-0.001F)),
         PartPose.offset(0.0F, 0.0F, 3.0F));
 
@@ -146,7 +175,7 @@ public class BaseRobotModel<T extends BaseRobotEntity> extends EntityModel<T> {
     right_wheel.addOrReplaceChild(
         "right_front_wheel",
         CubeListBuilder.create()
-            .texOffs(12, 21)
+            .texOffs(24, 4)
             .mirror()
             .addBox(0.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(-0.001F))
             .mirror(false),
@@ -154,13 +183,13 @@ public class BaseRobotModel<T extends BaseRobotEntity> extends EntityModel<T> {
     right_wheel.addOrReplaceChild(
         "right_back_wheel",
         CubeListBuilder.create()
-            .texOffs(12, 21)
+            .texOffs(24, 4)
             .mirror()
             .addBox(0.0F, -1.0F, -1.0F, 2.0F, 2.0F, 2.0F, new CubeDeformation(-0.001F))
             .mirror(false),
         PartPose.offset(0.0F, 0.0F, 3.0F));
 
-    return LayerDefinition.create(meshdefinition, 64, 64);
+    return LayerDefinition.create(meshdefinition, 32, 32);
   }
 
   @Override
@@ -175,13 +204,11 @@ public class BaseRobotModel<T extends BaseRobotEntity> extends EntityModel<T> {
     // Apply head animation based on entity's current state
     switch (entity.getHeadAnimation()) {
       case NOD_YES:
-        // Nod animation: up and down
         float nodProgress = Mth.sin(ageInTicks * 0.6F);
         this.head.xRot = nodProgress * 0.6F;
         this.head.yRot = 0.0F;
         break;
       case SHAKE_NO:
-        // Shake animation: left and right
         float shakeProgress = Mth.sin(ageInTicks * 0.6F);
         this.head.yRot = shakeProgress * 0.6F;
         this.head.xRot = 0.0F;
@@ -193,10 +220,15 @@ public class BaseRobotModel<T extends BaseRobotEntity> extends EntityModel<T> {
         break;
     }
 
-    // Arm swing animation during movement
+    // Arm swing animation during movement with safe limits (-5° to +25°)
     float armSwing = Mth.cos(limbSwing * 0.6662F) * 1.4F * limbSwingAmount;
-    this.left_arm.xRot = armSwing;
-    this.right_arm.xRot = -armSwing;
+    this.left_arm.xRot = Mth.clamp(armSwing, -0.087F, 0.436F);
+    this.right_arm.xRot = Mth.clamp(-armSwing, -0.087F, 0.436F);
+
+    // Hand rotation animation during movement (subtle wobble)
+    float randomWobble = Mth.sin(ageInTicks * 0.15F) * 0.15F; // Random rotation
+    this.left_hand.yRot = randomWobble;
+    this.right_hand.yRot = -randomWobble;
 
     // Reset wheel rotations
     this.left_wheel.xRot = 0.0F;

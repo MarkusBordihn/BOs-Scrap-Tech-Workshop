@@ -312,6 +312,10 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
 
   @Override
   public int getBarColor(ItemStack itemStack) {
+    ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
+    if (!data.hasBattery()) {
+      return 0xFF0000;
+    }
     EnergyData energyData = EnergyManager.getEnergyData(itemStack, MultitoolConfig.energyMax);
     float energyRatio = energyData.getPercentage();
     return energyRatio > 0.6f ? 0x00FF00 : energyRatio > 0.3f ? 0xFFFF00 : 0xFF0000;
@@ -323,14 +327,19 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
     tooltipComponents.add(
         Component.translatable(Constants.ITEM_PREFIX + "scrap_multitool.description"));
 
-    EnergyData energyData = EnergyManager.getEnergyData(itemStack, MultitoolConfig.energyMax);
-    int displayEnergy = energyData.getDisplayEnergy();
-    tooltipComponents.add(
-        Component.literal("Energy: " + displayEnergy + "%")
-            .withStyle(style -> style.withColor(getBarColor(itemStack))));
-
     ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
-    if (data.hasBattery()) {
+    if (!data.hasBattery()) {
+      tooltipComponents.add(
+          Component.literal("Energy: 0%").withStyle(style -> style.withColor(0xFF0000)));
+      tooltipComponents.add(
+          Component.literal("Battery: Not installed")
+              .withStyle(style -> style.withColor(0xFF0000)));
+    } else {
+      EnergyData energyData = EnergyManager.getEnergyData(itemStack, MultitoolConfig.energyMax);
+      int displayEnergy = energyData.getDisplayEnergy();
+      tooltipComponents.add(
+          Component.literal("Energy: " + displayEnergy + "%")
+              .withStyle(style -> style.withColor(getBarColor(itemStack))));
       tooltipComponents.add(
           Component.literal("Battery: Installed").withStyle(style -> style.withColor(0x00FF00)));
     }

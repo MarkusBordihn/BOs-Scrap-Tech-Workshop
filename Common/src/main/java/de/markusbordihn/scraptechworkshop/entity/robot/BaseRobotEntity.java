@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.entity;
+package de.markusbordihn.scraptechworkshop.entity.robot;
 
 import de.markusbordihn.scraptechworkshop.data.robot.HeadAnimation;
 import net.minecraft.core.BlockPos;
@@ -28,9 +28,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 
-/**
- * Base class for all robot entities in the mod. Provides common attributes and basic functionality.
- */
 public abstract class BaseRobotEntity extends PathfinderMob {
 
   protected BlockPos stationPos;

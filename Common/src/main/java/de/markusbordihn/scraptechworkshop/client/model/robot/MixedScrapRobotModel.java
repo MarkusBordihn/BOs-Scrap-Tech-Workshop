@@ -17,47 +17,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.client.model;
+package de.markusbordihn.scraptechworkshop.client.model.robot;
 
-import de.markusbordihn.scraptechworkshop.entity.BaseRobotEntity;
-import de.markusbordihn.scraptechworkshop.entity.collectorstationrobot.CollectorStationRobotEntity;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.util.Mth;
+import de.markusbordihn.scraptechworkshop.entity.robot.scraprobot.MixedScrapRobotEntity;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.resources.ResourceLocation;
 
-public class CollectorStationRobotModel<T extends BaseRobotEntity> extends BaseRobotModel<T> {
+public class MixedScrapRobotModel extends BaseRobotModel<MixedScrapRobotEntity> {
 
-  public CollectorStationRobotModel(ModelPart root) {
+  public static final ModelLayerLocation LAYER_LOCATION =
+      new ModelLayerLocation(
+          new ResourceLocation("scrap_tech_workshop", "mixed_scrap_robot"), "main");
+
+  public MixedScrapRobotModel(net.minecraft.client.model.geom.ModelPart root) {
     super(root);
   }
 
   @Override
   public void setupAnim(
-      T entity,
+      MixedScrapRobotEntity entity,
       float limbSwing,
       float limbSwingAmount,
       float ageInTicks,
       float netHeadYaw,
       float headPitch) {
     super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-
-    if (!(entity instanceof CollectorStationRobotEntity collectorStationRobotEntity)) {
-      return;
-    }
-
-    if (collectorStationRobotEntity.isMovingFromGoal()) {
-      float wheelRotation = ageInTicks * 0.5F;
-      float armSwing = Mth.cos(ageInTicks * 0.6662F) * 0.6F;
-      float bodyRotation = entity.yBodyRot - entity.yBodyRotO;
-      while (bodyRotation > 180.0F) bodyRotation -= 360.0F;
-      while (bodyRotation < -180.0F) bodyRotation += 360.0F;
-      float rotationEffect = bodyRotation * 0.2F;
-
-      this.left_front_wheel.xRot = wheelRotation + rotationEffect;
-      this.left_back_wheel.xRot = wheelRotation + rotationEffect;
-      this.right_front_wheel.xRot = wheelRotation - rotationEffect;
-      this.right_back_wheel.xRot = wheelRotation - rotationEffect;
-      this.left_arm.xRot = armSwing;
-      this.right_arm.xRot = -armSwing;
-    }
   }
 }

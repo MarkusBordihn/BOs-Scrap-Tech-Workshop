@@ -17,9 +17,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.entity.scraprobot;
+package de.markusbordihn.scraptechworkshop.entity.robot.scraprobot;
 
-import de.markusbordihn.scraptechworkshop.entity.BaseRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.BaseRobotEntity;
 import de.markusbordihn.scraptechworkshop.item.ModItemTags;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;

@@ -19,8 +19,8 @@
 
 package de.markusbordihn.scraptechworkshop.registry.entity;
 
-import de.markusbordihn.scraptechworkshop.entity.collectorstationrobot.CollectorStationRobotEntity;
-import de.markusbordihn.scraptechworkshop.entity.collectorstationrobot.CollectorStationRobotStaticEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.collectorstationrobot.CollectorStationRobotEntity;
+import de.markusbordihn.scraptechworkshop.entity.robot.collectorstationrobot.CollectorStationRobotStaticEntity;
 import net.minecraft.world.entity.EntityType;
 
 public class CollectorStationRobotEntityRegistry {
