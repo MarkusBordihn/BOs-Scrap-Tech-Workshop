@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class GlassScrapItem extends ScrapItem {
 
-  public static final String GLASS_SCRAP_ID = "glass_scrap";
-
   public GlassScrapItem(Properties properties) {
     super(properties, ScrapType.GLASS);
   }

@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class AlloyScrapItem extends ScrapItem {
 
-  public static final String ALLOY_SCRAP_ID = "alloy_scrap";
-
   public AlloyScrapItem(Properties properties, ScrapType scrapType) {
     super(properties, scrapType);
   }

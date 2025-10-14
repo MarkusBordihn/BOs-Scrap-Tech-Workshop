@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "SSS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "scrap_tech_workshop:fastener_scrap"
+    }
+  },
+  "result": {
+    "item": "scrap_tech_workshop:fastener_scrap_box",
+    "count": 1
+  }
+}

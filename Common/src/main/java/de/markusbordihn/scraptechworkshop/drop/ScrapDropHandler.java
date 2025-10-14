@@ -200,13 +200,13 @@ public class ScrapDropHandler {
           new ScrapDropData(ModItems.WOOD_SCRAP.get(), ScrapDropConfig.woodScrapDropChance);
 
       // Additional tech scrap items using existing tech drop chance
-      case CIRCUIT_SCRAP ->
+      case CIRCUIT ->
           new ScrapDropData(ModItems.CIRCUIT_SCRAP.get(), ScrapDropConfig.techScrapDropChance);
-      case COIL_SCRAP ->
+      case COIL ->
           new ScrapDropData(ModItems.COIL_SCRAP.get(), ScrapDropConfig.techScrapDropChance);
-      case CAPACITOR_SCRAP ->
+      case CAPACITOR ->
           new ScrapDropData(ModItems.CAPACITOR_SCRAP.get(), ScrapDropConfig.techScrapDropChance);
-      case ENERGY_CELL_SCRAP ->
+      case ENERGY_CELL ->
           new ScrapDropData(ModItems.ENERGY_CELL_SCRAP.get(), ScrapDropConfig.techScrapDropChance);
 
       // Additional material and synthetic scrap items

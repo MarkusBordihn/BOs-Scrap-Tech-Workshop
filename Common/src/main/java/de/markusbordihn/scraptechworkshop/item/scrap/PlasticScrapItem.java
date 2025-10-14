@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class PlasticScrapItem extends ScrapItem {
 
-  public static final String PLASTIC_SCRAP_ID = "plastic_scrap";
-
   public PlasticScrapItem(Properties properties) {
     super(properties, ScrapType.PLASTIC);
   }

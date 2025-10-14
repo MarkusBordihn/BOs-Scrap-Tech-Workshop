@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class WoodScrapItem extends ScrapItem {
 
-  public static final String WOOD_SCRAP_ID = "wood_scrap";
-
   public WoodScrapItem(Properties properties) {
     super(properties, ScrapType.WOOD);
   }

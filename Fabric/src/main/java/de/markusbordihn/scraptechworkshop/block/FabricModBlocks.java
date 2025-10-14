@@ -24,8 +24,10 @@ import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapColle
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileBlock;
+import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.ScrapBoxBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
 import net.minecraft.core.Registry;
@@ -60,5 +62,95 @@ public class FabricModBlocks {
         BuiltInRegistries.BLOCK,
         new ResourceLocation(Constants.MOD_ID, BasicScrapCollectorStationBlock.ID),
         CollectorStationBlockRegistry.BASIC_SCRAP_COLLECTOR_STATION_BLOCK);
+
+    // Register scrap box blocks
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.ALLOY.getBlockId()),
+        ScrapBoxBlockRegistry.ALLOY_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.BIO.getBlockId()),
+        ScrapBoxBlockRegistry.BIO_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.CAPACITOR.getBlockId()),
+        ScrapBoxBlockRegistry.CAPACITOR_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.CERAMIC.getBlockId()),
+        ScrapBoxBlockRegistry.CERAMIC_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.CIRCUIT.getBlockId()),
+        ScrapBoxBlockRegistry.CIRCUIT_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.COIL.getBlockId()),
+        ScrapBoxBlockRegistry.COIL_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.COPPER.getBlockId()),
+        ScrapBoxBlockRegistry.COPPER_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.CRYSTAL.getBlockId()),
+        ScrapBoxBlockRegistry.CRYSTAL_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.ENERGY_CELL.getBlockId()),
+        ScrapBoxBlockRegistry.ENERGY_CELL_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.FASTENER.getBlockId()),
+        ScrapBoxBlockRegistry.FASTENER_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.FIBER.getBlockId()),
+        ScrapBoxBlockRegistry.FIBER_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.GLASS.getBlockId()),
+        ScrapBoxBlockRegistry.GLASS_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.GOLD.getBlockId()),
+        ScrapBoxBlockRegistry.GOLD_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.INSULATION.getBlockId()),
+        ScrapBoxBlockRegistry.INSULATION_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.IRON.getBlockId()),
+        ScrapBoxBlockRegistry.IRON_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.LUMINOUS.getBlockId()),
+        ScrapBoxBlockRegistry.LUMINOUS_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.METAL.getBlockId()),
+        ScrapBoxBlockRegistry.METAL_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.MINERAL.getBlockId()),
+        ScrapBoxBlockRegistry.MINERAL_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.PLASTIC.getBlockId()),
+        ScrapBoxBlockRegistry.PLASTIC_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.RUBBER.getBlockId()),
+        ScrapBoxBlockRegistry.RUBBER_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.TECH.getBlockId()),
+        ScrapBoxBlockRegistry.TECH_SCRAP_BOX_BLOCK);
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapType.WOOD.getBlockId()),
+        ScrapBoxBlockRegistry.WOOD_SCRAP_BOX_BLOCK);
   }
 }

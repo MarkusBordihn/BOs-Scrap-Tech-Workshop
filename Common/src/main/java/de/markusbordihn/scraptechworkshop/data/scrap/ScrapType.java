@@ -19,16 +19,18 @@
 
 package de.markusbordihn.scraptechworkshop.data.scrap;
 
+import java.util.Locale;
+
 public enum ScrapType {
   ALLOY(ScrapCategory.MATERIAL),
   BIO(ScrapCategory.ORGANIC),
-  CAPACITOR_SCRAP(ScrapCategory.TECHNOLOGY),
+  CAPACITOR(ScrapCategory.TECHNOLOGY),
   CERAMIC(ScrapCategory.SYNTHETIC),
-  CIRCUIT_SCRAP(ScrapCategory.TECHNOLOGY),
-  COIL_SCRAP(ScrapCategory.MATERIAL),
+  CIRCUIT(ScrapCategory.TECHNOLOGY),
+  COIL(ScrapCategory.MATERIAL),
   COPPER(ScrapCategory.MATERIAL),
   CRYSTAL(ScrapCategory.MINERAL),
-  ENERGY_CELL_SCRAP(ScrapCategory.TECHNOLOGY),
+  ENERGY_CELL(ScrapCategory.TECHNOLOGY),
   FASTENER(ScrapCategory.MATERIAL),
   FIBER(ScrapCategory.ORGANIC),
   GLASS(ScrapCategory.SYNTHETIC),
@@ -51,5 +53,13 @@ public enum ScrapType {
 
   public ScrapCategory getCategory() {
     return category;
+  }
+
+  public String getItemId() {
+    return name().toLowerCase(Locale.ROOT) + "_scrap";
+  }
+
+  public String getBlockId() {
+    return name().toLowerCase(Locale.ROOT) + "_scrap_box";
   }
 }

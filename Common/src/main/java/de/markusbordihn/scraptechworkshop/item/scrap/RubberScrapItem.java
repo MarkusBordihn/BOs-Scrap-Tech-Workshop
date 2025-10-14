@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class RubberScrapItem extends ScrapItem {
 
-  public static final String RUBBER_SCRAP_ID = "rubber_scrap";
-
   public RubberScrapItem(Properties properties) {
     super(properties, ScrapType.RUBBER);
   }

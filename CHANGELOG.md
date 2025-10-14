@@ -7,6 +7,17 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v.12.0
+
+- Fixed #1 by adding legacy Forge mod loader support for 47.2.x.
+- Fixed missing render types for Fabric.
+- Added debug manager for less verbose logging on production systems.
+- Added experimental scrap item boxes.
+- Improved block, block item and item registry.
+- Improved robot spawn conditions and balancing.
+- Improved mod logo for better visibility.
+- Improved wiki and documentation.
+
 ### v0.11.0
 
 - Fixed multi-tool edge case issues.

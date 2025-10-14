@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class FiberScrapItem extends ScrapItem {
 
-  public static final String FIBER_SCRAP_ID = "fiber_scrap";
-
   public FiberScrapItem(Properties properties) {
     super(properties, ScrapType.FIBER);
   }

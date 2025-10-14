@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class BioScrapItem extends ScrapItem {
 
-  public static final String BIO_SCRAP_ID = "bio_scrap";
-
   public BioScrapItem(Properties properties) {
     super(properties, ScrapType.BIO);
   }

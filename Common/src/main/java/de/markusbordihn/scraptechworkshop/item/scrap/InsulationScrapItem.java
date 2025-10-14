@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class InsulationScrapItem extends ScrapItem {
 
-  public static final String INSULATION_SCRAP_ID = "insulation_scrap";
-
   public InsulationScrapItem(Properties properties) {
     super(properties, ScrapType.INSULATION);
   }

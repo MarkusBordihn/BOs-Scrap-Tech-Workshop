@@ -67,7 +67,6 @@ public class Config {
     ScrapDropConfig.registerConfig();
     ScrapFishingConfig.registerConfig();
     ScrapPileConfig.registerConfig();
-    ScrapRobotConfig.registerConfig();
   }
 
   public static void registerServerConfig() {

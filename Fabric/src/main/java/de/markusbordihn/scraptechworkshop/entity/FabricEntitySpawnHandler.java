@@ -20,55 +20,67 @@
 package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.config.ScrapRobotConfig;
 import de.markusbordihn.scraptechworkshop.registry.entity.MixedScrapRobotEntityRegistry;
-import de.markusbordihn.scraptechworkshop.spawner.ScrapRobotSpawner;
+import de.markusbordihn.scraptechworkshop.spawner.RobotSpawnConfig;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.biome.Biome;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class FabricEntitySpawnHandler {
 
   protected static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
-  private static final String LOG_PREFIX = "[Entity Spawn Handler]";
+  private static final RobotSpawnConfig CONFIG = RobotSpawnConfig.load("mixed_scrap_robot");
 
   private FabricEntitySpawnHandler() {}
 
   public static void registerSpawns() {
-    if (!ScrapRobotConfig.mixedScrapRobotSpawnEnabled) {
-      log.info("{} Mixed Scrap Robot spawning is disabled in config", LOG_PREFIX);
+    if (!CONFIG.enabled) {
+      log.info("Mixed Scrap Robot spawning is disabled in spawn config");
       return;
     }
 
     if (MixedScrapRobotEntityRegistry.MIXED_SCRAP_ROBOT_ENTITY_TYPE == null) {
-      log.error("{} Mixed Scrap Robot entity type is null, cannot register spawns", LOG_PREFIX);
+      log.error("Mixed Scrap Robot entity type is null, cannot register spawns");
       return;
     }
 
-    // Register spawn using Fabric API
     BiomeModifications.addSpawn(
-        context -> {
-          if (!ScrapRobotConfig.mixedScrapRobotSpawnEnabled) {
-            return false;
-          }
-
-          // Check biome filter
-          return ScrapRobotSpawner.shouldSpawnInBiome(
-              context.getBiomeRegistryEntry(), ScrapRobotConfig.mixedScrapRobotBiomeType);
-        },
+        BiomeSelectors.tag(parseBiomeTag(CONFIG.biomes)),
         MobCategory.CREATURE,
         MixedScrapRobotEntityRegistry.MIXED_SCRAP_ROBOT_ENTITY_TYPE,
-        ScrapRobotConfig.mixedScrapRobotSpawnWeight,
-        ScrapRobotConfig.mixedScrapRobotSpawnMinGroup,
-        ScrapRobotConfig.mixedScrapRobotSpawnMaxGroup);
+        CONFIG.weight,
+        CONFIG.minGroup,
+        CONFIG.maxGroup);
 
     log.info(
-        "{} Registered Mixed Scrap Robot natural spawning (weight: {}, group: {}-{}, biomes: {})",
-        LOG_PREFIX,
-        ScrapRobotConfig.mixedScrapRobotSpawnWeight,
-        ScrapRobotConfig.mixedScrapRobotSpawnMinGroup,
-        ScrapRobotConfig.mixedScrapRobotSpawnMaxGroup,
-        ScrapRobotConfig.mixedScrapRobotBiomeType);
+        "Registered Mixed Scrap Robot spawning (weight: {}, group: {}-{}, biomes: {}, minDistance: {})",
+        CONFIG.weight,
+        CONFIG.minGroup,
+        CONFIG.maxGroup,
+        CONFIG.biomes,
+        CONFIG.minDistanceFromCenter);
+  }
+
+  private static TagKey<Biome> parseBiomeTag(String tag) {
+    String tagPath = tag.startsWith("#") ? tag.substring(1) : tag;
+    String[] parts = tagPath.split(":");
+    if (parts.length == 2) {
+      return TagKey.create(Registries.BIOME, new ResourceLocation(parts[0], parts[1]));
+    }
+    return TagKey.create(Registries.BIOME, new ResourceLocation("minecraft", "is_overworld"));
+  }
+
+  public static int getMinDistanceFromCenter() {
+    return CONFIG.minDistanceFromCenter;
+  }
+
+  public static int getDespawnDistance() {
+    return CONFIG.despawnDistance;
   }
 }

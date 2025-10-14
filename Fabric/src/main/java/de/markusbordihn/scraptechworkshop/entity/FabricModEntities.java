@@ -33,6 +33,8 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 public class FabricModEntities {
 
@@ -101,5 +103,12 @@ public class FabricModEntities {
     FabricDefaultAttributeRegistry.register(
         mixedScrapRobotEntityType, MixedScrapRobotEntity.createAttributes());
     MixedScrapRobotEntityRegistry.setMixedScrapRobotEntityType(mixedScrapRobotEntityType);
+
+    // Register Spawn Placements
+    SpawnPlacements.register(
+        mixedScrapRobotEntityType,
+        SpawnPlacements.Type.ON_GROUND,
+        Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+        MixedScrapRobotEntity::checkRobotSpawnRules);
   }
 }

@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.item;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import java.util.List;
+import java.util.Locale;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -86,7 +87,7 @@ public abstract class ScrapItem extends Item {
     tooltip.add(
         Component.translatable(
                 Constants.TOOLTIP_PREFIX + "rarity",
-                Component.translatable("rarity." + rarity.name().toLowerCase()))
+                Component.translatable("rarity." + rarity.name().toLowerCase(Locale.ROOT)))
             .withStyle(rarity.color));
 
     if (getEfficiencyBonus() != 1.0f) {

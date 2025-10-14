@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "scrap_tech_workshop:copper_scrap_box"
+    }
+  ],
+  "result": {
+    "item": "scrap_tech_workshop:copper_scrap",
+    "count": 9
+  }
+}

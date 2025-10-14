@@ -54,6 +54,30 @@ public class ModItems {
   public static Supplier<Item> ALLOY_SCRAP;
   public static Supplier<Item> INSULATION_SCRAP;
 
+  // Scrap Box Block Items
+  public static Supplier<Item> ALLOY_SCRAP_BOX;
+  public static Supplier<Item> BIO_SCRAP_BOX;
+  public static Supplier<Item> CAPACITOR_SCRAP_BOX;
+  public static Supplier<Item> CERAMIC_SCRAP_BOX;
+  public static Supplier<Item> CIRCUIT_SCRAP_BOX;
+  public static Supplier<Item> COIL_SCRAP_BOX;
+  public static Supplier<Item> COPPER_SCRAP_BOX;
+  public static Supplier<Item> CRYSTAL_SCRAP_BOX;
+  public static Supplier<Item> ENERGY_CELL_SCRAP_BOX;
+  public static Supplier<Item> FASTENER_SCRAP_BOX;
+  public static Supplier<Item> FIBER_SCRAP_BOX;
+  public static Supplier<Item> GLASS_SCRAP_BOX;
+  public static Supplier<Item> GOLD_SCRAP_BOX;
+  public static Supplier<Item> INSULATION_SCRAP_BOX;
+  public static Supplier<Item> IRON_SCRAP_BOX;
+  public static Supplier<Item> LUMINOUS_SCRAP_BOX;
+  public static Supplier<Item> METAL_SCRAP_BOX;
+  public static Supplier<Item> MINERAL_SCRAP_BOX;
+  public static Supplier<Item> PLASTIC_SCRAP_BOX;
+  public static Supplier<Item> RUBBER_SCRAP_BOX;
+  public static Supplier<Item> TECH_SCRAP_BOX;
+  public static Supplier<Item> WOOD_SCRAP_BOX;
+
   // Tool Items
   public static Supplier<Item> SCRAP_MULTITOOL;
   public static Supplier<Item> CREATIVE_SCRAP_MULTITOOL;

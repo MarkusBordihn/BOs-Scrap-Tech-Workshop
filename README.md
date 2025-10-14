@@ -36,6 +36,10 @@ cases, QoL) is very welcome.
 
 [Read about the event][modjam]
 
+## Introduction & Overview Video (English)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/HQqzPo6yJM4?si=Z5lv1HSL-ddvmGmc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
 ## Core Features (current) ✨
 
 * Scrap Piles – size 1–4, different variants (Mixed / Metal / Tech). Right‑click harvest or break;
@@ -44,25 +48,36 @@ cases, QoL) is very welcome.
 * Scrap Multitool – single energy tool acting as pick / axe / shovel depending on block; battery
   powered.
 * Energy Cells – removable / rechargeable style items; visual state reflects charge.
+* Collector Station – automates scrap collection in an area, can interact with robots.
+* HoloCube – displays holo-logs and data, foundation for tech/lore features.
+* HoloPad – interacts with HoloCube and holo-logs.
+* Robots – Mixed Scrap Robot and Collector Station Robot for automated scrap collection and
+  interaction with stations.
+* Circuit Board – component for advanced crafting.
+* Fishing Rods – Scrap Fishing Rod and Magnet Fishing Rod for alternative loot sources.
+* Upgrades – Speed, Creative Speed, Fast Charge, Creative Fast Charge for machines and tools.
+* Many scrap types – Metal, Tech, Bio, Ceramic, Crystal, Alloy, Insulation, and more.
 * Auto‑Merge & Auto‑Pickup (configurable) for smoother scavenging.
 * Fortune / Silk Touch support on scrap piles (config dependent).
 * Redstone: comparator output from recycler for automation.
 * Multi‑loader: Forge + Fabric builds available (NeoForge planned after jam).
 
-Not listed = not in yet (modules, world structures, cross‑mod recipes will come later).
+Not listed = not yet implemented (modules, world structures, cross‑mod recipes, etc.).
 
 ## Quick Start 🛠️
 
-1. Scavenge Scrap:
+1. Receive your HoloCube on first world entry. Use it for in-game guidance and tips.
+2. Scavenge Scrap:
     * Break stone and early world debris (if configured) or raid chests.
     * Harvest natural / generated scrap piles (right‑click or mine). Fortune helps.
-2. Craft a basic Energy Cell (early improvised battery) 🔋
-3. Craft the Scrap Multitool and insert the battery (Shift + Right‑click to open if needed).
-4. Gather more junk and craft the Recycler.
-5. Feed junk into the Recycler → get structured scrap components → unlock better crafting routes.
-6. Automate with hoppers / comparators once stable.
+3. Craft a basic Energy Cell (early improvised battery) 🔋
+4. Craft the Scrap Multitool and insert the battery (Shift + Right‑click to open if needed).
+5. Gather more junk and craft the Recycler.
+6. Feed junk into the Recycler → get structured scrap components → unlock better crafting routes.
+7. Automate with hoppers, comparators, Collector Stations, and robots once stable.
 
-From there you expand by locating richer pile variants and refining scrap loops.
+From there you expand by locating richer pile variants, refining scrap loops, and exploring
+automation options.
 
 ## Theme & Design 🎯
 

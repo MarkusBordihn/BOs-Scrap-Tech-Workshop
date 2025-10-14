@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class CrystalScrapItem extends ScrapItem {
 
-  public static final String CRYSTAL_SCRAP_ID = "crystal_scrap";
-
   public CrystalScrapItem(Properties properties) {
     super(properties, ScrapType.CRYSTAL);
   }

@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class CeramicScrapItem extends ScrapItem {
 
-  public static final String CERAMIC_SCRAP_ID = "ceramic_scrap";
-
   public CeramicScrapItem(Properties properties) {
     super(properties, ScrapType.CERAMIC);
   }

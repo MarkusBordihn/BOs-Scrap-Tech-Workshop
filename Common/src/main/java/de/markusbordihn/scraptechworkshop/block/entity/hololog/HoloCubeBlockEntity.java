@@ -28,6 +28,7 @@ import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogPlaybackContext;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogStatus;
 import de.markusbordihn.scraptechworkshop.data.hololog.WorldContext;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import net.minecraft.client.Minecraft;
@@ -271,7 +272,7 @@ public class HoloCubeBlockEntity extends BlockEntity {
     if (compoundTag.contains(LAST_STATUS_TAG)) {
       try {
         lastKnownStatus =
-            HoloLogStatus.valueOf(compoundTag.getString(LAST_STATUS_TAG).toUpperCase());
+            HoloLogStatus.valueOf(compoundTag.getString(LAST_STATUS_TAG).toUpperCase(Locale.ROOT));
       } catch (Exception e) {
         log.warn("[{}] Failed to load last status: {}", cubeUUID, e.getMessage());
         lastKnownStatus = HoloLogStatus.READY;

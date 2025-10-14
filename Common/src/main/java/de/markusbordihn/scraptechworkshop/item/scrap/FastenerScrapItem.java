@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class FastenerScrapItem extends ScrapItem {
 
-  public static final String FASTENER_SCRAP_ID = "fastener_scrap";
-
   public FastenerScrapItem(Properties properties, ScrapType scrapType) {
     super(properties, scrapType);
   }

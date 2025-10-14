@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class MineralScrapItem extends ScrapItem {
 
-  public static final String MINERAL_SCRAP_ID = "mineral_scrap";
-
   public MineralScrapItem(Properties properties) {
     super(properties, ScrapType.MINERAL);
   }

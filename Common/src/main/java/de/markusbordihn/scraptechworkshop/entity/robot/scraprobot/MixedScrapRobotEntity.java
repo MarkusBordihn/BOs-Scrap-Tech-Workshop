@@ -19,12 +19,17 @@
 
 package de.markusbordihn.scraptechworkshop.entity.robot.scraprobot;
 
+import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.entity.robot.BaseRobotEntity;
 import de.markusbordihn.scraptechworkshop.item.ModItemTags;
+import de.markusbordihn.scraptechworkshop.spawner.RobotSpawnConfig;
+import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.FollowMobGoal;
@@ -36,10 +41,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class MixedScrapRobotEntity extends BaseRobotEntity {
 
   public static final String ID = "mixed_scrap_robot";
+  private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
+  private static final RobotSpawnConfig SPAWN_CONFIG = RobotSpawnConfig.load("mixed_scrap_robot");
 
   public MixedScrapRobotEntity(
       final EntityType<? extends BaseRobotEntity> entityType, final Level level) {
@@ -48,6 +58,27 @@ public class MixedScrapRobotEntity extends BaseRobotEntity {
 
   public static AttributeSupplier.Builder createAttributes() {
     return createBaseAttributes();
+  }
+
+  public static boolean checkRobotSpawnRules(
+      EntityType<MixedScrapRobotEntity> entityType,
+      ServerLevelAccessor level,
+      MobSpawnType spawnType,
+      BlockPos blockPos,
+      RandomSource random) {
+    double distanceFromCenter =
+        Math.sqrt(blockPos.getX() * blockPos.getX() + blockPos.getZ() * blockPos.getZ());
+
+    if (SPAWN_CONFIG.minDistanceFromCenter > 0
+        && distanceFromCenter < SPAWN_CONFIG.minDistanceFromCenter) {
+      return false;
+    }
+
+    log.debug(
+        "Mixed Scrap Robot check spawn rules at {} (distance from center: {})",
+        blockPos,
+        (int) distanceFromCenter);
+    return true;
   }
 
   @Override

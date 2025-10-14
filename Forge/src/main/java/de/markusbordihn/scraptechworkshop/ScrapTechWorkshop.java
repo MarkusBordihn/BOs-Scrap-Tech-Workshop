@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop;
 
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
 import de.markusbordihn.scraptechworkshop.config.Config;
+import de.markusbordihn.scraptechworkshop.debug.DebugManager;
 import de.markusbordihn.scraptechworkshop.entity.ForgeModBlockEntities;
 import de.markusbordihn.scraptechworkshop.entity.ForgeModEntities;
 import de.markusbordihn.scraptechworkshop.item.ForgeModBlockItems;
@@ -47,9 +48,20 @@ public class ScrapTechWorkshop {
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   public ScrapTechWorkshop(FMLJavaModLoadingContext context) {
-    final IEventBus modEventBus = context.getModEventBus();
+    initialize(context.getModEventBus());
+  }
+
+  public ScrapTechWorkshop() {
+    initialize(FMLJavaModLoadingContext.get().getModEventBus());
+  }
+
+  private void initialize(IEventBus modEventBus) {
 
     log.info("Initializing {} (Forge) ...", Constants.MOD_NAME);
+
+    log.info("{} Debug Manager ...", Constants.LOG_REGISTER_PREFIX);
+    DebugManager.setDevelopmentEnvironment(!FMLEnvironment.production);
+    DebugManager.checkForDebugLogging(Constants.LOG_NAME);
 
     log.info("{} Constants ...", Constants.LOG_REGISTER_PREFIX);
     Constants.GAME_DIR = FMLPaths.GAMEDIR.get();

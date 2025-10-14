@@ -20,25 +20,11 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.AlloyScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.BioScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.CrystalScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.FastenerScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.FiberScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.GlassScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.InsulationScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.LuminousScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.MetalScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.MineralScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
 import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeFastChargeUpgradeItem;
 import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeSpeedUpgradeItem;
 import de.markusbordihn.scraptechworkshop.item.upgrade.FastChargeUpgradeItem;
@@ -46,6 +32,7 @@ import de.markusbordihn.scraptechworkshop.item.upgrade.NormalSpeedUpgradeItem;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.scrapbox.ScrapBoxBlockItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;
 import de.markusbordihn.scraptechworkshop.tabs.ModCreativeTabs;
 import java.util.LinkedHashMap;
@@ -69,62 +56,130 @@ public class ForgeModItems {
 
   // Metal Scrap Items
   public static final RegistryObject<Item> SCRAP_ALLOY =
-      ITEMS.register(AlloyScrapItem.ALLOY_SCRAP_ID, () -> ScrapItemRegistry.ALLOY_SCRAP_ITEM);
+      ITEMS.register(ScrapType.ALLOY.getItemId(), () -> ScrapItemRegistry.ALLOY_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_METAL =
-      ITEMS.register(MetalScrapItem.METAL_SCRAP_ID, () -> ScrapItemRegistry.METAL_SCRAP_ITEM);
+      ITEMS.register(ScrapType.METAL.getItemId(), () -> ScrapItemRegistry.METAL_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_GOLD =
-      ITEMS.register(MetalScrapItem.GOLD_SCRAP_ID, () -> ScrapItemRegistry.GOLD_SCRAP_ITEM);
+      ITEMS.register(ScrapType.GOLD.getItemId(), () -> ScrapItemRegistry.GOLD_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_IRON =
-      ITEMS.register(MetalScrapItem.IRON_SCRAP_ID, () -> ScrapItemRegistry.IRON_SCRAP_ITEM);
+      ITEMS.register(ScrapType.IRON.getItemId(), () -> ScrapItemRegistry.IRON_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_COPPER =
-      ITEMS.register(MetalScrapItem.COPPER_SCRAP_ID, () -> ScrapItemRegistry.COPPER_SCRAP_ITEM);
+      ITEMS.register(ScrapType.COPPER.getItemId(), () -> ScrapItemRegistry.COPPER_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_CERAMIC =
-      ITEMS.register(CeramicScrapItem.CERAMIC_SCRAP_ID, () -> ScrapItemRegistry.CERAMIC_SCRAP_ITEM);
+      ITEMS.register(ScrapType.CERAMIC.getItemId(), () -> ScrapItemRegistry.CERAMIC_SCRAP_ITEM);
 
   // Other Scrap Items
   public static final RegistryObject<Item> SCRAP_CRYSTAL =
-      ITEMS.register(CrystalScrapItem.CRYSTAL_SCRAP_ID, () -> ScrapItemRegistry.CRYSTAL_SCRAP_ITEM);
+      ITEMS.register(ScrapType.CRYSTAL.getItemId(), () -> ScrapItemRegistry.CRYSTAL_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_FASTENER =
-      ITEMS.register(
-          FastenerScrapItem.FASTENER_SCRAP_ID, () -> ScrapItemRegistry.FASTENER_SCRAP_ITEM);
+      ITEMS.register(ScrapType.FASTENER.getItemId(), () -> ScrapItemRegistry.FASTENER_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_INSULATION =
       ITEMS.register(
-          InsulationScrapItem.INSULATION_SCRAP_ID, () -> ScrapItemRegistry.INSULATION_SCRAP_ITEM);
+          ScrapType.INSULATION.getItemId(), () -> ScrapItemRegistry.INSULATION_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_LUMINOUS =
-      ITEMS.register(
-          LuminousScrapItem.LUMINOUS_SCRAP_ID, () -> ScrapItemRegistry.LUMINOUS_SCRAP_ITEM);
+      ITEMS.register(ScrapType.LUMINOUS.getItemId(), () -> ScrapItemRegistry.LUMINOUS_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_PLASTIC =
-      ITEMS.register(PlasticScrapItem.PLASTIC_SCRAP_ID, () -> ScrapItemRegistry.PLASTIC_SCRAP_ITEM);
+      ITEMS.register(ScrapType.PLASTIC.getItemId(), () -> ScrapItemRegistry.PLASTIC_SCRAP_ITEM);
 
   // Additional Material Scrap Items
   public static final RegistryObject<Item> SCRAP_MINERAL =
-      ITEMS.register(MineralScrapItem.MINERAL_SCRAP_ID, () -> ScrapItemRegistry.MINERAL_SCRAP_ITEM);
+      ITEMS.register(ScrapType.MINERAL.getItemId(), () -> ScrapItemRegistry.MINERAL_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_WOOD =
-      ITEMS.register(WoodScrapItem.WOOD_SCRAP_ID, () -> ScrapItemRegistry.WOOD_SCRAP_ITEM);
+      ITEMS.register(ScrapType.WOOD.getItemId(), () -> ScrapItemRegistry.WOOD_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_RUBBER =
-      ITEMS.register(RubberScrapItem.RUBBER_SCRAP_ID, () -> ScrapItemRegistry.RUBBER_SCRAP_ITEM);
+      ITEMS.register(ScrapType.RUBBER.getItemId(), () -> ScrapItemRegistry.RUBBER_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_GLASS =
-      ITEMS.register(GlassScrapItem.GLASS_SCRAP_ID, () -> ScrapItemRegistry.GLASS_SCRAP_ITEM);
+      ITEMS.register(ScrapType.GLASS.getItemId(), () -> ScrapItemRegistry.GLASS_SCRAP_ITEM);
 
   // Organic and Textile Scrap Items
   public static final RegistryObject<Item> SCRAP_FIBER =
-      ITEMS.register(FiberScrapItem.FIBER_SCRAP_ID, () -> ScrapItemRegistry.FIBER_SCRAP_ITEM);
+      ITEMS.register(ScrapType.FIBER.getItemId(), () -> ScrapItemRegistry.FIBER_SCRAP_ITEM);
   public static final RegistryObject<Item> SCRAP_BIO =
-      ITEMS.register(BioScrapItem.BIO_SCRAP_ID, () -> ScrapItemRegistry.BIO_SCRAP_ITEM);
+      ITEMS.register(ScrapType.BIO.getItemId(), () -> ScrapItemRegistry.BIO_SCRAP_ITEM);
 
   // Tech Scrap Items
   public static final RegistryObject<Item> TECH_SCRAP =
-      ITEMS.register(TechScrapItem.TECH_SCRAP_ID, () -> ScrapItemRegistry.TECH_SCRAP_ITEM);
+      ITEMS.register(ScrapType.TECH.getItemId(), () -> ScrapItemRegistry.TECH_SCRAP_ITEM);
   public static final RegistryObject<Item> CIRCUIT_SCRAP =
-      ITEMS.register(TechScrapItem.CIRCUIT_SCRAP_ID, () -> ScrapItemRegistry.CIRCUIT_SCRAP_ITEM);
+      ITEMS.register(ScrapType.CIRCUIT.getItemId(), () -> ScrapItemRegistry.CIRCUIT_SCRAP_ITEM);
   public static final RegistryObject<Item> COIL_SCRAP =
-      ITEMS.register(TechScrapItem.COIL_SCRAP_ID, () -> ScrapItemRegistry.COIL_SCRAP_ITEM);
+      ITEMS.register(ScrapType.COIL.getItemId(), () -> ScrapItemRegistry.COIL_SCRAP_ITEM);
   public static final RegistryObject<Item> CAPACITOR_SCRAP =
-      ITEMS.register(
-          TechScrapItem.CAPACITOR_SCRAP_ID, () -> ScrapItemRegistry.CAPACITOR_SCRAP_ITEM);
+      ITEMS.register(ScrapType.CAPACITOR.getItemId(), () -> ScrapItemRegistry.CAPACITOR_SCRAP_ITEM);
   public static final RegistryObject<Item> ENERGY_CELL_SCRAP =
       ITEMS.register(
-          TechScrapItem.ENERGY_CELL_SCRAP_ID, () -> ScrapItemRegistry.ENERGY_CELL_SCRAP_ITEM);
+          ScrapType.ENERGY_CELL.getItemId(), () -> ScrapItemRegistry.ENERGY_CELL_SCRAP_ITEM);
+
+  // Scrap Box Items
+  public static final RegistryObject<Item> ALLOY_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.ALLOY.getBlockId(), () -> ScrapBoxBlockItemRegistry.ALLOY_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> BIO_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.BIO.getBlockId(), () -> ScrapBoxBlockItemRegistry.BIO_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> CAPACITOR_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.CAPACITOR.getBlockId(),
+          () -> ScrapBoxBlockItemRegistry.CAPACITOR_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> CERAMIC_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.CERAMIC.getBlockId(), () -> ScrapBoxBlockItemRegistry.CERAMIC_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> CIRCUIT_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.CIRCUIT.getBlockId(), () -> ScrapBoxBlockItemRegistry.CIRCUIT_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> COIL_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.COIL.getBlockId(), () -> ScrapBoxBlockItemRegistry.COIL_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> COPPER_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.COPPER.getBlockId(), () -> ScrapBoxBlockItemRegistry.COPPER_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> CRYSTAL_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.CRYSTAL.getBlockId(), () -> ScrapBoxBlockItemRegistry.CRYSTAL_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> ENERGY_CELL_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.ENERGY_CELL.getBlockId(),
+          () -> ScrapBoxBlockItemRegistry.ENERGY_CELL_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> FASTENER_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.FASTENER.getBlockId(), () -> ScrapBoxBlockItemRegistry.FASTENER_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> FIBER_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.FIBER.getBlockId(), () -> ScrapBoxBlockItemRegistry.FIBER_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> GLASS_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.GLASS.getBlockId(), () -> ScrapBoxBlockItemRegistry.GLASS_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> GOLD_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.GOLD.getBlockId(), () -> ScrapBoxBlockItemRegistry.GOLD_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> INSULATION_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.INSULATION.getBlockId(),
+          () -> ScrapBoxBlockItemRegistry.INSULATION_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> IRON_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.IRON.getBlockId(), () -> ScrapBoxBlockItemRegistry.IRON_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> LUMINOUS_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.LUMINOUS.getBlockId(), () -> ScrapBoxBlockItemRegistry.LUMINOUS_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> METAL_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.METAL.getBlockId(), () -> ScrapBoxBlockItemRegistry.METAL_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> MINERAL_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.MINERAL.getBlockId(), () -> ScrapBoxBlockItemRegistry.MINERAL_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> PLASTIC_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.PLASTIC.getBlockId(), () -> ScrapBoxBlockItemRegistry.PLASTIC_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> RUBBER_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.RUBBER.getBlockId(), () -> ScrapBoxBlockItemRegistry.RUBBER_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> TECH_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.TECH.getBlockId(), () -> ScrapBoxBlockItemRegistry.TECH_SCRAP_BOX_ITEM);
+  public static final RegistryObject<Item> WOOD_SCRAP_BOX =
+      ITEMS.register(
+          ScrapType.WOOD.getBlockId(), () -> ScrapBoxBlockItemRegistry.WOOD_SCRAP_BOX_ITEM);
 
   // Tool Items
   public static final RegistryObject<Item> SCRAP_MULTITOOL =
@@ -224,6 +279,30 @@ public class ForgeModItems {
     // Additional Material and Synthetic Scrap Items
     ModItems.ALLOY_SCRAP = SCRAP_ALLOY;
     ModItems.INSULATION_SCRAP = SCRAP_INSULATION;
+
+    // Scrap Box Items
+    ModItems.ALLOY_SCRAP_BOX = ALLOY_SCRAP_BOX;
+    ModItems.BIO_SCRAP_BOX = BIO_SCRAP_BOX;
+    ModItems.CAPACITOR_SCRAP_BOX = CAPACITOR_SCRAP_BOX;
+    ModItems.CERAMIC_SCRAP_BOX = CERAMIC_SCRAP_BOX;
+    ModItems.CIRCUIT_SCRAP_BOX = CIRCUIT_SCRAP_BOX;
+    ModItems.COIL_SCRAP_BOX = COIL_SCRAP_BOX;
+    ModItems.COPPER_SCRAP_BOX = COPPER_SCRAP_BOX;
+    ModItems.CRYSTAL_SCRAP_BOX = CRYSTAL_SCRAP_BOX;
+    ModItems.ENERGY_CELL_SCRAP_BOX = ENERGY_CELL_SCRAP_BOX;
+    ModItems.FASTENER_SCRAP_BOX = FASTENER_SCRAP_BOX;
+    ModItems.FIBER_SCRAP_BOX = FIBER_SCRAP_BOX;
+    ModItems.GLASS_SCRAP_BOX = GLASS_SCRAP_BOX;
+    ModItems.GOLD_SCRAP_BOX = GOLD_SCRAP_BOX;
+    ModItems.INSULATION_SCRAP_BOX = INSULATION_SCRAP_BOX;
+    ModItems.IRON_SCRAP_BOX = IRON_SCRAP_BOX;
+    ModItems.LUMINOUS_SCRAP_BOX = LUMINOUS_SCRAP_BOX;
+    ModItems.METAL_SCRAP_BOX = METAL_SCRAP_BOX;
+    ModItems.MINERAL_SCRAP_BOX = MINERAL_SCRAP_BOX;
+    ModItems.PLASTIC_SCRAP_BOX = PLASTIC_SCRAP_BOX;
+    ModItems.RUBBER_SCRAP_BOX = RUBBER_SCRAP_BOX;
+    ModItems.TECH_SCRAP_BOX = TECH_SCRAP_BOX;
+    ModItems.WOOD_SCRAP_BOX = WOOD_SCRAP_BOX;
 
     // Tool Items
     ModItems.SCRAP_MULTITOOL = SCRAP_MULTITOOL;

@@ -25,11 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class MetalScrapItem extends ScrapItem {
 
-  public static final String METAL_SCRAP_ID = "metal_scrap";
-  public static final String GOLD_SCRAP_ID = "gold_scrap";
-  public static final String IRON_SCRAP_ID = "iron_scrap";
-  public static final String COPPER_SCRAP_ID = "copper_scrap";
-
   public MetalScrapItem(Properties properties, ScrapType scrapType) {
     super(properties, scrapType);
   }

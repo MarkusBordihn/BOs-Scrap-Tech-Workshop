@@ -84,6 +84,30 @@ public class ModCreativeTabs {
               output.accept(ModItems.CAPACITOR_SCRAP.get());
               output.accept(ModItems.ENERGY_CELL_SCRAP.get());
 
+              // Scrap Box Items
+              output.accept(ModItems.ALLOY_SCRAP_BOX.get());
+              output.accept(ModItems.BIO_SCRAP_BOX.get());
+              output.accept(ModItems.CAPACITOR_SCRAP_BOX.get());
+              output.accept(ModItems.CERAMIC_SCRAP_BOX.get());
+              output.accept(ModItems.CIRCUIT_SCRAP_BOX.get());
+              output.accept(ModItems.COIL_SCRAP_BOX.get());
+              output.accept(ModItems.COPPER_SCRAP_BOX.get());
+              output.accept(ModItems.CRYSTAL_SCRAP_BOX.get());
+              output.accept(ModItems.ENERGY_CELL_SCRAP_BOX.get());
+              output.accept(ModItems.FASTENER_SCRAP_BOX.get());
+              output.accept(ModItems.FIBER_SCRAP_BOX.get());
+              output.accept(ModItems.GLASS_SCRAP_BOX.get());
+              output.accept(ModItems.GOLD_SCRAP_BOX.get());
+              output.accept(ModItems.INSULATION_SCRAP_BOX.get());
+              output.accept(ModItems.IRON_SCRAP_BOX.get());
+              output.accept(ModItems.LUMINOUS_SCRAP_BOX.get());
+              output.accept(ModItems.METAL_SCRAP_BOX.get());
+              output.accept(ModItems.MINERAL_SCRAP_BOX.get());
+              output.accept(ModItems.PLASTIC_SCRAP_BOX.get());
+              output.accept(ModItems.RUBBER_SCRAP_BOX.get());
+              output.accept(ModItems.TECH_SCRAP_BOX.get());
+              output.accept(ModItems.WOOD_SCRAP_BOX.get());
+
               // Scrap Pile Block Items
               output.accept(ModBlockItems.MIXED_SCRAP_PILE.get());
               output.accept(ModBlockItems.METAL_SCRAP_PILE.get());

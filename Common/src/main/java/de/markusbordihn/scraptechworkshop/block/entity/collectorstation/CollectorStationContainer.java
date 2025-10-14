@@ -20,6 +20,7 @@
 package de.markusbordihn.scraptechworkshop.block.entity.collectorstation;
 
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import java.util.Locale;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.Container;
@@ -124,7 +125,7 @@ public class CollectorStationContainer implements WorldlyContainer {
   }
 
   private boolean isValidUpgrade(final ItemStack itemStack) {
-    String itemName = itemStack.getItem().toString().toLowerCase();
+    String itemName = itemStack.getItem().toString().toLowerCase(Locale.ROOT);
     return itemName.contains("upgrade") || itemName.contains("module");
   }
 

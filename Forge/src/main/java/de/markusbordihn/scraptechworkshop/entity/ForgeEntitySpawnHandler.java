@@ -20,9 +20,7 @@
 package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import de.markusbordihn.scraptechworkshop.config.ScrapRobotConfig;
-import de.markusbordihn.scraptechworkshop.spawner.ScrapRobotSpawner;
-import net.minecraft.world.level.biome.MobSpawnSettings;
+import de.markusbordihn.scraptechworkshop.spawner.RobotSpawnConfig;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,38 +31,22 @@ import org.apache.logging.log4j.Logger;
 public class ForgeEntitySpawnHandler {
 
   protected static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
-  private static final String LOG_PREFIX = "[Entity Spawn Handler]";
-  private static boolean spawnsRegistered = false;
+  private static final RobotSpawnConfig CONFIG = RobotSpawnConfig.load("mixed_scrap_robot");
+  private static boolean loggedOnce = false;
 
   private ForgeEntitySpawnHandler() {}
 
   @SubscribeEvent
   public static void onLevelLoad(LevelEvent.Load event) {
-    if (spawnsRegistered) {
-      return;
+    if (!loggedOnce && CONFIG.enabled) {
+      log.info(
+          "Mixed Scrap Robot spawning enabled via BiomeModifier (weight: {}, group: {}-{}, biomes: {}, minDistance: {})",
+          CONFIG.weight,
+          CONFIG.minGroup,
+          CONFIG.maxGroup,
+          CONFIG.biomes,
+          CONFIG.minDistanceFromCenter);
+      loggedOnce = true;
     }
-
-    registerSpawns();
-    spawnsRegistered = true;
-  }
-
-  private static void registerSpawns() {
-    if (!ScrapRobotConfig.mixedScrapRobotSpawnEnabled) {
-      log.info("{} Mixed Scrap Robot spawning is disabled in config", LOG_PREFIX);
-      return;
-    }
-
-    MobSpawnSettings.SpawnerData spawnerData = ScrapRobotSpawner.createMixedScrapRobotSpawn();
-    if (spawnerData == null) {
-      log.warn("{} Failed to create Mixed Scrap Robot spawner data", LOG_PREFIX);
-      return;
-    }
-
-    log.info(
-        "{} Registered Mixed Scrap Robot natural spawning (weight: {}, group: {}-{})",
-        LOG_PREFIX,
-        ScrapRobotConfig.mixedScrapRobotSpawnWeight,
-        ScrapRobotConfig.mixedScrapRobotSpawnMinGroup,
-        ScrapRobotConfig.mixedScrapRobotSpawnMaxGroup);
   }
 }

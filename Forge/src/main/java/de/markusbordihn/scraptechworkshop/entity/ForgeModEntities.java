@@ -29,7 +29,10 @@ import de.markusbordihn.scraptechworkshop.registry.entity.HoloLogEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.entity.MixedScrapRobotEntityRegistry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.SpawnPlacementRegisterEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -41,7 +44,6 @@ public class ForgeModEntities {
   public static final DeferredRegister<EntityType<?>> ENTITY_TYPES =
       DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Constants.MOD_ID);
 
-  // Entity registrations
   public static final RegistryObject<EntityType<HoloLogHumanoidEntity>> HOLOLOG_HUMANOID =
       ENTITY_TYPES.register(
           HoloLogHumanoidEntity.ID,
@@ -102,6 +104,7 @@ public class ForgeModEntities {
         });
 
     eventBus.addListener(ForgeModEntities::registerEntityAttributes);
+    eventBus.addListener(ForgeModEntities::registerSpawnPlacements);
   }
 
   private static void registerEntityAttributes(EntityAttributeCreationEvent event) {
@@ -112,5 +115,14 @@ public class ForgeModEntities {
         COLLECTOR_STATION_ROBOT_STATIC.get(),
         CollectorStationRobotStaticEntity.createAttributes().build());
     event.put(MIXED_SCRAP_ROBOT.get(), MixedScrapRobotEntity.createAttributes().build());
+  }
+
+  private static void registerSpawnPlacements(SpawnPlacementRegisterEvent event) {
+    event.register(
+        MIXED_SCRAP_ROBOT.get(),
+        SpawnPlacements.Type.ON_GROUND,
+        Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+        MixedScrapRobotEntity::checkRobotSpawnRules,
+        SpawnPlacementRegisterEvent.Operation.REPLACE);
   }
 }

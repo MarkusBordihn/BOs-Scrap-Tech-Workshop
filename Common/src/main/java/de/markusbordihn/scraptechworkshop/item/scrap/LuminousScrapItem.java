@@ -25,8 +25,6 @@ import net.minecraft.world.item.Rarity;
 
 public class LuminousScrapItem extends ScrapItem {
 
-  public static final String LUMINOUS_SCRAP_ID = "luminous_scrap";
-
   public LuminousScrapItem(Properties properties) {
     super(properties, ScrapType.LUMINOUS);
   }

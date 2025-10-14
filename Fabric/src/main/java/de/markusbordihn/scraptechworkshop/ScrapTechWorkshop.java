@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop;
 import de.markusbordihn.scraptechworkshop.block.BlockEventHandler;
 import de.markusbordihn.scraptechworkshop.block.FabricModBlocks;
 import de.markusbordihn.scraptechworkshop.config.Config;
+import de.markusbordihn.scraptechworkshop.debug.DebugManager;
 import de.markusbordihn.scraptechworkshop.entity.FabricModBlockEntities;
 import de.markusbordihn.scraptechworkshop.entity.FabricModEntities;
 import de.markusbordihn.scraptechworkshop.item.FabricModBlockItems;
@@ -45,7 +46,12 @@ public class ScrapTechWorkshop implements ModInitializer {
 
   @Override
   public void onInitialize() {
+
     log.info("Initializing {} (Fabric) ...", Constants.MOD_NAME);
+
+    log.info("{} Debug Manager ...", Constants.LOG_REGISTER_PREFIX);
+    DebugManager.setDevelopmentEnvironment(System.getProperty("fabric.development") != null);
+    DebugManager.checkForDebugLogging(Constants.LOG_NAME);
 
     log.info("{} Constants ...", Constants.LOG_REGISTER_PREFIX);
     Constants.GAME_DIR = FabricLoader.getInstance().getGameDir();
