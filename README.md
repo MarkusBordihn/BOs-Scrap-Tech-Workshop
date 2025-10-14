@@ -38,7 +38,7 @@ cases, QoL) is very welcome.
 
 ## Introduction & Overview Video (English)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/HQqzPo6yJM4?si=Z5lv1HSL-ddvmGmc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+[![Introduction & Overview Video](https://img.youtube.com/vi/HQqzPo6yJM4/0.jpg)](https://www.youtube.com/watch?v=HQqzPo6yJM4 "Scrap Tech Workshop: Rebuild the Future")
 
 ## Core Features (current) ✨
 
