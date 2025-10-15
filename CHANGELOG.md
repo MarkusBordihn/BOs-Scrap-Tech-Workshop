@@ -7,6 +7,14 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v.13.0
+
+- Larger refactor and rework of the mod structure and code base for better maintainability.
+- Fixed scrap box model and texture issues.
+- Added stackable scrap item boxes with optimized models.
+- Added scrap to scrap box and scrap box to scrap recipes.
+- Added scrap and scrap box furnace smelting recipes.
+
 ### v.12.0
 
 - Fixed #1 by adding legacy Forge mod loader support for 47.2.x.

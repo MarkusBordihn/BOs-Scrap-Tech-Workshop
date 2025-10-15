@@ -20,46 +20,98 @@
 package de.markusbordihn.scraptechworkshop.data.scrap;
 
 import java.util.Locale;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.material.MapColor;
 
 public enum ScrapType {
-  ALLOY(ScrapCategory.MATERIAL),
-  BIO(ScrapCategory.ORGANIC),
-  CAPACITOR(ScrapCategory.TECHNOLOGY),
-  CERAMIC(ScrapCategory.SYNTHETIC),
-  CIRCUIT(ScrapCategory.TECHNOLOGY),
-  COIL(ScrapCategory.MATERIAL),
-  COPPER(ScrapCategory.MATERIAL),
-  CRYSTAL(ScrapCategory.MINERAL),
-  ENERGY_CELL(ScrapCategory.TECHNOLOGY),
-  FASTENER(ScrapCategory.MATERIAL),
-  FIBER(ScrapCategory.ORGANIC),
-  GLASS(ScrapCategory.SYNTHETIC),
-  GOLD(ScrapCategory.MATERIAL),
-  INSULATION(ScrapCategory.SYNTHETIC),
-  IRON(ScrapCategory.MATERIAL),
-  LUMINOUS(ScrapCategory.SYNTHETIC),
-  METAL(ScrapCategory.MATERIAL),
-  MINERAL(ScrapCategory.MINERAL),
-  PLASTIC(ScrapCategory.SYNTHETIC),
-  RUBBER(ScrapCategory.ORGANIC),
-  TECH(ScrapCategory.TECHNOLOGY),
-  WOOD(ScrapCategory.ORGANIC);
+  ALLOY(ScrapCategory.MATERIAL, 20, Rarity.UNCOMMON, 1.2f, MapColor.METAL),
 
+  COIL(ScrapCategory.MATERIAL, 12, Rarity.COMMON, 1.0f, MapColor.METAL),
+  COPPER(ScrapCategory.MATERIAL, 12, Rarity.COMMON, 1.0f, MapColor.COLOR_ORANGE),
+  FASTENER(ScrapCategory.MATERIAL, 8, Rarity.COMMON, 1.0f, MapColor.METAL),
+  GOLD(ScrapCategory.MATERIAL, 25, Rarity.UNCOMMON, 1.0f, MapColor.GOLD),
+  IRON(ScrapCategory.MATERIAL, 15, Rarity.COMMON, 1.0f, MapColor.METAL),
+  METAL(ScrapCategory.MATERIAL, 10, Rarity.COMMON, 1.0f, MapColor.METAL),
+
+  CRYSTAL(ScrapCategory.MINERAL, 20, Rarity.UNCOMMON, 1.3f, MapColor.DIAMOND),
+  MINERAL(ScrapCategory.MINERAL, 3, Rarity.COMMON, 0.5f, MapColor.STONE),
+
+  BIO(ScrapCategory.ORGANIC, 3, Rarity.COMMON, 0.6f, MapColor.PLANT),
+  FIBER(ScrapCategory.ORGANIC, 4, Rarity.COMMON, 0.7f, MapColor.WOOL),
+  RUBBER(ScrapCategory.ORGANIC, 6, Rarity.COMMON, 0.8f, MapColor.COLOR_BLACK),
+  WOOD(ScrapCategory.ORGANIC, 4, Rarity.COMMON, 0.7f, MapColor.WOOD),
+
+  CERAMIC(ScrapCategory.SYNTHETIC, 8, Rarity.COMMON, 0.8f, MapColor.TERRACOTTA_WHITE),
+  GLASS(ScrapCategory.SYNTHETIC, 7, Rarity.COMMON, 0.9f, MapColor.NONE),
+  INSULATION(ScrapCategory.SYNTHETIC, 8, Rarity.COMMON, 0.8f, MapColor.CLAY),
+  LUMINOUS(ScrapCategory.SYNTHETIC, 30, Rarity.RARE, 1.5f, MapColor.COLOR_LIGHT_BLUE, true),
+  PLASTIC(ScrapCategory.SYNTHETIC, 5, Rarity.COMMON, 0.6f, MapColor.COLOR_CYAN),
+
+  CAPACITOR(ScrapCategory.TECHNOLOGY, 15, Rarity.UNCOMMON, 1.2f, MapColor.METAL),
+  CIRCUIT(ScrapCategory.TECHNOLOGY, 18, Rarity.UNCOMMON, 1.2f, MapColor.METAL),
+  ENERGY_CELL(ScrapCategory.TECHNOLOGY, 25, Rarity.RARE, 1.5f, MapColor.METAL),
+  TECH(ScrapCategory.TECHNOLOGY, 18, Rarity.UNCOMMON, 1.2f, MapColor.METAL);
+
+  private final boolean luminous;
+  private final float efficiencyBonus;
+  private final int value;
+  private final MapColor mapColor;
+  private final Rarity rarity;
   private final ScrapCategory category;
+  private final String blockName;
+  private final String itemName;
 
-  ScrapType(ScrapCategory category) {
+  ScrapType(
+      ScrapCategory category, int value, Rarity rarity, float efficiencyBonus, MapColor mapColor) {
+    this(category, value, rarity, efficiencyBonus, mapColor, false);
+  }
+
+  ScrapType(
+      ScrapCategory category,
+      int value,
+      Rarity rarity,
+      float efficiencyBonus,
+      MapColor mapColor,
+      boolean luminous) {
     this.category = category;
+    this.value = value;
+    this.rarity = rarity;
+    this.efficiencyBonus = efficiencyBonus;
+    this.mapColor = mapColor;
+    this.luminous = luminous;
+    this.blockName = name().toLowerCase(Locale.ROOT) + "_scrap_box";
+    this.itemName = name().toLowerCase(Locale.ROOT) + "_scrap";
   }
 
   public ScrapCategory getCategory() {
     return category;
   }
 
+  public int getValue() {
+    return value;
+  }
+
+  public Rarity getRarity() {
+    return rarity;
+  }
+
+  public float getEfficiencyBonus() {
+    return efficiencyBonus;
+  }
+
+  public MapColor getMapColor() {
+    return mapColor;
+  }
+
+  public boolean isLuminous() {
+    return luminous;
+  }
+
   public String getItemId() {
-    return name().toLowerCase(Locale.ROOT) + "_scrap";
+    return itemName;
   }
 
   public String getBlockId() {
-    return name().toLowerCase(Locale.ROOT) + "_scrap_box";
+    return blockName;
   }
 }

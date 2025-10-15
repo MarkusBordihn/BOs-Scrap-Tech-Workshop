@@ -52,134 +52,169 @@ public class FabricModItems {
   }
 
   public static void registerModItems() {
-    // Register metal scrap items
-    ModItems.ALLOY_SCRAP =
-        registerItem(ScrapType.ALLOY.getItemId(), () -> ScrapItemRegistry.ALLOY_SCRAP_ITEM);
-    ModItems.METAL_SCRAP =
-        registerItem(ScrapType.METAL.getItemId(), () -> ScrapItemRegistry.METAL_SCRAP_ITEM);
-    ModItems.GOLD_SCRAP =
-        registerItem(ScrapType.GOLD.getItemId(), () -> ScrapItemRegistry.GOLD_SCRAP_ITEM);
-    ModItems.IRON_SCRAP =
-        registerItem(ScrapType.IRON.getItemId(), () -> ScrapItemRegistry.IRON_SCRAP_ITEM);
-    ModItems.COPPER_SCRAP =
-        registerItem(ScrapType.COPPER.getItemId(), () -> ScrapItemRegistry.COPPER_SCRAP_ITEM);
+    for (ScrapType type : ScrapType.values()) {
+      switch (type) {
+        case ALLOY ->
+            ModItems.ALLOY_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case METAL ->
+            ModItems.METAL_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case GOLD ->
+            ModItems.GOLD_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case IRON ->
+            ModItems.IRON_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case COPPER ->
+            ModItems.COPPER_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case CERAMIC ->
+            ModItems.CERAMIC_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case CRYSTAL ->
+            ModItems.CRYSTAL_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case FASTENER ->
+            ModItems.FASTENER_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case INSULATION ->
+            ModItems.INSULATION_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case LUMINOUS ->
+            ModItems.LUMINOUS_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case PLASTIC ->
+            ModItems.PLASTIC_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case MINERAL ->
+            ModItems.MINERAL_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case WOOD ->
+            ModItems.WOOD_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case RUBBER ->
+            ModItems.RUBBER_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case GLASS ->
+            ModItems.GLASS_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case FIBER ->
+            ModItems.FIBER_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case BIO ->
+            ModItems.BIO_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case TECH ->
+            ModItems.TECH_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case CIRCUIT ->
+            ModItems.CIRCUIT_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case COIL ->
+            ModItems.COIL_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case CAPACITOR ->
+            ModItems.CAPACITOR_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+        case ENERGY_CELL ->
+            ModItems.ENERGY_CELL_SCRAP =
+                registerItem(type.getItemId(), () -> ScrapItemRegistry.getScrapItem(type));
+      }
+    }
 
-    // Register scrap items
-    ModItems.CERAMIC_SCRAP =
-        registerItem(ScrapType.CERAMIC.getItemId(), () -> ScrapItemRegistry.CERAMIC_SCRAP_ITEM);
-    ModItems.CRYSTAL_SCRAP =
-        registerItem(ScrapType.CRYSTAL.getItemId(), () -> ScrapItemRegistry.CRYSTAL_SCRAP_ITEM);
-    ModItems.FASTENER_SCRAP =
-        registerItem(ScrapType.FASTENER.getItemId(), () -> ScrapItemRegistry.FASTENER_SCRAP_ITEM);
-    ModItems.INSULATION_SCRAP =
-        registerItem(
-            ScrapType.INSULATION.getItemId(), () -> ScrapItemRegistry.INSULATION_SCRAP_ITEM);
-    ModItems.LUMINOUS_SCRAP =
-        registerItem(ScrapType.LUMINOUS.getItemId(), () -> ScrapItemRegistry.LUMINOUS_SCRAP_ITEM);
-    ModItems.PLASTIC_SCRAP =
-        registerItem(ScrapType.PLASTIC.getItemId(), () -> ScrapItemRegistry.PLASTIC_SCRAP_ITEM);
-
-    // Additional Material Scrap Items
-    ModItems.MINERAL_SCRAP =
-        registerItem(ScrapType.MINERAL.getItemId(), () -> ScrapItemRegistry.MINERAL_SCRAP_ITEM);
-    ModItems.WOOD_SCRAP =
-        registerItem(ScrapType.WOOD.getItemId(), () -> ScrapItemRegistry.WOOD_SCRAP_ITEM);
-    ModItems.RUBBER_SCRAP =
-        registerItem(ScrapType.RUBBER.getItemId(), () -> ScrapItemRegistry.RUBBER_SCRAP_ITEM);
-    ModItems.GLASS_SCRAP =
-        registerItem(ScrapType.GLASS.getItemId(), () -> ScrapItemRegistry.GLASS_SCRAP_ITEM);
-
-    // Organic and Textile Scrap Items
-    ModItems.FIBER_SCRAP =
-        registerItem(ScrapType.FIBER.getItemId(), () -> ScrapItemRegistry.FIBER_SCRAP_ITEM);
-    ModItems.BIO_SCRAP =
-        registerItem(ScrapType.BIO.getItemId(), () -> ScrapItemRegistry.BIO_SCRAP_ITEM);
-
-    // Additional Tech Scrap Items
-    ModItems.TECH_SCRAP =
-        registerItem(ScrapType.TECH.getItemId(), () -> ScrapItemRegistry.TECH_SCRAP_ITEM);
-    ModItems.CIRCUIT_SCRAP =
-        registerItem(ScrapType.CIRCUIT.getItemId(), () -> ScrapItemRegistry.CIRCUIT_SCRAP_ITEM);
-    ModItems.COIL_SCRAP =
-        registerItem(ScrapType.COIL.getItemId(), () -> ScrapItemRegistry.COIL_SCRAP_ITEM);
-    ModItems.CAPACITOR_SCRAP =
-        registerItem(ScrapType.CAPACITOR.getItemId(), () -> ScrapItemRegistry.CAPACITOR_SCRAP_ITEM);
-    ModItems.ENERGY_CELL_SCRAP =
-        registerItem(
-            ScrapType.ENERGY_CELL.getItemId(), () -> ScrapItemRegistry.ENERGY_CELL_SCRAP_ITEM);
-
-    // Register scrap box items
-    ModItems.ALLOY_SCRAP_BOX =
-        registerItem(
-            ScrapType.ALLOY.getBlockId(), () -> ScrapBoxBlockItemRegistry.ALLOY_SCRAP_BOX_ITEM);
-    ModItems.BIO_SCRAP_BOX =
-        registerItem(
-            ScrapType.BIO.getBlockId(), () -> ScrapBoxBlockItemRegistry.BIO_SCRAP_BOX_ITEM);
-    ModItems.CAPACITOR_SCRAP_BOX =
-        registerItem(
-            ScrapType.CAPACITOR.getBlockId(),
-            () -> ScrapBoxBlockItemRegistry.CAPACITOR_SCRAP_BOX_ITEM);
-    ModItems.CERAMIC_SCRAP_BOX =
-        registerItem(
-            ScrapType.CERAMIC.getBlockId(), () -> ScrapBoxBlockItemRegistry.CERAMIC_SCRAP_BOX_ITEM);
-    ModItems.CIRCUIT_SCRAP_BOX =
-        registerItem(
-            ScrapType.CIRCUIT.getBlockId(), () -> ScrapBoxBlockItemRegistry.CIRCUIT_SCRAP_BOX_ITEM);
-    ModItems.COIL_SCRAP_BOX =
-        registerItem(
-            ScrapType.COIL.getBlockId(), () -> ScrapBoxBlockItemRegistry.COIL_SCRAP_BOX_ITEM);
-    ModItems.COPPER_SCRAP_BOX =
-        registerItem(
-            ScrapType.COPPER.getBlockId(), () -> ScrapBoxBlockItemRegistry.COPPER_SCRAP_BOX_ITEM);
-    ModItems.CRYSTAL_SCRAP_BOX =
-        registerItem(
-            ScrapType.CRYSTAL.getBlockId(), () -> ScrapBoxBlockItemRegistry.CRYSTAL_SCRAP_BOX_ITEM);
-    ModItems.ENERGY_CELL_SCRAP_BOX =
-        registerItem(
-            ScrapType.ENERGY_CELL.getBlockId(),
-            () -> ScrapBoxBlockItemRegistry.ENERGY_CELL_SCRAP_BOX_ITEM);
-    ModItems.FASTENER_SCRAP_BOX =
-        registerItem(
-            ScrapType.FASTENER.getBlockId(),
-            () -> ScrapBoxBlockItemRegistry.FASTENER_SCRAP_BOX_ITEM);
-    ModItems.FIBER_SCRAP_BOX =
-        registerItem(
-            ScrapType.FIBER.getBlockId(), () -> ScrapBoxBlockItemRegistry.FIBER_SCRAP_BOX_ITEM);
-    ModItems.GLASS_SCRAP_BOX =
-        registerItem(
-            ScrapType.GLASS.getBlockId(), () -> ScrapBoxBlockItemRegistry.GLASS_SCRAP_BOX_ITEM);
-    ModItems.GOLD_SCRAP_BOX =
-        registerItem(
-            ScrapType.GOLD.getBlockId(), () -> ScrapBoxBlockItemRegistry.GOLD_SCRAP_BOX_ITEM);
-    ModItems.INSULATION_SCRAP_BOX =
-        registerItem(
-            ScrapType.INSULATION.getBlockId(),
-            () -> ScrapBoxBlockItemRegistry.INSULATION_SCRAP_BOX_ITEM);
-    ModItems.IRON_SCRAP_BOX =
-        registerItem(
-            ScrapType.IRON.getBlockId(), () -> ScrapBoxBlockItemRegistry.IRON_SCRAP_BOX_ITEM);
-    ModItems.LUMINOUS_SCRAP_BOX =
-        registerItem(
-            ScrapType.LUMINOUS.getBlockId(),
-            () -> ScrapBoxBlockItemRegistry.LUMINOUS_SCRAP_BOX_ITEM);
-    ModItems.METAL_SCRAP_BOX =
-        registerItem(
-            ScrapType.METAL.getBlockId(), () -> ScrapBoxBlockItemRegistry.METAL_SCRAP_BOX_ITEM);
-    ModItems.MINERAL_SCRAP_BOX =
-        registerItem(
-            ScrapType.MINERAL.getBlockId(), () -> ScrapBoxBlockItemRegistry.MINERAL_SCRAP_BOX_ITEM);
-    ModItems.PLASTIC_SCRAP_BOX =
-        registerItem(
-            ScrapType.PLASTIC.getBlockId(), () -> ScrapBoxBlockItemRegistry.PLASTIC_SCRAP_BOX_ITEM);
-    ModItems.RUBBER_SCRAP_BOX =
-        registerItem(
-            ScrapType.RUBBER.getBlockId(), () -> ScrapBoxBlockItemRegistry.RUBBER_SCRAP_BOX_ITEM);
-    ModItems.TECH_SCRAP_BOX =
-        registerItem(
-            ScrapType.TECH.getBlockId(), () -> ScrapBoxBlockItemRegistry.TECH_SCRAP_BOX_ITEM);
-    ModItems.WOOD_SCRAP_BOX =
-        registerItem(
-            ScrapType.WOOD.getBlockId(), () -> ScrapBoxBlockItemRegistry.WOOD_SCRAP_BOX_ITEM);
+    for (ScrapType type : ScrapType.values()) {
+      switch (type) {
+        case ALLOY ->
+            ModItems.ALLOY_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case BIO ->
+            ModItems.BIO_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case CAPACITOR ->
+            ModItems.CAPACITOR_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case CERAMIC ->
+            ModItems.CERAMIC_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case CIRCUIT ->
+            ModItems.CIRCUIT_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case COIL ->
+            ModItems.COIL_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case COPPER ->
+            ModItems.COPPER_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case CRYSTAL ->
+            ModItems.CRYSTAL_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case ENERGY_CELL ->
+            ModItems.ENERGY_CELL_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case FASTENER ->
+            ModItems.FASTENER_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case FIBER ->
+            ModItems.FIBER_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case GLASS ->
+            ModItems.GLASS_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case GOLD ->
+            ModItems.GOLD_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case INSULATION ->
+            ModItems.INSULATION_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case IRON ->
+            ModItems.IRON_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case LUMINOUS ->
+            ModItems.LUMINOUS_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case METAL ->
+            ModItems.METAL_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case MINERAL ->
+            ModItems.MINERAL_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case PLASTIC ->
+            ModItems.PLASTIC_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case RUBBER ->
+            ModItems.RUBBER_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case TECH ->
+            ModItems.TECH_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+        case WOOD ->
+            ModItems.WOOD_SCRAP_BOX =
+                registerItem(
+                    type.getBlockId(), () -> ScrapBoxBlockItemRegistry.getScrapBoxItem(type));
+      }
+    }
 
     // Tool Items
     ModItems.SCRAP_MULTITOOL =

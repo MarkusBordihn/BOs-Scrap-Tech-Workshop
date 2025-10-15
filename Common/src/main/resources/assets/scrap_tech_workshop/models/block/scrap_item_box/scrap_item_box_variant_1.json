@@ -1,0 +1,173 @@
+{
+  "format_version": "1.9.0",
+  "credit": "Made with Blockbench by Markus Bordihn",
+  "render_type": "cutout_mipped",
+  "texture_size": [32, 32],
+  "textures": {
+    "particle": "scrap_tech_workshop:block/scrap/scrap_item_box",
+    "default": "scrap_tech_workshop:block/scrap/scrap_item_box",
+    "item": "scrap_tech_workshop:item/scrap/fastener_scrap"
+  },
+  "elements": [
+    {
+      "name": "box label",
+      "from": [7.95, 0, 3.5],
+      "to": [16.05, 8, 12.5],
+      "rotation": {"angle": 0, "axis": "y", "origin": [15.95, 3, 7.5]},
+      "faces": {
+        "east": {"uv": [0, 1, 16, 15], "texture": "#item", "cullface": "east"},
+        "west": {"uv": [0, 1, 16, 15], "texture": "#item"}
+      }
+    },
+    {
+      "name": "outer box",
+      "from": [8, 0, 0.002],
+      "to": [16, 8, 16],
+      "rotation": {"angle": 0, "axis": "y", "origin": [12, 4, 8]},
+      "faces": {
+        "north": {"uv": [4, 8, 8, 12], "texture": "#default", "cullface": "north"},
+        "east": {"uv": [0, 0, 8, 4], "texture": "#default", "cullface": "east"},
+        "south": {"uv": [8, 8, 12, 12], "texture": "#default", "cullface": "south"},
+        "west": {"uv": [0, 4, 8, 8], "texture": "#default"},
+        "up": {"uv": [4, 16, 0, 8], "texture": "#default"},
+        "down": {"uv": [12, 0, 8, 8], "texture": "#default", "cullface": "down"}
+      }
+    },
+    {
+      "name": "inner box",
+      "from": [15, 8, 15],
+      "to": [9, 1, 0],
+      "rotation": {"angle": 0, "axis": "y", "origin": [12, 4, 8]},
+      "faces": {
+        "north": {"uv": [8.5, 11.5, 11.5, 8], "texture": "#default"},
+        "east": {"uv": [0, 7.5, 7.5, 4], "texture": "#default"},
+        "south": {"uv": [4.5, 11.5, 7.5, 8], "texture": "#default"},
+        "west": {"uv": [0.5, 3.5, 8, 0], "texture": "#default"},
+        "up": {"uv": [11.5, 0.5, 8.5, 8], "texture": "#default"}
+      }
+    },
+    {
+      "from": [9.025, 4.5, 0.25],
+      "to": [14.925, 4.5, 5.25],
+      "rotation": {"angle": -22.5, "axis": "x", "origin": [12.025, 3.5, 2.75]},
+      "faces": {
+        "up": {"uv": [16, 1, 0, 15], "rotation": 180, "texture": "#item"},
+        "down": {"uv": [0, 1, 16, 15], "texture": "#item"}
+      }
+    },
+    {
+      "from": [9.025, 2.25, 4.75],
+      "to": [14.925, 7.25, 4.75],
+      "rotation": {"angle": 45, "axis": "x", "origin": [12.025, 4.75, 5.75]},
+      "faces": {
+        "north": {"uv": [0, 1, 16, 15], "texture": "#item"},
+        "south": {"uv": [16, 1, 0, 15], "texture": "#item"}
+      }
+    },
+    {
+      "from": [9.05, 5.5, 6],
+      "to": [14.95, 5.5, 11],
+      "rotation": {"angle": -22.5, "axis": "x", "origin": [12.05, 4.5, 8.5]},
+      "faces": {
+        "up": {"uv": [16, 1, 0, 15], "rotation": 180, "texture": "#item"},
+        "down": {"uv": [0, 1, 16, 15], "texture": "#item"}
+      }
+    },
+    {
+      "from": [9.075, 2, 10.25],
+      "to": [14.975, 7, 10.25],
+      "rotation": {"angle": 45, "axis": "x", "origin": [12.075, 4.5, 11.25]},
+      "faces": {
+        "north": {"uv": [16, 15, 0, 1], "texture": "#item"},
+        "south": {"uv": [0, 1, 16, 15], "texture": "#item"}
+      }
+    },
+    {
+      "from": [9.075, 2.825, 14],
+      "to": [14.975, 7.825, 14],
+      "rotation": {"angle": 22.5, "axis": "x", "origin": [12.075, 5.325, 15]},
+      "faces": {
+        "north": {"uv": [0, 1, 16, 15], "texture": "#item"}
+      }
+    },
+    {
+      "name": "floor",
+      "from": [8.95, 1.25, 8.5],
+      "to": [15.2, 1.25, 15.9],
+      "rotation": {"angle": -22.5, "axis": "x", "origin": [11.95, 0.25, 9]},
+      "faces": {
+        "up": {"uv": [9.5, 11, 6.5, 7], "texture": "#item"}
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [70, 0, 0],
+      "translation": [-2, 4, 1],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [70, 0, 0],
+      "translation": [2, 4, 1],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "firstperson_righthand": {
+      "rotation": [5, -180, 0],
+      "translation": [2.25, 4.75, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "firstperson_lefthand": {
+      "rotation": [5, -180, 0],
+      "translation": [-1, 4.75, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "ground": {
+      "translation": [0, 3.5, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "gui": {
+      "rotation": [30, -145, 0],
+      "translation": [3.25, 4.75, 0],
+      "scale": [1, 1, 0.95]
+    },
+    "head": {
+      "rotation": [0, -180, 0],
+      "translation": [3.75, 13.5, 0.25]
+    },
+    "fixed": {
+      "translation": [-5.75, 5.75, -1],
+      "scale": [1.4, 1.4, 0.26]
+    },
+    "on_shelf": {
+      "rotation": [0, -90, 0],
+      "translation": [0.5, 0, -4],
+      "scale": [1, 1.1, 1.1]
+    }
+  },
+  "groups": [
+    {
+      "name": "scrap box",
+      "origin": [7, 0, 0],
+      "color": 0,
+      "children": [
+        0,
+        1,
+        2,
+        {
+          "name": "content",
+          "origin": [7, 0, 0],
+          "color": 0,
+          "children": [
+            {
+              "name": "items",
+              "origin": [7, 0, 0],
+              "color": 0,
+              "children": [3, 4, 5, 6, 7]
+            },
+            8
+          ]
+        }
+      ]
+    }
+  ]
+}

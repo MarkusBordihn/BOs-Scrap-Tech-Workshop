@@ -34,8 +34,6 @@ public class CollectorStationRobotEntity extends BaseRobotEntity {
   public static final String ID = "collector_station_robot";
 
   private CollectorStationStatus status = CollectorStationStatus.CHARGING;
-  private int collectionRadius = 16;
-  private float animationPosition = 0.0F;
   private float animationSpeed = 0.0F;
   private boolean isMovingFromGoal = false;
   private boolean isDigging = false;
@@ -80,7 +78,6 @@ public class CollectorStationRobotEntity extends BaseRobotEntity {
 
     if (distanceMoved > 0.01F) {
       animationSpeed = Math.min(1.0F, animationSpeed + 0.15F);
-      animationPosition += distanceMoved * 8.0F;
     } else {
       animationSpeed = Math.max(0.0F, animationSpeed - 0.15F);
     }

@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.client;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.renderer.hololog.HoloLogPlayerManager;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
+import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.item.ItemPropertyFunctions;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
@@ -109,58 +110,15 @@ public class ClientEventHandler {
   private static void registerBlockRenderTypes() {
     log.debug("{} Block Render Types ...", Constants.LOG_REGISTER_PREFIX);
 
-    // Register scrap pile blocks with cutout_mipped render type
     BlockRenderLayerMap.INSTANCE.putBlock(
         ScrapPileBlockRegistry.SCRAP_PILE_BLOCK, RenderType.cutoutMipped());
 
-    // Register recycler block with cutout_mipped render type
     BlockRenderLayerMap.INSTANCE.putBlock(
         RecyclerBlockRegistry.RECYCLER_BLOCK, RenderType.cutoutMipped());
 
-    // Register all scrap box blocks with cutout_mipped render type
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.ALLOY_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.BIO_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.CAPACITOR_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.CERAMIC_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.CIRCUIT_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.COIL_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.COPPER_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.CRYSTAL_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.ENERGY_CELL_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.FASTENER_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.FIBER_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.GLASS_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.GOLD_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.INSULATION_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.IRON_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.LUMINOUS_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.METAL_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.MINERAL_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.PLASTIC_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.RUBBER_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.TECH_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
-    BlockRenderLayerMap.INSTANCE.putBlock(
-        ScrapBoxBlockRegistry.WOOD_SCRAP_BOX_BLOCK, RenderType.cutoutMipped());
+    for (ScrapType type : ScrapType.values()) {
+      BlockRenderLayerMap.INSTANCE.putBlock(
+          ScrapBoxBlockRegistry.getScrapBox(type), RenderType.cutoutMipped());
+    }
   }
 }

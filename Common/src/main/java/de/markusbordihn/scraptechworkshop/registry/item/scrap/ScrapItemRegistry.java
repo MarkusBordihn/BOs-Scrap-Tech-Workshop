@@ -20,70 +20,78 @@
 package de.markusbordihn.scraptechworkshop.registry.item.scrap;
 
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
-import de.markusbordihn.scraptechworkshop.item.scrap.AlloyScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.BioScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.CeramicScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.CrystalScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.FastenerScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.FiberScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.GlassScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.InsulationScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.LuminousScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.MetalScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.MineralScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.PlasticScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.RubberScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.TechScrapItem;
-import de.markusbordihn.scraptechworkshop.item.scrap.WoodScrapItem;
+import de.markusbordihn.scraptechworkshop.item.ScrapItem;
+import java.util.EnumMap;
+import java.util.Map;
 import net.minecraft.world.item.Item;
 
 public class ScrapItemRegistry {
 
-  // Metal Scrap Items (actual metals)
-  public static final AlloyScrapItem ALLOY_SCRAP_ITEM =
-      new AlloyScrapItem(new Item.Properties(), ScrapType.ALLOY);
-  public static final MetalScrapItem COPPER_SCRAP_ITEM =
-      new MetalScrapItem(new Item.Properties(), ScrapType.COPPER);
-  public static final MetalScrapItem GOLD_SCRAP_ITEM =
-      new MetalScrapItem(new Item.Properties(), ScrapType.GOLD);
-  public static final MetalScrapItem IRON_SCRAP_ITEM =
-      new MetalScrapItem(new Item.Properties(), ScrapType.IRON);
-  public static final MetalScrapItem METAL_SCRAP_ITEM =
-      new MetalScrapItem(new Item.Properties(), ScrapType.METAL);
+  // Public fields for backwards compatibility
+  public static final ScrapItem ALLOY_SCRAP_ITEM;
+  public static final ScrapItem BIO_SCRAP_ITEM;
+  public static final ScrapItem CAPACITOR_SCRAP_ITEM;
+  public static final ScrapItem CERAMIC_SCRAP_ITEM;
+  public static final ScrapItem CIRCUIT_SCRAP_ITEM;
+  public static final ScrapItem COIL_SCRAP_ITEM;
+  public static final ScrapItem COPPER_SCRAP_ITEM;
+  public static final ScrapItem CRYSTAL_SCRAP_ITEM;
+  public static final ScrapItem ENERGY_CELL_SCRAP_ITEM;
+  public static final ScrapItem FASTENER_SCRAP_ITEM;
+  public static final ScrapItem FIBER_SCRAP_ITEM;
+  public static final ScrapItem GLASS_SCRAP_ITEM;
+  public static final ScrapItem GOLD_SCRAP_ITEM;
+  public static final ScrapItem INSULATION_SCRAP_ITEM;
+  public static final ScrapItem IRON_SCRAP_ITEM;
+  public static final ScrapItem LUMINOUS_SCRAP_ITEM;
+  public static final ScrapItem METAL_SCRAP_ITEM;
+  public static final ScrapItem MINERAL_SCRAP_ITEM;
+  public static final ScrapItem PLASTIC_SCRAP_ITEM;
+  public static final ScrapItem RUBBER_SCRAP_ITEM;
+  public static final ScrapItem TECH_SCRAP_ITEM;
+  public static final ScrapItem WOOD_SCRAP_ITEM;
+  // Map to store all scrap items by their type
+  private static final Map<ScrapType, ScrapItem> SCRAP_ITEMS = new EnumMap<>(ScrapType.class);
 
-  // Specialized Scrap Items (different material types with their own classes)
-  public static final CeramicScrapItem CERAMIC_SCRAP_ITEM =
-      new CeramicScrapItem(new Item.Properties());
-  public static final CrystalScrapItem CRYSTAL_SCRAP_ITEM =
-      new CrystalScrapItem(new Item.Properties());
-  public static final FastenerScrapItem FASTENER_SCRAP_ITEM =
-      new FastenerScrapItem(new Item.Properties(), ScrapType.FASTENER);
-  public static final InsulationScrapItem INSULATION_SCRAP_ITEM =
-      new InsulationScrapItem(new Item.Properties());
-  public static final LuminousScrapItem LUMINOUS_SCRAP_ITEM =
-      new LuminousScrapItem(new Item.Properties());
-  public static final PlasticScrapItem PLASTIC_SCRAP_ITEM =
-      new PlasticScrapItem(new Item.Properties());
+  static {
+    // Create all scrap items in a loop - ensures no type is forgotten
+    for (ScrapType type : ScrapType.values()) {
+      ScrapItem item = new ScrapItem(new Item.Properties(), type);
+      SCRAP_ITEMS.put(type, item);
+    }
 
-  // Additional Tech Scrap Items for recycler system
-  public static final TechScrapItem TECH_SCRAP_ITEM = new TechScrapItem(new Item.Properties());
-  public static final TechScrapItem CIRCUIT_SCRAP_ITEM = new TechScrapItem(new Item.Properties());
-  public static final TechScrapItem COIL_SCRAP_ITEM = new TechScrapItem(new Item.Properties());
-  public static final TechScrapItem CAPACITOR_SCRAP_ITEM = new TechScrapItem(new Item.Properties());
-  public static final TechScrapItem ENERGY_CELL_SCRAP_ITEM =
-      new TechScrapItem(new Item.Properties());
-
-  // Additional Material Scrap Items
-  public static final MineralScrapItem MINERAL_SCRAP_ITEM =
-      new MineralScrapItem(new Item.Properties());
-  public static final WoodScrapItem WOOD_SCRAP_ITEM = new WoodScrapItem(new Item.Properties());
-  public static final RubberScrapItem RUBBER_SCRAP_ITEM =
-      new RubberScrapItem(new Item.Properties());
-  public static final GlassScrapItem GLASS_SCRAP_ITEM = new GlassScrapItem(new Item.Properties());
-
-  // Organic and Textile Scrap Items
-  public static final FiberScrapItem FIBER_SCRAP_ITEM = new FiberScrapItem(new Item.Properties());
-  public static final BioScrapItem BIO_SCRAP_ITEM = new BioScrapItem(new Item.Properties());
+    // Assign to public fields for backwards compatibility
+    ALLOY_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.ALLOY);
+    BIO_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.BIO);
+    CAPACITOR_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.CAPACITOR);
+    CERAMIC_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.CERAMIC);
+    CIRCUIT_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.CIRCUIT);
+    COIL_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.COIL);
+    COPPER_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.COPPER);
+    CRYSTAL_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.CRYSTAL);
+    ENERGY_CELL_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.ENERGY_CELL);
+    FASTENER_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.FASTENER);
+    FIBER_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.FIBER);
+    GLASS_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.GLASS);
+    GOLD_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.GOLD);
+    INSULATION_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.INSULATION);
+    IRON_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.IRON);
+    LUMINOUS_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.LUMINOUS);
+    METAL_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.METAL);
+    MINERAL_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.MINERAL);
+    PLASTIC_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.PLASTIC);
+    RUBBER_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.RUBBER);
+    TECH_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.TECH);
+    WOOD_SCRAP_ITEM = SCRAP_ITEMS.get(ScrapType.WOOD);
+  }
 
   private ScrapItemRegistry() {}
+
+  public static ScrapItem getScrapItem(ScrapType type) {
+    return SCRAP_ITEMS.get(type);
+  }
+
+  public static Map<ScrapType, ScrapItem> getAllScrapItems() {
+    return Map.copyOf(SCRAP_ITEMS);
+  }
 }

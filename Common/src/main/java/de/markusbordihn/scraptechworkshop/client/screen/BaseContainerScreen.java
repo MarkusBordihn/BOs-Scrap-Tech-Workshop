@@ -105,12 +105,6 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
     }
   }
 
-  protected void renderPlayerInventory(GuiGraphics guiGraphics, int x, int y) {
-    RenderSystem.setShaderTexture(0, Constants.TEXTURE_INVENTORY);
-    guiGraphics.blit(Constants.TEXTURE_INVENTORY, x + 7, y + 83, 7, 83, 162, 54);
-    guiGraphics.blit(Constants.TEXTURE_INVENTORY, x + 7, y + 141, 7, 141, 162, 18);
-  }
-
   protected void renderPlayerInventoryAt(
       GuiGraphics guiGraphics, int x, int y, int inventoryY, int hotbarY) {
     RenderSystem.setShaderTexture(0, Constants.TEXTURE_INVENTORY);

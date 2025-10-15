@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 1.5,
+  "ingredient": {
+    "item": "scrap_tech_workshop:alloy_scrap_box"
+  },
+  "result": "minecraft:iron_ingot",
+  "count": 2
+}

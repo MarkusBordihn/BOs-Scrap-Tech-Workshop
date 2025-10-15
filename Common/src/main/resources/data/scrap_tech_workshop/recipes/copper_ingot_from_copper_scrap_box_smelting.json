@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 400,
+  "experience": 1.5,
+  "ingredient": {
+    "item": "scrap_tech_workshop:copper_scrap_box"
+  },
+  "result": "minecraft:copper_ingot",
+  "count": 9
+}

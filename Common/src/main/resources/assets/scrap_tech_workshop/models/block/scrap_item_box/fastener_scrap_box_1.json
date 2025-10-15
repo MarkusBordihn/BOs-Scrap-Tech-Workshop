@@ -1,0 +1,6 @@
+﻿{
+  "parent": "scrap_tech_workshop:block/scrap_item_box/scrap_item_box_variant_1",
+  "textures": {
+    "item": "scrap_tech_workshop:item/scrap/fastener_scrap"
+  }
+}

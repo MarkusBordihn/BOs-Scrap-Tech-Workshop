@@ -1,18 +1,63 @@
-{
+﻿{
   "variants": {
-    "facing=north": {
-      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box"
+    "facing=north,stacking=1": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_1"
     },
-    "facing=south": {
-      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box",
+    "facing=south,stacking=1": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_1",
       "y": 180
     },
-    "facing=west": {
-      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box",
+    "facing=west,stacking=1": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_1",
       "y": 270
     },
-    "facing=east": {
-      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box",
+    "facing=east,stacking=1": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_1",
+      "y": 90
+    },
+    "facing=north,stacking=2": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_2"
+    },
+    "facing=south,stacking=2": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_2",
+      "y": 180
+    },
+    "facing=west,stacking=2": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_2",
+      "y": 270
+    },
+    "facing=east,stacking=2": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_2",
+      "y": 90
+    },
+    "facing=north,stacking=3": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_3"
+    },
+    "facing=south,stacking=3": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_3",
+      "y": 180
+    },
+    "facing=west,stacking=3": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_3",
+      "y": 270
+    },
+    "facing=east,stacking=3": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_3",
+      "y": 90
+    },
+    "facing=north,stacking=4": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_4"
+    },
+    "facing=south,stacking=4": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_4",
+      "y": 180
+    },
+    "facing=west,stacking=4": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_4",
+      "y": 270
+    },
+    "facing=east,stacking=4": {
+      "model": "scrap_tech_workshop:block/scrap_item_box/metal_scrap_box_4",
       "y": 90
     }
   }

@@ -55,11 +55,9 @@ public class AxeInteractionHandler {
     Optional<BlockState> unwaxedState =
         Optional.ofNullable(HoneycombItem.WAX_OFF_BY_BLOCK.get().get(state.getBlock()))
             .map(block -> block.withPropertiesOf(state));
-    if (unwaxedState.isPresent()) {
-      return removeWax(context, level, pos, unwaxedState.get());
-    }
-
-    return InteractionResult.PASS;
+    return unwaxedState
+        .map(blockState -> removeWax(context, level, pos, blockState))
+        .orElse(InteractionResult.PASS);
   }
 
   public static InteractionResult processCycleableWood(
@@ -69,17 +67,13 @@ public class AxeInteractionHandler {
 
     Optional<BlockState> strippedState = StrippableBlocks.getStrippedState(blockState);
     if (strippedState.isPresent()) {
-      // Has bark, remove it
       return stripLog(context, level, pos, strippedState.get());
     }
 
     Optional<BlockState> unstrippedState = StrippableBlocks.getUnstrippedState(blockState);
-    if (unstrippedState.isPresent()) {
-      // Is stripped, add bark back
-      return addBark(context, level, pos, unstrippedState.get());
-    }
-
-    return InteractionResult.PASS;
+    return unstrippedState
+        .map(state -> addBark(context, level, pos, state))
+        .orElse(InteractionResult.PASS);
   }
 
   private static InteractionResult addBark(

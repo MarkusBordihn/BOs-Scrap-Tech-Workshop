@@ -30,11 +30,11 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public abstract class ScrapItem extends Item {
+public class ScrapItem extends Item {
 
   protected final ScrapType scrapType;
 
-  protected ScrapItem(Properties properties, ScrapType scrapType) {
+  public ScrapItem(Properties properties, ScrapType scrapType) {
     super(properties);
     this.scrapType = scrapType;
   }
@@ -43,31 +43,37 @@ public abstract class ScrapItem extends Item {
     return scrapType;
   }
 
-  public abstract int getScrapValue();
+  public int getScrapValue() {
+    return scrapType.getValue();
+  }
 
-  public abstract Rarity getScrapRarity();
+  public Rarity getScrapRarity() {
+    return scrapType.getRarity();
+  }
 
   public boolean isRecyclable() {
     return true;
   }
 
-  public abstract float getEfficiencyBonus();
+  public float getEfficiencyBonus() {
+    return scrapType.getEfficiencyBonus();
+  }
 
   @Override
-  public Rarity getRarity(ItemStack stack) {
+  public Rarity getRarity(ItemStack itemStack) {
     return getScrapRarity();
   }
 
   @Override
   public void appendHoverText(
-      ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-    super.appendHoverText(stack, level, tooltip, flag);
+      ItemStack itemStack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    super.appendHoverText(itemStack, level, tooltip, flag);
 
     tooltip.add(
         Component.translatable(this.getDescriptionId() + ".description")
             .withStyle(net.minecraft.ChatFormatting.GRAY));
 
-    addScrapTooltip(stack, level, tooltip, flag);
+    addScrapTooltip(itemStack, level, tooltip, flag);
   }
 
   protected void addScrapTooltip(

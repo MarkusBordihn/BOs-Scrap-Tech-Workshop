@@ -246,5 +246,6 @@
   "tooltip.scrap_tech_workshop.not_recyclable": "Cannot be recycled",
   "tooltip.scrap_tech_workshop.rarity": "Quality: %s",
   "tooltip.scrap_tech_workshop.scrap_box.compact_storage": "Compact storage for scrap materials",
+  "tooltip.scrap_tech_workshop.scrap_box.stacking": "Stacking: %s / %s boxes",
   "tooltip.scrap_tech_workshop.scrap_value": "Scrap Value: %d"
 }

@@ -23,6 +23,7 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.recipe.recycler.RecyclerRecipe;
 import de.markusbordihn.scraptechworkshop.recipe.recycler.RecyclerRecipeSelector;
 import java.util.List;
+import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.apache.logging.log4j.LogManager;
@@ -47,7 +48,7 @@ public class RecyclerRecipeHandler {
   }
 
   public static boolean canProcessRecipe(
-      final RecyclerRecipe recipe, final ItemStack inputStack, final ItemStack[] items) {
+      final RecyclerRecipe recipe, final ItemStack inputStack, final NonNullList<ItemStack> items) {
     if (recipe == null || inputStack.isEmpty() || !recipe.matchesInput(inputStack)) {
       return false;
     }
@@ -56,7 +57,7 @@ public class RecyclerRecipeHandler {
   }
 
   public static void processRecipe(
-      final RecyclerRecipe recipe, final ItemStack inputStack, final ItemStack[] items) {
+      final RecyclerRecipe recipe, final ItemStack inputStack, final NonNullList<ItemStack> items) {
     if (recipe == null || inputStack.isEmpty()) {
       return;
     }
@@ -68,10 +69,11 @@ public class RecyclerRecipeHandler {
     log.debug("Processed item with recipe: {} -> {} outputs", inputStack.getItem(), outputs.size());
   }
 
-  private static boolean canInsertOutputs(final List<ItemStack> outputs, final ItemStack[] items) {
-    ItemStack[] simulatedItems = new ItemStack[items.length];
-    for (int i = 0; i < items.length; i++) {
-      simulatedItems[i] = items[i].copy();
+  private static boolean canInsertOutputs(
+      final List<ItemStack> outputs, final NonNullList<ItemStack> items) {
+    NonNullList<ItemStack> simulatedItems = NonNullList.withSize(items.size(), ItemStack.EMPTY);
+    for (int i = 0; i < items.size(); i++) {
+      simulatedItems.set(i, items.get(i).copy());
     }
 
     for (ItemStack output : outputs) {
@@ -83,16 +85,16 @@ public class RecyclerRecipeHandler {
   }
 
   private static boolean tryInsertOutput(
-      final ItemStack[] itemArray, final ItemStack output, final boolean isSimulation) {
+      final NonNullList<ItemStack> itemList, final ItemStack output, final boolean isSimulation) {
     ItemStack remaining = output.copy();
 
     for (int i = RecyclerSlots.FIRST_OUTPUT_SLOT;
         i <= RecyclerSlots.LAST_OUTPUT_SLOT && !remaining.isEmpty();
         i++) {
-      ItemStack slotStack = itemArray[i];
+      ItemStack slotStack = itemList.get(i);
 
       if (slotStack.isEmpty()) {
-        itemArray[i] = remaining.copy();
+        itemList.set(i, remaining.copy());
         remaining = ItemStack.EMPTY;
       } else if (ItemStack.isSameItemSameTags(slotStack, remaining)) {
         int canAdd = slotStack.getMaxStackSize() - slotStack.getCount();
@@ -106,7 +108,7 @@ public class RecyclerRecipeHandler {
     return remaining.isEmpty();
   }
 
-  private static void insertOutput(final ItemStack output, final ItemStack[] items) {
+  private static void insertOutput(final ItemStack output, final NonNullList<ItemStack> items) {
     tryInsertOutput(items, output, false);
   }
 }

@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 400,
+  "experience": 1.0,
+  "ingredient": {
+    "item": "scrap_tech_workshop:metal_scrap_box"
+  },
+  "result": "minecraft:iron_ingot"
+}

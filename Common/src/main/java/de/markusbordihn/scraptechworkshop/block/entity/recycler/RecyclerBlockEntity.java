@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.block.entity.recycler;
 
+import de.markusbordihn.scraptechworkshop.block.entity.AbstractWorkshopBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.config.RecyclerConfig;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
@@ -26,12 +27,10 @@ import de.markusbordihn.scraptechworkshop.item.upgrade.SpeedUpgradeItem;
 import de.markusbordihn.scraptechworkshop.menu.RecyclerMenu;
 import de.markusbordihn.scraptechworkshop.recipe.recycler.RecyclerRecipe;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Container;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -39,33 +38,25 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, WorldlyContainer {
+public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity {
 
   public static final String ID = "recycler";
 
-  // Slot configuration
   private static final int INPUT_SLOTS = 1;
   private static final int OUTPUT_SLOTS = 9;
   private static final int UPGRADE_SLOTS = 2;
   private static final int TOTAL_SLOTS = INPUT_SLOTS + OUTPUT_SLOTS + UPGRADE_SLOTS;
-  private static final int INPUT_SLOT = 0;
-  private static final int FIRST_OUTPUT_SLOT = 1;
-  private static final int LAST_OUTPUT_SLOT = 9;
   private static final int FIRST_UPGRADE_SLOT = 10;
   private static final int LAST_UPGRADE_SLOT = 11;
 
-  // NBT tags
   private static final String PROGRESS_TAG = "Progress";
   private static final String MAX_PROGRESS_TAG = "MaxProgress";
   private static final String NO_RECIPE_TIMER_TAG = "NoRecipeTimer";
   private static final String DONE_TIMER_TAG = "DoneTimer";
-  private static final String ITEM_TAG_PREFIX = "Item";
 
-  // Container data indices
   private static final int PROGRESS_DATA_INDEX = 0;
   private static final int MAX_PROGRESS_DATA_INDEX = 1;
 
@@ -124,8 +115,8 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
     // Calculate speed multiplier from upgrade slots
     int speedMultiplier = blockEntity.getSpeedMultiplierBonus();
 
-    RecyclerTickProcessor.RecyclerState recyclerState =
-        new RecyclerTickProcessor.RecyclerState(
+    RecyclerState recyclerState =
+        new RecyclerState(
             level,
             blockPos,
             blockEntity.container.getItems(),
@@ -136,7 +127,7 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
             blockEntity.currentRecipe,
             speedMultiplier);
 
-    RecyclerTickProcessor.TickResult result =
+    RecyclerTickResult result =
         switch (currentStatus) {
           case NO_RECIPE -> RecyclerTickProcessor.processNoRecipeStatus(recyclerState);
           case DONE -> RecyclerTickProcessor.processDoneStatus(recyclerState);
@@ -149,11 +140,12 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
     blockEntity.doneTimer = recyclerState.doneTimer;
     blockEntity.currentRecipe = recyclerState.currentRecipe;
 
-    if (result.newStatus != currentStatus) {
-      RecyclerBlock.updateStatus(level, blockPos, result.newStatus);
+    if (result.newStatus() != currentStatus) {
+      RecyclerBlock.updateStatus(level, blockPos, result.newStatus());
     }
 
-    if (result.hasChanged && blockEntity.tickCounter % RecyclerConfig.progressUpdateInterval == 0) {
+    if (result.hasChanged()
+        && blockEntity.tickCounter % RecyclerConfig.progressUpdateInterval == 0) {
       blockEntity.setChanged();
     }
   }
@@ -163,17 +155,22 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
   }
 
   @Override
+  protected NonNullList<ItemStack> getItems() {
+    return container.getItems();
+  }
+
+  protected int getTotalSlots() {
+    return TOTAL_SLOTS;
+  }
+
+  @Override
+  protected WorldlyContainer getContainerDelegate() {
+    return container;
+  }
+
+  @Override
   public void load(CompoundTag compoundTag) {
     super.load(compoundTag);
-
-    for (int i = 0; i < TOTAL_SLOTS; i++) {
-      if (compoundTag.contains(ITEM_TAG_PREFIX + i)) {
-        container.getItems()[i] = ItemStack.of(compoundTag.getCompound(ITEM_TAG_PREFIX + i));
-      } else {
-        container.getItems()[i] = ItemStack.EMPTY;
-      }
-    }
-
     progress = compoundTag.getInt(PROGRESS_TAG);
     maxProgress = compoundTag.getInt(MAX_PROGRESS_TAG);
     noRecipeTimer = compoundTag.getInt(NO_RECIPE_TIMER_TAG);
@@ -183,68 +180,10 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
   @Override
   protected void saveAdditional(CompoundTag compoundTag) {
     super.saveAdditional(compoundTag);
-
-    for (int i = 0; i < TOTAL_SLOTS; i++) {
-      if (!container.getItems()[i].isEmpty()) {
-        compoundTag.put(ITEM_TAG_PREFIX + i, container.getItems()[i].save(new CompoundTag()));
-      }
-    }
-
     compoundTag.putInt(PROGRESS_TAG, progress);
     compoundTag.putInt(MAX_PROGRESS_TAG, maxProgress);
     compoundTag.putInt(NO_RECIPE_TIMER_TAG, noRecipeTimer);
     compoundTag.putInt(DONE_TIMER_TAG, doneTimer);
-  }
-
-  public int getContainerSize() {
-    return container.getContainerSize();
-  }
-
-  public boolean isEmpty() {
-    return container.isEmpty();
-  }
-
-  public ItemStack getItem(int slot) {
-    return container.getItem(slot);
-  }
-
-  public ItemStack removeItem(int slot, int amount) {
-    return container.removeItem(slot, amount);
-  }
-
-  public ItemStack removeItemNoUpdate(int slot) {
-    return container.removeItemNoUpdate(slot);
-  }
-
-  public void setItem(final int slot, final ItemStack itemStack) {
-    container.setItem(slot, itemStack);
-  }
-
-  public boolean stillValid(final Player player) {
-    return Container.stillValidBlockEntity(this, player);
-  }
-
-  public boolean canPlaceItem(final int slot, final ItemStack itemStack) {
-    return container.canPlaceItem(slot, itemStack);
-  }
-
-  public void clearContent() {
-    container.clearContent();
-  }
-
-  @Override
-  public int[] getSlotsForFace(Direction direction) {
-    return container.getSlotsForFace(direction);
-  }
-
-  @Override
-  public boolean canPlaceItemThroughFace(int slot, ItemStack itemStack, Direction direction) {
-    return container.canPlaceItemThroughFace(slot, itemStack, direction);
-  }
-
-  @Override
-  public boolean canTakeItemThroughFace(int slot, ItemStack itemStack, Direction direction) {
-    return container.canTakeItemThroughFace(slot, itemStack, direction);
   }
 
   @Override
@@ -269,8 +208,9 @@ public class RecyclerBlockEntity extends BlockEntity implements MenuProvider, Wo
   }
 
   private void syncToClient() {
-    if (level != null && !level.isClientSide) {
-      level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
+    Level currentLevel = getLevel();
+    if (currentLevel != null && !currentLevel.isClientSide) {
+      currentLevel.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
     }
   }
 

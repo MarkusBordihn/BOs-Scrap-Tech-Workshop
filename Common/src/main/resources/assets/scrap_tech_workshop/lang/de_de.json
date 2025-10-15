@@ -246,5 +246,6 @@
   "tooltip.scrap_tech_workshop.not_recyclable": "Kann nicht recycelt werden",
   "tooltip.scrap_tech_workshop.rarity": "Qualität: %s",
   "tooltip.scrap_tech_workshop.scrap_box.compact_storage": "Kompakte Aufbewahrung für Schrottmaterialien",
+  "tooltip.scrap_tech_workshop.scrap_box.stacking": "Stapeln: %s / %s Boxen",
   "tooltip.scrap_tech_workshop.scrap_value": "Schrottwert: %d"
 }

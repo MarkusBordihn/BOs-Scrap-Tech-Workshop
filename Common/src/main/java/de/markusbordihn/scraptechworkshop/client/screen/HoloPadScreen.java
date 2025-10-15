@@ -267,9 +267,21 @@ public class HoloPadScreen extends Screen {
     if (player == null) {
       return;
     }
+    int currentContentHeight = getCurrentContentHeight();
+    int visibleHeight = TEXT_AREA_HEIGHT - TEXT_PADDING * 2;
+    if (currentContentHeight > visibleHeight) {
+      int maxScroll = Math.max(0, calculateTotalTextHeight() - visibleHeight);
+      int neededScroll = currentContentHeight - visibleHeight;
+      int targetScroll = Math.min(neededScroll, maxScroll);
+      if (scrollOffset < targetScroll) {
+        scrollOffset += 1;
+        scrollOffset = Math.min(scrollOffset, targetScroll);
+      }
+    }
+  }
 
+  private int getCurrentContentHeight() {
     int currentContentHeight = 0;
-
     if (holoLogData != null) {
       if (holoLogData.title() != null) {
         currentContentHeight += font.lineHeight + TITLE_SPACING;
@@ -286,17 +298,7 @@ public class HoloPadScreen extends Screen {
     if (partialLine != null && !partialLine.isEmpty()) {
       currentContentHeight += font.lineHeight + LINE_SPACING;
     }
-
-    int visibleHeight = TEXT_AREA_HEIGHT - TEXT_PADDING * 2;
-    if (currentContentHeight > visibleHeight) {
-      int maxScroll = Math.max(0, calculateTotalTextHeight() - visibleHeight);
-      int neededScroll = currentContentHeight - visibleHeight;
-      int targetScroll = Math.min(neededScroll, maxScroll);
-      if (scrollOffset < targetScroll) {
-        scrollOffset += 1;
-        scrollOffset = Math.min(scrollOffset, targetScroll);
-      }
-    }
+    return currentContentHeight;
   }
 
   @Override
@@ -495,12 +497,10 @@ public class HoloPadScreen extends Screen {
         x + TEXT_AREA_X + TEXT_AREA_WIDTH,
         y + TEXT_AREA_Y + TEXT_AREA_HEIGHT);
 
-    int yOffset = textY - scrollOffset;
-
     if (player != null) {
-      yOffset = renderPlayerContent(guiGraphics, textX, yOffset, y);
+      renderPlayerContent(guiGraphics, textX, textY - scrollOffset, y);
     } else if (holoLogData != null) {
-      yOffset = renderFallbackContent(guiGraphics, textX, yOffset);
+      renderFallbackContent(guiGraphics, textX, textY - scrollOffset);
     } else {
       renderNoContent(guiGraphics, textX, textY);
     }
@@ -508,7 +508,7 @@ public class HoloPadScreen extends Screen {
     guiGraphics.disableScissor();
   }
 
-  private int renderPlayerContent(
+  private void renderPlayerContent(
       final GuiGraphics guiGraphics, final int textX, int yOffset, final int areaY) {
     int maxY = areaY + TEXT_AREA_Y + TEXT_AREA_HEIGHT - TEXT_PADDING * 2;
     for (String line : player.getDisplayedLines()) {
@@ -525,13 +525,11 @@ public class HoloPadScreen extends Screen {
         && yOffset < maxY) {
       guiGraphics.drawString(font, partialLine, textX, yOffset, COLOR_LINE_TEXT, false);
     }
-
-    return yOffset;
   }
 
-  private int renderFallbackContent(
+  private void renderFallbackContent(
       final GuiGraphics guiGraphics, final int textX, final int yOffset) {
-    return yOffset;
+    // Render wrapped text lines as fallback
   }
 
   private void renderNoContent(final GuiGraphics guiGraphics, final int textX, final int textY) {

@@ -46,10 +46,8 @@ public class ScrapPileMerger {
 
       if (neighborState.getBlock() instanceof ScrapPileBlock
           && neighborState.getValue(ScrapPileBlock.VARIANT) == variant) {
-
         final int neighborSize = neighborState.getValue(ScrapPileBlock.SIZE);
         final int totalSize = currentSize + neighborSize;
-
         if (totalSize <= MAX_SIZE) {
           level.setBlock(pos, state.setValue(ScrapPileBlock.SIZE, totalSize), Block.UPDATE_ALL);
           level.removeBlock(neighborPos, false);
@@ -60,7 +58,6 @@ public class ScrapPileMerger {
               level.dimension().location(),
               totalSize,
               variant);
-          return true;
         } else {
           final int overflow = totalSize - MAX_SIZE;
           level.setBlock(pos, state.setValue(ScrapPileBlock.SIZE, MAX_SIZE), Block.UPDATE_ALL);
@@ -73,8 +70,8 @@ public class ScrapPileMerger {
               level.dimension().location(),
               overflow,
               variant);
-          return true;
         }
+        return true;
       }
     }
     return false;

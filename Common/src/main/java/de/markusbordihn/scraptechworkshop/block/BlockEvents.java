@@ -19,7 +19,6 @@
 
 package de.markusbordihn.scraptechworkshop.block;
 
-import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.drop.ScrapDropHandler;
 import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
 import net.minecraft.core.BlockPos;
@@ -27,12 +26,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class BlockEvents {
-
-  protected static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   public static void handleBlockBreakEvent(
       Block block, BlockPos blockPos, ServerLevel serverLevel, ServerPlayer serverPlayer) {

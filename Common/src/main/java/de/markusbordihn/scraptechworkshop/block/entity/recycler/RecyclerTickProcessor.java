@@ -21,7 +21,6 @@ package de.markusbordihn.scraptechworkshop.block.entity.recycler;
 
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
-import de.markusbordihn.scraptechworkshop.recipe.recycler.RecyclerRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -38,15 +37,15 @@ public class RecyclerTickProcessor {
   private static final int DONE_DISPLAY_TIME = 20;
   private static final int PROGRESS_DECAY_RATE = 2;
 
-  public static TickResult processNoRecipeStatus(final RecyclerState state) {
+  public static RecyclerTickResult processNoRecipeStatus(final RecyclerState state) {
     state.noRecipeTimer--;
     if (state.noRecipeTimer <= 0) {
-      return new TickResult(RecyclerStatus.IDLE, true);
+      return new RecyclerTickResult(RecyclerStatus.IDLE, true);
     }
-    return new TickResult(RecyclerStatus.NO_RECIPE, false);
+    return new RecyclerTickResult(RecyclerStatus.NO_RECIPE, false);
   }
 
-  public static TickResult processDoneStatus(final RecyclerState state) {
+  public static RecyclerTickResult processDoneStatus(final RecyclerState state) {
     state.doneTimer--;
     if (state.doneTimer <= 0) {
       state.currentRecipe = RecyclerRecipeHandler.findRecipe(state.level, state.getInputStack());
@@ -54,15 +53,15 @@ public class RecyclerTickProcessor {
           && RecyclerRecipeHandler.canProcessRecipe(
               state.currentRecipe, state.getInputStack(), state.items)) {
         state.progress = 0;
-        return new TickResult(RecyclerStatus.WORKING, true);
+        return new RecyclerTickResult(RecyclerStatus.WORKING, true);
       } else {
-        return new TickResult(RecyclerStatus.IDLE, true);
+        return new RecyclerTickResult(RecyclerStatus.IDLE, true);
       }
     }
-    return new TickResult(RecyclerStatus.DONE, false);
+    return new RecyclerTickResult(RecyclerStatus.DONE, false);
   }
 
-  public static TickResult processActiveStatus(
+  public static RecyclerTickResult processActiveStatus(
       final RecyclerState state, final BlockState blockState) {
     boolean hasChanged = false;
     RecyclerStatus newStatus = blockState.getValue(RecyclerBlock.STATUS);
@@ -75,7 +74,7 @@ public class RecyclerTickProcessor {
       if (state.currentRecipe == null && !state.getInputStack().isEmpty()) {
         ejectInputItem(state, blockState);
         state.noRecipeTimer = NO_RECIPE_COOLDOWN;
-        return new TickResult(RecyclerStatus.NO_RECIPE, true);
+        return new RecyclerTickResult(RecyclerStatus.NO_RECIPE, true);
       }
 
       state.progress = 0;
@@ -85,7 +84,6 @@ public class RecyclerTickProcessor {
     if (state.currentRecipe != null
         && RecyclerRecipeHandler.canProcessRecipe(
             state.currentRecipe, state.getInputStack(), state.items)) {
-      // Apply speed multiplier bonus from upgrade items
       state.progress += state.speedMultiplier;
       newStatus = RecyclerStatus.WORKING;
       hasChanged = true;
@@ -123,7 +121,7 @@ public class RecyclerTickProcessor {
       newStatus = RecyclerStatus.IDLE;
     }
 
-    return new TickResult(newStatus, hasChanged);
+    return new RecyclerTickResult(newStatus, hasChanged);
   }
 
   private static void ejectInputItem(final RecyclerState state, final BlockState blockState) {
@@ -156,7 +154,6 @@ public class RecyclerTickProcessor {
     }
 
     level.playSound(null, recyclerPos, SoundEvents.DISPENSER_FAIL, SoundSource.BLOCKS, 0.5f, 1.2f);
-
     if (level instanceof ServerLevel serverLevel) {
       serverLevel.sendParticles(
           ParticleTypes.SMOKE,
@@ -168,53 +165,6 @@ public class RecyclerTickProcessor {
           0.1,
           0.2,
           0.02);
-    }
-  }
-
-  public static class TickResult {
-    public final RecyclerStatus newStatus;
-    public final boolean hasChanged;
-
-    public TickResult(RecyclerStatus newStatus, boolean hasChanged) {
-      this.newStatus = newStatus;
-      this.hasChanged = hasChanged;
-    }
-  }
-
-  public static class RecyclerState {
-    public final Level level;
-    public final BlockPos pos;
-    public final ItemStack[] items;
-    public final int maxProgress;
-    public final int speedMultiplier;
-    public int progress;
-    public int noRecipeTimer;
-    public int doneTimer;
-    public RecyclerRecipe currentRecipe;
-
-    public RecyclerState(
-        Level level,
-        BlockPos pos,
-        ItemStack[] items,
-        int progress,
-        int maxProgress,
-        int noRecipeTimer,
-        int doneTimer,
-        RecyclerRecipe currentRecipe,
-        int speedMultiplier) {
-      this.level = level;
-      this.pos = pos;
-      this.items = items;
-      this.progress = progress;
-      this.maxProgress = maxProgress;
-      this.noRecipeTimer = noRecipeTimer;
-      this.doneTimer = doneTimer;
-      this.currentRecipe = currentRecipe;
-      this.speedMultiplier = speedMultiplier;
-    }
-
-    public ItemStack getInputStack() {
-      return items[RecyclerSlots.INPUT_SLOT];
     }
   }
 }

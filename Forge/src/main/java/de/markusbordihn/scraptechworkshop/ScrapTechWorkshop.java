@@ -47,15 +47,17 @@ public class ScrapTechWorkshop {
 
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
-  public ScrapTechWorkshop(FMLJavaModLoadingContext context) {
+  public ScrapTechWorkshop(final FMLJavaModLoadingContext context) {
     initialize(context.getModEventBus());
   }
 
+  @Deprecated(forRemoval = true)
+  // @deprecated Fallback constructor for older Forge versions.
   public ScrapTechWorkshop() {
     initialize(FMLJavaModLoadingContext.get().getModEventBus());
   }
 
-  private void initialize(IEventBus modEventBus) {
+  private void initialize(final IEventBus modEventBus) {
 
     log.info("Initializing {} (Forge) ...", Constants.MOD_NAME);
 

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 2.0,
+  "ingredient": {
+    "item": "scrap_tech_workshop:gold_scrap_box"
+  },
+  "result": "minecraft:gold_ingot",
+  "count": 2
+}

@@ -60,12 +60,12 @@ public class RecyclerRecipeSerializer implements RecipeSerializer<RecyclerRecipe
   @Override
   public RecyclerRecipe fromJson(ResourceLocation recipeId, JsonObject json) {
     JsonObject matchJson = GsonHelper.getAsJsonObject(json, MATCH_FIELD);
-    RecyclerRecipe.RecyclerMatch match = parseMatch(matchJson);
+    RecyclerMatch match = parseMatch(matchJson);
 
     JsonObject primaryOutputJson = GsonHelper.getAsJsonObject(json, PRIMARY_OUTPUT_FIELD);
-    RecyclerRecipe.RecyclerOutput primaryOutput = parseOutput(primaryOutputJson);
+    RecyclerOutput primaryOutput = parseOutput(primaryOutputJson);
 
-    List<RecyclerRecipe.RecyclerByproduct> byproducts = new ArrayList<>();
+    List<RecyclerByproduct> byproducts = new ArrayList<>();
     if (json.has(BYPRODUCTS_FIELD)) {
       JsonArray byproductsArray = GsonHelper.getAsJsonArray(json, BYPRODUCTS_FIELD);
       for (int i = 0; i < byproductsArray.size(); i++) {
@@ -81,21 +81,21 @@ public class RecyclerRecipeSerializer implements RecipeSerializer<RecyclerRecipe
     return new RecyclerRecipe(recipeId, match, primaryOutput, byproducts, processTime, weight);
   }
 
-  private RecyclerRecipe.RecyclerMatch parseMatch(JsonObject matchJson) {
+  private RecyclerMatch parseMatch(JsonObject matchJson) {
     if (matchJson.has(ITEM_FIELD)) {
       String itemId = GsonHelper.getAsString(matchJson, ITEM_FIELD);
       Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(itemId));
-      return new RecyclerRecipe.RecyclerMatch(item);
+      return new RecyclerMatch(item);
     } else if (matchJson.has(TAG_FIELD)) {
       String tagId = GsonHelper.getAsString(matchJson, TAG_FIELD);
       TagKey<Item> tag = TagKey.create(BuiltInRegistries.ITEM.key(), new ResourceLocation(tagId));
-      return new RecyclerRecipe.RecyclerMatch(tag);
+      return new RecyclerMatch(tag);
     } else {
       throw new IllegalArgumentException("Match must have either 'item' or 'tag'");
     }
   }
 
-  private RecyclerRecipe.RecyclerOutput parseOutput(JsonObject outputJson) {
+  private RecyclerOutput parseOutput(JsonObject outputJson) {
     String itemId = GsonHelper.getAsString(outputJson, ITEM_FIELD);
     Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(itemId));
 
@@ -114,10 +114,10 @@ public class RecyclerRecipeSerializer implements RecipeSerializer<RecyclerRecipe
     boolean durabilityScaling =
         GsonHelper.getAsBoolean(outputJson, DURABILITY_SCALING_FIELD, DEFAULT_DURABILITY_SCALING);
 
-    return new RecyclerRecipe.RecyclerOutput(item, minCount, maxCount, durabilityScaling);
+    return new RecyclerOutput(item, minCount, maxCount, durabilityScaling);
   }
 
-  private RecyclerRecipe.RecyclerByproduct parseByproduct(JsonObject byproductJson) {
+  private RecyclerByproduct parseByproduct(JsonObject byproductJson) {
     String itemId = GsonHelper.getAsString(byproductJson, ITEM_FIELD);
     Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(itemId));
 
@@ -135,38 +135,37 @@ public class RecyclerRecipeSerializer implements RecipeSerializer<RecyclerRecipe
       }
     }
 
-    return new RecyclerRecipe.RecyclerByproduct(item, chance, minCount, maxCount);
+    return new RecyclerByproduct(item, chance, minCount, maxCount);
   }
 
   @Override
   public RecyclerRecipe fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
     boolean isItemMatch = buffer.readBoolean();
-    RecyclerRecipe.RecyclerMatch match;
+    RecyclerMatch match;
     if (isItemMatch) {
       Item item = buffer.readById(BuiltInRegistries.ITEM);
-      match = new RecyclerRecipe.RecyclerMatch(item);
+      match = new RecyclerMatch(item);
     } else {
       ResourceLocation tagId = buffer.readResourceLocation();
       TagKey<Item> tag = TagKey.create(BuiltInRegistries.ITEM.key(), tagId);
-      match = new RecyclerRecipe.RecyclerMatch(tag);
+      match = new RecyclerMatch(tag);
     }
 
     Item primaryItem = buffer.readById(BuiltInRegistries.ITEM);
     int minCount = buffer.readVarInt();
     int maxCount = buffer.readVarInt();
     boolean durabilityScaling = buffer.readBoolean();
-    RecyclerRecipe.RecyclerOutput primaryOutput =
-        new RecyclerRecipe.RecyclerOutput(primaryItem, minCount, maxCount, durabilityScaling);
+    RecyclerOutput primaryOutput =
+        new RecyclerOutput(primaryItem, minCount, maxCount, durabilityScaling);
 
     int byproductCount = buffer.readVarInt();
-    List<RecyclerRecipe.RecyclerByproduct> byproducts = new ArrayList<>();
+    List<RecyclerByproduct> byproducts = new ArrayList<>();
     for (int i = 0; i < byproductCount; i++) {
       Item byproductItem = buffer.readById(BuiltInRegistries.ITEM);
       double chance = buffer.readDouble();
       int byproductMin = buffer.readVarInt();
       int byproductMax = buffer.readVarInt();
-      byproducts.add(
-          new RecyclerRecipe.RecyclerByproduct(byproductItem, chance, byproductMin, byproductMax));
+      byproducts.add(new RecyclerByproduct(byproductItem, chance, byproductMin, byproductMax));
     }
 
     int processTime = buffer.readVarInt();
@@ -177,7 +176,7 @@ public class RecyclerRecipeSerializer implements RecipeSerializer<RecyclerRecipe
 
   @Override
   public void toNetwork(FriendlyByteBuf buffer, RecyclerRecipe recipe) {
-    RecyclerRecipe.RecyclerMatch match = recipe.match();
+    RecyclerMatch match = recipe.match();
     buffer.writeBoolean(match.isItemMatch());
     if (match.isItemMatch()) {
       buffer.writeId(BuiltInRegistries.ITEM, match.getItem());
@@ -185,15 +184,15 @@ public class RecyclerRecipeSerializer implements RecipeSerializer<RecyclerRecipe
       buffer.writeResourceLocation(match.getTag().location());
     }
 
-    RecyclerRecipe.RecyclerOutput primaryOutput = recipe.primaryOutput();
+    RecyclerOutput primaryOutput = recipe.primaryOutput();
     buffer.writeId(BuiltInRegistries.ITEM, primaryOutput.getItem());
     buffer.writeVarInt(primaryOutput.getMinCount());
     buffer.writeVarInt(primaryOutput.getMaxCount());
     buffer.writeBoolean(primaryOutput.isDurabilityScaling());
 
-    List<RecyclerRecipe.RecyclerByproduct> byproducts = recipe.byproducts();
+    List<RecyclerByproduct> byproducts = recipe.byproducts();
     buffer.writeVarInt(byproducts.size());
-    for (RecyclerRecipe.RecyclerByproduct byproduct : byproducts) {
+    for (RecyclerByproduct byproduct : byproducts) {
       buffer.writeId(BuiltInRegistries.ITEM, byproduct.getItem());
       buffer.writeDouble(byproduct.getChance());
       buffer.writeVarInt(byproduct.getMinCount());

@@ -143,9 +143,8 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
   }
 
   private void addPlayerHotbar(final Inventory playerInventory) {
-    for (int col = 0; col < PLAYER_HOTBAR_SLOTS; ++col) {
-      int x = PLAYER_HOTBAR_START_X + col * SLOT_SPACING;
-      final int index = col;
+    for (int index = 0; index < PLAYER_HOTBAR_SLOTS; ++index) {
+      int x = PLAYER_HOTBAR_START_X + index * SLOT_SPACING;
       this.addSlot(
           new Slot(playerInventory, index, x, PLAYER_HOTBAR_Y) {
             @Override
@@ -177,17 +176,15 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
         // Moving from player inventory
         if (slotStack.getItem() instanceof EnergyCellItem) {
           // Try to move battery to battery slot
-          if (!this.moveItemStackTo(slotStack, 0, 1, false)) {
-            if (!this.moveItemStackTo(slotStack, playerInventoryEnd, playerHotbarEnd, false)) {
-              return ItemStack.EMPTY;
-            }
+          if (!this.moveItemStackTo(slotStack, 0, 1, false)
+              && !this.moveItemStackTo(slotStack, playerInventoryEnd, playerHotbarEnd, false)) {
+            return ItemStack.EMPTY;
           }
         } else if (isValidModule(slotStack)) {
           // Try to move module to module slots
-          if (!this.moveItemStackTo(slotStack, 1, TOTAL_TOOL_SLOTS, false)) {
-            if (!this.moveItemStackTo(slotStack, playerInventoryEnd, playerHotbarEnd, false)) {
-              return ItemStack.EMPTY;
-            }
+          if (!this.moveItemStackTo(slotStack, 1, TOTAL_TOOL_SLOTS, false)
+              && !this.moveItemStackTo(slotStack, playerInventoryEnd, playerHotbarEnd, false)) {
+            return ItemStack.EMPTY;
           }
         } else {
           // Regular item, try hotbar
@@ -199,17 +196,15 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
         // Moving from player hotbar
         if (slotStack.getItem() instanceof EnergyCellItem) {
           // Try to move battery to battery slot
-          if (!this.moveItemStackTo(slotStack, 0, 1, false)) {
-            if (!this.moveItemStackTo(slotStack, TOTAL_TOOL_SLOTS, playerInventoryEnd, false)) {
-              return ItemStack.EMPTY;
-            }
+          if (!this.moveItemStackTo(slotStack, 0, 1, false)
+              && !this.moveItemStackTo(slotStack, TOTAL_TOOL_SLOTS, playerInventoryEnd, false)) {
+            return ItemStack.EMPTY;
           }
         } else if (isValidModule(slotStack)) {
           // Try to move module to module slots
-          if (!this.moveItemStackTo(slotStack, 1, TOTAL_TOOL_SLOTS, false)) {
-            if (!this.moveItemStackTo(slotStack, TOTAL_TOOL_SLOTS, playerInventoryEnd, false)) {
-              return ItemStack.EMPTY;
-            }
+          if (!this.moveItemStackTo(slotStack, 1, TOTAL_TOOL_SLOTS, false)
+              && !this.moveItemStackTo(slotStack, TOTAL_TOOL_SLOTS, playerInventoryEnd, false)) {
+            return ItemStack.EMPTY;
           }
         } else {
           // Regular item, try inventory
@@ -290,7 +285,6 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
             currentData.hudEnabled(),
             currentData.toolPriority(),
             currentData.activeMode());
-
     newData.saveToItemStack(actualMultitoolStack);
 
     // Always sync energy: either from battery or reset to 0 if no battery

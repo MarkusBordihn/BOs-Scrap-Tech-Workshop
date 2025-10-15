@@ -19,30 +19,30 @@
 
 package de.markusbordihn.scraptechworkshop.block.entity.recycler;
 
-import java.util.Arrays;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public class RecyclerContainer implements WorldlyContainer {
 
-  private final ItemStack[] items;
+  private final NonNullList<ItemStack> items;
   private final Runnable onChanged;
 
   public RecyclerContainer(final int totalSlots, final Runnable onChanged) {
-    this.items = new ItemStack[totalSlots];
-    Arrays.fill(items, ItemStack.EMPTY);
+    this.items = NonNullList.withSize(totalSlots, ItemStack.EMPTY);
     this.onChanged = onChanged;
   }
 
-  public ItemStack[] getItems() {
+  public NonNullList<ItemStack> getItems() {
     return items;
   }
 
   @Override
   public int getContainerSize() {
-    return items.length;
+    return items.size();
   }
 
   @Override
@@ -57,41 +57,27 @@ public class RecyclerContainer implements WorldlyContainer {
 
   @Override
   public ItemStack getItem(final int slot) {
-    if (slot < 0 || slot >= items.length) {
-      return ItemStack.EMPTY;
-    }
-    return items[slot];
+    return slot >= 0 && slot < items.size() ? items.get(slot) : ItemStack.EMPTY;
   }
 
   @Override
   public ItemStack removeItem(final int slot, final int amount) {
-    if (slot < 0 || slot >= items.length || items[slot].isEmpty()) {
-      return ItemStack.EMPTY;
+    ItemStack result = ContainerHelper.removeItem(items, slot, amount);
+    if (!result.isEmpty()) {
+      onChanged.run();
     }
-
-    ItemStack result = items[slot].split(amount);
-    if (items[slot].isEmpty()) {
-      items[slot] = ItemStack.EMPTY;
-    }
-    onChanged.run();
     return result;
   }
 
   @Override
   public ItemStack removeItemNoUpdate(final int slot) {
-    if (slot < 0 || slot >= items.length) {
-      return ItemStack.EMPTY;
-    }
-
-    ItemStack result = items[slot];
-    items[slot] = ItemStack.EMPTY;
-    return result;
+    return ContainerHelper.takeItem(items, slot);
   }
 
   @Override
   public void setItem(final int slot, final ItemStack itemStack) {
-    if (slot >= 0 && slot < items.length) {
-      items[slot] = itemStack;
+    if (slot >= 0 && slot < items.size()) {
+      items.set(slot, itemStack);
       if (!itemStack.isEmpty() && itemStack.getCount() > getMaxStackSize()) {
         itemStack.setCount(getMaxStackSize());
       }
@@ -111,7 +97,7 @@ public class RecyclerContainer implements WorldlyContainer {
 
   @Override
   public void clearContent() {
-    Arrays.fill(items, ItemStack.EMPTY);
+    items.clear();
     onChanged.run();
   }
 
