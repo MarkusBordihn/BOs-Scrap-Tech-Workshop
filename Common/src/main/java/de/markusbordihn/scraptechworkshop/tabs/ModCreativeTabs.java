@@ -26,6 +26,8 @@ import de.markusbordihn.scraptechworkshop.data.multitool.ToolMode;
 import de.markusbordihn.scraptechworkshop.item.ModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.scrapbox.ScrapBoxBlockItemRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -58,55 +60,11 @@ public class ModCreativeTabs {
         .icon(() -> new ItemStack(ModItems.METAL_SCRAP.get()))
         .displayItems(
             (parameters, output) -> {
-              // Basic Scrap Items
-              output.accept(ModItems.ALLOY_SCRAP.get());
-              output.accept(ModItems.BIO_SCRAP.get());
-              output.accept(ModItems.CERAMIC_SCRAP.get());
-              output.accept(ModItems.COPPER_SCRAP.get());
-              output.accept(ModItems.CRYSTAL_SCRAP.get());
-              output.accept(ModItems.FASTENER_SCRAP.get());
-              output.accept(ModItems.FIBER_SCRAP.get());
-              output.accept(ModItems.GLASS_SCRAP.get());
-              output.accept(ModItems.GOLD_SCRAP.get());
-              output.accept(ModItems.INSULATION_SCRAP.get());
-              output.accept(ModItems.IRON_SCRAP.get());
-              output.accept(ModItems.LUMINOUS_SCRAP.get());
-              output.accept(ModItems.METAL_SCRAP.get());
-              output.accept(ModItems.MINERAL_SCRAP.get());
-              output.accept(ModItems.PLASTIC_SCRAP.get());
-              output.accept(ModItems.RUBBER_SCRAP.get());
-              output.accept(ModItems.TECH_SCRAP.get());
-              output.accept(ModItems.WOOD_SCRAP.get());
+              // Add all scrap items
+              ScrapItemRegistry.getAllScrapItems().values().forEach(output::accept);
 
-              // Additional Tech Scrap Items
-              output.accept(ModItems.CIRCUIT_SCRAP.get());
-              output.accept(ModItems.COIL_SCRAP.get());
-              output.accept(ModItems.CAPACITOR_SCRAP.get());
-              output.accept(ModItems.ENERGY_CELL_SCRAP.get());
-
-              // Scrap Box Items
-              output.accept(ModItems.ALLOY_SCRAP_BOX.get());
-              output.accept(ModItems.BIO_SCRAP_BOX.get());
-              output.accept(ModItems.CAPACITOR_SCRAP_BOX.get());
-              output.accept(ModItems.CERAMIC_SCRAP_BOX.get());
-              output.accept(ModItems.CIRCUIT_SCRAP_BOX.get());
-              output.accept(ModItems.COIL_SCRAP_BOX.get());
-              output.accept(ModItems.COPPER_SCRAP_BOX.get());
-              output.accept(ModItems.CRYSTAL_SCRAP_BOX.get());
-              output.accept(ModItems.ENERGY_CELL_SCRAP_BOX.get());
-              output.accept(ModItems.FASTENER_SCRAP_BOX.get());
-              output.accept(ModItems.FIBER_SCRAP_BOX.get());
-              output.accept(ModItems.GLASS_SCRAP_BOX.get());
-              output.accept(ModItems.GOLD_SCRAP_BOX.get());
-              output.accept(ModItems.INSULATION_SCRAP_BOX.get());
-              output.accept(ModItems.IRON_SCRAP_BOX.get());
-              output.accept(ModItems.LUMINOUS_SCRAP_BOX.get());
-              output.accept(ModItems.METAL_SCRAP_BOX.get());
-              output.accept(ModItems.MINERAL_SCRAP_BOX.get());
-              output.accept(ModItems.PLASTIC_SCRAP_BOX.get());
-              output.accept(ModItems.RUBBER_SCRAP_BOX.get());
-              output.accept(ModItems.TECH_SCRAP_BOX.get());
-              output.accept(ModItems.WOOD_SCRAP_BOX.get());
+              // Add all scrap box items
+              ScrapBoxBlockItemRegistry.getAllScrapBoxItems().values().forEach(output::accept);
 
               // Scrap Pile Block Items
               output.accept(ModBlockItems.MIXED_SCRAP_PILE.get());
@@ -181,7 +139,7 @@ public class ModCreativeTabs {
     ItemStack multitool = new ItemStack(ModItems.CREATIVE_SCRAP_MULTITOOL.get());
     ItemStack battery = new ItemStack(ModItems.ENERGY_CELL.get());
     if (battery.getItem() instanceof EnergyCellItem energyCell) {
-      energyCell.setEnergy(battery, EnergyCellItem.ENERGY_MAX);
+      energyCell.setEnergy(battery, EnergyCellItem.CAPACITY_MAH);
     }
     ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(multitool);
     data = data.withBattery(battery);

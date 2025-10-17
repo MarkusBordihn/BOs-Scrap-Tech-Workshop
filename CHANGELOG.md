@@ -7,6 +7,14 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v.14.0
+
+- Replaced hard-coded break block list to a tag based system for better mod compatibility.
+- Added additional blocks like dirt, sand, ... to the breakable blocks tag.
+- Added anti-cheating for block breaking.
+- Added proper energy system with mA, A and V units.
+- Improved processing and performance.
+
 ### v.13.0
 
 - Larger refactor and rework of the mod structure and code base for better maintainability.

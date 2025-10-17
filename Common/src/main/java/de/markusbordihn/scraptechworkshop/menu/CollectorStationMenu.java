@@ -24,6 +24,7 @@ import static de.markusbordihn.scraptechworkshop.block.entity.collectorstation.C
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.config.CollectorStationConfig;
+import de.markusbordihn.scraptechworkshop.energy.EnergyPowerConsumer;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.menu.slots.CollectorStationStorageSlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.CollectorStationUpgradeSlot;
@@ -34,7 +35,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.MenuType;
@@ -46,12 +46,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class CollectorStationMenu extends AbstractContainerMenu {
+public class CollectorStationMenu extends EnergyPowerMenu {
 
-  public static final int BATTERY_SLOT_X = 8;
-  public static final int BATTERY_SLOT_Y = 18;
-  public static final int ENERGY_BAR_X = 9;
-  public static final int ENERGY_BAR_Y = 38;
+  // Main window positions
   public static final int STORAGE_GRID_START_X = 30;
   public static final int STORAGE_GRID_START_Y = 18;
   public static final int STORAGE_GRID_COLUMNS = 6;
@@ -64,7 +61,7 @@ public class CollectorStationMenu extends AbstractContainerMenu {
   public static final int PLAYER_INVENTORY_START_Y = 139;
   public static final int PLAYER_HOTBAR_START_Y = 197;
   public static final int SLOT_SPACING = 18;
-  public static final int CONTAINER_DATA_SIZE = 4;
+  public static final int ADDITIONAL_CONTAINER_DATA_SIZE = 2;
 
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
   private static final String LOG_PREFIX = "[CollectorStationMenu]";
@@ -73,7 +70,7 @@ public class CollectorStationMenu extends AbstractContainerMenu {
 
   private final CollectorStationBlockEntity blockEntity;
   private final Level level;
-  private final ContainerData data;
+  private final ContainerData additionalData;
   private final SimpleContainer dummyContainer;
   private final BlockPos blockPos;
 
@@ -83,17 +80,25 @@ public class CollectorStationMenu extends AbstractContainerMenu {
         windowId,
         playerInventory,
         getBlockEntityFromData(playerInventory, additionalData),
-        new SimpleContainerData(CONTAINER_DATA_SIZE));
+        new SimpleContainerData(ADDITIONAL_CONTAINER_DATA_SIZE));
   }
 
   public CollectorStationMenu(
       final int windowId,
       final Inventory playerInventory,
       final BlockEntity entity,
-      final ContainerData data) {
-    super(TYPE, windowId);
+      final ContainerData additionalData) {
+    super(
+        TYPE,
+        windowId,
+        entity instanceof EnergyPowerConsumer consumer
+            ? consumer.getEnergyPowerData()
+            : new SimpleContainerData(2));
     this.level = playerInventory.player.level();
-    this.data = data != null ? data : new SimpleContainerData(CONTAINER_DATA_SIZE);
+    this.additionalData =
+        additionalData != null
+            ? additionalData
+            : new SimpleContainerData(ADDITIONAL_CONTAINER_DATA_SIZE);
     this.dummyContainer = new SimpleContainer(TOTAL_SLOTS);
 
     if (entity instanceof CollectorStationBlockEntity stationEntity) {
@@ -113,7 +118,7 @@ public class CollectorStationMenu extends AbstractContainerMenu {
     addCollectorStationSlots();
     addPlayerInventory(playerInventory);
     addPlayerHotbar(playerInventory);
-    addDataSlots(this.data);
+    addDataSlots(this.additionalData);
   }
 
   private static BlockEntity getBlockEntityFromData(
@@ -131,8 +136,10 @@ public class CollectorStationMenu extends AbstractContainerMenu {
   private void addCollectorStationSlots() {
     CollectorStationBlockEntity entityToUse = getValidBlockEntity();
     if (entityToUse != null) {
-      // Battery slot
-      this.addSlot(new EnergyCellSlot(entityToUse, BATTERY_SLOT, BATTERY_SLOT_X, BATTERY_SLOT_Y));
+      // Battery slot (using unified energy tab positions)
+      this.addSlot(
+          new EnergyCellSlot(
+              entityToUse, BATTERY_SLOT, ENERGY_TAB_BATTERY_SLOT_X, ENERGY_TAB_BATTERY_SLOT_Y));
 
       // Storage slots
       int storageIndex = FIRST_STORAGE_SLOT;
@@ -250,30 +257,31 @@ public class CollectorStationMenu extends AbstractContainerMenu {
         blockEntity.getBlockState().getBlock());
   }
 
+  @Override
+  public EnergyPowerConsumer getEnergyConsumer() {
+    return blockEntity;
+  }
+
   public int getStatus() {
-    return data.get(0);
+    return additionalData.get(0);
   }
 
   public int getStateTimer() {
-    return data.get(1);
+    return additionalData.get(1);
   }
 
   public int getCollectionProgress() {
-    return data.get(1);
+    return additionalData.get(1);
   }
 
   public int getMaxCollectionTime() {
     return switch (getStatus()) {
-      case 0 -> CollectorStationConfig.chargingTime; // CHARGING
-      case 1 -> CollectorStationConfig.collectingTime; // COLLECTING
-      case 2 -> CollectorStationConfig.returningTime; // RETURNING
-      case 3 -> CollectorStationConfig.processingTime; // PROCESSING
-      default -> CollectorStationConfig.collectingTime; // Fallback
+      case 0 -> CollectorStationConfig.chargingTime;
+      case 1 -> CollectorStationConfig.collectingTime;
+      case 2 -> CollectorStationConfig.returningTime;
+      case 3 -> CollectorStationConfig.processingTime;
+      default -> CollectorStationConfig.collectingTime;
     };
-  }
-
-  public int getCurrentEnergy() {
-    return data.get(2);
   }
 
   public CollectorStationBlockEntity getBlockEntity() {

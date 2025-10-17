@@ -1,0 +1,15 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:bone_block",
+    "minecraft:slime_block",
+    "minecraft:honey_block",
+    "minecraft:hay_block",
+    "minecraft:dried_kelp_block",
+    "minecraft:moss_block",
+    "minecraft:pumpkin",
+    "minecraft:melon",
+    "minecraft:brown_mushroom_block",
+    "minecraft:red_mushroom_block"
+  ]
+}

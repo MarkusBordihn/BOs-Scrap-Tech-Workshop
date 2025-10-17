@@ -71,13 +71,9 @@ public interface EnergyCellConsumer {
       return false;
     }
 
-    // Consume energy from battery (modifies battery ItemStack directly)
+    // Consume energy from battery
     batteryItem.consumeEnergy(battery, amount);
-
-    // Save modified battery back to consumer
     setBattery(itemStack, battery);
-
-    // Sync display energy
     syncEnergyDisplay(itemStack);
 
     return true;
@@ -116,7 +112,7 @@ public interface EnergyCellConsumer {
     ItemStack battery = getBattery(itemStack);
     if (battery.getItem() instanceof EnergyCellItem batteryItem) {
       int batteryEnergy = batteryItem.getEnergy(battery);
-      return (float) batteryEnergy / EnergyCellItem.ENERGY_MAX;
+      return (float) batteryEnergy / EnergyCellItem.CAPACITY_MAH;
     }
 
     return 0.0f;

@@ -44,7 +44,7 @@ public class CreativeScrapMultitoolItem extends ScrapMultitoolItem {
     ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
     ItemStack battery = new ItemStack(ModItems.ENERGY_CELL.get());
     if (battery.getItem() instanceof EnergyCellItem energyCell) {
-      energyCell.setEnergy(battery, EnergyCellItem.ENERGY_MAX);
+      energyCell.setEnergy(battery, EnergyCellItem.CAPACITY_MAH);
     }
 
     data = data.withBattery(battery);

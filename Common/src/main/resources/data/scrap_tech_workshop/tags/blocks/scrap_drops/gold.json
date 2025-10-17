@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:anvil",
+    "minecraft:chipped_anvil",
+    "minecraft:damaged_anvil",
+    "minecraft:deepslate_gold_ore",
+    "minecraft:gold_block",
+    "minecraft:gold_ore"
+  ]
+}

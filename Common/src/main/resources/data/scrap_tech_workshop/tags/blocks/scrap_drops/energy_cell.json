@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:beacon",
+    "minecraft:conduit",
+    "minecraft:redstone_ore",
+    "minecraft:deepslate_redstone_ore"
+  ]
+}

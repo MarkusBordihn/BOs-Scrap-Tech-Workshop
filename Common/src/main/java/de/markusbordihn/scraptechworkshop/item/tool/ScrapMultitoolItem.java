@@ -22,8 +22,9 @@ package de.markusbordihn.scraptechworkshop.item.tool;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.config.MultitoolConfig;
 import de.markusbordihn.scraptechworkshop.data.block.StrippableBlocks;
-import de.markusbordihn.scraptechworkshop.data.energy.EnergyData;
-import de.markusbordihn.scraptechworkshop.data.multitool.*;
+import de.markusbordihn.scraptechworkshop.data.multitool.DisplayMode;
+import de.markusbordihn.scraptechworkshop.data.multitool.ScrapMultitoolData;
+import de.markusbordihn.scraptechworkshop.data.multitool.ToolMode;
 import de.markusbordihn.scraptechworkshop.energy.EnergyCellConsumer;
 import de.markusbordihn.scraptechworkshop.energy.EnergyManager;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
@@ -75,7 +76,7 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
     if (!data.hasBattery()) {
       ItemStack battery = new ItemStack(ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL.get());
       if (battery.getItem() instanceof EnergyCellItem energyCell) {
-        energyCell.setEnergy(battery, EnergyCellItem.ENERGY_MAX / 2);
+        energyCell.setEnergy(battery, EnergyCellItem.CAPACITY_MAH / 2);
       }
       data = data.withBattery(battery);
       data.saveToItemStack(itemStack);
@@ -100,8 +101,8 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
       return getPoweredSpeed(mode);
     }
 
-    ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
-    ToolMode activeToolMode = ToolMode.fromId(data.activeMode());
+    ToolMode activeToolMode =
+        ToolMode.fromId(ScrapMultitoolData.fromItemStack(itemStack).activeMode());
 
     boolean isEffective =
         switch (activeToolMode) {
@@ -112,16 +113,11 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
           default -> state.is(BlockTags.MINEABLE_WITH_PICKAXE);
         };
 
-    if (isEffective) {
-      return getPoweredSpeed(activeToolMode);
-    }
-
-    return super.getDestroySpeed(itemStack, state);
+    return isEffective ? getPoweredSpeed(activeToolMode) : super.getDestroySpeed(itemStack, state);
   }
 
   @Override
   public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-
     if (attacker instanceof Player) {
       ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
       if (!ToolMode.SWORD.getId().equals(data.activeMode())) {
@@ -133,7 +129,6 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
       }
     }
 
-    ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
     return consumeEnergy(itemStack, MultitoolConfig.energyPerAttack);
   }
 
@@ -166,15 +161,12 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
 
     if (!level.isClientSide) {
       ToolModeDetector detector = new ToolModeDetector(itemStack);
-      BlockState targetBlock = detector.getTargetBlock(level, player);
-      detector.updateToolMode(player, targetBlock);
+      detector.updateToolMode(player, detector.getTargetBlock(level, player));
     }
 
     if (!level.isClientSide && hasEnergy(itemStack, MultitoolConfig.energyPerUse)) {
       Vec3 playerPos = player.position().add(0, 1, 0);
-      Vec3 lookDirection = player.getLookAngle();
-      Vec3 particlePos = playerPos.add(lookDirection.scale(1.5));
-
+      Vec3 particlePos = playerPos.add(player.getLookAngle().scale(1.5));
       if (level instanceof ServerLevel serverLevel) {
         serverLevel.sendParticles(
             ParticleTypes.ELECTRIC_SPARK,
@@ -220,7 +212,7 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
 
     ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
     ToolMode activeMode = ToolMode.fromId(data.activeMode());
-    InteractionResult result = InteractionResult.PASS;
+    InteractionResult result;
     ToolMode usedMode = null;
 
     if (BlockInteractionProcessor.isCycleableBlock(block)
@@ -274,15 +266,14 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
       }
     }
 
-    if (result.consumesAction() && usedMode != null && usedMode != activeMode) {
-      ScrapMultitoolData newData = data.withActiveMode(usedMode.getId());
-      newData.saveToItemStack(itemStack);
+    if (result.consumesAction()) {
+      if (usedMode != null && usedMode != activeMode) {
+        ScrapMultitoolData newData = data.withActiveMode(usedMode.getId());
+        newData.saveToItemStack(itemStack);
 
-      DisplayMode displayMode = new DisplayMode(itemStack);
-      displayMode.updateModel(usedMode, newData.getBatteryLevel());
-
-      consumeEnergy(itemStack, MultitoolConfig.energyPerUse);
-    } else if (result.consumesAction()) {
+        DisplayMode displayMode = new DisplayMode(itemStack);
+        displayMode.updateModel(usedMode, newData.getBatteryLevel());
+      }
       consumeEnergy(itemStack, MultitoolConfig.energyPerUse);
     }
 
@@ -316,8 +307,8 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
     if (!data.hasBattery()) {
       return 0xFF0000;
     }
-    EnergyData energyData = EnergyManager.getEnergyData(itemStack, MultitoolConfig.energyMax);
-    float energyRatio = energyData.getPercentage();
+    float energyRatio =
+        EnergyManager.getEnergyData(itemStack, MultitoolConfig.energyMax).getPercentage();
     return energyRatio > 0.6f ? 0x00FF00 : energyRatio > 0.3f ? 0xFFFF00 : 0xFF0000;
   }
 
@@ -335,8 +326,8 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
           Component.literal("Battery: Not installed")
               .withStyle(style -> style.withColor(0xFF0000)));
     } else {
-      EnergyData energyData = EnergyManager.getEnergyData(itemStack, MultitoolConfig.energyMax);
-      int displayEnergy = energyData.getDisplayEnergy();
+      int displayEnergy =
+          EnergyManager.getEnergyData(itemStack, MultitoolConfig.energyMax).getDisplayEnergy();
       tooltipComponents.add(
           Component.literal("Energy: " + displayEnergy + "%")
               .withStyle(style -> style.withColor(getBarColor(itemStack))));

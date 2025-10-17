@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:redstone_lamp",
+    "minecraft:redstone_torch",
+    "minecraft:comparator",
+    "minecraft:repeater",
+    "minecraft:dispenser",
+    "minecraft:dropper",
+    "minecraft:note_block",
+    "minecraft:jukebox"
+  ]
+}

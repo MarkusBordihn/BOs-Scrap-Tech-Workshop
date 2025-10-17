@@ -31,6 +31,8 @@ public class RecyclerState {
   public final NonNullList<ItemStack> items;
   public final int maxProgress;
   public final int speedMultiplier;
+  public final int currentEnergy;
+  public final int tickCounter;
   public int progress;
   public int noRecipeTimer;
   public int doneTimer;
@@ -45,7 +47,9 @@ public class RecyclerState {
       int noRecipeTimer,
       int doneTimer,
       RecyclerRecipe currentRecipe,
-      int speedMultiplier) {
+      int speedMultiplier,
+      int currentEnergy,
+      int tickCounter) {
     this.level = level;
     this.pos = pos;
     this.items = items;
@@ -55,6 +59,8 @@ public class RecyclerState {
     this.doneTimer = doneTimer;
     this.currentRecipe = currentRecipe;
     this.speedMultiplier = speedMultiplier;
+    this.currentEnergy = currentEnergy;
+    this.tickCounter = tickCounter;
   }
 
   public ItemStack getInputStack() {

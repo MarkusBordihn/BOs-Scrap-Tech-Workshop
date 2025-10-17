@@ -92,6 +92,6 @@ public class ScrapItemRegistry {
   }
 
   public static Map<ScrapType, ScrapItem> getAllScrapItems() {
-    return Map.copyOf(SCRAP_ITEMS);
+    return SCRAP_ITEMS;
   }
 }

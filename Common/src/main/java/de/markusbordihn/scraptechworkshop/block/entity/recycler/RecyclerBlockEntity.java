@@ -23,6 +23,8 @@ import de.markusbordihn.scraptechworkshop.block.entity.AbstractWorkshopBlockEnti
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.config.RecyclerConfig;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
+import de.markusbordihn.scraptechworkshop.energy.EnergyPowerConsumer;
+import de.markusbordihn.scraptechworkshop.energy.EnergyPowerData;
 import de.markusbordihn.scraptechworkshop.item.upgrade.SpeedUpgradeItem;
 import de.markusbordihn.scraptechworkshop.menu.RecyclerMenu;
 import de.markusbordihn.scraptechworkshop.recipe.recycler.RecyclerRecipe;
@@ -41,16 +43,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity {
+public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
+    implements EnergyPowerConsumer {
 
   public static final String ID = "recycler";
 
-  private static final int INPUT_SLOTS = 1;
-  private static final int OUTPUT_SLOTS = 9;
-  private static final int UPGRADE_SLOTS = 2;
-  private static final int TOTAL_SLOTS = INPUT_SLOTS + OUTPUT_SLOTS + UPGRADE_SLOTS;
-  private static final int FIRST_UPGRADE_SLOT = 10;
-  private static final int LAST_UPGRADE_SLOT = 11;
+  private static final int ENERGY_CAPACITY_MAH = 10000;
+  private static final int ENERGY_CHARGE_INTERVAL = 5;
+  private static final int ENERGY_CONSUMPTION_PER_TICK = 5;
+  private static final int ENERGY_CONSUMPTION_INTERVAL = 10;
 
   private static final String PROGRESS_TAG = "Progress";
   private static final String MAX_PROGRESS_TAG = "MaxProgress";
@@ -90,6 +91,7 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity {
           return 2;
         }
       };
+  private EnergyPowerData energyData = EnergyPowerData.empty();
   private int noRecipeTimer = 0;
   private int doneTimer = 0;
   private RecyclerRecipe currentRecipe = null;
@@ -97,7 +99,7 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity {
 
   public RecyclerBlockEntity(final BlockPos blockPos, final BlockState blockState) {
     super(TYPE, blockPos, blockState);
-    this.container = new RecyclerContainer(TOTAL_SLOTS, this::setChanged);
+    this.container = new RecyclerContainer(RecyclerSlots.TOTAL_SLOTS, this::setChanged);
   }
 
   public static void tick(
@@ -110,9 +112,16 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity {
     }
 
     blockEntity.tickCounter++;
+
+    // Charge from battery every ENERGY_CHARGE_INTERVAL ticks
+    if (blockEntity.tickCounter % ENERGY_CHARGE_INTERVAL == 0) {
+      blockEntity.chargeFromBattery(blockEntity.getEnergyTransferRate());
+    }
+
     RecyclerStatus currentStatus = blockState.getValue(RecyclerBlock.STATUS);
 
-    // Calculate speed multiplier from upgrade slots
+    // Check if we have enough energy to work
+    boolean hasEnoughEnergy = blockEntity.getCurrentEnergy() >= ENERGY_CONSUMPTION_PER_TICK;
     int speedMultiplier = blockEntity.getSpeedMultiplierBonus();
 
     RecyclerState recyclerState =
@@ -125,15 +134,36 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity {
             blockEntity.noRecipeTimer,
             blockEntity.doneTimer,
             blockEntity.currentRecipe,
-            speedMultiplier);
+            speedMultiplier,
+            blockEntity.getCurrentEnergy(),
+            blockEntity.tickCounter);
 
-    RecyclerTickResult result =
-        switch (currentStatus) {
-          case NO_RECIPE -> RecyclerTickProcessor.processNoRecipeStatus(recyclerState);
-          case DONE -> RecyclerTickProcessor.processDoneStatus(recyclerState);
-          case IDLE, WORKING, ERROR ->
-              RecyclerTickProcessor.processActiveStatus(recyclerState, blockState);
-        };
+    RecyclerTickResult result;
+
+    // Check if we're currently working without energy
+    if (!hasEnoughEnergy && currentStatus == RecyclerStatus.WORKING) {
+      recyclerState.progress = 0;
+      result = new RecyclerTickResult(RecyclerStatus.IDLE, true);
+    } else {
+      result =
+          switch (currentStatus) {
+            case NO_RECIPE -> RecyclerTickProcessor.processNoRecipeStatus(recyclerState);
+            case DONE -> RecyclerTickProcessor.processDoneStatus(recyclerState);
+            case IDLE, WORKING, ERROR ->
+                RecyclerTickProcessor.processActiveStatus(recyclerState, blockState);
+          };
+
+      if (result.newStatus() == RecyclerStatus.WORKING && !hasEnoughEnergy) {
+        recyclerState.progress = 0;
+        result = new RecyclerTickResult(RecyclerStatus.IDLE, false);
+      }
+
+      if (result.newStatus() == RecyclerStatus.WORKING && hasEnoughEnergy) {
+        if (blockEntity.tickCounter % ENERGY_CONSUMPTION_INTERVAL == 0) {
+          blockEntity.consumeEnergy(ENERGY_CONSUMPTION_PER_TICK);
+        }
+      }
+    }
 
     blockEntity.progress = recyclerState.progress;
     blockEntity.noRecipeTimer = recyclerState.noRecipeTimer;
@@ -160,7 +190,7 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity {
   }
 
   protected int getTotalSlots() {
-    return TOTAL_SLOTS;
+    return RecyclerSlots.TOTAL_SLOTS;
   }
 
   @Override
@@ -175,6 +205,10 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity {
     maxProgress = compoundTag.getInt(MAX_PROGRESS_TAG);
     noRecipeTimer = compoundTag.getInt(NO_RECIPE_TIMER_TAG);
     doneTimer = compoundTag.getInt(DONE_TIMER_TAG);
+    loadEnergyPowerConsumer(compoundTag);
+    energyData =
+        new EnergyPowerData(
+            energyData.currentEnergy(), container.getItem(RecyclerSlots.BATTERY_SLOT));
   }
 
   @Override
@@ -184,6 +218,7 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity {
     compoundTag.putInt(MAX_PROGRESS_TAG, maxProgress);
     compoundTag.putInt(NO_RECIPE_TIMER_TAG, noRecipeTimer);
     compoundTag.putInt(DONE_TIMER_TAG, doneTimer);
+    saveEnergyPowerConsumer(compoundTag);
   }
 
   @Override
@@ -234,12 +269,40 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity {
 
   private int getSpeedMultiplierBonus() {
     int totalMultiplier = 1;
-    for (int i = FIRST_UPGRADE_SLOT; i <= LAST_UPGRADE_SLOT; i++) {
+    for (int i = RecyclerSlots.FIRST_UPGRADE_SLOT; i <= RecyclerSlots.LAST_UPGRADE_SLOT; i++) {
       ItemStack stack = container.getItem(i);
       if (!stack.isEmpty() && stack.getItem() instanceof SpeedUpgradeItem speedUpgrade) {
         totalMultiplier += speedUpgrade.getSpeedMultiplier() - 1;
       }
     }
     return totalMultiplier;
+  }
+
+  @Override
+  public EnergyPowerData getEnergyData() {
+    return new EnergyPowerData(
+        energyData.currentEnergy(), container.getItem(RecyclerSlots.BATTERY_SLOT));
+  }
+
+  @Override
+  public void setEnergyData(EnergyPowerData data) {
+    this.energyData = new EnergyPowerData(data.currentEnergy(), data.battery());
+    container.setItem(RecyclerSlots.BATTERY_SLOT, data.battery());
+    setChanged();
+  }
+
+  @Override
+  public int getEnergyCapacity() {
+    return ENERGY_CAPACITY_MAH;
+  }
+
+  @Override
+  public int getBatterySlot() {
+    return RecyclerSlots.BATTERY_SLOT;
+  }
+
+  @Override
+  public void markDirty() {
+    setChanged();
   }
 }

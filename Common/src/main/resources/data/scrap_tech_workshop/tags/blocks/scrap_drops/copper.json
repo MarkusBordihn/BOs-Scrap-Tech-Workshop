@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:copper_block",
+    "minecraft:copper_ore",
+    "minecraft:deepslate_copper_ore",
+    "minecraft:exposed_copper",
+    "minecraft:oxidized_copper",
+    "minecraft:raw_copper_block",
+    "minecraft:weathered_copper"
+  ]
+}

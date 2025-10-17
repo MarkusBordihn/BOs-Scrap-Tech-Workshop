@@ -26,7 +26,6 @@ import de.markusbordihn.scraptechworkshop.menu.CollectorStationMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class CollectorStationScreen extends BaseContainerScreen<CollectorStationMenu> {
@@ -44,22 +43,13 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
       TRANSLATION_KEY_PREFIX + "status.no_storage";
   private static final String TRANSLATION_STATUS_NO_POWER =
       TRANSLATION_KEY_PREFIX + "status.no_power";
-
-  private static final ResourceLocation TEXTURE =
-      new ResourceLocation(Constants.MOD_ID, "textures/gui/collector_station.png");
+  private static final String TRANSLATION_BATTERY_SLOT = TRANSLATION_KEY_PREFIX + "battery_slot";
 
   private static final int SCREEN_WIDTH = 176;
   private static final int SCREEN_HEIGHT = 220;
-  private static final int ENERGY_BAR_WIDTH = 14;
-  private static final int ENERGY_BAR_HEIGHT = 50;
-  private static final int ENERGY_BAR_TEXTURE_X = 176;
-  private static final int ENERGY_BAR_TEXTURE_Y = 0;
   private static final int PROGRESS_BAR_WIDTH = 100;
   private static final int PROGRESS_BAR_HEIGHT = 14;
-  private static final int PROGRESS_BAR_TEXTURE_X = 176;
-  private static final int PROGRESS_BAR_TEXTURE_Y = 50;
   private static final int PROGRESS_TEXT_Y = 114;
-  private static final int MAX_ENERGY = 5000;
 
   public CollectorStationScreen(
       final CollectorStationMenu menu, final Inventory playerInventory, final Component title) {
@@ -84,11 +74,18 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
 
     renderDefaultBackground(guiGraphics, x, y, imageWidth, imageHeight);
 
-    // Battery slot
-    renderSlot(
+    renderEnergyPowerUI(
         guiGraphics,
-        x + CollectorStationMenu.BATTERY_SLOT_X,
-        y + CollectorStationMenu.BATTERY_SLOT_Y);
+        x,
+        y,
+        CollectorStationMenu.ENERGY_TAB_BATTERY_SLOT_X,
+        CollectorStationMenu.ENERGY_TAB_BATTERY_SLOT_Y,
+        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_X,
+        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_Y,
+        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_WIDTH,
+        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
+        menu.getCurrentEnergy(),
+        menu.getEnergyCapacity());
 
     // Storage slots
     renderSlots(
@@ -114,16 +111,6 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
         CollectorStationMenu.PLAYER_INVENTORY_START_Y,
         CollectorStationMenu.PLAYER_HOTBAR_START_Y);
 
-    // Energy bar frame
-    int energyBarX = x + CollectorStationMenu.ENERGY_BAR_X;
-    int energyBarY = y + CollectorStationMenu.ENERGY_BAR_Y;
-    guiGraphics.fill(
-        energyBarX - 1,
-        energyBarY - 1,
-        energyBarX + ENERGY_BAR_WIDTH + 1,
-        energyBarY + ENERGY_BAR_HEIGHT + 1,
-        0xFF8B8B8B);
-
     // Progress bar frame
     int progressBarX = x + CollectorStationMenu.PROGRESS_BAR_X;
     int progressBarY = y + CollectorStationMenu.PROGRESS_BAR_Y;
@@ -134,42 +121,7 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
         progressBarY + PROGRESS_BAR_HEIGHT + 1,
         0xFF8B8B8B);
 
-    renderEnergyBar(guiGraphics, x, y);
     renderProgressBar(guiGraphics, x, y);
-  }
-
-  private void renderEnergyBar(final GuiGraphics guiGraphics, final int x, final int y) {
-    int energy = menu.getCurrentEnergy();
-    int maxEnergy = 5000;
-
-    int energyBarX = x + CollectorStationMenu.ENERGY_BAR_X;
-    int energyBarY = y + CollectorStationMenu.ENERGY_BAR_Y;
-
-    // Dark background
-    guiGraphics.fill(
-        energyBarX,
-        energyBarY,
-        energyBarX + ENERGY_BAR_WIDTH,
-        energyBarY + ENERGY_BAR_HEIGHT,
-        0xFF555555);
-
-    // Energy fill (bottom to top, green)
-    if (energy > 0) {
-      int energyBarHeight = (int) ((float) energy / maxEnergy * ENERGY_BAR_HEIGHT);
-      guiGraphics.fill(
-          energyBarX,
-          energyBarY + (ENERGY_BAR_HEIGHT - energyBarHeight),
-          energyBarX + ENERGY_BAR_WIDTH,
-          energyBarY + ENERGY_BAR_HEIGHT,
-          0xFF00FF00);
-    }
-
-    // Energy percentage text below energy bar (like multi-tool display)
-    int percentage = energy * 100 / maxEnergy;
-    String energyText = percentage + "%";
-    int textX = energyBarX + (ENERGY_BAR_WIDTH / 2) - (this.font.width(energyText) / 2) + 1;
-    int textY = energyBarY + ENERGY_BAR_HEIGHT + 3;
-    guiGraphics.drawString(this.font, energyText, textX, textY, 0x55FF55, false);
   }
 
   private void renderProgressBar(final GuiGraphics guiGraphics, final int x, final int y) {
@@ -280,24 +232,25 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
   @Override
   protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
     super.renderTooltip(guiGraphics, x, y);
+
+    renderEnergyPowerTooltips(
+        guiGraphics,
+        x,
+        y,
+        leftPos,
+        topPos,
+        CollectorStationMenu.ENERGY_TAB_BATTERY_SLOT_X,
+        CollectorStationMenu.ENERGY_TAB_BATTERY_SLOT_Y,
+        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_X,
+        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_Y,
+        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_WIDTH,
+        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
+        menu.getCurrentEnergy(),
+        menu.getEnergyCapacity(),
+        TRANSLATION_BATTERY_SLOT);
+
     int relativeX = x - leftPos;
     int relativeY = y - topPos;
-
-    // Energy bar tooltip
-    if (relativeX >= CollectorStationMenu.ENERGY_BAR_X
-        && relativeX <= CollectorStationMenu.ENERGY_BAR_X + ENERGY_BAR_WIDTH
-        && relativeY >= CollectorStationMenu.ENERGY_BAR_Y
-        && relativeY <= CollectorStationMenu.ENERGY_BAR_Y + ENERGY_BAR_HEIGHT) {
-
-      int currentEnergy = menu.getCurrentEnergy();
-      int maxEnergy = 5000;
-      int percentage = maxEnergy > 0 ? (currentEnergy * 100 / maxEnergy) : 0;
-
-      Component tooltip =
-          Component.literal(
-              String.format("Energy: %d / %d (%d%%)", currentEnergy, maxEnergy, percentage));
-      guiGraphics.renderTooltip(this.font, tooltip, x, y);
-    }
 
     // Progress bar tooltip
     if (relativeX >= CollectorStationMenu.PROGRESS_BAR_X
@@ -315,7 +268,7 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
     }
   }
 
-  private String getStatusName(int statusOrdinal) {
+  private String getStatusName(final int statusOrdinal) {
     if (statusOrdinal < 0 || statusOrdinal >= CollectorStationStatus.values().length) {
       return "Unknown";
     }

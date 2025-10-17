@@ -24,9 +24,10 @@ import de.markusbordihn.scraptechworkshop.data.scrap.ScrapDropData;
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapSoundType;
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
-import java.util.HashMap;
-import java.util.Map;
+import de.markusbordihn.scraptechworkshop.tags.ScrapTypeBlockTags;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -34,97 +35,25 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 
 public class ScrapDropHandler {
 
   private static final Random RANDOM = new Random();
-  private static final Map<Block, ScrapType> BLOCK_SCRAP_TYPES = createBlockScrapTypeMap();
+  private static final Set<BlockPos> PLAYER_PLACED_BLOCKS = new HashSet<>();
 
-  private static Map<Block, ScrapType> createBlockScrapTypeMap() {
-    Map<Block, ScrapType> typeMap = new HashMap<>();
+  private ScrapDropHandler() {}
 
-    // Stone blocks - metal scrap
-    typeMap.put(Blocks.ANDESITE, ScrapType.METAL);
-    typeMap.put(Blocks.DEEPSLATE, ScrapType.METAL);
-    typeMap.put(Blocks.DIORITE, ScrapType.METAL);
-    typeMap.put(Blocks.GRANITE, ScrapType.METAL);
-    typeMap.put(Blocks.STONE, ScrapType.METAL);
-
-    // Gold blocks - gold scrap
-    typeMap.put(Blocks.ANVIL, ScrapType.GOLD);
-    typeMap.put(Blocks.CHIPPED_ANVIL, ScrapType.GOLD);
-    typeMap.put(Blocks.DAMAGED_ANVIL, ScrapType.GOLD);
-    typeMap.put(Blocks.DEEPSLATE_GOLD_ORE, ScrapType.GOLD);
-    typeMap.put(Blocks.GOLD_BLOCK, ScrapType.GOLD);
-    typeMap.put(Blocks.GOLD_ORE, ScrapType.GOLD);
-
-    // Iron blocks - iron scrap
-    typeMap.put(Blocks.DEEPSLATE_IRON_ORE, ScrapType.IRON);
-    typeMap.put(Blocks.IRON_BLOCK, ScrapType.IRON);
-    typeMap.put(Blocks.IRON_ORE, ScrapType.IRON);
-    typeMap.put(Blocks.RAW_IRON_BLOCK, ScrapType.IRON);
-
-    // Copper blocks - copper scrap
-    typeMap.put(Blocks.COPPER_BLOCK, ScrapType.COPPER);
-    typeMap.put(Blocks.COPPER_ORE, ScrapType.COPPER);
-    typeMap.put(Blocks.DEEPSLATE_COPPER_ORE, ScrapType.COPPER);
-    typeMap.put(Blocks.EXPOSED_COPPER, ScrapType.COPPER);
-    typeMap.put(Blocks.OXIDIZED_COPPER, ScrapType.COPPER);
-    typeMap.put(Blocks.RAW_COPPER_BLOCK, ScrapType.COPPER);
-    typeMap.put(Blocks.WEATHERED_COPPER, ScrapType.COPPER);
-
-    // Alloy blocks - sophisticated alloys from ancient civilizations
-    typeMap.put(Blocks.NETHERITE_BLOCK, ScrapType.ALLOY);
-    typeMap.put(Blocks.END_STONE, ScrapType.ALLOY);
-    typeMap.put(Blocks.PURPUR_BLOCK, ScrapType.ALLOY);
-    typeMap.put(Blocks.PURPUR_PILLAR, ScrapType.ALLOY);
-    typeMap.put(Blocks.END_STONE_BRICKS, ScrapType.ALLOY);
-
-    // Insulation materials - blocks used for thermal/electrical insulation
-    typeMap.put(Blocks.MAGMA_BLOCK, ScrapType.INSULATION);
-    typeMap.put(Blocks.SPONGE, ScrapType.INSULATION);
-    typeMap.put(Blocks.WET_SPONGE, ScrapType.INSULATION);
-    typeMap.put(Blocks.WHITE_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.ORANGE_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.MAGENTA_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.LIGHT_BLUE_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.YELLOW_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.LIME_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.PINK_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.GRAY_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.LIGHT_GRAY_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.CYAN_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.PURPLE_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.BLUE_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.BROWN_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.GREEN_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.RED_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.BLACK_CONCRETE, ScrapType.INSULATION);
-    typeMap.put(Blocks.WHITE_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.ORANGE_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.MAGENTA_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.LIGHT_BLUE_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.YELLOW_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.LIME_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.PINK_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.GRAY_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.LIGHT_GRAY_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.CYAN_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.PURPLE_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.BLUE_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.BROWN_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.GREEN_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.RED_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.BLACK_TERRACOTTA, ScrapType.INSULATION);
-    typeMap.put(Blocks.TERRACOTTA, ScrapType.INSULATION);
-
-    return typeMap;
+  public static void handleBlockPlaced(final BlockPos blockPos) {
+    PLAYER_PLACED_BLOCKS.add(blockPos.immutable());
   }
 
   public static void handleBlockBreak(
       final ServerLevel serverLevel, final BlockPos blockPos, final Block brokenBlock) {
-    ScrapType scrapType = BLOCK_SCRAP_TYPES.get(brokenBlock);
+    if (PLAYER_PLACED_BLOCKS.remove(blockPos)) {
+      return;
+    }
+
+    ScrapType scrapType = ScrapTypeBlockTags.getScrapTypeForBlock(brokenBlock);
     if (scrapType == null) {
       return;
     }

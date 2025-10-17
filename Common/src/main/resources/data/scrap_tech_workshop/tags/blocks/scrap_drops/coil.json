@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:piston",
+    "minecraft:sticky_piston",
+    "minecraft:detector_rail",
+    "minecraft:powered_rail",
+    "minecraft:activator_rail"
+  ]
+}

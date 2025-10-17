@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:netherite_block",
+    "minecraft:end_stone",
+    "minecraft:purpur_block",
+    "minecraft:purpur_pillar",
+    "minecraft:end_stone_bricks"
+  ]
+}

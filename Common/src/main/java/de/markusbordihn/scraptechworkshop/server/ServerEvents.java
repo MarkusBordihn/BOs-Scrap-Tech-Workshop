@@ -22,12 +22,16 @@ package de.markusbordihn.scraptechworkshop.server;
 import de.markusbordihn.scraptechworkshop.config.Config;
 import de.markusbordihn.scraptechworkshop.saveddata.HoloCubeStorage;
 import de.markusbordihn.scraptechworkshop.spawner.ScrapPileSpawner;
+import de.markusbordihn.scraptechworkshop.tags.ScrapTypeBlockTags;
 import net.minecraft.server.MinecraftServer;
 
 public class ServerEvents {
   public static void handleServerStartedEvent(MinecraftServer minecraftServer) {
     // Initialize persistent storage
     HoloCubeStorage.init(minecraftServer.overworld());
+
+    // Initialize cache
+    ScrapTypeBlockTags.initializeCache();
   }
 
   public static void handleServerStartingEvent(MinecraftServer minecraftServer) {

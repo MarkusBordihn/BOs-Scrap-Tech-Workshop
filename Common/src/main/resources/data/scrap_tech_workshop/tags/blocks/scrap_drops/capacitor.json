@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:redstone_block",
+    "minecraft:target",
+    "minecraft:observer",
+    "minecraft:lightning_rod"
+  ]
+}

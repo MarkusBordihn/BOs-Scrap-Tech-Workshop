@@ -39,7 +39,7 @@ public class MultitoolBatteryInfo {
   public static int getMaxEnergy(final SimpleContainer toolContainer) {
     ItemStack battery = toolContainer.getItem(0);
     if (battery.getItem() instanceof EnergyCellItem) {
-      return EnergyCellItem.ENERGY_MAX;
+      return EnergyCellItem.CAPACITY_MAH;
     }
     return MultitoolConfig.energyMax;
   }

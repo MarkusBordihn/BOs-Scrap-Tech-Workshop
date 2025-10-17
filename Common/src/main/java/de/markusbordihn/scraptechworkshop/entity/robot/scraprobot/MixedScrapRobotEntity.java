@@ -21,8 +21,8 @@ package de.markusbordihn.scraptechworkshop.entity.robot.scraprobot;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.entity.robot.BaseRobotEntity;
-import de.markusbordihn.scraptechworkshop.item.ModItemTags;
 import de.markusbordihn.scraptechworkshop.spawner.RobotSpawnConfig;
+import de.markusbordihn.scraptechworkshop.tags.ModItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;

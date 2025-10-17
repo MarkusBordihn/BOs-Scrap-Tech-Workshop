@@ -1,0 +1,16 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:hopper",
+    "minecraft:furnace",
+    "minecraft:blast_furnace",
+    "minecraft:smoker",
+    "minecraft:brewing_stand",
+    "minecraft:beacon",
+    "minecraft:anvil",
+    "minecraft:stonecutter",
+    "minecraft:lodestone",
+    "minecraft:observer",
+    "minecraft:lectern"
+  ]
+}

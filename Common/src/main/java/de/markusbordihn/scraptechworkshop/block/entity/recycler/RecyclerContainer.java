@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.block.entity.recycler;
 
+import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.ContainerHelper;
@@ -92,6 +93,9 @@ public class RecyclerContainer implements WorldlyContainer {
 
   @Override
   public boolean canPlaceItem(final int slot, final ItemStack itemStack) {
+    if (slot == RecyclerSlots.BATTERY_SLOT) {
+      return itemStack.getItem() instanceof EnergyCellItem;
+    }
     return slot == RecyclerSlots.INPUT_SLOT;
   }
 

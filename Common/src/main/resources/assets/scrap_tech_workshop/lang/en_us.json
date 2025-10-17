@@ -103,6 +103,7 @@
   "gui.scrap_tech_workshop.collector_station.upgrade_slots": "Upgrades (Speed: faster collecting, Charge: faster robot charging)",
   "gui.scrap_tech_workshop.holo_pad.close": "✖ Close",
   "gui.scrap_tech_workshop.holo_pad.replay": "▶ Replay",
+  "gui.scrap_tech_workshop.recycler.battery_slot": "Battery Slot - Insert an Energy Cell",
   "gui.scrap_tech_workshop.recycler.done": "Done",
   "gui.scrap_tech_workshop.recycler.idle": "Idle",
   "gui.scrap_tech_workshop.recycler.input_slot": "Input Slot",

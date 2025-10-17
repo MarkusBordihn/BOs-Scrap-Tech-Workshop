@@ -20,12 +20,28 @@
 package de.markusbordihn.scraptechworkshop.block;
 
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.phys.HitResult;
 
 public class BlockEventHandler {
 
   public static void register() {
+    UseBlockCallback.EVENT.register(
+        (player, level, hand, hitResult) -> {
+          if (level instanceof ServerLevel serverLevel
+              && player instanceof ServerPlayer serverPlayer
+              && hitResult.getType() == HitResult.Type.BLOCK) {
+            BlockPos blockPos = hitResult.getBlockPos().relative(hitResult.getDirection());
+            BlockEvents.handleBlockPlaceEvent(
+                level.getBlockState(blockPos).getBlock(), blockPos, serverLevel, serverPlayer);
+          }
+          return InteractionResult.PASS;
+        });
+
     PlayerBlockBreakEvents.AFTER.register(
         (level, player, blockPos, blockState, blockEntity) -> {
           if (level instanceof ServerLevel serverLevel

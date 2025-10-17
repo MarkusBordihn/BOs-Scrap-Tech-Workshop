@@ -26,19 +26,27 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 public class BlockEvents {
+
+  public static void handleBlockPlaceEvent(
+      Block block, BlockPos blockPos, ServerLevel serverLevel, ServerPlayer serverPlayer) {
+    // Record player activity to avoid cheating
+    ScrapDropHandler.handleBlockPlaced(blockPos);
+  }
 
   public static void handleBlockBreakEvent(
       Block block, BlockPos blockPos, ServerLevel serverLevel, ServerPlayer serverPlayer) {
 
-    // Record player activity in this chunk for intelligent spawning
-    ChunkPos chunkPos = new ChunkPos(blockPos);
-    ScrapPileSpawner.recordPlayerActivity(chunkPos);
-
-    // Handle scrap drops for broken blocks (skip if player is in creative mode)
-    if (serverPlayer == null || !serverPlayer.isCreative()) {
-      ScrapDropHandler.handleBlockBreak(serverLevel, blockPos, block);
+    if (block == Blocks.AIR || serverPlayer.isCreative()) {
+      return;
     }
+
+    // Record player activity in this chunk for intelligent spawning
+    ScrapPileSpawner.recordPlayerActivity(new ChunkPos(blockPos));
+
+    // Handle scrap drops for broken blocks
+    ScrapDropHandler.handleBlockBreak(serverLevel, blockPos, block);
   }
 }

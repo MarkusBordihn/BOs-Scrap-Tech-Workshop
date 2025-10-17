@@ -51,6 +51,7 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
   private static final String TRANSLATION_INPUT_SLOT = TRANSLATION_KEY_PREFIX + "input_slot";
   private static final String TRANSLATION_OUTPUT_SLOTS = TRANSLATION_KEY_PREFIX + "output_slots";
   private static final String TRANSLATION_UPGRADE_SLOTS = TRANSLATION_KEY_PREFIX + "upgrade_slots";
+  private static final String TRANSLATION_BATTERY_SLOT = TRANSLATION_KEY_PREFIX + "battery_slot";
 
   private static final ResourceLocation CUSTOM_ELEMENTS_TEXTURE =
       new ResourceLocation(Constants.MOD_ID, "textures/gui/recycler_elements.png");
@@ -113,6 +114,19 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
 
     renderDefaultBackground(guiGraphics, x, y, imageWidth, imageHeight);
 
+    renderEnergyPowerUI(
+        guiGraphics,
+        x,
+        y,
+        RecyclerMenu.ENERGY_TAB_BATTERY_SLOT_X,
+        RecyclerMenu.ENERGY_TAB_BATTERY_SLOT_Y,
+        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_X,
+        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_Y,
+        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_WIDTH,
+        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
+        menu.getCurrentEnergy(),
+        menu.getEnergyCapacity());
+
     // Input slot
     renderSlot(guiGraphics, x + INPUT_SLOT_X, y + INPUT_SLOT_Y);
 
@@ -125,33 +139,38 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
     // Player inventory with custom positions
     renderPlayerInventoryAt(guiGraphics, x, y, 123, 181); // Moved down by 20 pixels
 
-    // Render 3D block in center between input and progress arrow
+    // Render 3D block in center between input and progress arrow (only when crafting and has
+    // energy)
     ItemStack inputItem = menu.getCurrentInput();
-    if (!inputItem.isEmpty()) {
+    if (!inputItem.isEmpty() && menu.isCrafting() && menu.getCurrentEnergy() > 0) {
       render3DBlock(guiGraphics, x, y, inputItem, partialTick);
     }
 
-    // Progress arrow frame (always visible)
-    RenderSystem.setShaderTexture(0, Constants.TEXTURE_FURNACE);
-    guiGraphics.blit(
-        Constants.TEXTURE_FURNACE,
+    // Progress bar frame (always visible)
+    guiGraphics.fill(
+        x + PROGRESS_ARROW_X - 1,
+        y + PROGRESS_ARROW_Y - 1,
+        x + PROGRESS_ARROW_X + 26 + 1,
+        y + PROGRESS_ARROW_Y + PROGRESS_ARROW_HEIGHT + 1,
+        0xFF8B8B8B);
+    guiGraphics.fill(
         x + PROGRESS_ARROW_X,
         y + PROGRESS_ARROW_Y,
-        176,
-        14,
-        26,
-        PROGRESS_ARROW_HEIGHT);
+        x + PROGRESS_ARROW_X + 26,
+        y + PROGRESS_ARROW_Y + PROGRESS_ARROW_HEIGHT,
+        0xFF555555);
 
-    // Progress arrow fill (only when crafting)
+    // Progress bar fill (only when crafting)
     if (menu.isCrafting()) {
-      guiGraphics.blit(
-          Constants.TEXTURE_FURNACE,
-          x + PROGRESS_ARROW_X,
-          y + PROGRESS_ARROW_Y,
-          176,
-          14,
-          menu.getScaledProgress(),
-          PROGRESS_ARROW_HEIGHT);
+      int scaledProgress = menu.getScaledProgress();
+      if (scaledProgress > 0) {
+        guiGraphics.fill(
+            x + PROGRESS_ARROW_X,
+            y + PROGRESS_ARROW_Y,
+            x + PROGRESS_ARROW_X + scaledProgress,
+            y + PROGRESS_ARROW_Y + PROGRESS_ARROW_HEIGHT,
+            0xFF00FF00);
+      }
     }
   }
 
@@ -218,6 +237,22 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
   @Override
   protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
     super.renderTooltip(guiGraphics, x, y);
+
+    renderEnergyPowerTooltips(
+        guiGraphics,
+        x,
+        y,
+        leftPos,
+        topPos,
+        RecyclerMenu.ENERGY_TAB_BATTERY_SLOT_X,
+        RecyclerMenu.ENERGY_TAB_BATTERY_SLOT_Y,
+        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_X,
+        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_Y,
+        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_WIDTH,
+        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
+        menu.getCurrentEnergy(),
+        menu.getEnergyCapacity(),
+        TRANSLATION_BATTERY_SLOT);
 
     int relativeX = x - leftPos;
     int relativeY = y - topPos;

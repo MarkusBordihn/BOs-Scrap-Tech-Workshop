@@ -24,7 +24,9 @@ import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEnt
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerSlots;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
+import de.markusbordihn.scraptechworkshop.energy.EnergyPowerConsumer;
 import de.markusbordihn.scraptechworkshop.menu.slots.DummySlot;
+import de.markusbordihn.scraptechworkshop.menu.slots.EnergyCellSlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.RecyclerInputSlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.RecyclerOutputSlot;
 import de.markusbordihn.scraptechworkshop.menu.slots.RecyclerUpgradeSlot;
@@ -33,7 +35,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.MenuType;
@@ -45,8 +46,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class RecyclerMenu extends AbstractContainerMenu {
+public class RecyclerMenu extends EnergyPowerMenu {
 
+  // Main window positions
   public static final int INPUT_SLOT_X = 26;
   public static final int INPUT_SLOT_Y = 35;
   public static final int SLOT_SPACING = 18;
@@ -64,7 +66,8 @@ public class RecyclerMenu extends AbstractContainerMenu {
   public static final int PLAYER_HOTBAR_START_Y = 182;
   public static final int PLAYER_HOTBAR_SLOTS = 9;
   public static final int PROGRESS_ARROW_SIZE = 26;
-  public static final int CONTAINER_DATA_SIZE = 2;
+
+  public static final int ADDITIONAL_CONTAINER_DATA_SIZE = 2;
   public static final int PROGRESS_DATA_INDEX = 0;
   public static final int MAX_PROGRESS_DATA_INDEX = 1;
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
@@ -75,7 +78,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
 
   private final RecyclerBlockEntity blockEntity;
   private final Level level;
-  private final ContainerData data;
+  private final ContainerData additionalData;
   private final SimpleContainer dummyContainer;
   private final BlockPos blockPos;
 
@@ -84,14 +87,22 @@ public class RecyclerMenu extends AbstractContainerMenu {
         windowId,
         playerInventory,
         getBlockEntityFromData(playerInventory, additionalData),
-        new SimpleContainerData(CONTAINER_DATA_SIZE));
+        new SimpleContainerData(ADDITIONAL_CONTAINER_DATA_SIZE));
   }
 
   public RecyclerMenu(
-      int windowId, Inventory playerInventory, BlockEntity entity, ContainerData data) {
-    super(TYPE, windowId);
+      int windowId, Inventory playerInventory, BlockEntity entity, ContainerData additionalData) {
+    super(
+        TYPE,
+        windowId,
+        entity instanceof EnergyPowerConsumer consumer
+            ? consumer.getEnergyPowerData()
+            : new SimpleContainerData(2));
     this.level = playerInventory.player.level();
-    this.data = data != null ? data : new SimpleContainerData(CONTAINER_DATA_SIZE);
+    this.additionalData =
+        additionalData != null
+            ? additionalData
+            : new SimpleContainerData(ADDITIONAL_CONTAINER_DATA_SIZE);
     this.dummyContainer = new SimpleContainer(RecyclerSlots.TOTAL_SLOTS);
 
     if (entity instanceof RecyclerBlockEntity recyclerEntity) {
@@ -111,7 +122,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
     addRecyclerSlots();
     addPlayerInventory(playerInventory);
     addPlayerHotbar(playerInventory);
-    addDataSlots(this.data);
+    addDataSlots(this.additionalData);
   }
 
   private static BlockEntity getBlockEntityFromData(
@@ -139,6 +150,11 @@ public class RecyclerMenu extends AbstractContainerMenu {
     }
   }
 
+  @Override
+  public EnergyPowerConsumer getEnergyConsumer() {
+    return blockEntity;
+  }
+
   private void addRecyclerSlots() {
     RecyclerBlockEntity entityToUse = getValidBlockEntity();
     if (entityToUse != null) {
@@ -159,10 +175,23 @@ public class RecyclerMenu extends AbstractContainerMenu {
       }
 
       // Upgrade slots
-      this.addSlot(new RecyclerUpgradeSlot(entityToUse, 10, UPGRADE_SLOT_START_X, UPGRADE_SLOT_Y));
       this.addSlot(
           new RecyclerUpgradeSlot(
-              entityToUse, 11, UPGRADE_SLOT_START_X + SLOT_SPACING, UPGRADE_SLOT_Y));
+              entityToUse, RecyclerSlots.FIRST_UPGRADE_SLOT, UPGRADE_SLOT_START_X, UPGRADE_SLOT_Y));
+      this.addSlot(
+          new RecyclerUpgradeSlot(
+              entityToUse,
+              RecyclerSlots.LAST_UPGRADE_SLOT,
+              UPGRADE_SLOT_START_X + SLOT_SPACING,
+              UPGRADE_SLOT_Y));
+
+      // Battery slot (using unified energy tab positions)
+      this.addSlot(
+          new EnergyCellSlot(
+              entityToUse,
+              RecyclerSlots.BATTERY_SLOT,
+              ENERGY_TAB_BATTERY_SLOT_X,
+              ENERGY_TAB_BATTERY_SLOT_Y));
     } else {
       // Add dummy slots if no block entity
       for (int i = 0; i < RecyclerSlots.TOTAL_SLOTS; i++) {
@@ -231,6 +260,7 @@ public class RecyclerMenu extends AbstractContainerMenu {
         int inputEnd = RecyclerSlots.INPUT_SLOTS;
         int outputEnd = inputEnd + RecyclerSlots.OUTPUT_SLOTS;
         int upgradeEnd = outputEnd + RecyclerSlots.UPGRADE_SLOTS;
+        int batteryEnd = upgradeEnd + RecyclerSlots.BATTERY_SLOTS;
 
         if (index < inputEnd) {
           // Moving from input slots
@@ -247,20 +277,33 @@ public class RecyclerMenu extends AbstractContainerMenu {
           if (!this.moveItemStackTo(slotStack, RecyclerSlots.TOTAL_SLOTS, playerHotbarEnd, false)) {
             return ItemStack.EMPTY;
           }
-        } else if (index < playerInventoryEnd) {
-          // Moving from player inventory
-          if (!this.moveItemStackTo(slotStack, 0, inputEnd, false)
-              && !this.moveItemStackTo(slotStack, outputEnd, upgradeEnd, false)
-              && !this.moveItemStackTo(slotStack, playerInventoryEnd, playerHotbarEnd, false)) {
+        } else if (index < batteryEnd) {
+          // Moving from battery slot
+          if (!this.moveItemStackTo(slotStack, RecyclerSlots.TOTAL_SLOTS, playerHotbarEnd, false)) {
             return ItemStack.EMPTY;
           }
-        } else if (index < playerHotbarEnd) {
-          // Moving from player hotbar
-          if (!this.moveItemStackTo(slotStack, 0, inputEnd, false)
-              && !this.moveItemStackTo(slotStack, outputEnd, upgradeEnd, false)
-              && !this.moveItemStackTo(
+        } else if (index < playerInventoryEnd || index < playerHotbarEnd) {
+          // Moving from player inventory or hotbar
+          if (slotStack.getItem()
+              instanceof de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem) {
+            // Try to move battery to battery slot
+            if (!this.moveItemStackTo(
+                slotStack, RecyclerSlots.BATTERY_SLOT, RecyclerSlots.BATTERY_SLOT + 1, false)) {
+              return ItemStack.EMPTY;
+            }
+          } else if (!this.moveItemStackTo(slotStack, 0, inputEnd, false)
+              && !this.moveItemStackTo(slotStack, outputEnd, upgradeEnd, false)) {
+            // Move between inventory and hotbar
+            if (index < playerInventoryEnd) {
+              if (!this.moveItemStackTo(slotStack, playerInventoryEnd, playerHotbarEnd, false)) {
+                return ItemStack.EMPTY;
+              }
+            } else {
+              if (!this.moveItemStackTo(
                   slotStack, RecyclerSlots.TOTAL_SLOTS, playerInventoryEnd, false)) {
-            return ItemStack.EMPTY;
+                return ItemStack.EMPTY;
+              }
+            }
           }
         }
       } else {
@@ -301,12 +344,12 @@ public class RecyclerMenu extends AbstractContainerMenu {
   }
 
   public boolean isCrafting() {
-    return data.get(PROGRESS_DATA_INDEX) > 0;
+    return additionalData.get(PROGRESS_DATA_INDEX) > 0;
   }
 
   public int getScaledProgress() {
-    int progress = this.data.get(PROGRESS_DATA_INDEX);
-    int maxProgress = this.data.get(MAX_PROGRESS_DATA_INDEX);
+    int progress = this.additionalData.get(PROGRESS_DATA_INDEX);
+    int maxProgress = this.additionalData.get(MAX_PROGRESS_DATA_INDEX);
 
     return maxProgress != 0 && progress != 0 ? progress * PROGRESS_ARROW_SIZE / maxProgress : 0;
   }

@@ -17,32 +17,25 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block;
+package de.markusbordihn.scraptechworkshop.energy;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.world.item.ItemStack;
 
-@Mod.EventBusSubscriber
-public class BlockEventHandler {
+public record EnergyPowerData(int currentEnergy, ItemStack battery) {
 
-  @SubscribeEvent
-  public static void onBlockPlace(BlockEvent.EntityPlaceEvent event) {
-    if (event.getLevel() instanceof ServerLevel serverLevel
-        && event.getEntity() instanceof ServerPlayer serverPlayer) {
-      BlockEvents.handleBlockPlaceEvent(
-          event.getState().getBlock(), event.getPos(), serverLevel, serverPlayer);
-    }
+  public static EnergyPowerData empty() {
+    return new EnergyPowerData(0, ItemStack.EMPTY);
   }
 
-  @SubscribeEvent
-  public static void onBlockBreak(BlockEvent.BreakEvent event) {
-    if (event.getLevel() instanceof ServerLevel serverLevel
-        && event.getPlayer() instanceof ServerPlayer serverPlayer) {
-      BlockEvents.handleBlockBreakEvent(
-          event.getState().getBlock(), event.getPos(), serverLevel, serverPlayer);
-    }
+  public static EnergyPowerData withEnergy(int energy) {
+    return new EnergyPowerData(energy, ItemStack.EMPTY);
+  }
+
+  public EnergyPowerData withCurrentEnergy(int newEnergy) {
+    return new EnergyPowerData(newEnergy, battery);
+  }
+
+  public EnergyPowerData withBattery(ItemStack newBattery) {
+    return new EnergyPowerData(currentEnergy, newBattery);
   }
 }

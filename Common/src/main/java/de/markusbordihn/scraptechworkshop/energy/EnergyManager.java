@@ -209,7 +209,7 @@ public final class EnergyManager {
         return;
       }
 
-      float energyRatio = (float) batteryEnergy / EnergyCellItem.ENERGY_MAX;
+      float energyRatio = (float) batteryEnergy / EnergyCellItem.CAPACITY_MAH;
       int multitoolEnergy = Math.round(maxEnergy * energyRatio);
       setEnergy(itemStack, maxEnergy, multitoolEnergy);
     } else {

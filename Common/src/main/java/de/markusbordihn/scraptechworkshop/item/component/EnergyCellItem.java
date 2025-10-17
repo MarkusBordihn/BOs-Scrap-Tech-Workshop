@@ -32,21 +32,22 @@ import net.minecraft.world.level.Level;
 public class EnergyCellItem extends Item {
 
   public static final String ID = "energy_cell";
-  public static final int ENERGY_MAX = 5000;
+  public static final int CAPACITY_MAH = 5000;
+  public static final float VOLTAGE = 3.7f;
 
   private final int initialEnergy;
 
   public EnergyCellItem(Properties properties) {
-    this(properties, ENERGY_MAX);
+    this(properties, CAPACITY_MAH);
   }
 
   public EnergyCellItem(Properties properties, int initialEnergy) {
-    super(properties.stacksTo(1).durability(ENERGY_MAX).rarity(Rarity.UNCOMMON));
-    this.initialEnergy = Math.max(1, Math.min(initialEnergy, ENERGY_MAX));
+    super(properties.stacksTo(1).durability(CAPACITY_MAH).rarity(Rarity.UNCOMMON));
+    this.initialEnergy = Math.max(1, Math.min(initialEnergy, CAPACITY_MAH));
   }
 
   public int getEnergy(ItemStack itemStack) {
-    return ENERGY_MAX - itemStack.getDamageValue();
+    return CAPACITY_MAH - itemStack.getDamageValue();
   }
 
   public ItemStack getDefaultInstance() {
@@ -56,7 +57,7 @@ public class EnergyCellItem extends Item {
   }
 
   public void setEnergy(ItemStack itemStack, int energy) {
-    itemStack.setDamageValue(ENERGY_MAX - Math.max(1, Math.min(energy, ENERGY_MAX)));
+    itemStack.setDamageValue(CAPACITY_MAH - Math.max(1, Math.min(energy, CAPACITY_MAH)));
   }
 
   public void consumeEnergy(ItemStack itemStack, int amount) {
@@ -69,7 +70,7 @@ public class EnergyCellItem extends Item {
   }
 
   public float getEnergyPercentage(ItemStack itemStack) {
-    return (float) getEnergy(itemStack) / ENERGY_MAX;
+    return (float) getEnergy(itemStack) / CAPACITY_MAH;
   }
 
   public ItemStack createEmptyBattery() {
@@ -95,7 +96,7 @@ public class EnergyCellItem extends Item {
 
     int energy = getEnergy(itemStack);
     tooltipComponents.add(
-        Component.literal("Energy: " + energy + "/" + ENERGY_MAX)
+        Component.literal(energy + " / " + CAPACITY_MAH + " mAh (" + VOLTAGE + "V)")
             .withStyle(style -> style.withColor(getBarColor(itemStack))));
 
     super.appendHoverText(itemStack, level, tooltipComponents, isAdvanced);

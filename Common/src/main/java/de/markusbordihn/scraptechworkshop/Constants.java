@@ -31,6 +31,7 @@ public final class Constants {
   public static final String LOG_NAME = MOD_NAME;
   public static final String LOG_SUB_REGISTER_PREFIX = "- Register " + LOG_NAME;
   public static final String LOG_REGISTER_PREFIX = "Register " + MOD_NAME;
+  public static final String LOG_INIT_PREFIX = "Initialize " + MOD_NAME;
 
   public static final String COMPONENT_TYPE_PREFIX = "component_type." + MOD_ID + ".";
   public static final String GUI_PREFIX = "gui." + MOD_ID + ".";

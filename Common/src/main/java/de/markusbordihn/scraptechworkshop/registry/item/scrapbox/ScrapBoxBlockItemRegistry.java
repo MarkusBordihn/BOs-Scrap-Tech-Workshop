@@ -90,4 +90,8 @@ public class ScrapBoxBlockItemRegistry {
   public static ScrapBoxBlockItem getScrapBoxItem(final ScrapType scrapType) {
     return SCRAP_BOX_ITEMS.get(scrapType);
   }
+
+  public static Map<ScrapType, ScrapBoxBlockItem> getAllScrapBoxItems() {
+    return SCRAP_BOX_ITEMS;
+  }
 }

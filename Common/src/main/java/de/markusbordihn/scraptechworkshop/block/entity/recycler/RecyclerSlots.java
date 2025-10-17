@@ -23,10 +23,14 @@ public class RecyclerSlots {
   public static final int INPUT_SLOTS = 1;
   public static final int OUTPUT_SLOTS = 9;
   public static final int UPGRADE_SLOTS = 2;
-  public static final int TOTAL_SLOTS = INPUT_SLOTS + OUTPUT_SLOTS + UPGRADE_SLOTS;
+  public static final int BATTERY_SLOTS = 1;
+  public static final int TOTAL_SLOTS = INPUT_SLOTS + OUTPUT_SLOTS + UPGRADE_SLOTS + BATTERY_SLOTS;
   public static final int INPUT_SLOT = 0;
   public static final int FIRST_OUTPUT_SLOT = 1;
   public static final int LAST_OUTPUT_SLOT = 9;
+  public static final int FIRST_UPGRADE_SLOT = 10;
+  public static final int LAST_UPGRADE_SLOT = 11;
+  public static final int BATTERY_SLOT = 12;
 
   private RecyclerSlots() {}
 }
