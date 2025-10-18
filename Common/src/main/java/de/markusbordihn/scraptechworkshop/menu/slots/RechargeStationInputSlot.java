@@ -17,32 +17,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.mixin;
+package de.markusbordihn.scraptechworkshop.menu.slots;
 
-import de.markusbordihn.scraptechworkshop.fishing.ScrapFishingHandler;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.FishingHook;
+import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
+import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import net.minecraft.world.Container;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(FishingHook.class)
-public abstract class FishingHookMixin {
+public class RechargeStationInputSlot extends Slot {
 
-  @Shadow
-  public abstract Player getPlayerOwner();
+  public RechargeStationInputSlot(
+      final Container container, final int slot, final int x, final int y) {
+    super(container, slot, x, y);
+  }
 
-  @Inject(method = "retrieve", at = @At("RETURN"))
-  private void onRetrieve(ItemStack itemStack, CallbackInfoReturnable<Integer> cir) {
-    if ((cir.getReturnValue() == 1 || cir.getReturnValue() == 2)
-        && this.getPlayerOwner() instanceof ServerPlayer serverPlayer
-        && this.getPlayerOwner().level() instanceof ServerLevel serverLevel) {
-      ScrapFishingHandler.handleFishing(serverPlayer, serverLevel, itemStack);
-    }
+  @Override
+  public boolean mayPlace(ItemStack itemStack) {
+    return itemStack.getItem() instanceof EnergyCellItem
+        || itemStack.getItem() instanceof EmptyEnergyCellItem;
   }
 }

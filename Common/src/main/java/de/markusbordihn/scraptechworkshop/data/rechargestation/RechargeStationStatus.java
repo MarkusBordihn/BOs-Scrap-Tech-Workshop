@@ -17,29 +17,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.data.rechargestation;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.function.Supplier;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.util.StringRepresentable;
 
-public class ModBlockItems {
+public enum RechargeStationStatus implements StringRepresentable {
+  NO_POWER("no_power"),
+  IDLE("idle"),
+  CHARGING("charging"),
+  DONE("done");
 
-  // Machine Block Items
-  public static Supplier<BlockItem> RECYCLER;
-  public static Supplier<BlockItem> RECHARGE_STATION;
-  public static Supplier<BlockItem> BASIC_SCRAP_COLLECTOR_STATION;
+  private final String name;
 
-  // Scrap Pile Block Items
-  public static Supplier<BlockItem> MIXED_SCRAP_PILE;
-  public static Supplier<BlockItem> METAL_SCRAP_PILE;
-  public static Supplier<BlockItem> TECH_SCRAP_PILE;
+  RechargeStationStatus(final String name) {
+    this.name = name;
+  }
 
-  // Hololog Block Items
-  public static Supplier<BlockItem> HOLO_CUBE;
+  @Override
+  public String getSerializedName() {
+    return this.name;
+  }
 
-  public static ResourceLocation getBlockItemId(String name) {
-    return new ResourceLocation(Constants.MOD_ID, name);
+  @Override
+  public String toString() {
+    return this.name;
   }
 }

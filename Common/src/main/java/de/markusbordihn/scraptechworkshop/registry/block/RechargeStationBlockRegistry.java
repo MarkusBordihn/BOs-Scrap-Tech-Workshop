@@ -17,29 +17,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.registry.block;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.function.Supplier;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
+import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 
-public class ModBlockItems {
+public class RechargeStationBlockRegistry {
 
-  // Machine Block Items
-  public static Supplier<BlockItem> RECYCLER;
-  public static Supplier<BlockItem> RECHARGE_STATION;
-  public static Supplier<BlockItem> BASIC_SCRAP_COLLECTOR_STATION;
+  public static final RechargeStationBlock RECHARGE_STATION_BLOCK =
+      new RechargeStationBlock(
+          BlockBehaviour.Properties.of()
+              .mapColor(MapColor.METAL)
+              .requiresCorrectToolForDrops()
+              .strength(3.5F)
+              .sound(SoundType.METAL)
+              .noOcclusion());
 
-  // Scrap Pile Block Items
-  public static Supplier<BlockItem> MIXED_SCRAP_PILE;
-  public static Supplier<BlockItem> METAL_SCRAP_PILE;
-  public static Supplier<BlockItem> TECH_SCRAP_PILE;
-
-  // Hololog Block Items
-  public static Supplier<BlockItem> HOLO_CUBE;
-
-  public static ResourceLocation getBlockItemId(String name) {
-    return new ResourceLocation(Constants.MOD_ID, name);
-  }
+  private RechargeStationBlockRegistry() {}
 }

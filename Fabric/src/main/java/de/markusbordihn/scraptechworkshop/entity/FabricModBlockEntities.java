@@ -22,13 +22,17 @@ package de.markusbordihn.scraptechworkshop.entity;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.rechargestation.RechargeStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
+import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.CollectorStationBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.HoloCubeBlockEntityRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.entity.RechargeStationBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RecyclerBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
 import net.minecraft.core.Registry;
@@ -50,6 +54,18 @@ public class FabricModBlockEntities {
         new ResourceLocation(Constants.MOD_ID, RecyclerBlock.ID),
         recyclerBlockEntityType);
     RecyclerBlockEntityRegistry.setBlockEntityType(recyclerBlockEntityType);
+
+    // Register recharge station block entity
+    BlockEntityType<RechargeStationBlockEntity> rechargeStationBlockEntityType =
+        BlockEntityType.Builder.of(
+                RechargeStationBlockEntity::new,
+                RechargeStationBlockRegistry.RECHARGE_STATION_BLOCK)
+            .build(null);
+    Registry.register(
+        BuiltInRegistries.BLOCK_ENTITY_TYPE,
+        new ResourceLocation(Constants.MOD_ID, RechargeStationBlock.ID),
+        rechargeStationBlockEntityType);
+    RechargeStationBlockEntityRegistry.setBlockEntityType(rechargeStationBlockEntityType);
 
     // Register holocube block entity
     BlockEntityType<HoloCubeBlockEntity> holoCubeBlockEntityType =

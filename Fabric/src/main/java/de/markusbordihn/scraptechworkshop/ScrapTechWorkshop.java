@@ -89,6 +89,9 @@ public class ScrapTechWorkshop implements ModInitializer {
     log.info("{} Creative Mode Tabs ...", Constants.LOG_REGISTER_PREFIX);
     FabricModItems.registerCreativeModeTabs();
 
+    log.info("{} Composter Values ...", Constants.LOG_REGISTER_PREFIX);
+    FabricCommonSetup.registerComposterValues();
+
     log.info("{} Block Events ...", Constants.LOG_REGISTER_PREFIX);
     BlockEventHandler.register();
 

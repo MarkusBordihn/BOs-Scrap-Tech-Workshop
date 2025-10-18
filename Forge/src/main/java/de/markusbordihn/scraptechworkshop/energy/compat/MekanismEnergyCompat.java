@@ -17,29 +17,30 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.energy.compat;
 
 import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.function.Supplier;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
+import net.minecraftforge.fml.ModList;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class ModBlockItems {
+public class MekanismEnergyCompat {
 
-  // Machine Block Items
-  public static Supplier<BlockItem> RECYCLER;
-  public static Supplier<BlockItem> RECHARGE_STATION;
-  public static Supplier<BlockItem> BASIC_SCRAP_COLLECTOR_STATION;
+  private static final Logger LOGGER = LogManager.getLogger(Constants.LOG_NAME);
+  private static final String MEKANISM_MOD_ID = "mekanism";
+  private static Boolean mekanismLoaded = null;
 
-  // Scrap Pile Block Items
-  public static Supplier<BlockItem> MIXED_SCRAP_PILE;
-  public static Supplier<BlockItem> METAL_SCRAP_PILE;
-  public static Supplier<BlockItem> TECH_SCRAP_PILE;
+  private MekanismEnergyCompat() {}
 
-  // Hololog Block Items
-  public static Supplier<BlockItem> HOLO_CUBE;
-
-  public static ResourceLocation getBlockItemId(String name) {
-    return new ResourceLocation(Constants.MOD_ID, name);
+  public static boolean isMekanismLoaded() {
+    if (mekanismLoaded == null) {
+      mekanismLoaded = ModList.get().isLoaded(MEKANISM_MOD_ID);
+      if (mekanismLoaded) {
+        LOGGER.info("Mekanism detected - Energy compatibility enabled");
+      } else {
+        LOGGER.debug("Mekanism not found - Energy compatibility disabled");
+      }
+    }
+    return mekanismLoaded;
   }
 }

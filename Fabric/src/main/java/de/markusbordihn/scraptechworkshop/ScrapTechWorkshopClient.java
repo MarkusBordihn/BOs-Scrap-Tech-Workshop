@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop;
 
 import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.rechargestation.RechargeStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.client.ClientEventHandler;
 import de.markusbordihn.scraptechworkshop.client.model.robot.BaseRobotModel;
@@ -28,6 +29,7 @@ import de.markusbordihn.scraptechworkshop.client.model.robot.MixedScrapRobotMode
 import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.HoloCubeBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.RecyclerBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.collectorstation.CollectorStationBlockEntityRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.rechargestation.RechargeStationBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.entity.HoloLogHumanoidRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.entity.robot.CollectorStationRobotRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.entity.robot.MixedScrapRobotRenderer;
@@ -57,6 +59,8 @@ public class ScrapTechWorkshopClient implements ClientModInitializer {
 
     // Register block entity renderers
     BlockEntityRenderers.register(RecyclerBlockEntity.TYPE, RecyclerBlockEntityRenderer::new);
+    BlockEntityRenderers.register(
+        RechargeStationBlockEntity.TYPE, RechargeStationBlockEntityRenderer::new);
     BlockEntityRenderers.register(HoloCubeBlockEntity.TYPE, HoloCubeBlockEntityRenderer::new);
     BlockEntityRenderers.register(
         CollectorStationBlockEntity.TYPE, CollectorStationBlockEntityRenderer::new);

@@ -20,10 +20,12 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
+import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
@@ -47,6 +49,14 @@ public class FabricModBlockItems {
             RecyclerBlock.ID,
             () ->
                 new RecyclerBlockItem(RecyclerBlockRegistry.RECYCLER_BLOCK, new Item.Properties()));
+
+    // Register recharge station block item
+    ModBlockItems.RECHARGE_STATION =
+        registerBlockItem(
+            RechargeStationBlock.ID,
+            () ->
+                new RechargeStationBlockItem(
+                    RechargeStationBlockRegistry.RECHARGE_STATION_BLOCK, new Item.Properties()));
 
     // Register collector station block item
     ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION =

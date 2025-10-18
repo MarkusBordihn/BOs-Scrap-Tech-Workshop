@@ -20,8 +20,10 @@
 package de.markusbordihn.scraptechworkshop.menu;
 
 import de.markusbordihn.scraptechworkshop.block.entity.ForgeCollectorStationMenuProvider;
+import de.markusbordihn.scraptechworkshop.block.entity.ForgeRechargeStationMenuProvider;
 import de.markusbordihn.scraptechworkshop.block.entity.ForgeRecyclerMenuProvider;
 import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.rechargestation.RechargeStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -42,6 +44,11 @@ public class ForgeMenuOpener implements MenuManager.MenuOpener {
       NetworkHooks.openScreen(
           serverPlayer,
           new ForgeCollectorStationMenuProvider(collectorStation),
+          blockEntity.getBlockPos());
+    } else if (blockEntity instanceof RechargeStationBlockEntity rechargeStation) {
+      NetworkHooks.openScreen(
+          serverPlayer,
+          new ForgeRechargeStationMenuProvider(rechargeStation),
           blockEntity.getBlockPos());
     } else if (blockEntity instanceof RecyclerBlockEntity recycler) {
       NetworkHooks.openScreen(

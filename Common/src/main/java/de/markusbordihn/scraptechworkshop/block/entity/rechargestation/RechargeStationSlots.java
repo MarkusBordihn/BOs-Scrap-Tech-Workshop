@@ -17,29 +17,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.block.entity.rechargestation;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.function.Supplier;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
+public class RechargeStationSlots {
+  public static final int INPUT_SLOTS = 1;
+  public static final int BATTERY_SLOTS = 1;
+  public static final int TOTAL_SLOTS = INPUT_SLOTS + BATTERY_SLOTS;
+  public static final int INPUT_SLOT = 0;
+  public static final int BATTERY_SLOT = 1;
 
-public class ModBlockItems {
-
-  // Machine Block Items
-  public static Supplier<BlockItem> RECYCLER;
-  public static Supplier<BlockItem> RECHARGE_STATION;
-  public static Supplier<BlockItem> BASIC_SCRAP_COLLECTOR_STATION;
-
-  // Scrap Pile Block Items
-  public static Supplier<BlockItem> MIXED_SCRAP_PILE;
-  public static Supplier<BlockItem> METAL_SCRAP_PILE;
-  public static Supplier<BlockItem> TECH_SCRAP_PILE;
-
-  // Hololog Block Items
-  public static Supplier<BlockItem> HOLO_CUBE;
-
-  public static ResourceLocation getBlockItemId(String name) {
-    return new ResourceLocation(Constants.MOD_ID, name);
-  }
+  private RechargeStationSlots() {}
 }

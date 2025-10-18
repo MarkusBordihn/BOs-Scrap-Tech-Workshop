@@ -17,29 +17,18 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.function.Supplier;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
+import de.markusbordihn.scraptechworkshop.item.ModItems;
+import net.minecraft.world.level.block.ComposterBlock;
 
-public class ModBlockItems {
+public class ComposterValues {
 
-  // Machine Block Items
-  public static Supplier<BlockItem> RECYCLER;
-  public static Supplier<BlockItem> RECHARGE_STATION;
-  public static Supplier<BlockItem> BASIC_SCRAP_COLLECTOR_STATION;
+  private ComposterValues() {}
 
-  // Scrap Pile Block Items
-  public static Supplier<BlockItem> MIXED_SCRAP_PILE;
-  public static Supplier<BlockItem> METAL_SCRAP_PILE;
-  public static Supplier<BlockItem> TECH_SCRAP_PILE;
-
-  // Hololog Block Items
-  public static Supplier<BlockItem> HOLO_CUBE;
-
-  public static ResourceLocation getBlockItemId(String name) {
-    return new ResourceLocation(Constants.MOD_ID, name);
+  public static void register() {
+    ComposterBlock.COMPOSTABLES.put(ModItems.BIO_SCRAP.get().asItem(), 0.3F);
+    ComposterBlock.COMPOSTABLES.put(ModItems.FIBER_SCRAP.get().asItem(), 0.3F);
+    ComposterBlock.COMPOSTABLES.put(ModItems.WOOD_SCRAP.get().asItem(), 0.3F);
   }
 }

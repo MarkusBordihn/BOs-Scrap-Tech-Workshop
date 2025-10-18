@@ -17,32 +17,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.mixin;
+package de.markusbordihn.scraptechworkshop.item;
 
-import de.markusbordihn.scraptechworkshop.fishing.ScrapFishingHandler;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.FishingHook;
+import de.markusbordihn.scraptechworkshop.Constants;
+import java.util.List;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 
-@Mixin(FishingHook.class)
-public abstract class FishingHookMixin {
+public class RechargeStationBlockItem extends BlockItem {
 
-  @Shadow
-  public abstract Player getPlayerOwner();
+  public RechargeStationBlockItem(final Block block, final Properties properties) {
+    super(block, properties);
+  }
 
-  @Inject(method = "retrieve", at = @At("RETURN"))
-  private void onRetrieve(ItemStack itemStack, CallbackInfoReturnable<Integer> cir) {
-    if ((cir.getReturnValue() == 1 || cir.getReturnValue() == 2)
-        && this.getPlayerOwner() instanceof ServerPlayer serverPlayer
-        && this.getPlayerOwner().level() instanceof ServerLevel serverLevel) {
-      ScrapFishingHandler.handleFishing(serverPlayer, serverLevel, itemStack);
-    }
+  @Override
+  public void appendHoverText(
+      ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
+    super.appendHoverText(stack, level, tooltip, flag);
+
+    tooltip.add(
+        Component.translatable(Constants.ITEM_PREFIX + "recharge_station.description")
+            .withStyle(ChatFormatting.GRAY));
   }
 }

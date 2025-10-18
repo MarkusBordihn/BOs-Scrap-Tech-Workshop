@@ -1,0 +1,64 @@
+{
+  "variants": {
+    "facing=north,status=no_power": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_no_power"
+    },
+    "facing=east,status=no_power": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_no_power",
+      "y": 90
+    },
+    "facing=south,status=no_power": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_no_power",
+      "y": 180
+    },
+    "facing=west,status=no_power": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_no_power",
+      "y": 270
+    },
+    "facing=north,status=idle": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_idle"
+    },
+    "facing=east,status=idle": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_idle",
+      "y": 90
+    },
+    "facing=south,status=idle": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_idle",
+      "y": 180
+    },
+    "facing=west,status=idle": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_idle",
+      "y": 270
+    },
+    "facing=north,status=charging": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_charging"
+    },
+    "facing=east,status=charging": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_charging",
+      "y": 90
+    },
+    "facing=south,status=charging": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_charging",
+      "y": 180
+    },
+    "facing=west,status=charging": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_charging",
+      "y": 270
+    },
+    "facing=north,status=done": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_done"
+    },
+    "facing=east,status=done": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_done",
+      "y": 90
+    },
+    "facing=south,status=done": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_done",
+      "y": 180
+    },
+    "facing=west,status=done": {
+      "model": "scrap_tech_workshop:block/recharge_station/recharge_station_done",
+      "y": 270
+    }
+  }
+}

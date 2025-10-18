@@ -101,6 +101,7 @@ public class ModCreativeTabs {
 
               // Block Items
               output.accept(ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION.get());
+              output.accept(ModBlockItems.RECHARGE_STATION.get());
               output.accept(ModBlockItems.RECYCLER.get());
             });
   }

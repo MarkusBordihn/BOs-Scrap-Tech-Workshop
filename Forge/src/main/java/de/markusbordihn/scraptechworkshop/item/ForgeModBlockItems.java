@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.item;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
 import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
+import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
@@ -46,6 +47,13 @@ public class ForgeModBlockItems {
       BLOCK_ITEMS.register(
           RecyclerBlock.ID,
           () -> new RecyclerBlockItem(ForgeModBlocks.RECYCLER_BLOCK.get(), new Item.Properties()));
+
+  public static final RegistryObject<BlockItem> RECHARGE_STATION_BLOCK_ITEM =
+      BLOCK_ITEMS.register(
+          RechargeStationBlock.ID,
+          () ->
+              new RechargeStationBlockItem(
+                  ForgeModBlocks.RECHARGE_STATION_BLOCK.get(), new Item.Properties()));
 
   public static final RegistryObject<BlockItem> BASIC_SCRAP_COLLECTOR_STATION_BLOCK_ITEM =
       BLOCK_ITEMS.register(
@@ -103,6 +111,7 @@ public class ForgeModBlockItems {
     BLOCK_ITEMS.register(eventBus);
 
     ModBlockItems.RECYCLER = RECYCLER_BLOCK_ITEM;
+    ModBlockItems.RECHARGE_STATION = RECHARGE_STATION_BLOCK_ITEM;
     ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION = BASIC_SCRAP_COLLECTOR_STATION_BLOCK_ITEM;
     ModBlockItems.MIXED_SCRAP_PILE = MIXED_SCRAP_PILE_BLOCK_ITEM;
     ModBlockItems.METAL_SCRAP_PILE = METAL_SCRAP_PILE_BLOCK_ITEM;

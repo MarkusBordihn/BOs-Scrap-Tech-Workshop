@@ -21,12 +21,14 @@ package de.markusbordihn.scraptechworkshop;
 
 import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.rechargestation.RechargeStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
 import de.markusbordihn.scraptechworkshop.client.model.robot.BaseRobotModel;
 import de.markusbordihn.scraptechworkshop.client.model.robot.MixedScrapRobotModel;
 import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.HoloCubeBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.RecyclerBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.collectorstation.CollectorStationBlockEntityRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.rechargestation.RechargeStationBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.entity.HoloLogHumanoidRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.entity.robot.CollectorStationRobotRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.entity.robot.MixedScrapRobotRenderer;
@@ -64,6 +66,8 @@ public class ScrapTechWorkshopClient {
   @SubscribeEvent
   public static void onRegisterRenderers(EntityRenderersEvent.RegisterRenderers event) {
     event.registerBlockEntityRenderer(RecyclerBlockEntity.TYPE, RecyclerBlockEntityRenderer::new);
+    event.registerBlockEntityRenderer(
+        RechargeStationBlockEntity.TYPE, RechargeStationBlockEntityRenderer::new);
     event.registerBlockEntityRenderer(HoloCubeBlockEntity.TYPE, HoloCubeBlockEntityRenderer::new);
     event.registerBlockEntityRenderer(
         CollectorStationBlockEntity.TYPE, CollectorStationBlockEntityRenderer::new);

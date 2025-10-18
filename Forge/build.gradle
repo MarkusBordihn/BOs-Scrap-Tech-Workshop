@@ -116,6 +116,9 @@ dependencies {
   if (project.hasProperty('forge_xaeros_minimap_mod') && project.forge_xaeros_minimap_mod) {
     runtimeOnly fg.deobf("curse.maven:xaeros_minimap-263420:${project.forge_xaeros_minimap_mod}")
   }
+
+  // Testing dependencies
+  runtimeOnly fg.deobf("curse.maven:mekanism-268560:6552911")
 }
 
 tasks.withType(JavaCompile).configureEach {

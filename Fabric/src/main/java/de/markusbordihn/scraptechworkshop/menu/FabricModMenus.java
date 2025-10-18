@@ -39,6 +39,15 @@ public class FabricModMenus {
         new ResourceLocation(Constants.MOD_ID, "recycler"),
         recyclerMenuType);
 
+    // Register recharge station menu
+    ExtendedScreenHandlerType<RechargeStationMenu> rechargeStationMenuType =
+        new ExtendedScreenHandlerType<>(RechargeStationMenu::new);
+
+    Registry.register(
+        BuiltInRegistries.MENU,
+        new ResourceLocation(Constants.MOD_ID, "recharge_station"),
+        rechargeStationMenuType);
+
     // Register scrap multitool menu
     ExtendedScreenHandlerType<ScrapMultitoolMenu> scrapMultitoolMenuType =
         new ExtendedScreenHandlerType<>(ScrapMultitoolMenu::new);
@@ -59,6 +68,7 @@ public class FabricModMenus {
 
     // Set the menu types in the common class
     RecyclerMenu.TYPE = recyclerMenuType;
+    RechargeStationMenu.TYPE = rechargeStationMenuType;
     ScrapMultitoolMenu.TYPE = scrapMultitoolMenuType;
     CollectorStationMenu.TYPE = collectorStationMenuType;
   }

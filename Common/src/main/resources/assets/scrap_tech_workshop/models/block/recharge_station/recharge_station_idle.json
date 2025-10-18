@@ -1,0 +1,7 @@
+{
+  "parent": "scrap_tech_workshop:block/recharge_station/recharge_station",
+  "textures": {
+    "particle": "scrap_tech_workshop:block/recharge_station/recharge_station_idle",
+    "texture": "scrap_tech_workshop:block/recharge_station/recharge_station_idle"
+  }
+}

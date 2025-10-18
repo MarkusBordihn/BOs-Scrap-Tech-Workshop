@@ -7,6 +7,13 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v.15.0
+
+- Fixed issue with fishing in Fabric catching to many scrap items.
+- Added Mekanism support to be able to use Mekanism energy storage items to power blocks.
+- Added recharging station for batteries and energy storage items.
+- Added composter support for scrap items.
+
 ### v.14.0
 
 - Replaced hard-coded break block list to a tag based system for better mod compatibility.
