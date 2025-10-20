@@ -1,8 +1,8 @@
 {
-  "parent": "scrap_tech_workshop:hololog/scavenging_basics",
+  "parent": "scrap_tech_workshop:hololog/collector_basics",
   "display": {
     "icon": {
-      "item": "scrap_tech_workshop:holo_pad_scavenging_briefing_02"
+      "item": "scrap_tech_workshop:holo_pad_engineering_briefing_01"
     },
     "title": {
       "translate": "advancement.scrap_tech_workshop.energy_basics.title"
@@ -58,7 +58,7 @@
     "recipes": [
       "scrap_tech_workshop:energy_cell"
     ],
-    "function": "scrap_tech_workshop:advancements/hololog/give_holo_pad_scavenging_briefing_02",
+    "function": "scrap_tech_workshop:advancements/hololog/give_holo_pad_engineering_briefing_01",
     "experience": 20
   }
 }

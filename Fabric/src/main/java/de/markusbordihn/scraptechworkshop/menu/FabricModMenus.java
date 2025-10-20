@@ -33,7 +33,6 @@ public class FabricModMenus {
     // Register recycler menu and set the TYPE in the common class
     ExtendedScreenHandlerType<RecyclerMenu> recyclerMenuType =
         new ExtendedScreenHandlerType<>(RecyclerMenu::new);
-
     Registry.register(
         BuiltInRegistries.MENU,
         new ResourceLocation(Constants.MOD_ID, "recycler"),
@@ -42,7 +41,6 @@ public class FabricModMenus {
     // Register recharge station menu
     ExtendedScreenHandlerType<RechargeStationMenu> rechargeStationMenuType =
         new ExtendedScreenHandlerType<>(RechargeStationMenu::new);
-
     Registry.register(
         BuiltInRegistries.MENU,
         new ResourceLocation(Constants.MOD_ID, "recharge_station"),
@@ -51,7 +49,6 @@ public class FabricModMenus {
     // Register scrap multitool menu
     ExtendedScreenHandlerType<ScrapMultitoolMenu> scrapMultitoolMenuType =
         new ExtendedScreenHandlerType<>(ScrapMultitoolMenu::new);
-
     Registry.register(
         BuiltInRegistries.MENU,
         new ResourceLocation(Constants.MOD_ID, "scrap_multitool"),
@@ -60,16 +57,24 @@ public class FabricModMenus {
     // Register collector station menu
     ExtendedScreenHandlerType<CollectorStationMenu> collectorStationMenuType =
         new ExtendedScreenHandlerType<>(CollectorStationMenu::new);
-
     Registry.register(
         BuiltInRegistries.MENU,
         new ResourceLocation(Constants.MOD_ID, "collector_station"),
         collectorStationMenuType);
+
+    // Register floating scrap collector menu
+    ExtendedScreenHandlerType<FloatingScrapCollectorMenu> floatingScrapCollectorMenuType =
+        new ExtendedScreenHandlerType<>(FloatingScrapCollectorMenu::new);
+    Registry.register(
+        BuiltInRegistries.MENU,
+        new ResourceLocation(Constants.MOD_ID, "floating_scrap_collector"),
+        floatingScrapCollectorMenuType);
 
     // Set the menu types in the common class
     RecyclerMenu.TYPE = recyclerMenuType;
     RechargeStationMenu.TYPE = rechargeStationMenuType;
     ScrapMultitoolMenu.TYPE = scrapMultitoolMenuType;
     CollectorStationMenu.TYPE = collectorStationMenuType;
+    FloatingScrapCollectorMenu.TYPE = floatingScrapCollectorMenuType;
   }
 }

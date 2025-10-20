@@ -1,0 +1,62 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_coil_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["scrap_tech_workshop:coil_scrap"]
+          }
+        ]
+      }
+    },
+    "has_copper_wire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["scrap_tech_workshop:reclaimed_copper_wire"]
+          }
+        ]
+      }
+    },
+    "has_fine_mesh_filter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["scrap_tech_workshop:fine_mesh_filter"]
+          }
+        ]
+      }
+    },
+    "has_iron_ingot": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:iron_ingot"]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "scrap_tech_workshop:magnetic_coil_filter"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_coil_scrap", "has_copper_wire", "has_fine_mesh_filter", "has_iron_ingot",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "scrap_tech_workshop:magnetic_coil_filter"
+    ]
+  }
+}

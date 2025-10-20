@@ -39,5 +39,7 @@ public class ClientScreens {
     MenuScreens.register(ForgeModMenus.RECHARGE_STATION_MENU.get(), RechargeStationScreen::new);
     MenuScreens.register(ForgeModMenus.SCRAP_MULTITOOL_MENU.get(), ScrapMultitoolScreen::new);
     MenuScreens.register(ForgeModMenus.COLLECTOR_STATION_MENU.get(), CollectorStationScreen::new);
+    MenuScreens.register(
+        ForgeModMenus.FLOATING_SCRAP_COLLECTOR_MENU.get(), FloatingScrapCollectorScreen::new);
   }
 }

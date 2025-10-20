@@ -78,7 +78,8 @@ public class HoloPadItem extends Item {
       // Grant advancement for scavenging basics HoloPad
       if (player instanceof ServerPlayer serverPlayer
           && holoLogId.equals(
-              new ResourceLocation(Constants.MOD_ID, "holologs/tutorial/scavenging_briefing_01"))) {
+              new ResourceLocation(
+                  Constants.MOD_ID, "holologs/tutorial/scavenging_field_briefing_01"))) {
         MinecraftServer server = serverPlayer.getServer();
         if (server != null) {
           Advancement advancement =

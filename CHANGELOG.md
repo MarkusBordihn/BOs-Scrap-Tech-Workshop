@@ -7,6 +7,16 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v.16.0
+
+- Fixed recharging station issues with different facing directions.
+- Added reclaimed copper wire and refined copper wire items.
+- Added floating scrap collector block.
+- Added filter items for the floating scrap collector block.
+- Added additional holo log for floating scrap collector and changed holo log order.
+- Simplified Forge item registration.
+- Fixed smaller issues and typos.
+
 ### v.15.0
 
 - Fixed issue with fishing in Fabric catching to many scrap items.

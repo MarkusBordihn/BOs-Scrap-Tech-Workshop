@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PSP",
+    "ICI",
+    "SMS"
+  ],
+  "key": {
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "item": "minecraft:string"
+    },
+    "C": [
+      {
+        "item": "minecraft:chest"
+      },
+      {
+        "item": "minecraft:barrel"
+      }
+    ],
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "scrap_tech_workshop:metal_scrap"
+    }
+  },
+  "result": {
+    "item": "scrap_tech_workshop:floating_scrap_collector"
+  }
+}

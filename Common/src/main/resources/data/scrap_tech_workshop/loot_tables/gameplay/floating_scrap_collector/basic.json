@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:empty",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:wood_scrap",
+          "weight": 30
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:metal_scrap",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:stick",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:string",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:fastener_scrap",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}

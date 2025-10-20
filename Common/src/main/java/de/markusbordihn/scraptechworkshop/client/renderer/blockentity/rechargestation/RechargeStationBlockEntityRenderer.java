@@ -40,8 +40,7 @@ public class RechargeStationBlockEntityRenderer
 
   private static final float ITEM_SCALE = 0.5f;
   private static final float ITEM_Y_OFFSET = 0.5f;
-  private static final float ITEM_X_OFFSET = 0.5f;
-  private static final float ITEM_Z_OFFSET = 0.65f;
+  private static final float ITEM_OFFSET_FROM_CENTER = 0.15f;
 
   public RechargeStationBlockEntityRenderer(BlockEntityRendererProvider.Context context) {}
 
@@ -63,16 +62,36 @@ public class RechargeStationBlockEntityRenderer
     Direction facing = blockState.getValue(RechargeStationBlock.FACING);
 
     poseStack.pushPose();
-    poseStack.translate(ITEM_X_OFFSET, ITEM_Y_OFFSET, ITEM_Z_OFFSET);
 
-    float rotation =
-        switch (facing) {
-          case NORTH -> 0f;
-          case SOUTH -> 180f;
-          case WEST -> 90f;
-          case EAST -> 270f;
-          default -> 0f;
-        };
+    // Calculate position based on facing direction
+    float xOffset = 0.5f;
+    float zOffset = 0.5f;
+    float rotation = 0f;
+
+    switch (facing) {
+      case NORTH -> {
+        zOffset = 0.5f - ITEM_OFFSET_FROM_CENTER;
+        rotation = 0f;
+      }
+      case SOUTH -> {
+        zOffset = 0.5f + ITEM_OFFSET_FROM_CENTER;
+        rotation = 180f;
+      }
+      case WEST -> {
+        xOffset = 0.5f - ITEM_OFFSET_FROM_CENTER;
+        rotation = 90f;
+      }
+      case EAST -> {
+        xOffset = 0.5f + ITEM_OFFSET_FROM_CENTER;
+        rotation = 270f;
+      }
+      default -> {
+        zOffset = 0.5f;
+        rotation = 0f;
+      }
+    }
+
+    poseStack.translate(xOffset, ITEM_Y_OFFSET, zOffset);
     poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
 
     Level level = blockEntity.getLevel();

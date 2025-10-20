@@ -1,0 +1,63 @@
+/*
+ * Copyright 2025 Markus Bordihn
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to deal in the Software without restriction,
+ * including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ * sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all copies or
+ * substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT
+ * NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+package de.markusbordihn.scraptechworkshop.item;
+
+import de.markusbordihn.scraptechworkshop.data.floatingscrapcollector.ScrapFilterType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
+public class ScrapFilterItem extends Item {
+
+  private final ScrapFilterType filterType;
+  private final int maxDurability;
+
+  public ScrapFilterItem(ScrapFilterType filterType, int maxDurability) {
+    super(new Properties().stacksTo(1).durability(maxDurability));
+    this.filterType = filterType;
+    this.maxDurability = maxDurability;
+  }
+
+  public static int getDurability(ItemStack stack) {
+    return stack.getMaxDamage() - stack.getDamageValue();
+  }
+
+  public static int getMaxDurability(ItemStack stack) {
+    return stack.getMaxDamage();
+  }
+
+  public static float getDurabilityPercent(ItemStack stack) {
+    if (stack.getMaxDamage() == 0) {
+      return 0;
+    }
+    return (float) getDurability(stack) / (float) stack.getMaxDamage();
+  }
+
+  public static void consumeDurability(ItemStack stack, int amount) {
+    stack.setDamageValue(Math.min(stack.getDamageValue() + amount, stack.getMaxDamage()));
+  }
+
+  public ScrapFilterType getFilterType() {
+    return filterType;
+  }
+
+  public int getMaxDurability() {
+    return maxDurability;
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "parent": "scrap_tech_workshop:hololog/scavenging_basics",
+  "display": {
+    "icon": {
+      "item": "scrap_tech_workshop:holo_pad_scavenging_field_briefing_02"
+    },
+    "title": {
+      "translate": "advancement.scrap_tech_workshop.collector_basics.title"
+    },
+    "description": {
+      "translate": "advancement.scrap_tech_workshop.collector_basics.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_any_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "scrap_tech_workshop:floating_scrap_collector",
+      "scrap_tech_workshop:basic_scrap_filter",
+      "scrap_tech_workshop:fine_mesh_filter"
+    ],
+    "function": "scrap_tech_workshop:advancements/hololog/give_holo_pad_scavenging_field_briefing_02",
+    "experience": 25
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_string": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:string"]
+          }
+        ]
+      }
+    },
+    "has_stick": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:stick"]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "scrap_tech_workshop:basic_scrap_filter"
+      }
+    }
+  },
+  "requirements": [
+    ["has_string", "has_stick", "has_the_recipe"]
+  ],
+  "rewards": {
+    "recipes": [
+      "scrap_tech_workshop:basic_scrap_filter"
+    ]
+  }
+}

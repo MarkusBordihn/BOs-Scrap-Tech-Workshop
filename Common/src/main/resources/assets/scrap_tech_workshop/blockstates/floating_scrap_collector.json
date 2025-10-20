@@ -1,0 +1,94 @@
+{
+  "variants": {
+    "facing=north,status=empty,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector_empty"
+    },
+    "facing=north,status=empty,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector_empty"
+    },
+    "facing=south,status=empty,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector_empty",
+      "y": 180
+    },
+    "facing=south,status=empty,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector_empty",
+      "y": 180
+    },
+    "facing=west,status=empty,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector_empty",
+      "y": 270
+    },
+    "facing=west,status=empty,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector_empty",
+      "y": 270
+    },
+    "facing=east,status=empty,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector_empty",
+      "y": 90
+    },
+    "facing=east,status=empty,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector_empty",
+      "y": 90
+    },
+    "facing=north,status=working,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector"
+    },
+    "facing=north,status=working,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector"
+    },
+    "facing=south,status=working,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 180
+    },
+    "facing=south,status=working,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 180
+    },
+    "facing=west,status=working,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 270
+    },
+    "facing=west,status=working,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 270
+    },
+    "facing=east,status=working,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 90
+    },
+    "facing=east,status=working,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 90
+    },
+    "facing=north,status=full,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector"
+    },
+    "facing=north,status=full,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector"
+    },
+    "facing=south,status=full,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 180
+    },
+    "facing=south,status=full,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 180
+    },
+    "facing=west,status=full,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 270
+    },
+    "facing=west,status=full,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 270
+    },
+    "facing=east,status=full,net_type=none,waterlogged=false": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 90
+    },
+    "facing=east,status=full,net_type=none,waterlogged=true": {
+      "model": "scrap_tech_workshop:block/floating_scrap_collector/floating_scrap_collector",
+      "y": 90
+    }
+  }
+}

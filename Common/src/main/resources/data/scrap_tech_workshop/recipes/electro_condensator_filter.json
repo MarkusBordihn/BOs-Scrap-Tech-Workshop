@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CRC",
+    "WMW",
+    "CRC"
+  ],
+  "key": {
+    "C": {
+      "item": "scrap_tech_workshop:capacitor_scrap"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "W": {
+      "item": "scrap_tech_workshop:refined_copper_wire"
+    },
+    "M": {
+      "item": "scrap_tech_workshop:magnetic_coil_filter"
+    }
+  },
+  "result": {
+    "item": "scrap_tech_workshop:electro_condensator_filter"
+  }
+}

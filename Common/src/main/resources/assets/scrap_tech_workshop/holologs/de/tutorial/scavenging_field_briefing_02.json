@@ -1,0 +1,114 @@
+{
+  "id": "scrap_tech_workshop:holologs/de/tutorial/scavenging_field_briefing_02",
+  "title": "Bergungs-Feldbriefing 02",
+  "subtitle": "Setze einen Schwimmenden Schrottsammler ein.",
+  "color": "#00AAFF",
+  "lineDelay": 3.2,
+  "voiceOver": "scrap_tech_workshop:holologs/de/tutorial/scavenging_field_briefing_02",
+  "voiceOverDelay": 2.6,
+  "displayHoloEntity": {
+    "id": "scrap_tech_workshop:hololog_humanoid",
+    "texture": "scrap_tech_workshop:textures/entity/hololog/hololog_humanoid.png",
+    "scale": 0.5
+  },
+  "start": {
+    "playSound": [{"id": "minecraft:block.note_block.hat", "volume": 0.8}],
+    "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
+  },
+  "lines": [
+    {
+      "text": "Verbindung hergestellt.",
+      "playSound": [{"id": "minecraft:block.beacon.power_select", "volume": 0.7}]
+    },
+    {"text": "Manuelles Sammeln ist effektiv, aber zeitaufwendig."},
+    {
+      "text": "Baue einen Schrottsammler, um die Bergung zu automatisieren.",
+      "displayItem": {"id": "scrap_tech_workshop:floating_scrap_collector"},
+      "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8}]
+    },
+    {
+      "text": "Bauplan verfügbar.",
+      "displayRecipe": {
+        "recipe": "scrap_tech_workshop:floating_scrap_collector",
+        "scale": 1.1
+      },
+      "playSound": [{"id": "minecraft:block.anvil.use", "volume": 0.6}],
+      "lineDelay": 4.2
+    },
+    {
+      "text": "Benötigte Komponenten:",
+      "playSound": [{"id": "minecraft:block.lever.click", "volume": 0.5}]
+    },
+    {
+      "text": "Holzbretter für den schwimmenden Rahmen.",
+      "displayItem": {"id": "minecraft:oak_planks"}
+    },
+    {
+      "text": "Fäden für die Halterungen und das Sammelnetz.",
+      "displayItem": {"id": "minecraft:string"}
+    },
+    {
+      "text": "Einen Lagerbehälter – Truhe oder Fass.",
+      "displayItem": {"id": "minecraft:chest"}
+    },
+    {
+      "text": "Eisenbarren dienen als Ballast für Stabilität.",
+      "displayItem": {"id": "minecraft:iron_ingot"}
+    },
+    {
+      "text": "Metallschrott verstärkt die Konstruktion.",
+      "displayItem": {"id": "scrap_tech_workshop:metal_scrap"}
+    },
+    {
+      "text": "Er treibt auf dem Wasser und sammelt Treibgut.",
+      "displayBlock": {"id": "minecraft:water"},
+      "playSound": [{"id": "minecraft:block.water.ambient", "volume": 0.6}]
+    },
+    {"text": "Benötigt keine Energie, ideal für die Anfangsphase."},
+    {"text": "Platziere ihn in ruhigem Wasser, Strömung senkt Effizienz."},
+    {
+      "text": "Rüste ihn mit einem Netz aus, um zu bestimmen, was gesammelt wird.",
+      "displayItem": {"id": "scrap_tech_workshop:basic_scrap_filter"},
+      "lineDelay": 4.2
+    },
+    {
+      "text": "Einfaches Schrottnetz → größere Teile und gemischter Schrott.",
+      "displayItem": {"id": "scrap_tech_workshop:basic_scrap_filter"}
+    },
+    {
+      "text": "Feines Maschennetz → kleine Fragmente und Technikteile.",
+      "displayItem": {"id": "scrap_tech_workshop:fine_mesh_filter"}
+    },
+    {
+      "text": "Magnetspulennetz → metallhaltige Abfälle.",
+      "displayItem": {"id": "scrap_tech_workshop:magnetic_coil_filter"}
+    },
+    {
+      "text": "Die gesammelten Teile werden im inneren Behälter gelagert.",
+      "playSound": [{"id": "minecraft:block.chest.open", "volume": 0.6}]
+    },
+    {"text": "Leere ihn regelmäßig, um Überfüllung zu vermeiden."},
+    {
+      "text": "Typische Funde: Glas, Gummi, Fasern und Metallschrott.",
+      "displayItem": {"id": "scrap_tech_workshop:glass_scrap"}
+    },
+    {"text": "Mehrere Sammler erhöhen die Ausbeute."},
+    {"text": "Platziere sie mit Abstand, um Überschneidungen zu vermeiden."},
+    {
+      "text": "Die Materialien helfen beim Bau deiner ersten Energiezelle.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"},
+      "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8}]
+    },
+    {
+      "text": "Sammle weiter, jedes Fragment bringt dich näher ans Ziel.",
+      "playSound": [{"id": "minecraft:block.note_block.chime", "volume": 0.5}]
+    }
+  ],
+  "end": {
+    "playSound": [
+      {"id": "minecraft:block.beacon.deactivate", "volume": 0.9},
+      {"id": "minecraft:ui.toast.in"}
+    ],
+    "showParticle": [{"id": "minecraft:flash"}]
+  }
+}

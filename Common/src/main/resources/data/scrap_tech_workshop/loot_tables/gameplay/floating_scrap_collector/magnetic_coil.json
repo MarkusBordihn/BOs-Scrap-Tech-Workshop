@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:empty",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:iron_scrap",
+          "weight": 35
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:copper_scrap",
+          "weight": 30
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:alloy_scrap",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:coil_scrap",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:gold_scrap",
+          "weight": 5
+        }
+      ]
+    }
+  ]
+}

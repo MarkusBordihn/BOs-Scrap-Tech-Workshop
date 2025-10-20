@@ -26,6 +26,9 @@ import de.markusbordihn.scraptechworkshop.data.multitool.ToolMode;
 import de.markusbordihn.scraptechworkshop.item.ModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
+import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
+import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.scrapbox.ScrapBoxBlockItemRegistry;
 import net.minecraft.core.registries.Registries;
@@ -92,6 +95,15 @@ public class ModCreativeTabs {
               output.accept(ModItems.ENERGY_CELL_BLOCK.get());
               output.accept(ModItems.ENERGY_CELL.get().getDefaultInstance());
               output.accept(ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL.get().getDefaultInstance());
+              output.accept(ModItems.RECLAIMED_COPPER_WIRE.get());
+              output.accept(ModItems.REFINED_COPPER_WIRE.get());
+
+              // Filter Items
+              output.accept(ModItems.BASIC_SCRAP_FILTER.get());
+              output.accept(ModItems.FINE_MESH_FILTER.get());
+              output.accept(ModItems.MAGNETIC_COIL_FILTER.get());
+              output.accept(ModItems.ELECTRO_CONDENSATOR_FILTER.get());
+              output.accept(ModItems.JUNK_FILTER.get());
 
               // Upgrade Items
               output.accept(ModItems.CREATIVE_FAST_CHARGE_UPGRADE.get());
@@ -101,6 +113,7 @@ public class ModCreativeTabs {
 
               // Block Items
               output.accept(ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION.get());
+              output.accept(ModBlockItems.FLOATING_SCRAP_COLLECTOR.get());
               output.accept(ModBlockItems.RECHARGE_STATION.get());
               output.accept(ModBlockItems.RECYCLER.get());
             });
@@ -112,10 +125,7 @@ public class ModCreativeTabs {
         .icon(() -> new ItemStack(ModBlockItems.HOLO_CUBE.get()))
         .displayItems(
             (parameters, output) -> {
-              for (de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem item :
-                  de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry
-                      .getHoloCubeItems()
-                      .values()) {
+              for (HoloCubeItem item : HoloLogItemRegistry.getHoloCubeItems().values()) {
                 output.accept(item);
               }
             });
@@ -127,10 +137,7 @@ public class ModCreativeTabs {
         .icon(() -> new ItemStack(ModItems.HOLO_PAD.get()))
         .displayItems(
             (parameters, output) -> {
-              for (de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem item :
-                  de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry
-                      .getHoloPadItems()
-                      .values()) {
+              for (HoloPadItem item : HoloLogItemRegistry.getHoloPadItems().values()) {
                 output.accept(item);
               }
             });

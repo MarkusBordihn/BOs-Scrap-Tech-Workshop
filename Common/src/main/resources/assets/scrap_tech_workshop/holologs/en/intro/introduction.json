@@ -135,7 +135,7 @@
     },
     {
       "text": "💡 Tip: Check your inventory for new items",
-      "displayItem": {"id": "scrap_tech_workshop:holo_pad_scavenging_briefing_01"},
+      "displayItem": {"id": "scrap_tech_workshop:holo_pad_scavenging_field_briefing_01"},
       "lineDelay": 4.0,
       "playSound": [{"id": "minecraft:block.note_block.pling", "volume": 0.5, "pitch": 1.5}],
       "showParticle": [{"id": "minecraft:dust", "color": "#FFFF00", "count": 5}]

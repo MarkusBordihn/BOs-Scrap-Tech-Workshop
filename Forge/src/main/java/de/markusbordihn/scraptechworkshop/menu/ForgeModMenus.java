@@ -47,6 +47,12 @@ public class ForgeModMenus {
       MENU_TYPES.register(
           "collector_station", () -> IForgeMenuType.create(CollectorStationMenu::new));
 
+  public static final RegistryObject<MenuType<FloatingScrapCollectorMenu>>
+      FLOATING_SCRAP_COLLECTOR_MENU =
+          MENU_TYPES.register(
+              "floating_scrap_collector",
+              () -> IForgeMenuType.create(FloatingScrapCollectorMenu::new));
+
   private ForgeModMenus() {}
 
   public static void register(IEventBus eventBus) {
@@ -59,6 +65,7 @@ public class ForgeModMenus {
           RechargeStationMenu.TYPE = RECHARGE_STATION_MENU.get();
           ScrapMultitoolMenu.TYPE = SCRAP_MULTITOOL_MENU.get();
           CollectorStationMenu.TYPE = COLLECTOR_STATION_MENU.get();
+          FloatingScrapCollectorMenu.TYPE = FLOATING_SCRAP_COLLECTOR_MENU.get();
         });
   }
 }

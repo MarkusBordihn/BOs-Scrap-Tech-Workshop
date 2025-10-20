@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "scrap_tech_workshop:reclaimed_copper_wire",
+    "scrap_tech_workshop:refined_copper_wire"
+  ]
+}

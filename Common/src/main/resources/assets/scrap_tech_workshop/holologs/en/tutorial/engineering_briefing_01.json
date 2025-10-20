@@ -1,10 +1,10 @@
 {
-  "id": "scrap_tech_workshop:holologs/en/tutorial/scavenging_briefing_02",
-  "title": "Scavenging Briefing 02",
+  "id": "scrap_tech_workshop:holologs/en/tutorial/engineering_briefing_01",
+  "title": "Engineering Briefing 01",
   "subtitle": "Assemble a Basic Energy Cell.",
   "color": "#FFAA00",
   "lineDelay": 3.0,
-  "voiceOver": "scrap_tech_workshop:holologs/en/tutorial/scavenging_briefing_02",
+  "voiceOver": "scrap_tech_workshop:holologs/en/tutorial/engineering_briefing_01",
   "voiceOverDelay": 3.0,
   "displayHoloEntity": {
     "id": "scrap_tech_workshop:hololog_humanoid",

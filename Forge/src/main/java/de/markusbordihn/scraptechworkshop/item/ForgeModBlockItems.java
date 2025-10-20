@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.item;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
 import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
+import de.markusbordihn.scraptechworkshop.block.floatingscrapcollector.FloatingScrapCollectorBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
@@ -61,6 +62,13 @@ public class ForgeModBlockItems {
           () ->
               new CollectorStationBlockItem(
                   ForgeModBlocks.BASIC_SCRAP_COLLECTOR_STATION_BLOCK.get(), new Item.Properties()));
+
+  public static final RegistryObject<BlockItem> FLOATING_SCRAP_COLLECTOR_BLOCK_ITEM =
+      BLOCK_ITEMS.register(
+          FloatingScrapCollectorBlock.ID,
+          () ->
+              new BlockItem(
+                  ForgeModBlocks.FLOATING_SCRAP_COLLECTOR_BLOCK.get(), new Item.Properties()));
 
   public static final RegistryObject<BlockItem> MIXED_SCRAP_PILE_BLOCK_ITEM =
       BLOCK_ITEMS.register(
@@ -113,6 +121,7 @@ public class ForgeModBlockItems {
     ModBlockItems.RECYCLER = RECYCLER_BLOCK_ITEM;
     ModBlockItems.RECHARGE_STATION = RECHARGE_STATION_BLOCK_ITEM;
     ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION = BASIC_SCRAP_COLLECTOR_STATION_BLOCK_ITEM;
+    ModBlockItems.FLOATING_SCRAP_COLLECTOR = FLOATING_SCRAP_COLLECTOR_BLOCK_ITEM;
     ModBlockItems.MIXED_SCRAP_PILE = MIXED_SCRAP_PILE_BLOCK_ITEM;
     ModBlockItems.METAL_SCRAP_PILE = METAL_SCRAP_PILE_BLOCK_ITEM;
     ModBlockItems.TECH_SCRAP_PILE = TECH_SCRAP_PILE_BLOCK_ITEM;

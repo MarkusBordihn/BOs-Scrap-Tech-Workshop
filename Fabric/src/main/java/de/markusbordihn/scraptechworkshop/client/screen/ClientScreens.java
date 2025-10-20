@@ -23,6 +23,7 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.screen.rechargestation.RechargeStationScreen;
 import de.markusbordihn.scraptechworkshop.client.screen.recycler.RecyclerScreen;
 import de.markusbordihn.scraptechworkshop.menu.CollectorStationMenu;
+import de.markusbordihn.scraptechworkshop.menu.FloatingScrapCollectorMenu;
 import de.markusbordihn.scraptechworkshop.menu.RechargeStationMenu;
 import de.markusbordihn.scraptechworkshop.menu.RecyclerMenu;
 import de.markusbordihn.scraptechworkshop.menu.ScrapMultitoolMenu;
@@ -44,5 +45,6 @@ public class ClientScreens {
     MenuScreens.register(RechargeStationMenu.TYPE, RechargeStationScreen::new);
     MenuScreens.register(ScrapMultitoolMenu.TYPE, ScrapMultitoolScreen::new);
     MenuScreens.register(CollectorStationMenu.TYPE, CollectorStationScreen::new);
+    MenuScreens.register(FloatingScrapCollectorMenu.TYPE, FloatingScrapCollectorScreen::new);
   }
 }

@@ -1,0 +1,53 @@
+{
+  "type": "minecraft:empty",
+  "pools": [
+    {
+      "rolls": {
+        "min": 1,
+        "max": 2
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:metal_scrap",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:tech_scrap",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:plastic_scrap",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:circuit_scrap",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:alloy_scrap",
+          "weight": 12
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:copper_scrap",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:luminous_scrap",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:crystal_scrap",
+          "weight": 3
+        }
+      ]
+    }
+  ]
+}

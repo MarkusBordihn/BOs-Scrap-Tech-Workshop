@@ -28,6 +28,7 @@ import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeFastChargeUpgrade
 import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeSpeedUpgradeItem;
 import de.markusbordihn.scraptechworkshop.item.upgrade.FastChargeUpgradeItem;
 import de.markusbordihn.scraptechworkshop.item.upgrade.NormalSpeedUpgradeItem;
+import de.markusbordihn.scraptechworkshop.registry.item.filter.ScrapFilterItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
@@ -243,6 +244,10 @@ public class FabricModItems {
         registerItem(EnergyCellBlockItem.ID, () -> ToolItemRegistry.ENERGY_CELL_BLOCK_ITEM);
     ModItems.CIRCUIT_BOARD =
         registerItem(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
+    ModItems.RECLAIMED_COPPER_WIRE =
+        registerItem("reclaimed_copper_wire", () -> ToolItemRegistry.RECLAIMED_COPPER_WIRE_ITEM);
+    ModItems.REFINED_COPPER_WIRE =
+        registerItem("refined_copper_wire", () -> ToolItemRegistry.REFINED_COPPER_WIRE_ITEM);
 
     // Upgrade Items
     ModItems.SPEED_UPGRADE =
@@ -256,6 +261,18 @@ public class FabricModItems {
         registerItem(
             CreativeFastChargeUpgradeItem.ID,
             () -> ToolItemRegistry.CREATIVE_FAST_CHARGE_UPGRADE_ITEM);
+
+    // Scrap Filter Items
+    ModItems.BASIC_SCRAP_FILTER =
+        registerItem("basic_scrap_filter", () -> ScrapFilterItemRegistry.BASIC_SCRAP_FILTER);
+    ModItems.FINE_MESH_FILTER =
+        registerItem("fine_mesh_filter", () -> ScrapFilterItemRegistry.FINE_MESH_FILTER);
+    ModItems.MAGNETIC_COIL_FILTER =
+        registerItem("magnetic_coil_filter", () -> ScrapFilterItemRegistry.MAGNETIC_COIL_FILTER);
+    ModItems.ELECTRO_CONDENSATOR_FILTER =
+        registerItem(
+            "electro_condensator_filter", () -> ScrapFilterItemRegistry.ELECTRO_CONDENSATOR_FILTER);
+    ModItems.JUNK_FILTER = registerItem("junk_filter", () -> ScrapFilterItemRegistry.JUNK_FILTER);
 
     // Holo Pad Items
     for (Map.Entry<String, ResourceLocation> entry :

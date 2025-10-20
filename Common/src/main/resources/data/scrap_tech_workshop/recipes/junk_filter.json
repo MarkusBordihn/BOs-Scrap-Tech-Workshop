@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "FMF",
+    "SPS",
+    "FMF"
+  ],
+  "key": {
+    "F": {
+      "item": "scrap_tech_workshop:fine_mesh_filter"
+    },
+    "M": {
+      "item": "scrap_tech_workshop:magnetic_coil_filter"
+    },
+    "S": {
+      "item": "minecraft:string"
+    },
+    "P": {
+      "item": "scrap_tech_workshop:plastic_scrap"
+    }
+  },
+  "result": {
+    "item": "scrap_tech_workshop:junk_filter"
+  }
+}

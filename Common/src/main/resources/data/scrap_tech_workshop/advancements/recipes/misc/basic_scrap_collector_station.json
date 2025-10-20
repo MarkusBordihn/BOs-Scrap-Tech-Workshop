@@ -1,0 +1,72 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_iron_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["scrap_tech_workshop:iron_scrap"]
+          }
+        ]
+      }
+    },
+    "has_circuit_board": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["scrap_tech_workshop:circuit_board"]
+          }
+        ]
+      }
+    },
+    "has_redstone": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:redstone"]
+          }
+        ]
+      }
+    },
+    "has_energy_cell": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["scrap_tech_workshop:energy_cell"]
+          }
+        ]
+      }
+    },
+    "has_metal_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["scrap_tech_workshop:metal_scrap"]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "scrap_tech_workshop:basic_scrap_collector_station"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_iron_scrap", "has_circuit_board", "has_redstone", "has_energy_cell", "has_metal_scrap",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "scrap_tech_workshop:basic_scrap_collector_station"
+    ]
+  }
+}

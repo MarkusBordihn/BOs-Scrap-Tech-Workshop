@@ -1,0 +1,62 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_fine_mesh_filter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["scrap_tech_workshop:fine_mesh_filter"]
+          }
+        ]
+      }
+    },
+    "has_magnetic_coil_filter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["scrap_tech_workshop:magnetic_coil_filter"]
+          }
+        ]
+      }
+    },
+    "has_string": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:string"]
+          }
+        ]
+      }
+    },
+    "has_plastic_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap/plastic"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "scrap_tech_workshop:junk_filter"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_fine_mesh_filter", "has_magnetic_coil_filter", "has_string", "has_plastic_scrap",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "scrap_tech_workshop:junk_filter"
+    ]
+  }
+}

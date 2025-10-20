@@ -1,0 +1,49 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_cobweb": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:cobweb"]
+          }
+        ]
+      }
+    },
+    "has_string": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["minecraft:string"]
+          }
+        ]
+      }
+    },
+    "has_basic_filter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["scrap_tech_workshop:basic_scrap_filter"]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "scrap_tech_workshop:fine_mesh_filter"
+      }
+    }
+  },
+  "requirements": [
+    ["has_cobweb", "has_string", "has_basic_filter", "has_the_recipe"]
+  ],
+  "rewards": {
+    "recipes": [
+      "scrap_tech_workshop:fine_mesh_filter"
+    ]
+  }
+}

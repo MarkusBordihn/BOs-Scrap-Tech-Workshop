@@ -1,0 +1,49 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_capacitor_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap/tech/capacitor"
+          }
+        ]
+      }
+    },
+    "has_plastic_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap/plastic"
+          }
+        ]
+      }
+    },
+    "has_circuit_scrap": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "tag": "scrap_tech_workshop:scrap/tech/circuit"
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "scrap_tech_workshop:energy_cell"
+      }
+    }
+  },
+  "requirements": [
+    ["has_capacitor_scrap", "has_plastic_scrap", "has_circuit_scrap", "has_the_recipe"]
+  ],
+  "rewards": {
+    "recipes": [
+      "scrap_tech_workshop:energy_cell"
+    ]
+  }
+}

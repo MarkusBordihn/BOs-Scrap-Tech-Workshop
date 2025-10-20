@@ -141,7 +141,7 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
           blockEntity.setChanged();
 
           if (blockEntity.tickCounter % 10 == 0) {
-            spawnChargingParticles(level, blockPos);
+            spawnChargingParticles(level, blockPos, blockState);
           }
           if (blockEntity.tickCounter % 20 == 0) {
             playChargingSound(level, blockPos);
@@ -162,7 +162,7 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
           blockEntity.setChanged();
 
           if (blockEntity.tickCounter % 10 == 0) {
-            spawnChargingParticles(level, blockPos);
+            spawnChargingParticles(level, blockPos, blockState);
           }
           if (blockEntity.tickCounter % 20 == 0) {
             playChargingSound(level, blockPos);
@@ -209,10 +209,23 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
     return RechargeStationStatus.IDLE;
   }
 
-  private static void spawnChargingParticles(final Level level, final BlockPos blockPos) {
+  private static void spawnChargingParticles(
+      final Level level, final BlockPos blockPos, final BlockState blockState) {
     if (level instanceof ServerLevel serverLevel) {
+      // Calculate position based on facing direction
       double x = blockPos.getX() + 0.5;
-      double z = blockPos.getZ() + 0.65;
+      double z = blockPos.getZ() + 0.5;
+      
+      var facing = blockState.getValue(RechargeStationBlock.FACING);
+      double offsetFromCenter = 0.15;
+      
+      switch (facing) {
+        case NORTH -> z -= offsetFromCenter;
+        case SOUTH -> z += offsetFromCenter;
+        case WEST -> x -= offsetFromCenter;
+        case EAST -> x += offsetFromCenter;
+        default -> {} 
+      }
 
       for (int i = 0; i < 2; i++) {
         double offsetX = (level.random.nextDouble() - 0.5) * 0.2;

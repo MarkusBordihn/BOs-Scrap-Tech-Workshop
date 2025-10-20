@@ -1,0 +1,114 @@
+{
+  "id": "scrap_tech_workshop:holologs/en/tutorial/scavenging_field_briefing_02",
+  "title": "Scavenging Field Briefing 02",
+  "subtitle": "Deploy a Floating Scrap Collector.",
+  "color": "#00AAFF",
+  "lineDelay": 3.0,
+  "voiceOver": "scrap_tech_workshop:holologs/en/tutorial/scavenging_field_briefing_02",
+  "voiceOverDelay": 2.5,
+  "displayHoloEntity": {
+    "id": "scrap_tech_workshop:hololog_humanoid",
+    "texture": "scrap_tech_workshop:textures/entity/hololog/hololog_humanoid.png",
+    "scale": 0.5
+  },
+  "start": {
+    "playSound": [{"id": "minecraft:block.note_block.hat", "volume": 0.8}],
+    "showParticle": [{"id": "minecraft:dust", "color": "#00FFAA"}]
+  },
+  "lines": [
+    {
+      "text": "Connection established.",
+      "playSound": [{"id": "minecraft:block.beacon.power_select", "volume": 0.7}]
+    },
+    {"text": "Manual scavenging is effective but time-consuming."},
+    {
+      "text": "Construct a Floating Scrap Collector to automate recovery.",
+      "displayItem": {"id": "scrap_tech_workshop:floating_scrap_collector"},
+      "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8}]
+    },
+    {
+      "text": "Assembly schematic available.",
+      "displayRecipe": {
+        "recipe": "scrap_tech_workshop:floating_scrap_collector",
+        "scale": 1.1
+      },
+      "playSound": [{"id": "minecraft:block.anvil.use", "volume": 0.6}],
+      "lineDelay": 4.2
+    },
+    {
+      "text": "Required components:",
+      "playSound": [{"id": "minecraft:block.lever.click", "volume": 0.5}]
+    },
+    {
+      "text": "Wooden planks for the floating frame.",
+      "displayItem": {"id": "minecraft:oak_planks"}
+    },
+    {
+      "text": "String for the rigging and collection net.",
+      "displayItem": {"id": "minecraft:string"}
+    },
+    {
+      "text": "A storage container: chest or barrel.",
+      "displayItem": {"id": "minecraft:chest"}
+    },
+    {
+      "text": "Iron ingots act as ballast weights for stability.",
+      "displayItem": {"id": "minecraft:iron_ingot"}
+    },
+    {
+      "text": "Recovered metal scrap reinforces the structure.",
+      "displayItem": {"id": "scrap_tech_workshop:metal_scrap"}
+    },
+    {
+      "text": "It floats on water and gathers debris over time.",
+      "displayBlock": {"id": "minecraft:water"},
+      "playSound": [{"id": "minecraft:block.water.ambient", "volume": 0.6}]
+    },
+    {"text": "No energy required. Ideal for early operations."},
+    {"text": "Place it in calm water; strong currents reduce efficiency."},
+    {
+      "text": "Install a net to define what it collects.",
+      "displayItem": {"id": "scrap_tech_workshop:basic_scrap_filter"},
+      "lineDelay": 3.5
+    },
+    {
+      "text": "Basic Scrap Net → larger parts and mixed junk.",
+      "displayItem": {"id": "scrap_tech_workshop:basic_scrap_filter"}
+    },
+    {
+      "text": "Fine Mesh Net → small fragments and tech bits.",
+      "displayItem": {"id": "scrap_tech_workshop:fine_mesh_filter"}
+    },
+    {
+      "text": "Magnetic Coil Net → metal-heavy debris.",
+      "displayItem": {"id": "scrap_tech_workshop:magnetic_coil_filter"}
+    },
+    {
+      "text": "Loot is stored in the internal bin.",
+      "playSound": [{"id": "minecraft:block.chest.open", "volume": 0.6}]
+    },
+    {"text": "Empty it periodically to prevent overflow."},
+    {
+      "text": "Common finds include glass, rubber, fiber, and metal scrap.",
+      "displayItem": {"id": "scrap_tech_workshop:glass_scrap"}
+    },
+    {"text": "Multiple collectors increase yield."},
+    {"text": "Leave spacing to reduce overlap."},
+    {
+      "text": "Recovered materials will help you craft your first Energy Cell.",
+      "displayItem": {"id": "scrap_tech_workshop:energy_cell"},
+      "playSound": [{"id": "minecraft:block.beacon.activate", "volume": 0.8}]
+    },
+    {
+      "text": "Keep collecting, every fragment brings you closer to rebuilding.",
+      "playSound": [{"id": "minecraft:block.note_block.chime", "volume": 0.5}]
+    }
+  ],
+  "end": {
+    "playSound": [
+      {"id": "minecraft:block.beacon.deactivate", "volume": 0.9},
+      {"id": "minecraft:ui.toast.in"}
+    ],
+    "showParticle": [{"id": "minecraft:flash"}]
+  }
+}

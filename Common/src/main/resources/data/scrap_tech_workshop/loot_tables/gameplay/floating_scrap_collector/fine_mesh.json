@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:empty",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:plastic_scrap",
+          "weight": 30
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:fiber_scrap",
+          "weight": 25
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:rubber_scrap",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:glass_scrap",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "scrap_tech_workshop:circuit_scrap",
+          "weight": 10
+        }
+      ]
+    }
+  ]
+}

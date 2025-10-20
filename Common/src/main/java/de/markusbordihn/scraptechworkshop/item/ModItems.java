@@ -93,6 +93,8 @@ public class ModItems {
   public static Supplier<Item> EMPTY_ENERGY_CELL;
   public static Supplier<Item> ENERGY_CELL_BLOCK;
   public static Supplier<Item> CIRCUIT_BOARD;
+  public static Supplier<Item> RECLAIMED_COPPER_WIRE;
+  public static Supplier<Item> REFINED_COPPER_WIRE;
 
   // Hololog Items
   public static Supplier<Item> HOLO_PAD;
@@ -102,6 +104,13 @@ public class ModItems {
   public static Supplier<Item> CREATIVE_SPEED_UPGRADE;
   public static Supplier<Item> FAST_CHARGE_UPGRADE;
   public static Supplier<Item> CREATIVE_FAST_CHARGE_UPGRADE;
+
+  // Scrap Filter Items
+  public static Supplier<Item> BASIC_SCRAP_FILTER;
+  public static Supplier<Item> FINE_MESH_FILTER;
+  public static Supplier<Item> MAGNETIC_COIL_FILTER;
+  public static Supplier<Item> ELECTRO_CONDENSATOR_FILTER;
+  public static Supplier<Item> JUNK_FILTER;
 
   public static ResourceLocation getItemId(String name) {
     return new ResourceLocation(Constants.MOD_ID, name);

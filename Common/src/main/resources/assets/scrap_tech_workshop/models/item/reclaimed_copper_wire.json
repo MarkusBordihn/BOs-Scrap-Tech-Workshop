@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "scrap_tech_workshop:item/component/reclaimed_copper_wire"
+  }
+}

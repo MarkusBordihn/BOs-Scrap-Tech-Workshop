@@ -30,5 +30,11 @@ public class ModItemTags {
   public static final TagKey<Item> MIXED_SCRAP =
       TagKey.create(Registries.ITEM, new ResourceLocation(Constants.MOD_ID, "mixed_scrap"));
 
+  public static final TagKey<Item> WIRES =
+      TagKey.create(Registries.ITEM, new ResourceLocation(Constants.MOD_ID, "wires"));
+
+  public static final TagKey<Item> COPPER_WIRES =
+      TagKey.create(Registries.ITEM, new ResourceLocation(Constants.MOD_ID, "copper_wires"));
+
   private ModItemTags() {}
 }

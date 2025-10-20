@@ -2,7 +2,7 @@
   "parent": "scrap_tech_workshop:hololog/first_contact",
   "display": {
     "icon": {
-      "item": "scrap_tech_workshop:holo_pad_scavenging_briefing_01"
+      "item": "scrap_tech_workshop:holo_pad_scavenging_field_briefing_01"
     },
     "title": {
       "translate": "advancement.scrap_tech_workshop.scavenging_basics.title"

@@ -26,6 +26,7 @@ import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.item.ItemPropertyFunctions;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
+import de.markusbordihn.scraptechworkshop.registry.block.FloatingScrapCollectorBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapBoxBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
@@ -115,6 +116,10 @@ public class ClientEventHandler {
 
     BlockRenderLayerMap.INSTANCE.putBlock(
         RecyclerBlockRegistry.RECYCLER_BLOCK, RenderType.cutoutMipped());
+
+    BlockRenderLayerMap.INSTANCE.putBlock(
+        FloatingScrapCollectorBlockRegistry.FLOATING_SCRAP_COLLECTOR_BLOCK,
+        RenderType.cutoutMipped());
 
     for (ScrapType type : ScrapType.values()) {
       BlockRenderLayerMap.INSTANCE.putBlock(

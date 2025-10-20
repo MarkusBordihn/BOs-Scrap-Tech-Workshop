@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "WSW",
+    "SBS",
+    "WSW"
+  ],
+  "key": {
+    "W": {
+      "item": "minecraft:cobweb"
+    },
+    "S": {
+      "item": "minecraft:string"
+    },
+    "B": {
+      "item": "scrap_tech_workshop:basic_scrap_filter"
+    }
+  },
+  "result": {
+    "item": "scrap_tech_workshop:fine_mesh_filter"
+  }
+}

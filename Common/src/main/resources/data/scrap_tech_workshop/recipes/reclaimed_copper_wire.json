@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "scrap_tech_workshop_components",
+  "ingredients": [
+    {"item": "minecraft:copper_ingot"},
+    {"tag": "scrap_tech_workshop:scrap/metal"},
+    {"item": "minecraft:string"}
+  ],
+  "result": {
+    "item": "scrap_tech_workshop:reclaimed_copper_wire",
+    "count": 2
+  }
+}

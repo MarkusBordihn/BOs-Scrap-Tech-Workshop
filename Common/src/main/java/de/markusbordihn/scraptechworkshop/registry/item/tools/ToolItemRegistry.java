@@ -19,10 +19,12 @@
 
 package de.markusbordihn.scraptechworkshop.registry.item.tools;
 
+import de.markusbordihn.scraptechworkshop.data.wire.WireType;
 import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;
 import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.item.component.WireItem;
 import de.markusbordihn.scraptechworkshop.item.tool.CreativeScrapMultitoolItem;
 import de.markusbordihn.scraptechworkshop.item.tool.MagnetFishingRodItem;
 import de.markusbordihn.scraptechworkshop.item.tool.ScrapFishingRodItem;
@@ -59,6 +61,10 @@ public class ToolItemRegistry {
       new EnergyCellBlockItem(new Item.Properties());
   public static final CircuitBoardItem CIRCUIT_BOARD_ITEM =
       new CircuitBoardItem(new Item.Properties());
+  public static final WireItem RECLAIMED_COPPER_WIRE_ITEM =
+      new WireItem(new Item.Properties(), WireType.RECLAIMED_COPPER);
+  public static final WireItem REFINED_COPPER_WIRE_ITEM =
+      new WireItem(new Item.Properties(), WireType.REFINED_COPPER);
 
   // Upgrade Items
   public static final NormalSpeedUpgradeItem SPEED_UPGRADE_ITEM =

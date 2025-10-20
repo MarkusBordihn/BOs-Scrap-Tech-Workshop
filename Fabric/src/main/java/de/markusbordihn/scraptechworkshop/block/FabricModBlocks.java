@@ -21,12 +21,14 @@ package de.markusbordihn.scraptechworkshop.block;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
+import de.markusbordihn.scraptechworkshop.block.floatingscrapcollector.FloatingScrapCollectorBlock;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileBlock;
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.FloatingScrapCollectorBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapBoxBlockRegistry;
@@ -70,6 +72,12 @@ public class FabricModBlocks {
         BuiltInRegistries.BLOCK,
         new ResourceLocation(Constants.MOD_ID, BasicScrapCollectorStationBlock.ID),
         CollectorStationBlockRegistry.BASIC_SCRAP_COLLECTOR_STATION_BLOCK);
+
+    // Register floating scrap collector block
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, FloatingScrapCollectorBlock.ID),
+        FloatingScrapCollectorBlockRegistry.FLOATING_SCRAP_COLLECTOR_BLOCK);
 
     // Register scrap box blocks
     Registry.register(

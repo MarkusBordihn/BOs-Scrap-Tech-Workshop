@@ -20,11 +20,13 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
+import de.markusbordihn.scraptechworkshop.block.floatingscrapcollector.FloatingScrapCollectorBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.FloatingScrapCollectorBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
@@ -65,6 +67,15 @@ public class FabricModBlockItems {
             () ->
                 new CollectorStationBlockItem(
                     CollectorStationBlockRegistry.BASIC_SCRAP_COLLECTOR_STATION_BLOCK,
+                    new Item.Properties()));
+
+    // Register floating scrap collector block item
+    ModBlockItems.FLOATING_SCRAP_COLLECTOR =
+        registerBlockItem(
+            FloatingScrapCollectorBlock.ID,
+            () ->
+                new BlockItem(
+                    FloatingScrapCollectorBlockRegistry.FLOATING_SCRAP_COLLECTOR_BLOCK,
                     new Item.Properties()));
 
     // Register scrap pile block items

@@ -1,10 +1,10 @@
 {
-  "id": "scrap_tech_workshop:holologs/de/tutorial/scavenging_briefing_02",
-  "title": "Bergungs-Briefing 02",
+  "id": "scrap_tech_workshop:holologs/de/tutorial/engineering_briefing_01",
+  "title": "Ingenieurs-Briefing 01",
   "subtitle": "Stelle eine einfache Energiezelle her.",
   "color": "#FFAA00",
   "lineDelay": 3.1,
-  "voiceOver": "scrap_tech_workshop:holologs/de/tutorial/scavenging_briefing_02",
+  "voiceOver": "scrap_tech_workshop:holologs/de/tutorial/engineering_briefing_01",
   "voiceOverDelay": 3.1,
   "displayHoloEntity": {
     "id": "scrap_tech_workshop:hololog_humanoid",

@@ -21,9 +21,11 @@ package de.markusbordihn.scraptechworkshop.entity;
 
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.floatingscrapcollector.FloatingScrapCollectorBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.rechargestation.RechargeStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.floatingscrapcollector.FloatingScrapCollectorBlock;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
@@ -31,6 +33,7 @@ import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRe
 import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.CollectorStationBlockEntityRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.entity.FloatingScrapCollectorBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.HoloCubeBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RechargeStationBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RecyclerBlockEntityRegistry;
@@ -88,5 +91,20 @@ public class FabricModBlockEntities {
         new ResourceLocation(Constants.MOD_ID, "collector_station"),
         collectorStationBlockEntityType);
     CollectorStationBlockEntityRegistry.setBlockEntityType(collectorStationBlockEntityType);
+
+    // Register floating scrap collector block entity
+    BlockEntityType<FloatingScrapCollectorBlockEntity> floatingScrapCollectorBlockEntityType =
+        BlockEntityType.Builder.of(
+                FloatingScrapCollectorBlockEntity::new,
+                BuiltInRegistries.BLOCK.get(
+                    new ResourceLocation(Constants.MOD_ID, FloatingScrapCollectorBlock.ID)))
+            .build(null);
+    Registry.register(
+        BuiltInRegistries.BLOCK_ENTITY_TYPE,
+        new ResourceLocation(Constants.MOD_ID, FloatingScrapCollectorBlock.ID),
+        floatingScrapCollectorBlockEntityType);
+    FloatingScrapCollectorBlockEntityRegistry.setBlockEntityType(
+        floatingScrapCollectorBlockEntityType);
+    FloatingScrapCollectorBlockEntity.TYPE = floatingScrapCollectorBlockEntityType;
   }
 }

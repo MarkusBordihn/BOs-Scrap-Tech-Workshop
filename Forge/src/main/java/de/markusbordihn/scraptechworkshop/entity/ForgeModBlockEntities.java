@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.entity;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
 import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.floatingscrapcollector.FloatingScrapCollectorBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.rechargestation.RechargeStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
@@ -29,6 +30,7 @@ import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRe
 import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.CollectorStationBlockEntityRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.entity.FloatingScrapCollectorBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.HoloCubeBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RechargeStationBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RecyclerBlockEntityRegistry;
@@ -81,6 +83,16 @@ public class ForgeModBlockEntities {
                           CollectorStationBlockRegistry.BASIC_SCRAP_COLLECTOR_STATION_BLOCK)
                       .build(null));
 
+  public static final RegistryObject<BlockEntityType<FloatingScrapCollectorBlockEntity>>
+      FLOATING_SCRAP_COLLECTOR_BLOCK_ENTITY =
+          BLOCK_ENTITY_TYPES.register(
+              "floating_scrap_collector",
+              () ->
+                  BlockEntityType.Builder.of(
+                          FloatingScrapCollectorBlockEntity::new,
+                          ForgeModBlocks.FLOATING_SCRAP_COLLECTOR_BLOCK.get())
+                      .build(null));
+
   private ForgeModBlockEntities() {}
 
   public static void register(IEventBus eventBus) {
@@ -95,6 +107,8 @@ public class ForgeModBlockEntities {
             HoloCubeBlockEntityRegistry.setBlockEntityType(HOLO_CUBE_BLOCK_ENTITY.get());
             CollectorStationBlockEntityRegistry.setBlockEntityType(
                 COLLECTOR_STATION_BLOCK_ENTITY.get());
+            FloatingScrapCollectorBlockEntityRegistry.setBlockEntityType(
+                FLOATING_SCRAP_COLLECTOR_BLOCK_ENTITY.get());
           }
         });
   }

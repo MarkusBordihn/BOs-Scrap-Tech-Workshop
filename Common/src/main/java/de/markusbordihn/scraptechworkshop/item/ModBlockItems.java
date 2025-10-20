@@ -30,6 +30,7 @@ public class ModBlockItems {
   public static Supplier<BlockItem> RECYCLER;
   public static Supplier<BlockItem> RECHARGE_STATION;
   public static Supplier<BlockItem> BASIC_SCRAP_COLLECTOR_STATION;
+  public static Supplier<BlockItem> FLOATING_SCRAP_COLLECTOR;
 
   // Scrap Pile Block Items
   public static Supplier<BlockItem> MIXED_SCRAP_PILE;
