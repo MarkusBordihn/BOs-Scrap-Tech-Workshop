@@ -35,17 +35,18 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
@@ -112,10 +113,6 @@ public class FloatingScrapCollectorBlockEntity extends AbstractWorkshopBlockEnti
   @Override
   protected NonNullList<ItemStack> getItems() {
     return container.getItems();
-  }
-
-  protected int getTotalSlots() {
-    return TOTAL_SLOTS;
   }
 
   @Override
@@ -205,9 +202,7 @@ public class FloatingScrapCollectorBlockEntity extends AbstractWorkshopBlockEnti
         BlockPos checkPos = pos.offset(x, 0, z);
         FluidState fluid = level.getFluidState(checkPos);
 
-        if (fluid.getType() == Fluids.WATER) {
-          waterCount++;
-        } else if (fluid.getType() == Fluids.FLOWING_WATER) {
+        if (fluid.is(FluidTags.WATER)) {
           waterCount++;
         }
       }
@@ -216,9 +211,7 @@ public class FloatingScrapCollectorBlockEntity extends AbstractWorkshopBlockEnti
     // Also check below
     BlockPos belowPos = pos.below();
     FluidState fluidBelow = level.getFluidState(belowPos);
-    if (fluidBelow.getType() == Fluids.WATER) {
-      waterCount++;
-    } else if (fluidBelow.getType() == Fluids.FLOWING_WATER) {
+    if (fluidBelow.is(FluidTags.WATER)) {
       waterCount++;
     }
 
@@ -253,14 +246,18 @@ public class FloatingScrapCollectorBlockEntity extends AbstractWorkshopBlockEnti
     LootParams lootParams =
         new LootParams.Builder(serverLevel)
             .withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(worldPosition))
-            .create(LootContextParamSets.EMPTY);
+            .withParameter(LootContextParams.TOOL, new ItemStack(Items.FISHING_ROD))
+            .create(LootContextParamSets.FISHING);
 
     List<ItemStack> loot = lootTable.getRandomItems(lootParams);
 
-    // Apply water quality bonus - chance for extra items
+    // Apply water quality bonus - chance for one extra random item
     if (waterQualityBonus > 0 && level.getRandom().nextFloat() < waterQualityBonus) {
       List<ItemStack> bonusLoot = lootTable.getRandomItems(lootParams);
-      loot.addAll(bonusLoot);
+      if (!bonusLoot.isEmpty()) {
+        ItemStack bonusItem = bonusLoot.get(level.getRandom().nextInt(bonusLoot.size()));
+        loot.add(bonusItem);
+      }
     }
 
     return loot;

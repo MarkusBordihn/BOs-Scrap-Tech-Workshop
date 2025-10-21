@@ -74,7 +74,7 @@ public class FabricModBlockItems {
         registerBlockItem(
             FloatingScrapCollectorBlock.ID,
             () ->
-                new BlockItem(
+                new FloatingScrapCollectorBlockItem(
                     FloatingScrapCollectorBlockRegistry.FLOATING_SCRAP_COLLECTOR_BLOCK,
                     new Item.Properties()));
 

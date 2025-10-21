@@ -260,7 +260,8 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
       final int energyBarHeight,
       final int currentEnergy,
       final int energyCapacity,
-      final String batteryTooltipKey) {
+      final String batteryTooltipKey,
+      final int batterySlotIndex) {
 
     int relativeX = mouseX - leftPos;
     int relativeY = mouseY - topPos;
@@ -268,7 +269,8 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
     if (relativeX >= batterySlotX - 1
         && relativeX <= batterySlotX + 17
         && relativeY >= batterySlotY - 1
-        && relativeY <= batterySlotY + 17) {
+        && relativeY <= batterySlotY + 17
+        && this.menu.getSlot(batterySlotIndex).getItem().isEmpty()) {
       guiGraphics.renderTooltip(
           this.font, Component.translatable(batteryTooltipKey), mouseX, mouseY);
     }

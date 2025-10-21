@@ -31,7 +31,7 @@ public class FloatingScrapCollectorScreen extends BaseContainerScreen<FloatingSc
 
   private static final String TRANSLATION_KEY_PREFIX =
       Constants.GUI_PREFIX + "floating_scrap_collector.";
-  private static final String TRANSLATION_NET_SLOT = TRANSLATION_KEY_PREFIX + "net_slot";
+  private static final String TRANSLATION_FILTER_SLOT = TRANSLATION_KEY_PREFIX + "filter_slot";
   private static final String TRANSLATION_DURABILITY = TRANSLATION_KEY_PREFIX + "durability";
 
   private static final int SCREEN_WIDTH = 176;
@@ -120,14 +120,15 @@ public class FloatingScrapCollectorScreen extends BaseContainerScreen<FloatingSc
   protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
     super.renderTooltip(guiGraphics, mouseX, mouseY);
     if (isHovering(
-        FloatingScrapCollectorMenu.NET_SLOT_X,
-        FloatingScrapCollectorMenu.NET_SLOT_Y,
-        16,
-        16,
-        mouseX,
-        mouseY)) {
+            FloatingScrapCollectorMenu.NET_SLOT_X,
+            FloatingScrapCollectorMenu.NET_SLOT_Y,
+            16,
+            16,
+            mouseX,
+            mouseY)
+        && this.menu.getSlot(0).getItem().isEmpty()) {
       guiGraphics.renderTooltip(
-          this.font, Component.translatable(TRANSLATION_NET_SLOT), mouseX, mouseY);
+          this.font, Component.translatable(TRANSLATION_FILTER_SLOT), mouseX, mouseY);
     }
 
     if (isHovering(

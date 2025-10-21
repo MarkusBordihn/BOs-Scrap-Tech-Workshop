@@ -1,5 +1,5 @@
 {
-  "parent": "scrap_tech_workshop:hololog/energy_basics",
+  "parent": "scrap_tech_workshop:hololog/found_battery_parts",
   "display": {
     "icon": {
       "item": "scrap_tech_workshop:holo_pad_engineering_briefing_02"

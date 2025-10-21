@@ -67,7 +67,7 @@ public class ForgeModBlockItems {
       BLOCK_ITEMS.register(
           FloatingScrapCollectorBlock.ID,
           () ->
-              new BlockItem(
+              new FloatingScrapCollectorBlockItem(
                   ForgeModBlocks.FLOATING_SCRAP_COLLECTOR_BLOCK.get(), new Item.Properties()));
 
   public static final RegistryObject<BlockItem> MIXED_SCRAP_PILE_BLOCK_ITEM =

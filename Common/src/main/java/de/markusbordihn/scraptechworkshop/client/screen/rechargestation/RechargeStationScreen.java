@@ -169,8 +169,8 @@ public class RechargeStationScreen extends BaseContainerScreen<RechargeStationMe
         RechargeStationMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
         menu.getCurrentEnergy(),
         menu.getEnergyCapacity(),
-        TRANSLATION_BATTERY_SLOT);
-
+        TRANSLATION_BATTERY_SLOT,
+        1);
     int relativeX = x - leftPos;
     int relativeY = y - topPos;
 
@@ -194,7 +194,9 @@ public class RechargeStationScreen extends BaseContainerScreen<RechargeStationMe
         && relativeX <= INPUT_SLOT_X + 17
         && relativeY >= INPUT_SLOT_Y - 1
         && relativeY <= INPUT_SLOT_Y + 17) {
-      guiGraphics.renderTooltip(this.font, Component.translatable(TRANSLATION_INPUT_SLOT), x, y);
+      if (this.menu.getSlot(0).getItem().isEmpty()) {
+        guiGraphics.renderTooltip(this.font, Component.translatable(TRANSLATION_INPUT_SLOT), x, y);
+      }
     }
   }
 }

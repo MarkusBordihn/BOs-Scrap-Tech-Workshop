@@ -20,8 +20,13 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.data.floatingscrapcollector.ScrapFilterType;
+import java.util.List;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
 public class ScrapFilterItem extends Item {
 
@@ -59,5 +64,37 @@ public class ScrapFilterItem extends Item {
 
   public int getMaxDurability() {
     return maxDurability;
+  }
+
+  @Override
+  public void appendHoverText(
+      ItemStack itemStack, Level level, List<Component> tooltipComponents, TooltipFlag flag) {
+    super.appendHoverText(itemStack, level, tooltipComponents, flag);
+
+    tooltipComponents.add(
+        Component.translatable(
+                "item.scrap_tech_workshop.scrap_filter." + filterType.getSerializedName())
+            .withStyle(ChatFormatting.GRAY));
+
+    ChatFormatting durabilityColor;
+    float percent = getDurabilityPercent(itemStack);
+    if (percent > 0.75f) {
+      durabilityColor = ChatFormatting.GREEN;
+    } else if (percent > 0.5f) {
+      durabilityColor = ChatFormatting.YELLOW;
+    } else if (percent > 0.25f) {
+      durabilityColor = ChatFormatting.GOLD;
+    } else {
+      durabilityColor = ChatFormatting.RED;
+    }
+    tooltipComponents.add(
+        Component.translatable(
+                "item.scrap_tech_workshop.scrap_filter.durability",
+                getDurability(itemStack),
+                getMaxDurability(itemStack))
+            .withStyle(durabilityColor));
+    tooltipComponents.add(
+        Component.translatable("item.scrap_tech_workshop.scrap_filter.usage")
+            .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
   }
 }

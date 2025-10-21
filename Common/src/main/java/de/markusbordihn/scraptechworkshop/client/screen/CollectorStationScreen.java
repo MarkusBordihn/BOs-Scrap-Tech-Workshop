@@ -247,7 +247,8 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
         CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
         menu.getCurrentEnergy(),
         menu.getEnergyCapacity(),
-        TRANSLATION_BATTERY_SLOT);
+        TRANSLATION_BATTERY_SLOT,
+        0);
 
     int relativeX = x - leftPos;
     int relativeY = y - topPos;

@@ -252,7 +252,8 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
         RecyclerMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
         menu.getCurrentEnergy(),
         menu.getEnergyCapacity(),
-        TRANSLATION_BATTERY_SLOT);
+        TRANSLATION_BATTERY_SLOT,
+        12);
 
     int relativeX = x - leftPos;
     int relativeY = y - topPos;
@@ -285,7 +286,8 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
         && (relativeX >= INPUT_SLOT_X - 1
             && relativeX <= INPUT_SLOT_X + 17
             && relativeY >= INPUT_SLOT_Y - 1
-            && relativeY <= INPUT_SLOT_Y + 17)) {
+            && relativeY <= INPUT_SLOT_Y + 17)
+        && this.menu.getSlot(0).getItem().isEmpty()) {
       guiGraphics.renderTooltip(this.font, Component.translatable(TRANSLATION_INPUT_SLOT), x, y);
     }
 

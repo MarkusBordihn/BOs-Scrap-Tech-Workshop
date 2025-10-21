@@ -86,7 +86,7 @@ public class HoloPadItem extends Item {
               server
                   .getAdvancements()
                   .getAdvancement(
-                      new ResourceLocation(Constants.MOD_ID, "hololog/scavenging_basics"));
+                      new ResourceLocation(Constants.MOD_ID, "hololog/read_scav_pad_01"));
           if (advancement != null) {
             AdvancementProgress progress =
                 serverPlayer.getAdvancements().getOrStartProgress(advancement);

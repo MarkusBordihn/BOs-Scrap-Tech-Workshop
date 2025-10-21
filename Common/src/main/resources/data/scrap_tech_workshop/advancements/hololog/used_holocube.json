@@ -1,5 +1,5 @@
 {
-  "parent": "scrap_tech_workshop:hololog/root",
+  "parent": "scrap_tech_workshop:hololog/received_holocube",
   "display": {
     "icon": {
       "item": "scrap_tech_workshop:holo_cube_introduction"

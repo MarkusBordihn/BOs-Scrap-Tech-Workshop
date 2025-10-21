@@ -7,6 +7,17 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v.18.0
+
+- Fixed #2 crash by adding correct loot table context for floating scrap collector.
+- Fixed advancement triggers which are not working as intended.
+- Fixed floating scrap collector and too high quality drops.
+- Fixed overlapping slot tooltips when an item is in the slot.
+- Fixed missing item descriptions.
+- Fixed wrong texts for renamed items and blocks.
+- Renamed advancements name and descriptions for better clarity.
+- Added basic scrap loot tables for floating scrap collector.
+
 ### v.17.0
 
 - Added about 80 new scrap item progression for the recycler and scrap processing.

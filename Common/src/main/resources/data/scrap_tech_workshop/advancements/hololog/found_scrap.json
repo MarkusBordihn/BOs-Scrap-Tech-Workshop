@@ -1,5 +1,5 @@
 {
-  "parent": "scrap_tech_workshop:hololog/scavenging_basics",
+  "parent": "scrap_tech_workshop:hololog/read_scav_pad_01",
   "display": {
     "icon": {
       "item": "scrap_tech_workshop:holo_pad_scavenging_field_briefing_02"
