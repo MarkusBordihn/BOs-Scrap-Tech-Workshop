@@ -1,0 +1,24 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:rails"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:iron_scrap",
+    "min": 1,
+    "max": 3
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:fastener_scrap",
+      "chance": 0.20
+    },
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.15,
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "process_time": 140
+}

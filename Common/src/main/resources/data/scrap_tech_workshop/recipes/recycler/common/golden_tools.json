@@ -1,0 +1,25 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:golden_tools"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:gold_scrap",
+    "min": 2,
+    "max": 5,
+    "durability_scaling": true
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:fastener_scrap",
+      "chance": 0.20
+    },
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.15,
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "process_time": 180
+}

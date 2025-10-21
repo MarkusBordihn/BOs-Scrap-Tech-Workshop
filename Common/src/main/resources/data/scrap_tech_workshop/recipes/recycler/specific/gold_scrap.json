@@ -1,0 +1,12 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "scrap_tech_workshop:gold_scrap"
+  },
+  "primary_output": {
+    "item": "minecraft:gold_nugget",
+    "min": 2,
+    "max": 4
+  },
+  "process_time": 100
+}

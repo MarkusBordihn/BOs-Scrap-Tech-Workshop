@@ -1,0 +1,26 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:smoker"
+  },
+  "primary_output": {
+    "item": "minecraft:stick",
+    "min": 3,
+    "max": 5
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.40,
+      "min": 1,
+      "max": 2
+    },
+    {
+      "item": "scrap_tech_workshop:mineral_scrap",
+      "chance": 0.40,
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "process_time": 230
+}

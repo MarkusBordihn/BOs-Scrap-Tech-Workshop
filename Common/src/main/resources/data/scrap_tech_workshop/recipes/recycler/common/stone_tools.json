@@ -1,0 +1,21 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:stone_tools"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:mineral_scrap",
+    "min": 1,
+    "max": 3,
+    "durability_scaling": true
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.20,
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "process_time": 140
+}

@@ -1,0 +1,23 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:flint_and_steel"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:iron_scrap",
+    "min": 1,
+    "max": 2,
+    "durability_scaling": true
+  },
+  "byproducts": [
+    {
+      "item": "minecraft:flint",
+      "chance": 0.50
+    },
+    {
+      "item": "scrap_tech_workshop:mineral_scrap",
+      "chance": 0.20
+    }
+  ],
+  "process_time": 120
+}

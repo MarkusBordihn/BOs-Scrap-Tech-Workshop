@@ -1,0 +1,24 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:hanging_signs"
+  },
+  "primary_output": {
+    "item": "minecraft:stick",
+    "min": 2,
+    "max": 4
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.35,
+      "min": 1,
+      "max": 2
+    },
+    {
+      "item": "minecraft:chain",
+      "chance": 0.20
+    }
+  ],
+  "process_time": 140
+}

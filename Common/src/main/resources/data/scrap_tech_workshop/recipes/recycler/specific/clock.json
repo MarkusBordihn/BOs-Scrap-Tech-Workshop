@@ -1,0 +1,22 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:clock"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:gold_scrap",
+    "min": 2,
+    "max": 5
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:circuit_scrap",
+      "chance": 0.25
+    },
+    {
+      "item": "minecraft:redstone",
+      "chance": 0.20
+    }
+  ],
+  "process_time": 160
+}

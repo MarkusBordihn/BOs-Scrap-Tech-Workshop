@@ -1,0 +1,12 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "scrap_tech_workshop:iron_scrap_box"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:iron_scrap",
+    "min": 8,
+    "max": 12
+  },
+  "process_time": 200
+}

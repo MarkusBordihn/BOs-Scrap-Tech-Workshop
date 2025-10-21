@@ -1,0 +1,18 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:wooden_pressure_plates"
+  },
+  "primary_output": {
+    "item": "minecraft:stick",
+    "min": 1,
+    "max": 2
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.25
+    }
+  ],
+  "process_time": 110
+}

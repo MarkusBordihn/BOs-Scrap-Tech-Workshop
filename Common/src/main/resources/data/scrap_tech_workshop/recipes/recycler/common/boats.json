@@ -1,0 +1,20 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:boats"
+  },
+  "primary_output": {
+    "item": "minecraft:stick",
+    "min": 3,
+    "max": 6
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.50,
+      "min": 1,
+      "max": 3
+    }
+  ],
+  "process_time": 200
+}

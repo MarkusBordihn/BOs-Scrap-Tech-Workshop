@@ -1,0 +1,18 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:slabs"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:mineral_scrap",
+    "min": 1,
+    "max": 1
+  },
+  "byproducts": [
+    {
+      "item": "minecraft:gravel",
+      "chance": 0.15
+    }
+  ],
+  "process_time": 140
+}

@@ -1,0 +1,24 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:comparator"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:circuit_scrap",
+    "min": 1,
+    "max": 2
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:tech_scrap",
+      "chance": 0.30
+    },
+    {
+      "item": "scrap_tech_workshop:mineral_scrap",
+      "chance": 0.20,
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "process_time": 180
+}

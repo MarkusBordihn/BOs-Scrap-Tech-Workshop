@@ -1,0 +1,18 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:wooden_buttons"
+  },
+  "primary_output": {
+    "item": "minecraft:stick",
+    "min": 1,
+    "max": 1
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.20
+    }
+  ],
+  "process_time": 100
+}

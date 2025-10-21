@@ -1,0 +1,22 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:note_block"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:wood_scrap",
+    "min": 3,
+    "max": 6
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:circuit_scrap",
+      "chance": 0.25
+    },
+    {
+      "item": "minecraft:redstone",
+      "chance": 0.30
+    }
+  ],
+  "process_time": 180
+}

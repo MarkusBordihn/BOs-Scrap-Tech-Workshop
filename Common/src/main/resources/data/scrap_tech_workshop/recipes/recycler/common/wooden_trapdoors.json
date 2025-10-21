@@ -1,0 +1,20 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:wooden_trapdoors"
+  },
+  "primary_output": {
+    "item": "minecraft:stick",
+    "min": 3,
+    "max": 5
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.40,
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "process_time": 170
+}

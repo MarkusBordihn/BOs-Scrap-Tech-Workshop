@@ -1,0 +1,20 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:minecart"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:iron_scrap",
+    "min": 3,
+    "max": 6
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:fastener_scrap",
+      "chance": 0.30,
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "process_time": 180
+}

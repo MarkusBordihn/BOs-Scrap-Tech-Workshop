@@ -7,6 +7,13 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v.17.0
+
+- Added about 80 new scrap item progression for the recycler and scrap processing.
+- Added handler to allow throw items directly into the recycler (from the top).
+- Added proper validation for recycler recipes and scrap item processing.
+- Fixed edge case with minecraft:air block being processed in the recycler.
+
 ### v.16.0
 
 - Fixed recharging station issues with different facing directions.

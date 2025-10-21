@@ -1,0 +1,20 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:chest"
+  },
+  "primary_output": {
+    "item": "minecraft:stick",
+    "min": 4,
+    "max": 7
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.45,
+      "min": 2,
+      "max": 3
+    }
+  ],
+  "process_time": 200
+}

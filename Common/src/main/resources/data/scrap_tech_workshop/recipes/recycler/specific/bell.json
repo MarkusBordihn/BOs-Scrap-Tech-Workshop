@@ -1,0 +1,24 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:bell"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:gold_scrap",
+    "min": 3,
+    "max": 6
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:iron_scrap",
+      "chance": 0.30,
+      "min": 1,
+      "max": 2
+    },
+    {
+      "item": "scrap_tech_workshop:fastener_scrap",
+      "chance": 0.25
+    }
+  ],
+  "process_time": 200
+}

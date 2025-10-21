@@ -1,0 +1,22 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:compass"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:iron_scrap",
+    "min": 2,
+    "max": 4
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:circuit_scrap",
+      "chance": 0.30
+    },
+    {
+      "item": "minecraft:redstone",
+      "chance": 0.25
+    }
+  ],
+  "process_time": 160
+}

@@ -1,0 +1,24 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:trapped_chest"
+  },
+  "primary_output": {
+    "item": "minecraft:stick",
+    "min": 4,
+    "max": 7
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.45,
+      "min": 2,
+      "max": 3
+    },
+    {
+      "item": "minecraft:redstone",
+      "chance": 0.30
+    }
+  ],
+  "process_time": 210
+}

@@ -1,0 +1,26 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "item": "minecraft:piston"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:tech_scrap",
+    "min": 2,
+    "max": 4
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:iron_scrap",
+      "chance": 0.30,
+      "min": 1,
+      "max": 2
+    },
+    {
+      "item": "scrap_tech_workshop:wood_scrap",
+      "chance": 0.25,
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "process_time": 180
+}

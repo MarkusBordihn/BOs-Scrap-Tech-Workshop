@@ -215,16 +215,16 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
       // Calculate position based on facing direction
       double x = blockPos.getX() + 0.5;
       double z = blockPos.getZ() + 0.5;
-      
+
       var facing = blockState.getValue(RechargeStationBlock.FACING);
       double offsetFromCenter = 0.15;
-      
+
       switch (facing) {
         case NORTH -> z -= offsetFromCenter;
         case SOUTH -> z += offsetFromCenter;
         case WEST -> x -= offsetFromCenter;
         case EAST -> x += offsetFromCenter;
-        default -> {} 
+        default -> {}
       }
 
       for (int i = 0; i < 2; i++) {

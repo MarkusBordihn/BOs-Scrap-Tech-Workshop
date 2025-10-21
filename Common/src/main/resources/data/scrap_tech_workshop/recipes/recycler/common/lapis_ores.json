@@ -1,0 +1,24 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:lapis_ores"
+  },
+  "primary_output": {
+    "item": "scrap_tech_workshop:mineral_scrap",
+    "min": 2,
+    "max": 5
+  },
+  "byproducts": [
+    {
+      "item": "minecraft:lapis_lazuli",
+      "chance": 0.40,
+      "min": 1,
+      "max": 4
+    },
+    {
+      "item": "scrap_tech_workshop:luminous_scrap",
+      "chance": 0.15
+    }
+  ],
+  "process_time": 200
+}

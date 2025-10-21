@@ -20,6 +20,7 @@
 package de.markusbordihn.scraptechworkshop.block.recycler;
 
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerSlots;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
 import de.markusbordihn.scraptechworkshop.menu.MenuManager;
 import net.minecraft.core.BlockPos;
@@ -27,7 +28,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -61,7 +65,7 @@ public class RecyclerBlock extends BaseEntityBlock {
   private static final VoxelShape SHAPE_EAST_WEST =
       Block.box(0.0D, 0.0D, 1.0D, 16.0D, 14.0D, 15.0D);
 
-  public RecyclerBlock(Properties properties) {
+  public RecyclerBlock(final Properties properties) {
     super(properties);
     this.registerDefaultState(
         this.stateDefinition
@@ -71,18 +75,19 @@ public class RecyclerBlock extends BaseEntityBlock {
             .setValue(STATUS, RecyclerStatus.IDLE));
   }
 
-  public static void updateStatus(Level level, BlockPos pos, RecyclerStatus newStatus) {
-    BlockState currentState = level.getBlockState(pos);
+  public static void updateStatus(
+      final Level level, final BlockPos blockPos, final RecyclerStatus newStatus) {
+    BlockState currentState = level.getBlockState(blockPos);
     if (currentState.getBlock() instanceof RecyclerBlock
         && currentState.getValue(STATUS) != newStatus) {
-      level.setBlock(pos, currentState.setValue(STATUS, newStatus), Block.UPDATE_ALL);
+      level.setBlock(blockPos, currentState.setValue(STATUS, newStatus), Block.UPDATE_ALL);
     }
   }
 
   @Override
   public VoxelShape getShape(
-      BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
-    Direction facing = state.getValue(FACING);
+      BlockState blockState, BlockGetter level, BlockPos blockPos, CollisionContext context) {
+    Direction facing = blockState.getValue(FACING);
     return switch (facing) {
       case NORTH, SOUTH -> SHAPE_NORTH_SOUTH;
       case EAST, WEST -> SHAPE_EAST_WEST;
@@ -91,31 +96,31 @@ public class RecyclerBlock extends BaseEntityBlock {
   }
 
   @Override
-  public RenderShape getRenderShape(BlockState state) {
+  public RenderShape getRenderShape(BlockState blockState) {
     return RenderShape.MODEL;
   }
 
   @Override
-  public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-    return new RecyclerBlockEntity(pos, state);
+  public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+    return new RecyclerBlockEntity(blockPos, blockState);
   }
 
   @Override
   public <T extends BlockEntity> BlockEntityTicker<T> getTicker(
-      Level level, BlockState state, BlockEntityType<T> blockEntityType) {
+      Level level, BlockState blockState, BlockEntityType<T> blockEntityType) {
     return createTickerHelper(blockEntityType, RecyclerBlockEntity.TYPE, RecyclerBlockEntity::tick);
   }
 
   @Override
   public InteractionResult use(
-      BlockState state,
+      BlockState blockState,
       Level level,
-      BlockPos pos,
+      BlockPos blockPos,
       Player player,
-      InteractionHand hand,
-      BlockHitResult hit) {
+      InteractionHand interactionHand,
+      BlockHitResult blockHitResult) {
     if (!level.isClientSide
-        && level.getBlockEntity(pos) instanceof RecyclerBlockEntity recyclerBlockEntity) {
+        && level.getBlockEntity(blockPos) instanceof RecyclerBlockEntity recyclerBlockEntity) {
       openRecyclerMenu(player, recyclerBlockEntity);
     }
     return InteractionResult.sidedSuccess(level.isClientSide);
@@ -127,13 +132,17 @@ public class RecyclerBlock extends BaseEntityBlock {
 
   @Override
   public void onRemove(
-      BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-    if (!state.is(newState.getBlock())) {
-      BlockEntity blockEntity = level.getBlockEntity(pos);
+      BlockState blockState,
+      Level level,
+      BlockPos blockPos,
+      BlockState newState,
+      boolean isMoving) {
+    if (!blockState.is(newState.getBlock())) {
+      BlockEntity blockEntity = level.getBlockEntity(blockPos);
       if (blockEntity instanceof RecyclerBlockEntity recyclerBlockEntity) {
-        Containers.dropContents(level, pos, recyclerBlockEntity.getContainer());
+        Containers.dropContents(level, blockPos, recyclerBlockEntity.getContainer());
       }
-      super.onRemove(state, level, pos, newState, isMoving);
+      super.onRemove(blockState, level, blockPos, newState, isMoving);
     }
   }
 
@@ -146,13 +155,13 @@ public class RecyclerBlock extends BaseEntityBlock {
   }
 
   @Override
-  public BlockState rotate(BlockState state, Rotation rotation) {
-    return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+  public BlockState rotate(BlockState blockState, Rotation rotation) {
+    return blockState.setValue(FACING, rotation.rotate(blockState.getValue(FACING)));
   }
 
   @Override
-  public BlockState mirror(BlockState state, Mirror mirror) {
-    return state.rotate(mirror.getRotation(state.getValue(FACING)));
+  public BlockState mirror(BlockState blockState, Mirror mirror) {
+    return blockState.rotate(mirror.getRotation(blockState.getValue(FACING)));
   }
 
   @Override
@@ -161,16 +170,48 @@ public class RecyclerBlock extends BaseEntityBlock {
   }
 
   @Override
-  public boolean hasAnalogOutputSignal(BlockState state) {
+  public boolean hasAnalogOutputSignal(BlockState blockState) {
     return true;
   }
 
   @Override
-  public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+  public int getAnalogOutputSignal(BlockState blockState, Level level, BlockPos pos) {
     BlockEntity blockEntity = level.getBlockEntity(pos);
     if (blockEntity instanceof RecyclerBlockEntity recyclerBlockEntity) {
       return recyclerBlockEntity.getRedstoneSignal();
     }
     return 0;
+  }
+
+  @Override
+  public void entityInside(BlockState blockState, Level level, BlockPos blockPos, Entity entity) {
+    if (level.isClientSide || !(entity instanceof ItemEntity itemEntity)) {
+      return;
+    }
+
+    if (!(level.getBlockEntity(blockPos) instanceof RecyclerBlockEntity recyclerBlockEntity)) {
+      return;
+    }
+
+    ItemStack droppedStack = itemEntity.getItem();
+    if (droppedStack.isEmpty()) {
+      return;
+    }
+
+    ItemStack inputStack = recyclerBlockEntity.getContainer().getItem(RecyclerSlots.INPUT_SLOT);
+    if (inputStack.isEmpty()) {
+      recyclerBlockEntity.getContainer().setItem(RecyclerSlots.INPUT_SLOT, droppedStack.copy());
+      itemEntity.discard();
+    } else if (ItemStack.isSameItemSameTags(inputStack, droppedStack)) {
+      int spaceAvailable = inputStack.getMaxStackSize() - inputStack.getCount();
+      if (spaceAvailable > 0) {
+        int toTransfer = Math.min(spaceAvailable, droppedStack.getCount());
+        inputStack.grow(toTransfer);
+        droppedStack.shrink(toTransfer);
+        if (droppedStack.isEmpty()) {
+          itemEntity.discard();
+        }
+      }
+    }
   }
 }

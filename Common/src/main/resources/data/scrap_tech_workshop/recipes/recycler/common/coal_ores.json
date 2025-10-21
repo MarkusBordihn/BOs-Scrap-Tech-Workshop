@@ -1,0 +1,20 @@
+{
+  "type": "scrap_tech_workshop:recycler",
+  "match": {
+    "tag": "minecraft:coal_ores"
+  },
+  "primary_output": {
+    "item": "minecraft:coal",
+    "min": 1,
+    "max": 2
+  },
+  "byproducts": [
+    {
+      "item": "scrap_tech_workshop:mineral_scrap",
+      "chance": 0.25,
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "process_time": 160
+}
