@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    "GLG",
+    "GRG",
+    "GLG"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "L": {
+      "item": "scrap_tech_workshop:luminous_scrap"
+    }
+  },
+  "result": {
+    "item": "scrap_tech_workshop:neon_tube",
+    "count": 4
+  }
+}

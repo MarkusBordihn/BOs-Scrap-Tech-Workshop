@@ -20,6 +20,7 @@
 package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
+import de.markusbordihn.scraptechworkshop.block.deco.NeonTubeBlock;
 import de.markusbordihn.scraptechworkshop.block.floatingscrapcollector.FloatingScrapCollectorBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
@@ -30,6 +31,7 @@ import de.markusbordihn.scraptechworkshop.registry.block.FloatingScrapCollectorB
 import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.deco.NeonTubeBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
 import java.util.Map;
@@ -77,6 +79,12 @@ public class FabricModBlockItems {
                 new FloatingScrapCollectorBlockItem(
                     FloatingScrapCollectorBlockRegistry.FLOATING_SCRAP_COLLECTOR_BLOCK,
                     new Item.Properties()));
+
+    // Register neon tube block item
+    ModBlockItems.NEON_TUBE =
+        registerBlockItem(
+            NeonTubeBlock.ID,
+            () -> new BlockItem(NeonTubeBlockRegistry.NEON_TUBE_BLOCK, new Item.Properties()));
 
     // Register scrap pile block items
     ModBlockItems.MIXED_SCRAP_PILE =

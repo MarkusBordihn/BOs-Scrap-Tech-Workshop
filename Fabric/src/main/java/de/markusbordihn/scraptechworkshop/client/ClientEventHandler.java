@@ -30,6 +30,7 @@ import de.markusbordihn.scraptechworkshop.registry.block.FloatingScrapCollectorB
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapBoxBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.deco.NeonTubeBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.utils.ColorUtils;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
@@ -116,6 +117,9 @@ public class ClientEventHandler {
 
     BlockRenderLayerMap.INSTANCE.putBlock(
         RecyclerBlockRegistry.RECYCLER_BLOCK, RenderType.cutoutMipped());
+
+    BlockRenderLayerMap.INSTANCE.putBlock(
+        NeonTubeBlockRegistry.NEON_TUBE_BLOCK, RenderType.translucent());
 
     BlockRenderLayerMap.INSTANCE.putBlock(
         FloatingScrapCollectorBlockRegistry.FLOATING_SCRAP_COLLECTOR_BLOCK,

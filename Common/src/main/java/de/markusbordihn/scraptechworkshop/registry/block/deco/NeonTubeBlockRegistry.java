@@ -17,33 +17,24 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.registry.block.deco;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.function.Supplier;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.BlockItem;
+import de.markusbordihn.scraptechworkshop.block.deco.NeonTubeBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 
-public class ModBlockItems {
+public class NeonTubeBlockRegistry {
 
-  // Machine Block Items
-  public static Supplier<BlockItem> RECYCLER;
-  public static Supplier<BlockItem> RECHARGE_STATION;
-  public static Supplier<BlockItem> BASIC_SCRAP_COLLECTOR_STATION;
-  public static Supplier<BlockItem> FLOATING_SCRAP_COLLECTOR;
+  public static final NeonTubeBlock NEON_TUBE_BLOCK =
+      new NeonTubeBlock(
+          BlockBehaviour.Properties.of()
+              .mapColor(MapColor.COLOR_LIGHT_BLUE)
+              .strength(0.3F)
+              .sound(SoundType.GLASS)
+              .lightLevel(state -> state.getValue(NeonTubeBlock.LIT) ? 15 : 0)
+              .noOcclusion()
+              .dynamicShape());
 
-  // Decoration Block Items
-  public static Supplier<BlockItem> NEON_TUBE;
-
-  // Scrap Pile Block Items
-  public static Supplier<BlockItem> MIXED_SCRAP_PILE;
-  public static Supplier<BlockItem> METAL_SCRAP_PILE;
-  public static Supplier<BlockItem> TECH_SCRAP_PILE;
-
-  // Hololog Block Items
-  public static Supplier<BlockItem> HOLO_CUBE;
-
-  public static ResourceLocation getBlockItemId(String name) {
-    return new ResourceLocation(Constants.MOD_ID, name);
-  }
+  private NeonTubeBlockRegistry() {}
 }

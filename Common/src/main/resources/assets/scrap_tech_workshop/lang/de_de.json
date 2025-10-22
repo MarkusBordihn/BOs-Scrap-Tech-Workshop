@@ -1,6 +1,10 @@
 {
   "advancement.scrap_tech_workshop.collector_basics.description": "Sammle irgendeine Art von Schrottmaterial, um fortgeschrittene Sammelwerkzeuge freizuschalten",
   "advancement.scrap_tech_workshop.collector_basics.title": "Sammler-Grundlagen",
+  "advancement.scrap_tech_workshop.deco.crafted_neon_tube.description": "Erleuchte das Ödland mit deiner ersten selbstgebauten Neon-Installation",
+  "advancement.scrap_tech_workshop.deco.crafted_neon_tube.title": "Neon-Architekt",
+  "advancement.scrap_tech_workshop.deco.root.description": "Entdecke leuchtenden Schrott, der mit Restenergie pulsiert - perfekt zur Beleuchtung",
+  "advancement.scrap_tech_workshop.deco.root.title": "Ödland-Beleuchter",
   "advancement.scrap_tech_workshop.energy_basics.description": "Sammle elektronische Komponenten für Energiezellen: Kondensator-, Schaltkreis- oder Plastikschrott",
   "advancement.scrap_tech_workshop.energy_basics.title": "Energie-Grundlagen",
   "advancement.scrap_tech_workshop.first_contact.description": "Platziere den mysteriösen Holo Würfel, um seine Geheimnisse zu enthüllen und weitere Anweisungen zu erhalten",

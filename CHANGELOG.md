@@ -7,6 +7,12 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v.19.0
+
+- Optimized recycler model and textures for better performance and less overhead.
+- Added neo tube block which brings light to dark areas and can be controlled with redstone.
+- Fixed missing block attributes for correct rendering.
+
 ### v.18.0
 
 - Fixed #2 crash by adding correct loot table context for floating scrap collector.

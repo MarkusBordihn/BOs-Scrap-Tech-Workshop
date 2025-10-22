@@ -1,0 +1,29 @@
+{
+  "parent": "scrap_tech_workshop:deco/root",
+  "display": {
+    "icon": {
+      "item": "scrap_tech_workshop:neon_tube"
+    },
+    "title": {
+      "translate": "advancement.scrap_tech_workshop.deco.crafted_neon_tube.title"
+    },
+    "description": {
+      "translate": "advancement.scrap_tech_workshop.deco.crafted_neon_tube.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "crafted_neon_tube": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "scrap_tech_workshop:neon_tube"
+      }
+    }
+  },
+  "rewards": {
+    "experience": 25
+  }
+}

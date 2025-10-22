@@ -1,6 +1,7 @@
 {
   "format_version": "1.9.0",
   "credit": "Made with Blockbench by Markus Bordihn",
+  "render_type": "cutout_mipped",
   "texture_size": [64, 32],
   "textures": {
     "particle": "scrap_tech_workshop:block/recharge_station/recharge_station",
