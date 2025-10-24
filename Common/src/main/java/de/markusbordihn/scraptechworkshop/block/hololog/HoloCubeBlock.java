@@ -23,7 +23,7 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogStatus;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
-import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.HoloLogItemRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;

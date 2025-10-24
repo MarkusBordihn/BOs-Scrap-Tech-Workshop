@@ -22,7 +22,7 @@ package de.markusbordihn.scraptechworkshop.player;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.data.holocube.HoloCubePlayerData;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
-import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.saveddata.HoloCubeStorage;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;

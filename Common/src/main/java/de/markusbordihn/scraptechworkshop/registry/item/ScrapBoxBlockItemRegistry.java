@@ -17,31 +17,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item;
+package de.markusbordihn.scraptechworkshop.registry.item;
 
-import de.markusbordihn.scraptechworkshop.Constants;
-import java.util.List;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
+import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
+import de.markusbordihn.scraptechworkshop.item.DescriptiveBlockItem;
+import de.markusbordihn.scraptechworkshop.registry.block.ScrapBoxBlockRegistry;
+import java.util.EnumMap;
+import java.util.Map;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.Item;
 
-public class RechargeStationBlockItem extends BlockItem {
+public class ScrapBoxBlockItemRegistry {
 
-  public RechargeStationBlockItem(final Block block, final Properties properties) {
-    super(block, properties);
+  private static final Map<ScrapType, BlockItem> SCRAP_BOX_ITEMS = new EnumMap<>(ScrapType.class);
+
+  static {
+    for (ScrapType type : ScrapType.values()) {
+      BlockItem item =
+          new DescriptiveBlockItem(ScrapBoxBlockRegistry.getScrapBox(type), new Item.Properties());
+      SCRAP_BOX_ITEMS.put(type, item);
+    }
   }
 
-  @Override
-  public void appendHoverText(
-      ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-    super.appendHoverText(stack, level, tooltip, flag);
+  private ScrapBoxBlockItemRegistry() {}
 
-    tooltip.add(
-        Component.translatable(Constants.ITEM_PREFIX + "recharge_station.description")
-            .withStyle(ChatFormatting.GRAY));
+  public static BlockItem getScrapBoxItem(final ScrapType scrapType) {
+    return SCRAP_BOX_ITEMS.get(scrapType);
+  }
+
+  public static Map<ScrapType, BlockItem> getAllScrapBoxItems() {
+    return SCRAP_BOX_ITEMS;
   }
 }

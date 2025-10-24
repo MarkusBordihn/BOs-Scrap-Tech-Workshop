@@ -1,0 +1,8 @@
+{
+  "parent": "scrap_tech_workshop:block/neon_tube/neon_tube_horizontal",
+  "textures": {
+    "case": "scrap_tech_workshop:block/neon_tube/neon_tube_holder",
+    "particle": "scrap_tech_workshop:block/neon_tube/neon_light_tube_off",
+    "light": "scrap_tech_workshop:block/neon_tube/neon_light_tube_off"
+  }
+}

@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.registry.item.tools;
+package de.markusbordihn.scraptechworkshop.registry.item;
 
 import de.markusbordihn.scraptechworkshop.data.wire.WireType;
 import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;

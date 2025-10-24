@@ -55,15 +55,32 @@ public class NeonTubeBlock extends MultiPlaceBlock {
   public static final String ID = "neon_tube";
   public static final BooleanProperty LIT = BlockStateProperties.LIT;
   public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
+  public static final BooleanProperty HORIZONTAL = BooleanProperty.create("horizontal");
 
   private static final VoxelShape SHAPE_FLOOR_NORTH = Block.box(6.5, 0.0, 0.0, 9.5, 3.0, 16.0);
   private static final VoxelShape SHAPE_FLOOR_WEST = Block.box(0.0, 0.0, 6.5, 16.0, 3.0, 9.5);
   private static final VoxelShape SHAPE_CEILING_NORTH = Block.box(6.5, 13.0, 0.0, 9.5, 16.0, 16.0);
   private static final VoxelShape SHAPE_CEILING_WEST = Block.box(0.0, 13.0, 6.5, 16.0, 16.0, 9.5);
-  private static final VoxelShape SHAPE_WALL_NORTH = Block.box(6.5, 0.0, 13.0, 9.5, 16.0, 16.0);
-  private static final VoxelShape SHAPE_WALL_SOUTH = Block.box(6.5, 0.0, 0.0, 9.5, 16.0, 3.0);
-  private static final VoxelShape SHAPE_WALL_WEST = Block.box(13.0, 0.0, 6.5, 16.0, 16.0, 9.5);
-  private static final VoxelShape SHAPE_WALL_EAST = Block.box(0.0, 0.0, 6.5, 3.0, 16.0, 9.5);
+
+  // Wall shapes - vertical orientation
+  private static final VoxelShape SHAPE_WALL_NORTH_VERTICAL =
+      Block.box(6.5, 0.0, 13.0, 9.5, 16.0, 16.0);
+  private static final VoxelShape SHAPE_WALL_SOUTH_VERTICAL =
+      Block.box(6.5, 0.0, 0.0, 9.5, 16.0, 3.0);
+  private static final VoxelShape SHAPE_WALL_WEST_VERTICAL =
+      Block.box(13.0, 0.0, 6.5, 16.0, 16.0, 9.5);
+  private static final VoxelShape SHAPE_WALL_EAST_VERTICAL =
+      Block.box(0.0, 0.0, 6.5, 3.0, 16.0, 9.5);
+
+  // Wall shapes - horizontal orientation
+  private static final VoxelShape SHAPE_WALL_NORTH_HORIZONTAL =
+      Block.box(0.0, 6.5, 13.0, 16.0, 9.5, 16.0);
+  private static final VoxelShape SHAPE_WALL_SOUTH_HORIZONTAL =
+      Block.box(0.0, 6.5, 0.0, 16.0, 9.5, 3.0);
+  private static final VoxelShape SHAPE_WALL_WEST_HORIZONTAL =
+      Block.box(13.0, 6.5, 0.0, 16.0, 9.5, 16.0);
+  private static final VoxelShape SHAPE_WALL_EAST_HORIZONTAL =
+      Block.box(0.0, 6.5, 0.0, 3.0, 9.5, 16.0);
 
   public NeonTubeBlock(final Properties properties) {
     super(properties);
@@ -72,6 +89,7 @@ public class NeonTubeBlock extends MultiPlaceBlock {
             .any()
             .setValue(LIT, Boolean.TRUE)
             .setValue(POWERED, Boolean.FALSE)
+            .setValue(HORIZONTAL, Boolean.FALSE)
             .setValue(FACING, Direction.NORTH)
             .setValue(ATTACH_FACE, AttachFace.WALL));
   }
@@ -81,6 +99,7 @@ public class NeonTubeBlock extends MultiPlaceBlock {
       BlockState blockState, BlockGetter level, BlockPos blockPos, CollisionContext context) {
     AttachFace face = blockState.getValue(ATTACH_FACE);
     Direction direction = blockState.getValue(FACING);
+    boolean horizontal = blockState.getValue(HORIZONTAL);
 
     return switch (face) {
       case FLOOR ->
@@ -95,14 +114,25 @@ public class NeonTubeBlock extends MultiPlaceBlock {
             case WEST, EAST -> SHAPE_CEILING_WEST;
             default -> SHAPE_CEILING_NORTH;
           };
-      case WALL ->
-          switch (direction) {
-            case NORTH -> SHAPE_WALL_NORTH;
-            case SOUTH -> SHAPE_WALL_SOUTH;
-            case WEST -> SHAPE_WALL_WEST;
-            case EAST -> SHAPE_WALL_EAST;
-            default -> SHAPE_WALL_NORTH;
+      case WALL -> {
+        if (horizontal) {
+          yield switch (direction) {
+            case NORTH -> SHAPE_WALL_NORTH_HORIZONTAL;
+            case SOUTH -> SHAPE_WALL_SOUTH_HORIZONTAL;
+            case WEST -> SHAPE_WALL_WEST_HORIZONTAL;
+            case EAST -> SHAPE_WALL_EAST_HORIZONTAL;
+            default -> SHAPE_WALL_NORTH_HORIZONTAL;
           };
+        } else {
+          yield switch (direction) {
+            case NORTH -> SHAPE_WALL_NORTH_VERTICAL;
+            case SOUTH -> SHAPE_WALL_SOUTH_VERTICAL;
+            case WEST -> SHAPE_WALL_WEST_VERTICAL;
+            case EAST -> SHAPE_WALL_EAST_VERTICAL;
+            default -> SHAPE_WALL_NORTH_VERTICAL;
+          };
+        }
+      }
     };
   }
 
@@ -153,26 +183,56 @@ public class NeonTubeBlock extends MultiPlaceBlock {
           }
           break;
         case WALL:
-          particleY += offsetAlongTube;
-          switch (direction) {
-            case NORTH:
-              particleZ = blockPos.getZ() + 0.85;
-              particleX += (random.nextDouble() - 0.5) * 0.15;
-              break;
-            case SOUTH:
-              particleZ = blockPos.getZ() + 0.15;
-              particleX += (random.nextDouble() - 0.5) * 0.15;
-              break;
-            case WEST:
-              particleX = blockPos.getX() + 0.85;
-              particleZ += (random.nextDouble() - 0.5) * 0.15;
-              break;
-            case EAST:
-              particleX = blockPos.getX() + 0.15;
-              particleZ += (random.nextDouble() - 0.5) * 0.15;
-              break;
-            default:
-              break;
+          boolean horizontal = blockState.getValue(HORIZONTAL);
+          if (horizontal) {
+            // Horizontal orientation - particles along X or Z axis
+            switch (direction) {
+              case NORTH:
+                particleZ = blockPos.getZ() + 0.85;
+                particleX += offsetAlongTube;
+                particleY += (random.nextDouble() - 0.5) * 0.15;
+                break;
+              case SOUTH:
+                particleZ = blockPos.getZ() + 0.15;
+                particleX += offsetAlongTube;
+                particleY += (random.nextDouble() - 0.5) * 0.15;
+                break;
+              case WEST:
+                particleX = blockPos.getX() + 0.85;
+                particleZ += offsetAlongTube;
+                particleY += (random.nextDouble() - 0.5) * 0.15;
+                break;
+              case EAST:
+                particleX = blockPos.getX() + 0.15;
+                particleZ += offsetAlongTube;
+                particleY += (random.nextDouble() - 0.5) * 0.15;
+                break;
+              default:
+                break;
+            }
+          } else {
+            // Vertical orientation - particles along Y axis
+            particleY += offsetAlongTube;
+            switch (direction) {
+              case NORTH:
+                particleZ = blockPos.getZ() + 0.85;
+                particleX += (random.nextDouble() - 0.5) * 0.15;
+                break;
+              case SOUTH:
+                particleZ = blockPos.getZ() + 0.15;
+                particleX += (random.nextDouble() - 0.5) * 0.15;
+                break;
+              case WEST:
+                particleX = blockPos.getX() + 0.85;
+                particleZ += (random.nextDouble() - 0.5) * 0.15;
+                break;
+              case EAST:
+                particleX = blockPos.getX() + 0.15;
+                particleZ += (random.nextDouble() - 0.5) * 0.15;
+                break;
+              default:
+                break;
+            }
           }
           break;
       }
@@ -190,6 +250,20 @@ public class NeonTubeBlock extends MultiPlaceBlock {
           0.05F,
           random.nextFloat() * 0.1F + 1.8F,
           false);
+    }
+  }
+
+  @Override
+  public BlockState rotateBlock(BlockState blockState) {
+    AttachFace attachFace = blockState.getValue(ATTACH_FACE);
+
+    if (attachFace == AttachFace.WALL) {
+      boolean isHorizontal = blockState.getValue(HORIZONTAL);
+      return blockState.setValue(HORIZONTAL, !isHorizontal);
+    } else {
+      Direction currentFacing = blockState.getValue(FACING);
+      Direction newFacing = currentFacing.getClockWise();
+      return blockState.setValue(FACING, newFacing);
     }
   }
 
@@ -219,6 +293,9 @@ public class NeonTubeBlock extends MultiPlaceBlock {
     BlockState blockState = super.getStateForPlacement(context);
     Level level = context.getLevel();
     BlockPos blockPos = context.getClickedPos();
+    if (blockState.getValue(ATTACH_FACE) == AttachFace.WALL) {
+      blockState = blockState.setValue(HORIZONTAL, false);
+    }
 
     boolean hasPoweredNearby = hasPoweredNeonTubeNearby(level, blockPos, new HashSet<>());
     boolean hasRedstoneNearby = hasRedstoneSourceInArea(level, blockPos, new HashSet<>());
@@ -378,6 +455,6 @@ public class NeonTubeBlock extends MultiPlaceBlock {
   @Override
   protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
     super.createBlockStateDefinition(builder);
-    builder.add(LIT, POWERED);
+    builder.add(LIT, POWERED, HORIZONTAL);
   }
 }

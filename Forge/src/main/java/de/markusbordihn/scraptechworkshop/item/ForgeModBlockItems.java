@@ -23,13 +23,14 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.ForgeModBlocks;
 import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
 import de.markusbordihn.scraptechworkshop.block.deco.NeonTubeBlock;
+import de.markusbordihn.scraptechworkshop.block.deco.ReplicantTestLampBlock;
 import de.markusbordihn.scraptechworkshop.block.floatingscrapcollector.FloatingScrapCollectorBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
-import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.HoloLogRegistry;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import net.minecraft.resources.ResourceLocation;
@@ -48,33 +49,41 @@ public class ForgeModBlockItems {
   public static final RegistryObject<BlockItem> RECYCLER_BLOCK_ITEM =
       BLOCK_ITEMS.register(
           RecyclerBlock.ID,
-          () -> new RecyclerBlockItem(ForgeModBlocks.RECYCLER_BLOCK.get(), new Item.Properties()));
+          () ->
+              new DescriptiveBlockItem(ForgeModBlocks.RECYCLER_BLOCK.get(), new Item.Properties()));
 
   public static final RegistryObject<BlockItem> RECHARGE_STATION_BLOCK_ITEM =
       BLOCK_ITEMS.register(
           RechargeStationBlock.ID,
           () ->
-              new RechargeStationBlockItem(
+              new DescriptiveBlockItem(
                   ForgeModBlocks.RECHARGE_STATION_BLOCK.get(), new Item.Properties()));
 
   public static final RegistryObject<BlockItem> BASIC_SCRAP_COLLECTOR_STATION_BLOCK_ITEM =
       BLOCK_ITEMS.register(
           BasicScrapCollectorStationBlock.ID,
           () ->
-              new CollectorStationBlockItem(
+              new DescriptiveBlockItem(
                   ForgeModBlocks.BASIC_SCRAP_COLLECTOR_STATION_BLOCK.get(), new Item.Properties()));
 
   public static final RegistryObject<BlockItem> FLOATING_SCRAP_COLLECTOR_BLOCK_ITEM =
       BLOCK_ITEMS.register(
           FloatingScrapCollectorBlock.ID,
           () ->
-              new FloatingScrapCollectorBlockItem(
+              new DescriptiveBlockItem(
                   ForgeModBlocks.FLOATING_SCRAP_COLLECTOR_BLOCK.get(), new Item.Properties()));
 
   public static final RegistryObject<BlockItem> NEON_TUBE_BLOCK_ITEM =
       BLOCK_ITEMS.register(
           NeonTubeBlock.ID,
           () -> new BlockItem(ForgeModBlocks.NEON_TUBE_BLOCK.get(), new Item.Properties()));
+
+  public static final RegistryObject<BlockItem> REPLICANT_TEST_LAMP_BLOCK_ITEM =
+      BLOCK_ITEMS.register(
+          ReplicantTestLampBlock.ID,
+          () ->
+              new DescriptiveBlockItem(
+                  ForgeModBlocks.REPLICANT_TEST_LAMP_BLOCK.get(), new Item.Properties()));
 
   public static final RegistryObject<BlockItem> MIXED_SCRAP_PILE_BLOCK_ITEM =
       BLOCK_ITEMS.register(
@@ -129,6 +138,7 @@ public class ForgeModBlockItems {
     ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION = BASIC_SCRAP_COLLECTOR_STATION_BLOCK_ITEM;
     ModBlockItems.FLOATING_SCRAP_COLLECTOR = FLOATING_SCRAP_COLLECTOR_BLOCK_ITEM;
     ModBlockItems.NEON_TUBE = NEON_TUBE_BLOCK_ITEM;
+    ModBlockItems.REPLICANT_TEST_LAMP = REPLICANT_TEST_LAMP_BLOCK_ITEM;
     ModBlockItems.MIXED_SCRAP_PILE = MIXED_SCRAP_PILE_BLOCK_ITEM;
     ModBlockItems.METAL_SCRAP_PILE = METAL_SCRAP_PILE_BLOCK_ITEM;
     ModBlockItems.TECH_SCRAP_PILE = TECH_SCRAP_PILE_BLOCK_ITEM;

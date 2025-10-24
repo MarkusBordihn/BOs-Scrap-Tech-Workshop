@@ -28,6 +28,10 @@ public class MixedScrapRobotEntityRegistry {
 
   private MixedScrapRobotEntityRegistry() {}
 
+  public static EntityType<MixedScrapRobotEntity> getMixedScrapRobotEntityType() {
+    return MIXED_SCRAP_ROBOT_ENTITY_TYPE;
+  }
+
   public static void setMixedScrapRobotEntityType(
       final EntityType<MixedScrapRobotEntity> entityType) {
     MIXED_SCRAP_ROBOT_ENTITY_TYPE = entityType;

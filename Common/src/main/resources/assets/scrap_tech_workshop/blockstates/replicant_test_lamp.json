@@ -1,0 +1,68 @@
+{
+  "variants": {
+    "facing=north,lit=false,mode=0": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_off",
+      "y": 0
+    },
+    "facing=north,lit=false,mode=1": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_scan_off",
+      "y": 0
+    },
+    "facing=north,lit=true,mode=0": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_on",
+      "y": 0
+    },
+    "facing=north,lit=true,mode=1": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_scan_on",
+      "y": 0
+    },
+    "facing=east,lit=false,mode=0": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_off",
+      "y": 90
+    },
+    "facing=east,lit=false,mode=1": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_scan_off",
+      "y": 90
+    },
+    "facing=east,lit=true,mode=0": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_on",
+      "y": 90
+    },
+    "facing=east,lit=true,mode=1": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_scan_on",
+      "y": 90
+    },
+    "facing=south,lit=false,mode=0": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_off",
+      "y": 180
+    },
+    "facing=south,lit=false,mode=1": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_scan_off",
+      "y": 180
+    },
+    "facing=south,lit=true,mode=0": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_on",
+      "y": 180
+    },
+    "facing=south,lit=true,mode=1": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_scan_on",
+      "y": 180
+    },
+    "facing=west,lit=false,mode=0": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_off",
+      "y": 270
+    },
+    "facing=west,lit=false,mode=1": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_scan_off",
+      "y": 270
+    },
+    "facing=west,lit=true,mode=0": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_on",
+      "y": 270
+    },
+    "facing=west,lit=true,mode=1": {
+      "model": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp_scan_on",
+      "y": 270
+    }
+  }
+}

@@ -1,9 +1,11 @@
 {
   "java.compile.nullAnalysis.mode": "automatic",
   "cSpell.words": [
+    "Behaviour",
     "holo",
     "hololog",
     "markusbordihn",
+    "replicant",
     "scraptechworkshop"
   ],
   "java.configuration.updateBuildConfiguration": "interactive"

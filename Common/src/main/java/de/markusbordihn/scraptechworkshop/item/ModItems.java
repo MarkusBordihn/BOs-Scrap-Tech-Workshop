@@ -112,6 +112,9 @@ public class ModItems {
   public static Supplier<Item> ELECTRO_CONDENSATOR_FILTER;
   public static Supplier<Item> JUNK_FILTER;
 
+  // Spawn Eggs
+  public static Supplier<Item> MIXED_SCRAP_ROBOT_SPAWN_EGG;
+
   public static ResourceLocation getItemId(String name) {
     return new ResourceLocation(Constants.MOD_ID, name);
   }

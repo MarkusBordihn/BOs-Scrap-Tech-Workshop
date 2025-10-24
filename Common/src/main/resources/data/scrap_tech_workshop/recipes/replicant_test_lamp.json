@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    "IMI",
+    "LRL",
+    "ICI"
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "M": {
+      "item": "scrap_tech_workshop:metal_scrap"
+    },
+    "L": {
+      "item": "scrap_tech_workshop:luminous_scrap"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "scrap_tech_workshop:circuit_scrap"
+    }
+  },
+  "result": {
+    "item": "scrap_tech_workshop:replicant_test_lamp"
+  }
+}

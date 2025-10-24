@@ -21,19 +21,20 @@ package de.markusbordihn.scraptechworkshop.item;
 
 import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
 import de.markusbordihn.scraptechworkshop.block.deco.NeonTubeBlock;
+import de.markusbordihn.scraptechworkshop.block.deco.ReplicantTestLampBlock;
 import de.markusbordihn.scraptechworkshop.block.floatingscrapcollector.FloatingScrapCollectorBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.DecoBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.FloatingScrapCollectorBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
-import de.markusbordihn.scraptechworkshop.registry.block.deco.NeonTubeBlockRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.HoloLogRegistry;
 import java.util.Map;
 import java.util.function.Supplier;
 import net.minecraft.core.Registry;
@@ -47,44 +48,47 @@ public class FabricModBlockItems {
   private FabricModBlockItems() {}
 
   public static void registerBlockItems() {
-    // Register recycler block item
     ModBlockItems.RECYCLER =
         registerBlockItem(
             RecyclerBlock.ID,
             () ->
-                new RecyclerBlockItem(RecyclerBlockRegistry.RECYCLER_BLOCK, new Item.Properties()));
+                new DescriptiveBlockItem(
+                    RecyclerBlockRegistry.RECYCLER_BLOCK, new Item.Properties()));
 
-    // Register recharge station block item
     ModBlockItems.RECHARGE_STATION =
         registerBlockItem(
             RechargeStationBlock.ID,
             () ->
-                new RechargeStationBlockItem(
+                new DescriptiveBlockItem(
                     RechargeStationBlockRegistry.RECHARGE_STATION_BLOCK, new Item.Properties()));
 
-    // Register collector station block item
     ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION =
         registerBlockItem(
             BasicScrapCollectorStationBlock.ID,
             () ->
-                new CollectorStationBlockItem(
+                new DescriptiveBlockItem(
                     CollectorStationBlockRegistry.BASIC_SCRAP_COLLECTOR_STATION_BLOCK,
                     new Item.Properties()));
 
-    // Register floating scrap collector block item
     ModBlockItems.FLOATING_SCRAP_COLLECTOR =
         registerBlockItem(
             FloatingScrapCollectorBlock.ID,
             () ->
-                new FloatingScrapCollectorBlockItem(
+                new DescriptiveBlockItem(
                     FloatingScrapCollectorBlockRegistry.FLOATING_SCRAP_COLLECTOR_BLOCK,
                     new Item.Properties()));
 
-    // Register neon tube block item
     ModBlockItems.NEON_TUBE =
         registerBlockItem(
             NeonTubeBlock.ID,
-            () -> new BlockItem(NeonTubeBlockRegistry.NEON_TUBE_BLOCK, new Item.Properties()));
+            () -> new BlockItem(DecoBlockRegistry.NEON_TUBE_BLOCK, new Item.Properties()));
+
+    ModBlockItems.REPLICANT_TEST_LAMP =
+        registerBlockItem(
+            ReplicantTestLampBlock.ID,
+            () ->
+                new DescriptiveBlockItem(
+                    DecoBlockRegistry.REPLICANT_TEST_LAMP_BLOCK, new Item.Properties()));
 
     // Register scrap pile block items
     ModBlockItems.MIXED_SCRAP_PILE =

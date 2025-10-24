@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.block;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.collectorstation.BasicScrapCollectorStationBlock;
 import de.markusbordihn.scraptechworkshop.block.deco.NeonTubeBlock;
+import de.markusbordihn.scraptechworkshop.block.deco.ReplicantTestLampBlock;
 import de.markusbordihn.scraptechworkshop.block.floatingscrapcollector.FloatingScrapCollectorBlock;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
@@ -29,12 +30,12 @@ import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileBlock;
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.DecoBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.FloatingScrapCollectorBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapBoxBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
-import de.markusbordihn.scraptechworkshop.registry.block.deco.NeonTubeBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -71,7 +72,10 @@ public class ForgeModBlocks {
           () -> FloatingScrapCollectorBlockRegistry.FLOATING_SCRAP_COLLECTOR_BLOCK);
 
   public static final RegistryObject<Block> NEON_TUBE_BLOCK =
-      BLOCKS.register(NeonTubeBlock.ID, () -> NeonTubeBlockRegistry.NEON_TUBE_BLOCK);
+      BLOCKS.register(NeonTubeBlock.ID, () -> DecoBlockRegistry.NEON_TUBE_BLOCK);
+
+  public static final RegistryObject<Block> REPLICANT_TEST_LAMP_BLOCK =
+      BLOCKS.register(ReplicantTestLampBlock.ID, () -> DecoBlockRegistry.REPLICANT_TEST_LAMP_BLOCK);
 
   public static final RegistryObject<Block> ALLOY_SCRAP_BOX_BLOCK =
       BLOCKS.register(

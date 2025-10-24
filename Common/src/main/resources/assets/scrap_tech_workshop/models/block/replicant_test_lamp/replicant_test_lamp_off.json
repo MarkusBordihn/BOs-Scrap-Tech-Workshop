@@ -1,0 +1,6 @@
+{
+  "parent": "scrap_tech_workshop:block/replicant_test_lamp/replicant_test_lamp",
+  "textures": {
+    "header": "scrap_tech_workshop:block/replicant_test_lamp/lamp_header_off"
+  }
+}

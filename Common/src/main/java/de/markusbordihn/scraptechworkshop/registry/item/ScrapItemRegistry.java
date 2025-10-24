@@ -17,42 +17,34 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.item.scrapbox;
+package de.markusbordihn.scraptechworkshop.registry.item;
 
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
-import java.util.List;
-import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
+import de.markusbordihn.scraptechworkshop.item.ScrapItem;
+import java.util.EnumMap;
+import java.util.Map;
+import net.minecraft.world.item.Item;
 
-public class ScrapBoxBlockItem extends BlockItem {
+public class ScrapItemRegistry {
 
-  private final ScrapType scrapType;
+  // Map to store all scrap items by their type
+  private static final Map<ScrapType, ScrapItem> SCRAP_ITEMS = new EnumMap<>(ScrapType.class);
 
-  public ScrapBoxBlockItem(Block block, Properties properties, ScrapType scrapType) {
-    super(block, properties);
-    this.scrapType = scrapType;
+  static {
+    // Create all scrap items in a loop - ensures no type is forgotten
+    for (ScrapType type : ScrapType.values()) {
+      ScrapItem item = new ScrapItem(new Item.Properties(), type);
+      SCRAP_ITEMS.put(type, item);
+    }
   }
 
-  public ScrapType getScrapType() {
-    return scrapType;
+  private ScrapItemRegistry() {}
+
+  public static ScrapItem getScrapItem(ScrapType type) {
+    return SCRAP_ITEMS.get(type);
   }
 
-  @Override
-  public void appendHoverText(
-      ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
-    super.appendHoverText(stack, level, tooltip, flag);
-
-    tooltip.add(
-        Component.translatable(this.getDescriptionId() + ".description")
-            .withStyle(ChatFormatting.GRAY));
-
-    tooltip.add(
-        Component.translatable("tooltip.scrap_tech_workshop.scrap_box.compact_storage")
-            .withStyle(ChatFormatting.DARK_GRAY));
+  public static Map<ScrapType, ScrapItem> getAllScrapItems() {
+    return SCRAP_ITEMS;
   }
 }

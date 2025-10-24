@@ -26,12 +26,12 @@ import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.item.ItemPropertyFunctions;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
+import de.markusbordihn.scraptechworkshop.registry.block.DecoBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.FloatingScrapCollectorBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapBoxBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
-import de.markusbordihn.scraptechworkshop.registry.block.deco.NeonTubeBlockRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.utils.ColorUtils;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
@@ -119,7 +119,7 @@ public class ClientEventHandler {
         RecyclerBlockRegistry.RECYCLER_BLOCK, RenderType.cutoutMipped());
 
     BlockRenderLayerMap.INSTANCE.putBlock(
-        NeonTubeBlockRegistry.NEON_TUBE_BLOCK, RenderType.translucent());
+        DecoBlockRegistry.NEON_TUBE_BLOCK, RenderType.translucent());
 
     BlockRenderLayerMap.INSTANCE.putBlock(
         FloatingScrapCollectorBlockRegistry.FLOATING_SCRAP_COLLECTOR_BLOCK,

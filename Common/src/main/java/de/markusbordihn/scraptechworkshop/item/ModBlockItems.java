@@ -34,6 +34,7 @@ public class ModBlockItems {
 
   // Decoration Block Items
   public static Supplier<BlockItem> NEON_TUBE;
+  public static Supplier<BlockItem> REPLICANT_TEST_LAMP;
 
   // Scrap Pile Block Items
   public static Supplier<BlockItem> MIXED_SCRAP_PILE;

@@ -28,12 +28,13 @@ import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeFastChargeUpgrade
 import de.markusbordihn.scraptechworkshop.item.upgrade.CreativeSpeedUpgradeItem;
 import de.markusbordihn.scraptechworkshop.item.upgrade.FastChargeUpgradeItem;
 import de.markusbordihn.scraptechworkshop.item.upgrade.NormalSpeedUpgradeItem;
-import de.markusbordihn.scraptechworkshop.registry.item.filter.ScrapFilterItemRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.scrapbox.ScrapBoxBlockItemRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.tools.ToolItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.entity.MixedScrapRobotEntityRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.HoloLogRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.ScrapBoxBlockItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.ScrapFilterItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.ScrapItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.ToolItemRegistry;
 import de.markusbordihn.scraptechworkshop.tabs.ModCreativeTabs;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -41,6 +42,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 
 public class FabricModItems {
 
@@ -274,6 +276,16 @@ public class FabricModItems {
             "electro_condensator_filter", () -> ScrapFilterItemRegistry.ELECTRO_CONDENSATOR_FILTER);
     ModItems.JUNK_FILTER = registerItem("junk_filter", () -> ScrapFilterItemRegistry.JUNK_FILTER);
 
+    ModItems.MIXED_SCRAP_ROBOT_SPAWN_EGG =
+        registerItem(
+            "mixed_scrap_robot_spawn_egg",
+            () ->
+                new SpawnEggItem(
+                    MixedScrapRobotEntityRegistry.MIXED_SCRAP_ROBOT_ENTITY_TYPE,
+                    0x808080,
+                    0x404040,
+                    new Item.Properties()));
+
     // Holo Pad Items
     for (Map.Entry<String, ResourceLocation> entry :
         HoloLogRegistry.getHoloPadRegistry().entrySet()) {
@@ -296,22 +308,7 @@ public class FabricModItems {
   public static void registerCreativeModeTabs() {
     Registry.register(
         BuiltInRegistries.CREATIVE_MODE_TAB,
-        ModCreativeTabs.SCRAP_TAB.location(),
-        ModCreativeTabs.createScrapTab().build());
-
-    Registry.register(
-        BuiltInRegistries.CREATIVE_MODE_TAB,
-        ModCreativeTabs.UPGRADES_AND_TOOLS_TAB.location(),
-        ModCreativeTabs.createUpgradesAndToolsTab().build());
-
-    Registry.register(
-        BuiltInRegistries.CREATIVE_MODE_TAB,
-        ModCreativeTabs.HOLO_CUBE_TAB.location(),
-        ModCreativeTabs.createHoloCubeTab().build());
-
-    Registry.register(
-        BuiltInRegistries.CREATIVE_MODE_TAB,
-        ModCreativeTabs.HOLO_PAD_TAB.location(),
-        ModCreativeTabs.createHoloPadTab().build());
+        ModCreativeTabs.MAIN_TAB.location(),
+        ModCreativeTabs.createMainTab().build());
   }
 }

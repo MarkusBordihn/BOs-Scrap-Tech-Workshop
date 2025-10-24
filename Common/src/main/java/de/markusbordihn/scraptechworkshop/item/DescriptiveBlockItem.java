@@ -23,18 +23,22 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
-public class FloatingScrapCollectorBlockItem extends BlockItem {
+public class DescriptiveBlockItem extends BlockItem {
 
-  private static final String ITEM_KEY = Constants.ITEM_PREFIX + "floating_scrap_collector";
+  private final String itemKey;
 
-  public FloatingScrapCollectorBlockItem(Block block, Properties properties) {
+  public DescriptiveBlockItem(final Block block, final Properties properties) {
     super(block, properties);
+    this.itemKey =
+        Constants.ITEM_PREFIX
+            + block.getDescriptionId().replace("block." + Constants.MOD_ID + ".", "");
   }
 
   @Override
@@ -42,9 +46,19 @@ public class FloatingScrapCollectorBlockItem extends BlockItem {
       ItemStack itemStack, Level level, List<Component> tooltip, TooltipFlag flag) {
     super.appendHoverText(itemStack, level, tooltip, flag);
 
-    tooltip.add(Component.translatable(ITEM_KEY + ".description").withStyle(ChatFormatting.GRAY));
-    tooltip.add(
-        Component.translatable(ITEM_KEY + ".usage")
-            .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+    MutableComponent description = Component.translatable(itemKey + ".description");
+    if (!description.getString().equals(itemKey + ".description")) {
+      tooltip.add(description.withStyle(ChatFormatting.GRAY));
+    }
+
+    MutableComponent usage = Component.translatable(itemKey + ".usage");
+    if (!usage.getString().equals(itemKey + ".usage")) {
+      tooltip.add(usage.withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+    }
+
+    MutableComponent tooltipText = Component.translatable(itemKey + ".tooltip");
+    if (!tooltipText.getString().equals(itemKey + ".tooltip")) {
+      tooltip.add(tooltipText.withStyle(ChatFormatting.DARK_GRAY));
+    }
   }
 }

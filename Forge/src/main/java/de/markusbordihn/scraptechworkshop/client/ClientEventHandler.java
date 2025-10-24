@@ -25,7 +25,7 @@ import de.markusbordihn.scraptechworkshop.data.hololog.HoloLogManager;
 import de.markusbordihn.scraptechworkshop.item.ItemPropertyFunctions;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
-import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.utils.ColorUtils;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;

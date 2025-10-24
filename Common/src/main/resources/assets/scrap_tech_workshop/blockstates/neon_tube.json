@@ -68,41 +68,79 @@
       "model": "scrap_tech_workshop:block/neon_tube/neon_tube_default",
       "y": 270
     },
-    "face=wall,facing=east,lit=false": {
+    "face=wall,facing=east,horizontal=false,lit=false": {
       "model": "scrap_tech_workshop:block/neon_tube/neon_tube_off",
       "x": 90,
       "y": 90
     },
-    "face=wall,facing=east,lit=true": {
+    "face=wall,facing=east,horizontal=false,lit=true": {
       "model": "scrap_tech_workshop:block/neon_tube/neon_tube_default",
       "x": 90,
       "y": 90
     },
-    "face=wall,facing=north,lit=false": {
+    "face=wall,facing=east,horizontal=true,lit=false": {
+      "model": "scrap_tech_workshop:block/neon_tube/neon_tube_horizontal_off",
+      "x": 90,
+      "y": 90
+    },
+    "face=wall,facing=east,horizontal=true,lit=true": {
+      "model": "scrap_tech_workshop:block/neon_tube/neon_tube_horizontal_default",
+      "x": 90,
+      "y": 90
+    },
+    "face=wall,facing=north,horizontal=false,lit=false": {
       "model": "scrap_tech_workshop:block/neon_tube/neon_tube_off",
       "x": 90
     },
-    "face=wall,facing=north,lit=true": {
+    "face=wall,facing=north,horizontal=false,lit=true": {
       "model": "scrap_tech_workshop:block/neon_tube/neon_tube_default",
       "x": 90
     },
-    "face=wall,facing=south,lit=false": {
+    "face=wall,facing=north,horizontal=true,lit=false": {
+      "model": "scrap_tech_workshop:block/neon_tube/neon_tube_horizontal_off",
+      "x": 90
+    },
+    "face=wall,facing=north,horizontal=true,lit=true": {
+      "model": "scrap_tech_workshop:block/neon_tube/neon_tube_horizontal_default",
+      "x": 90
+    },
+    "face=wall,facing=south,horizontal=false,lit=false": {
       "model": "scrap_tech_workshop:block/neon_tube/neon_tube_off",
       "x": 90,
       "y": 180
     },
-    "face=wall,facing=south,lit=true": {
+    "face=wall,facing=south,horizontal=false,lit=true": {
       "model": "scrap_tech_workshop:block/neon_tube/neon_tube_default",
       "x": 90,
       "y": 180
     },
-    "face=wall,facing=west,lit=false": {
+    "face=wall,facing=south,horizontal=true,lit=false": {
+      "model": "scrap_tech_workshop:block/neon_tube/neon_tube_horizontal_off",
+      "x": 90,
+      "y": 180
+    },
+    "face=wall,facing=south,horizontal=true,lit=true": {
+      "model": "scrap_tech_workshop:block/neon_tube/neon_tube_horizontal_default",
+      "x": 90,
+      "y": 180
+    },
+    "face=wall,facing=west,horizontal=false,lit=false": {
       "model": "scrap_tech_workshop:block/neon_tube/neon_tube_off",
       "x": 90,
       "y": 270
     },
-    "face=wall,facing=west,lit=true": {
+    "face=wall,facing=west,horizontal=false,lit=true": {
       "model": "scrap_tech_workshop:block/neon_tube/neon_tube_default",
+      "x": 90,
+      "y": 270
+    },
+    "face=wall,facing=west,horizontal=true,lit=false": {
+      "model": "scrap_tech_workshop:block/neon_tube/neon_tube_horizontal_off",
+      "x": 90,
+      "y": 270
+    },
+    "face=wall,facing=west,horizontal=true,lit=true": {
+      "model": "scrap_tech_workshop:block/neon_tube/neon_tube_horizontal_default",
       "x": 90,
       "y": 270
     }

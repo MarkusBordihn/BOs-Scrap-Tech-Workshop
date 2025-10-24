@@ -17,14 +17,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.registry.block.deco;
+package de.markusbordihn.scraptechworkshop.registry.block;
 
 import de.markusbordihn.scraptechworkshop.block.deco.NeonTubeBlock;
+import de.markusbordihn.scraptechworkshop.block.deco.ReplicantTestLampBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 
-public class NeonTubeBlockRegistry {
+public class DecoBlockRegistry {
 
   public static final NeonTubeBlock NEON_TUBE_BLOCK =
       new NeonTubeBlock(
@@ -36,5 +37,18 @@ public class NeonTubeBlockRegistry {
               .noOcclusion()
               .dynamicShape());
 
-  private NeonTubeBlockRegistry() {}
+  public static final ReplicantTestLampBlock REPLICANT_TEST_LAMP_BLOCK =
+      new ReplicantTestLampBlock(
+          BlockBehaviour.Properties.of()
+              .mapColor(MapColor.METAL)
+              .strength(0.5F)
+              .sound(SoundType.METAL)
+              .lightLevel(
+                  state ->
+                      state.getValue(ReplicantTestLampBlock.LIT)
+                          ? (state.getValue(ReplicantTestLampBlock.MODE) == 1 ? 10 : 12)
+                          : 0)
+              .noOcclusion());
+
+  private DecoBlockRegistry() {}
 }

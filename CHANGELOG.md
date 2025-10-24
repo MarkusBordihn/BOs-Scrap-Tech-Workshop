@@ -7,13 +7,21 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
-### v.19.0
+### v1.0.0
+
+- Fixed Neon Tube wall placement issues.
+- Added Replicant Test Lamp decorative block.
+- Refactored Block and Item registration for better maintainability.
+- Unified creative tab into a single tab for better item and block discoverability.
+- Smaller code clean-ups and optimizations.
+
+### v0.19.0
 
 - Optimized recycler model and textures for better performance and less overhead.
 - Added neo tube block which brings light to dark areas and can be controlled with redstone.
 - Fixed missing block attributes for correct rendering.
 
-### v.18.0
+### v0.18.0
 
 - Fixed #2 crash by adding correct loot table context for floating scrap collector.
 - Fixed advancement triggers which are not working as intended.
@@ -24,14 +32,14 @@ For the full changelog, please go to the [GitHub History][history] instead.
 - Renamed advancements name and descriptions for better clarity.
 - Added basic scrap loot tables for floating scrap collector.
 
-### v.17.0
+### v0.17.0
 
 - Added about 80 new scrap item progression for the recycler and scrap processing.
 - Added handler to allow throw items directly into the recycler (from the top).
 - Added proper validation for recycler recipes and scrap item processing.
 - Fixed edge case with minecraft:air block being processed in the recycler.
 
-### v.16.0
+### v0.16.0
 
 - Fixed recharging station issues with different facing directions.
 - Added reclaimed copper wire and refined copper wire items.
@@ -41,14 +49,14 @@ For the full changelog, please go to the [GitHub History][history] instead.
 - Simplified Forge item registration.
 - Fixed smaller issues and typos.
 
-### v.15.0
+### v0.15.0
 
 - Fixed issue with fishing in Fabric catching to many scrap items.
 - Added Mekanism support to be able to use Mekanism energy storage items to power blocks.
 - Added recharging station for batteries and energy storage items.
 - Added composter support for scrap items.
 
-### v.14.0
+### v0.14.0
 
 - Replaced hard-coded break block list to a tag based system for better mod compatibility.
 - Added additional blocks like dirt, sand, ... to the breakable blocks tag.
@@ -56,7 +64,7 @@ For the full changelog, please go to the [GitHub History][history] instead.
 - Added proper energy system with mA, A and V units.
 - Improved processing and performance.
 
-### v.13.0
+### v0.13.0
 
 - Larger refactor and rework of the mod structure and code base for better maintainability.
 - Fixed scrap box model and texture issues.
@@ -64,7 +72,7 @@ For the full changelog, please go to the [GitHub History][history] instead.
 - Added scrap to scrap box and scrap box to scrap recipes.
 - Added scrap and scrap box furnace smelting recipes.
 
-### v.12.0
+### v0.12.0
 
 - Fixed #1 by adding legacy Forge mod loader support for 47.2.x.
 - Fixed missing render types for Fabric.

@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.registry.item.filter;
+package de.markusbordihn.scraptechworkshop.registry.item;
 
 import de.markusbordihn.scraptechworkshop.data.floatingscrapcollector.ScrapFilterType;
 import de.markusbordihn.scraptechworkshop.item.ScrapFilterItem;

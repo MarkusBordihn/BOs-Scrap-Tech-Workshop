@@ -28,9 +28,9 @@ import de.markusbordihn.scraptechworkshop.item.ModItems;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
-import de.markusbordihn.scraptechworkshop.registry.item.hololog.HoloLogItemRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.scrap.ScrapItemRegistry;
-import de.markusbordihn.scraptechworkshop.registry.item.scrapbox.ScrapBoxBlockItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.HoloLogItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.ScrapBoxBlockItemRegistry;
+import de.markusbordihn.scraptechworkshop.registry.item.ScrapItemRegistry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
@@ -40,55 +40,28 @@ import net.minecraft.world.item.ItemStack;
 
 public class ModCreativeTabs {
 
-  public static final ResourceKey<CreativeModeTab> SCRAP_TAB =
+  public static final ResourceKey<CreativeModeTab> MAIN_TAB =
       ResourceKey.create(
-          Registries.CREATIVE_MODE_TAB, new ResourceLocation(Constants.MOD_ID, "scrap"));
+          Registries.CREATIVE_MODE_TAB, new ResourceLocation(Constants.MOD_ID, "main"));
 
-  public static final ResourceKey<CreativeModeTab> UPGRADES_AND_TOOLS_TAB =
-      ResourceKey.create(
-          Registries.CREATIVE_MODE_TAB,
-          new ResourceLocation(Constants.MOD_ID, "upgrades_and_tools"));
-
-  public static final ResourceKey<CreativeModeTab> HOLO_CUBE_TAB =
-      ResourceKey.create(
-          Registries.CREATIVE_MODE_TAB, new ResourceLocation(Constants.MOD_ID, "holo_cubes"));
-
-  public static final ResourceKey<CreativeModeTab> HOLO_PAD_TAB =
-      ResourceKey.create(
-          Registries.CREATIVE_MODE_TAB, new ResourceLocation(Constants.MOD_ID, "holo_pads"));
-
-  public static CreativeModeTab.Builder createScrapTab() {
+  public static CreativeModeTab.Builder createMainTab() {
     return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
-        .title(Component.translatable("itemGroup.scrap_tech_workshop.scrap"))
-        .icon(() -> new ItemStack(ModItems.METAL_SCRAP.get()))
+        .title(Component.translatable("itemGroup.scrap_tech_workshop.main"))
+        .icon(() -> new ItemStack(ModItems.MIXED_SCRAP_ROBOT_SPAWN_EGG.get()))
         .displayItems(
             (parameters, output) -> {
-              // Add all scrap items
               ScrapItemRegistry.getAllScrapItems().values().forEach(output::accept);
-
-              // Add all scrap box items
               ScrapBoxBlockItemRegistry.getAllScrapBoxItems().values().forEach(output::accept);
 
-              // Scrap Pile Block Items
               output.accept(ModBlockItems.MIXED_SCRAP_PILE.get());
               output.accept(ModBlockItems.METAL_SCRAP_PILE.get());
               output.accept(ModBlockItems.TECH_SCRAP_PILE.get());
-            });
-  }
 
-  public static CreativeModeTab.Builder createUpgradesAndToolsTab() {
-    return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 1)
-        .title(Component.translatable("itemGroup.scrap_tech_workshop.upgrades_and_tools"))
-        .icon(() -> new ItemStack(ModItems.CREATIVE_SCRAP_MULTITOOL.get()))
-        .displayItems(
-            (parameters, output) -> {
-              // Tool Items
               output.accept(ModItems.MAGNET_FISHING_ROD.get());
               output.accept(ModItems.SCRAP_FISHING_ROD.get());
               output.accept(ModItems.SCRAP_MULTITOOL.get());
               output.accept(createCreativeMultitoolWithBattery());
 
-              // Component Items
               output.accept(ModItems.CIRCUIT_BOARD.get());
               output.accept(ModItems.DAMAGED_ENERGY_CELL.get().getDefaultInstance());
               output.accept(ModItems.EMPTY_ENERGY_CELL.get());
@@ -98,49 +71,33 @@ public class ModCreativeTabs {
               output.accept(ModItems.RECLAIMED_COPPER_WIRE.get());
               output.accept(ModItems.REFINED_COPPER_WIRE.get());
 
-              // Filter Items
               output.accept(ModItems.BASIC_SCRAP_FILTER.get());
               output.accept(ModItems.FINE_MESH_FILTER.get());
               output.accept(ModItems.MAGNETIC_COIL_FILTER.get());
               output.accept(ModItems.ELECTRO_CONDENSATOR_FILTER.get());
               output.accept(ModItems.JUNK_FILTER.get());
 
-              // Upgrade Items
               output.accept(ModItems.CREATIVE_FAST_CHARGE_UPGRADE.get());
               output.accept(ModItems.CREATIVE_SPEED_UPGRADE.get());
               output.accept(ModItems.FAST_CHARGE_UPGRADE.get());
               output.accept(ModItems.SPEED_UPGRADE.get());
 
-              // Block Items
               output.accept(ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION.get());
               output.accept(ModBlockItems.FLOATING_SCRAP_COLLECTOR.get());
               output.accept(ModBlockItems.NEON_TUBE.get());
               output.accept(ModBlockItems.RECHARGE_STATION.get());
               output.accept(ModBlockItems.RECYCLER.get());
-            });
-  }
+              output.accept(ModBlockItems.REPLICANT_TEST_LAMP.get());
 
-  public static CreativeModeTab.Builder createHoloCubeTab() {
-    return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 2)
-        .title(Component.translatable("itemGroup.scrap_tech_workshop.holo_cubes"))
-        .icon(() -> new ItemStack(ModBlockItems.HOLO_CUBE.get()))
-        .displayItems(
-            (parameters, output) -> {
               for (HoloCubeItem item : HoloLogItemRegistry.getHoloCubeItems().values()) {
                 output.accept(item);
               }
-            });
-  }
 
-  public static CreativeModeTab.Builder createHoloPadTab() {
-    return CreativeModeTab.builder(CreativeModeTab.Row.TOP, 3)
-        .title(Component.translatable("itemGroup.scrap_tech_workshop.holo_pads"))
-        .icon(() -> new ItemStack(ModItems.HOLO_PAD.get()))
-        .displayItems(
-            (parameters, output) -> {
               for (HoloPadItem item : HoloLogItemRegistry.getHoloPadItems().values()) {
                 output.accept(item);
               }
+
+              output.accept(ModItems.MIXED_SCRAP_ROBOT_SPAWN_EGG.get());
             });
   }
 
