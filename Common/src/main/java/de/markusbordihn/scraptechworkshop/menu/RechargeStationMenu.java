@@ -48,12 +48,7 @@ public class RechargeStationMenu extends EnergyPowerMenu {
 
   public static final int INPUT_SLOT_X = 80;
   public static final int INPUT_SLOT_Y = 35;
-  public static final int SLOT_SPACING = 18;
   public static final int PLAYER_INVENTORY_START_Y = 99;
-  public static final int PLAYER_HOTBAR_START_Y = PLAYER_INVENTORY_START_Y + 58;
-  public static final int PLAYER_INVENTORY_ROWS = 3;
-  public static final int PLAYER_INVENTORY_COLUMNS = 9;
-  public static final int PLAYER_HOTBAR_SLOTS = 9;
   public static final int PROGRESS_BAR_X = 68;
   public static final int PROGRESS_BAR_Y = 56;
   public static final int PROGRESS_BAR_WIDTH = 40;
@@ -115,8 +110,7 @@ public class RechargeStationMenu extends EnergyPowerMenu {
 
     checkContainerSize(playerInventory, RechargeStationSlots.TOTAL_SLOTS);
     addRechargeStationSlots();
-    addPlayerInventory(playerInventory);
-    addPlayerHotbar(playerInventory);
+    addPlayerInventoryAndHotbar(playerInventory, PLAYER_INVENTORY_START_Y);
     addDataSlots(this.additionalData);
   }
 
@@ -143,11 +137,6 @@ public class RechargeStationMenu extends EnergyPowerMenu {
       log.error("{} Error reading BlockEntity from additionalData: {}", LOG_PREFIX, e.getMessage());
       return null;
     }
-  }
-
-  @Override
-  public EnergyPowerConsumer getEnergyConsumer() {
-    return blockEntity;
   }
 
   private void addRechargeStationSlots() {
@@ -185,31 +174,6 @@ public class RechargeStationMenu extends EnergyPowerMenu {
     }
 
     return null;
-  }
-
-  private void addPlayerInventory(final Inventory playerInventory) {
-    for (int row = 0; row < PLAYER_INVENTORY_ROWS; row++) {
-      for (int col = 0; col < PLAYER_INVENTORY_COLUMNS; col++) {
-        this.addSlot(
-            new Slot(
-                playerInventory,
-                col + row * 9 + 9,
-                8 + col * SLOT_SPACING,
-                PLAYER_INVENTORY_START_Y + row * SLOT_SPACING + 1));
-      }
-    }
-  }
-
-  private void addPlayerHotbar(final Inventory playerInventory) {
-    for (int col = 0; col < PLAYER_HOTBAR_SLOTS; col++) {
-      this.addSlot(new Slot(playerInventory, col, 8 + col * SLOT_SPACING, PLAYER_HOTBAR_START_Y));
-    }
-  }
-
-  public ItemStack getCurrentInput() {
-    return this.blockEntity != null
-        ? this.blockEntity.getItem(RechargeStationSlots.INPUT_SLOT)
-        : ItemStack.EMPTY;
   }
 
   @Override

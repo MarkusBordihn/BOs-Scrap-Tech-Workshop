@@ -77,20 +77,17 @@ public class MultiPlaceBlock extends Block {
   public BlockState rotateBlock(BlockState blockState) {
     AttachFace attachFace = blockState.getValue(ATTACH_FACE);
     Direction currentFacing = blockState.getValue(FACING);
-    Direction newFacing;
 
-    if (attachFace == AttachFace.WALL) {
-      newFacing =
-          switch (currentFacing) {
-            case NORTH -> Direction.EAST;
-            case EAST -> Direction.SOUTH;
-            case SOUTH -> Direction.WEST;
-            case WEST -> Direction.NORTH;
-            default -> currentFacing;
-          };
-    } else {
-      newFacing = currentFacing.getClockWise();
-    }
+    Direction newFacing =
+        attachFace == AttachFace.WALL
+            ? switch (currentFacing) {
+              case NORTH -> Direction.EAST;
+              case EAST -> Direction.SOUTH;
+              case SOUTH -> Direction.WEST;
+              case WEST -> Direction.NORTH;
+              default -> currentFacing;
+            }
+            : currentFacing.getClockWise();
 
     return blockState.setValue(FACING, newFacing);
   }

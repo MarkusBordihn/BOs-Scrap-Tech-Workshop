@@ -25,18 +25,22 @@ import de.markusbordihn.scraptechworkshop.block.entity.floatingscrapcollector.Fl
 import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.rechargestation.RechargeStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.windturbine.ScrapWindTurbineBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.floatingscrapcollector.FloatingScrapCollectorBlock;
 import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
+import de.markusbordihn.scraptechworkshop.block.windturbine.ScrapWindTurbineBlock;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.ScrapWindTurbineBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.CollectorStationBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.FloatingScrapCollectorBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.HoloCubeBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RechargeStationBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.entity.RecyclerBlockEntityRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.entity.ScrapWindTurbineBlockEntityRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -69,6 +73,18 @@ public class FabricModBlockEntities {
         new ResourceLocation(Constants.MOD_ID, RechargeStationBlock.ID),
         rechargeStationBlockEntityType);
     RechargeStationBlockEntityRegistry.setBlockEntityType(rechargeStationBlockEntityType);
+
+    // Register scrap wind turbine block entity
+    BlockEntityType<ScrapWindTurbineBlockEntity> scrapWindTurbineBlockEntityType =
+        BlockEntityType.Builder.of(
+                ScrapWindTurbineBlockEntity::new,
+                ScrapWindTurbineBlockRegistry.SCRAP_WIND_TURBINE_BLOCK)
+            .build(null);
+    Registry.register(
+        BuiltInRegistries.BLOCK_ENTITY_TYPE,
+        new ResourceLocation(Constants.MOD_ID, ScrapWindTurbineBlock.ID),
+        scrapWindTurbineBlockEntityType);
+    ScrapWindTurbineBlockEntityRegistry.setBlockEntityType(scrapWindTurbineBlockEntityType);
 
     // Register holocube block entity
     BlockEntityType<HoloCubeBlockEntity> holoCubeBlockEntityType =

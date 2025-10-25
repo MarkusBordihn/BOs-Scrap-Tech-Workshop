@@ -65,6 +65,7 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
   public static BlockEntityType<RecyclerBlockEntity> TYPE;
 
   private final RecyclerContainer container;
+  private final int tickOffset;
   private int progress = 0;
   private int maxProgress = RecyclerConfig.processTime;
   private final ContainerData containerData =
@@ -100,6 +101,10 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
   public RecyclerBlockEntity(final BlockPos blockPos, final BlockState blockState) {
     super(TYPE, blockPos, blockState);
     this.container = new RecyclerContainer(RecyclerSlots.TOTAL_SLOTS, this::setChanged);
+    this.tickOffset =
+        Math.abs(
+            (blockPos.getX() * 31 + blockPos.getY() * 17 + blockPos.getZ() * 13)
+                % ENERGY_CHARGE_INTERVAL);
   }
 
   public static void tick(
@@ -113,8 +118,7 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
 
     blockEntity.tickCounter++;
 
-    // Charge from battery every ENERGY_CHARGE_INTERVAL ticks
-    if (blockEntity.tickCounter % ENERGY_CHARGE_INTERVAL == 0) {
+    if ((blockEntity.tickCounter + blockEntity.tickOffset) % ENERGY_CHARGE_INTERVAL == 0) {
       blockEntity.chargeFromBattery(blockEntity.getEnergyTransferRate());
     }
 
@@ -189,10 +193,6 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
     return container.getItems();
   }
 
-  protected int getTotalSlots() {
-    return RecyclerSlots.TOTAL_SLOTS;
-  }
-
   @Override
   protected WorldlyContainer getContainerDelegate() {
     return container;
@@ -208,7 +208,9 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
     loadEnergyPowerConsumer(compoundTag);
     energyData =
         new EnergyPowerData(
-            energyData.currentEnergy(), container.getItem(RecyclerSlots.BATTERY_SLOT));
+            energyData.currentEnergy(),
+            container.getItem(RecyclerSlots.BATTERY_SLOT),
+            energyData.debounceData());
   }
 
   @Override
@@ -281,12 +283,15 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
   @Override
   public EnergyPowerData getEnergyData() {
     return new EnergyPowerData(
-        energyData.currentEnergy(), container.getItem(RecyclerSlots.BATTERY_SLOT));
+        energyData.currentEnergy(),
+        container.getItem(RecyclerSlots.BATTERY_SLOT),
+        energyData.debounceData());
   }
 
   @Override
   public void setEnergyData(EnergyPowerData data) {
-    this.energyData = new EnergyPowerData(data.currentEnergy(), data.battery());
+    this.energyData =
+        new EnergyPowerData(data.currentEnergy(), data.battery(), data.debounceData());
     container.setItem(RecyclerSlots.BATTERY_SLOT, data.battery());
     setChanged();
   }
@@ -294,11 +299,6 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
   @Override
   public int getEnergyCapacity() {
     return ENERGY_CAPACITY_MAH;
-  }
-
-  @Override
-  public int getBatterySlot() {
-    return RecyclerSlots.BATTERY_SLOT;
   }
 
   @Override

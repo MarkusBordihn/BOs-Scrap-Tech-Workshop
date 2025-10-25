@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.client.screen;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.screen.rechargestation.RechargeStationScreen;
 import de.markusbordihn.scraptechworkshop.client.screen.recycler.RecyclerScreen;
+import de.markusbordihn.scraptechworkshop.client.screen.windturbine.ScrapWindTurbineScreen;
 import de.markusbordihn.scraptechworkshop.menu.ForgeModMenus;
 import net.minecraft.client.gui.screens.MenuScreens;
 import org.apache.logging.log4j.LogManager;
@@ -37,6 +38,7 @@ public class ClientScreens {
     log.info("{} Client Screens ...", Constants.LOG_REGISTER_PREFIX);
     MenuScreens.register(ForgeModMenus.RECYCLER_MENU.get(), RecyclerScreen::new);
     MenuScreens.register(ForgeModMenus.RECHARGE_STATION_MENU.get(), RechargeStationScreen::new);
+    MenuScreens.register(ForgeModMenus.SCRAP_WIND_TURBINE_MENU.get(), ScrapWindTurbineScreen::new);
     MenuScreens.register(ForgeModMenus.SCRAP_MULTITOOL_MENU.get(), ScrapMultitoolScreen::new);
     MenuScreens.register(ForgeModMenus.COLLECTOR_STATION_MENU.get(), CollectorStationScreen::new);
     MenuScreens.register(

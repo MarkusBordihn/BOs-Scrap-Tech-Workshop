@@ -40,6 +40,10 @@ public class ForgeModMenus {
       MENU_TYPES.register(
           "recharge_station", () -> IForgeMenuType.create(RechargeStationMenu::new));
 
+  public static final RegistryObject<MenuType<ScrapWindTurbineMenu>> SCRAP_WIND_TURBINE_MENU =
+      MENU_TYPES.register(
+          "scrap_wind_turbine", () -> IForgeMenuType.create(ScrapWindTurbineMenu::new));
+
   public static final RegistryObject<MenuType<ScrapMultitoolMenu>> SCRAP_MULTITOOL_MENU =
       MENU_TYPES.register("scrap_multitool", () -> IForgeMenuType.create(ScrapMultitoolMenu::new));
 
@@ -63,6 +67,7 @@ public class ForgeModMenus {
         (net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) -> {
           RecyclerMenu.TYPE = RECYCLER_MENU.get();
           RechargeStationMenu.TYPE = RECHARGE_STATION_MENU.get();
+          ScrapWindTurbineMenu.TYPE = SCRAP_WIND_TURBINE_MENU.get();
           ScrapMultitoolMenu.TYPE = SCRAP_MULTITOOL_MENU.get();
           CollectorStationMenu.TYPE = COLLECTOR_STATION_MENU.get();
           FloatingScrapCollectorMenu.TYPE = FLOATING_SCRAP_COLLECTOR_MENU.get();

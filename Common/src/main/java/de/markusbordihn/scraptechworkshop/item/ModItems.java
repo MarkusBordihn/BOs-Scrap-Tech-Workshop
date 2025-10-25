@@ -96,6 +96,9 @@ public class ModItems {
   public static Supplier<Item> RECLAIMED_COPPER_WIRE;
   public static Supplier<Item> REFINED_COPPER_WIRE;
 
+  // Dummy Items for Rendering (not craftable, not in creative tab)
+  public static Supplier<Item> SCRAP_WIND_TURBINE_BLADES;
+
   // Hololog Items
   public static Supplier<Item> HOLO_PAD;
 

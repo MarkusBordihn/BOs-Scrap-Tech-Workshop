@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.block;
+package de.markusbordihn.scraptechworkshop.block.multiblock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -51,8 +51,7 @@ public interface MultiBlockStructure {
 
   default void removeMultiBlock(
       final Level level, final BlockPos blockPos, final BlockState blockState) {
-    boolean isUpper = isUpperBlock(blockState);
-    BlockPos partnerPos = getPartnerPos(blockPos, isUpper);
+    BlockPos partnerPos = getPartnerPos(blockPos, isUpperBlock(blockState));
     BlockState partnerState = level.getBlockState(partnerPos);
 
     if (partnerState.getBlock() == blockState.getBlock()) {

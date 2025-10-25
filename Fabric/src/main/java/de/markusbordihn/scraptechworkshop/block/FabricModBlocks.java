@@ -28,6 +28,7 @@ import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileBlock;
+import de.markusbordihn.scraptechworkshop.block.windturbine.ScrapWindTurbineBlock;
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.DecoBlockRegistry;
@@ -36,6 +37,7 @@ import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockReg
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapBoxBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.ScrapWindTurbineBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -57,6 +59,12 @@ public class FabricModBlocks {
         BuiltInRegistries.BLOCK,
         new ResourceLocation(Constants.MOD_ID, RechargeStationBlock.ID),
         RechargeStationBlockRegistry.RECHARGE_STATION_BLOCK);
+
+    // Register scrap wind turbine block
+    Registry.register(
+        BuiltInRegistries.BLOCK,
+        new ResourceLocation(Constants.MOD_ID, ScrapWindTurbineBlock.ID),
+        ScrapWindTurbineBlockRegistry.SCRAP_WIND_TURBINE_BLOCK);
 
     // Register scrap pile block
     Registry.register(

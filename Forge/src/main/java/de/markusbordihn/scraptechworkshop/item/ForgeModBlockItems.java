@@ -27,6 +27,7 @@ import de.markusbordihn.scraptechworkshop.block.deco.ReplicantTestLampBlock;
 import de.markusbordihn.scraptechworkshop.block.floatingscrapcollector.FloatingScrapCollectorBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
+import de.markusbordihn.scraptechworkshop.block.windturbine.ScrapWindTurbineBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.registry.item.HoloLogItemRegistry;
@@ -58,6 +59,13 @@ public class ForgeModBlockItems {
           () ->
               new DescriptiveBlockItem(
                   ForgeModBlocks.RECHARGE_STATION_BLOCK.get(), new Item.Properties()));
+
+  public static final RegistryObject<BlockItem> SCRAP_WIND_TURBINE_BLOCK_ITEM =
+      BLOCK_ITEMS.register(
+          ScrapWindTurbineBlock.ID,
+          () ->
+              new DescriptiveBlockItem(
+                  ForgeModBlocks.SCRAP_WIND_TURBINE_BLOCK.get(), new Item.Properties()));
 
   public static final RegistryObject<BlockItem> BASIC_SCRAP_COLLECTOR_STATION_BLOCK_ITEM =
       BLOCK_ITEMS.register(
@@ -135,6 +143,7 @@ public class ForgeModBlockItems {
 
     ModBlockItems.RECYCLER = RECYCLER_BLOCK_ITEM;
     ModBlockItems.RECHARGE_STATION = RECHARGE_STATION_BLOCK_ITEM;
+    ModBlockItems.SCRAP_WIND_TURBINE = SCRAP_WIND_TURBINE_BLOCK_ITEM;
     ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION = BASIC_SCRAP_COLLECTOR_STATION_BLOCK_ITEM;
     ModBlockItems.FLOATING_SCRAP_COLLECTOR = FLOATING_SCRAP_COLLECTOR_BLOCK_ITEM;
     ModBlockItems.NEON_TUBE = NEON_TUBE_BLOCK_ITEM;

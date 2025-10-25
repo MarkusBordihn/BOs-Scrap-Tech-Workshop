@@ -34,7 +34,6 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -52,9 +51,6 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
   private static final String TRANSLATION_OUTPUT_SLOTS = TRANSLATION_KEY_PREFIX + "output_slots";
   private static final String TRANSLATION_UPGRADE_SLOTS = TRANSLATION_KEY_PREFIX + "upgrade_slots";
   private static final String TRANSLATION_BATTERY_SLOT = TRANSLATION_KEY_PREFIX + "battery_slot";
-
-  private static final ResourceLocation CUSTOM_ELEMENTS_TEXTURE =
-      new ResourceLocation(Constants.MOD_ID, "textures/gui/recycler_elements.png");
 
   private static final int SCREEN_WIDTH = 176;
   private static final int SCREEN_HEIGHT = 205;
@@ -136,41 +132,37 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
     // Upgrade slots (2 horizontal)
     renderSlots(guiGraphics, x + UPGRADE_SLOTS_X, y + UPGRADE_SLOTS_Y, 2, 1);
 
-    // Player inventory with custom positions
-    renderPlayerInventoryAt(guiGraphics, x, y, 123, 181); // Moved down by 20 pixels
+    // Player inventory
+    renderPlayerInventoryAt(guiGraphics, x, y, RecyclerMenu.PLAYER_INVENTORY_START_Y);
 
-    // Render 3D block in center between input and progress arrow (only when crafting and has
-    // energy)
+    // Render 3D block in center
     ItemStack inputItem = menu.getCurrentInput();
     if (!inputItem.isEmpty() && menu.isCrafting() && menu.getCurrentEnergy() > 0) {
       render3DBlock(guiGraphics, x, y, inputItem, partialTick);
     }
 
-    // Progress bar frame (always visible)
+    // Progress bar
+    int progress = menu.isCrafting() ? menu.getScaledProgress() : 0;
+    int progressBarX = x + PROGRESS_ARROW_X;
+    int progressBarY = y + PROGRESS_ARROW_Y;
+    int progressBarWidth = 26;
+    int progressBarHeight = PROGRESS_ARROW_HEIGHT;
+
     guiGraphics.fill(
-        x + PROGRESS_ARROW_X - 1,
-        y + PROGRESS_ARROW_Y - 1,
-        x + PROGRESS_ARROW_X + 26 + 1,
-        y + PROGRESS_ARROW_Y + PROGRESS_ARROW_HEIGHT + 1,
-        0xFF8B8B8B);
-    guiGraphics.fill(
-        x + PROGRESS_ARROW_X,
-        y + PROGRESS_ARROW_Y,
-        x + PROGRESS_ARROW_X + 26,
-        y + PROGRESS_ARROW_Y + PROGRESS_ARROW_HEIGHT,
+        progressBarX,
+        progressBarY,
+        progressBarX + progressBarWidth,
+        progressBarY + progressBarHeight,
         0xFF555555);
 
-    // Progress bar fill (only when crafting)
-    if (menu.isCrafting()) {
-      int scaledProgress = menu.getScaledProgress();
-      if (scaledProgress > 0) {
-        guiGraphics.fill(
-            x + PROGRESS_ARROW_X,
-            y + PROGRESS_ARROW_Y,
-            x + PROGRESS_ARROW_X + scaledProgress,
-            y + PROGRESS_ARROW_Y + PROGRESS_ARROW_HEIGHT,
-            0xFF00FF00);
-      }
+    if (progress > 0) {
+      int filledWidth = (progress * progressBarWidth) / 26;
+      guiGraphics.fill(
+          progressBarX,
+          progressBarY,
+          progressBarX + filledWidth,
+          progressBarY + progressBarHeight,
+          0xFF00FF00);
     }
   }
 
@@ -182,16 +174,10 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
       final float partialTick) {
     PoseStack poseStack = guiGraphics.pose();
     poseStack.pushPose();
-
-    // Position for 3D rendering - centered between input and arrow
     poseStack.translate(x + BLOCK_RENDER_X, y + BLOCK_RENDER_Y, 100);
 
-    // Animate rotation
     rotationAngle += partialTick * 2;
-
-    // Check if item is a block or regular item
     if (inputItem.getItem() instanceof BlockItem blockItem) {
-      // Render as block
       BlockState blockState = blockItem.getBlock().defaultBlockState();
 
       poseStack.scale(BLOCK_RENDER_SCALE, -BLOCK_RENDER_SCALE, BLOCK_RENDER_SCALE);
@@ -200,14 +186,9 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
 
       MultiBufferSource.BufferSource bufferSource = guiGraphics.bufferSource();
       blockRenderer.renderSingleBlock(
-          blockState,
-          poseStack,
-          bufferSource,
-          15728880, // Light value
-          OverlayTexture.NO_OVERLAY);
+          blockState, poseStack, bufferSource, 15728880, OverlayTexture.NO_OVERLAY);
       bufferSource.endBatch();
     } else {
-      // Render as item - scale up items to be more visible
       poseStack.scale(
           BLOCK_RENDER_SCALE * 1.5f, BLOCK_RENDER_SCALE * 1.5f, BLOCK_RENDER_SCALE * 1.5f);
       poseStack.mulPose(Axis.YP.rotationDegrees(rotationAngle));
@@ -216,7 +197,7 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
       itemRenderer.renderStatic(
           inputItem,
           ItemDisplayContext.GUI,
-          15728880, // Light value
+          15728880,
           OverlayTexture.NO_OVERLAY,
           poseStack,
           guiGraphics.bufferSource(),
@@ -254,7 +235,6 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
         menu.getEnergyCapacity(),
         TRANSLATION_BATTERY_SLOT,
         12);
-
     int relativeX = x - leftPos;
     int relativeY = y - topPos;
 

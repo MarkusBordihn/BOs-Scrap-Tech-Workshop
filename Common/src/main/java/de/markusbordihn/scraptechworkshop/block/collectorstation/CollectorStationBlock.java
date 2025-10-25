@@ -19,8 +19,8 @@
 
 package de.markusbordihn.scraptechworkshop.block.collectorstation;
 
-import de.markusbordihn.scraptechworkshop.block.MultiBlockStructure;
 import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.multiblock.MultiBlockStructure;
 import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
 import de.markusbordihn.scraptechworkshop.menu.MenuManager;
 import net.minecraft.core.BlockPos;

@@ -21,6 +21,8 @@ package de.markusbordihn.scraptechworkshop.block.deco;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -40,6 +42,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.joml.Vector3f;
 
 public class ReplicantTestLampBlock extends Block {
 
@@ -49,7 +52,8 @@ public class ReplicantTestLampBlock extends Block {
   public static final BooleanProperty LIT = BlockStateProperties.LIT;
   public static final IntegerProperty MODE = IntegerProperty.create("mode", 0, 1);
 
-  private static final VoxelShape SHAPE = Block.box(4.0D, 0.0D, 4.0D, 12.0D, 12.0D, 12.0D);
+  private static final VoxelShape SHAPE_MODE_0 = Block.box(6.0D, 0.0D, 4.0D, 10.0D, 11.0D, 11.0D);
+  private static final VoxelShape SHAPE_MODE_1 = Block.box(6.0D, 0.0D, 4.0D, 10.0D, 12.0D, 11.0D);
 
   public ReplicantTestLampBlock(final Properties properties) {
     super(properties);
@@ -65,12 +69,41 @@ public class ReplicantTestLampBlock extends Block {
   @Override
   public VoxelShape getShape(
       BlockState blockState, BlockGetter level, BlockPos blockPos, CollisionContext context) {
-    return SHAPE;
+    return blockState.getValue(MODE) == 0 ? SHAPE_MODE_0 : SHAPE_MODE_1;
   }
 
   @Override
   public RenderShape getRenderShape(BlockState blockState) {
     return RenderShape.MODEL;
+  }
+
+  @Override
+  public void animateTick(
+      BlockState blockState, Level level, BlockPos blockPos, RandomSource random) {
+    if (blockState.getValue(LIT) && random.nextInt(20) == 0) {
+      double x = blockPos.getX() + 0.5D;
+      double y = blockPos.getY() + 0.5D;
+      double z = blockPos.getZ() + 0.5D;
+      if (blockState.getValue(MODE) == 0) {
+        level.addParticle(
+            new DustParticleOptions(new Vector3f(1.0f, 0.3f, 0.3f), 0.5f),
+            x + (random.nextDouble() - 0.5D) * 0.3D,
+            y - 0.1D + random.nextDouble() * 0.2D,
+            z + (random.nextDouble() - 0.5D) * 0.3D,
+            0.0D,
+            0.01D,
+            0.0D);
+      } else {
+        level.addParticle(
+            new DustParticleOptions(new Vector3f(1.0f, 0.6f, 0.2f), 0.7f),
+            x + (random.nextDouble() - 0.5D) * 0.3D,
+            y + random.nextDouble() * 0.4D,
+            z + (random.nextDouble() - 0.5D) * 0.3D,
+            0.0D,
+            0.02D,
+            0.0D);
+      }
+    }
   }
 
   @Override
@@ -86,15 +119,16 @@ public class ReplicantTestLampBlock extends Block {
     }
 
     if (player.isShiftKeyDown()) {
-      int currentMode = blockState.getValue(MODE);
-      int newMode = currentMode == 0 ? 1 : 0;
-      level.setBlock(blockPos, blockState.setValue(MODE, newMode), Block.UPDATE_ALL);
+      level.setBlock(
+          blockPos,
+          blockState.setValue(MODE, blockState.getValue(MODE) == 0 ? 1 : 0),
+          Block.UPDATE_ALL);
       return InteractionResult.CONSUME;
     }
 
     if (!blockState.getValue(POWERED)) {
-      boolean currentLit = blockState.getValue(LIT);
-      level.setBlock(blockPos, blockState.setValue(LIT, !currentLit), Block.UPDATE_ALL);
+      level.setBlock(
+          blockPos, blockState.setValue(LIT, !blockState.getValue(LIT)), Block.UPDATE_ALL);
       return InteractionResult.CONSUME;
     }
 

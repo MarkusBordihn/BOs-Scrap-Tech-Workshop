@@ -19,19 +19,18 @@
 
 package de.markusbordihn.scraptechworkshop.energy;
 
-import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 
-public interface EnergyPowerConsumer {
+public interface EnergyPowerConsumer extends EnergyBatteryHandler {
 
   String ENERGY_TAG = "Energy";
   String BATTERY_TAG = "Battery";
+  String LAST_ENERGY_RECEIVE_TIME_TAG = "LastEnergyReceiveTime";
 
-  int getEnergyCapacity();
-
-  int getBatterySlot();
+  int DEFAULT_ENERGY_DEBOUNCE_THRESHOLD = 10;
+  int DEFAULT_ENERGY_DEBOUNCE_TICKS = 40;
 
   void markDirty();
 
@@ -84,61 +83,12 @@ public interface EnergyPowerConsumer {
     };
   }
 
-  default boolean hasEnergy(final int amount) {
-    return getCurrentEnergy() >= amount;
-  }
-
   default boolean consumeEnergy(final int amount) {
     if (getCurrentEnergy() >= amount) {
       setCurrentEnergy(getCurrentEnergy() - amount);
       return true;
     }
     return false;
-  }
-
-  default boolean chargeFromBattery(final int amount) {
-    ItemStack battery = getBattery();
-    if (battery.isEmpty() || !(battery.getItem() instanceof EnergyCellItem batteryItem)) {
-      return false;
-    }
-
-    int batteryEnergy = batteryItem.getEnergy(battery);
-    if (batteryEnergy <= 1) {
-      setBattery(batteryItem.createEmptyBattery());
-      markDirty();
-      return false;
-    }
-
-    int currentEnergy = getCurrentEnergy();
-    int capacity = getEnergyCapacity();
-    int neededEnergy = Math.min(amount, capacity - currentEnergy);
-
-    if (neededEnergy <= 0) {
-      return false;
-    }
-
-    int energyToTransfer = Math.min(neededEnergy, batteryEnergy);
-    batteryItem.consumeEnergy(battery, energyToTransfer);
-    setCurrentEnergy(currentEnergy + energyToTransfer);
-
-    if (batteryItem.getEnergy(battery) <= 1) {
-      setBattery(batteryItem.createEmptyBattery());
-    } else {
-      setBattery(battery);
-    }
-
-    markDirty();
-    return true;
-  }
-
-  default int getEnergyPercentage() {
-    int capacity = getEnergyCapacity();
-    return capacity > 0 ? (getCurrentEnergy() * 100) / capacity : 0;
-  }
-
-  default boolean hasBattery() {
-    ItemStack battery = getBattery();
-    return !battery.isEmpty() && battery.getItem() instanceof EnergyCellItem;
   }
 
   default boolean canAcceptExternalEnergy() {
@@ -152,9 +102,36 @@ public interface EnergyPowerConsumer {
 
     if (!simulate && energyReceived > 0) {
       setCurrentEnergy(currentEnergy + energyReceived);
+      updateEnergyReceiveTime();
     }
 
     return energyReceived;
+  }
+
+  default void updateEnergyReceiveTime() {
+    EnergyPowerData data = getEnergyData();
+    setEnergyData(
+        data.withDebounceData(
+            data.debounceData()
+                .withReceiveTime(System.currentTimeMillis() / 50, getCurrentEnergy())));
+  }
+
+  default boolean hasStableEnergy(final int requiredEnergy) {
+    return hasStableEnergy(requiredEnergy, DEFAULT_ENERGY_DEBOUNCE_THRESHOLD);
+  }
+
+  default boolean hasStableEnergy(final int requiredEnergy, final int threshold) {
+    int currentEnergy = getCurrentEnergy();
+    if (currentEnergy < requiredEnergy) {
+      return false;
+    }
+    return currentEnergy >= requiredEnergy + threshold
+        || isReceivingEnergy(DEFAULT_ENERGY_DEBOUNCE_TICKS);
+  }
+
+  default boolean isReceivingEnergy(final int debounceTicks) {
+    long currentTime = System.currentTimeMillis() / 50;
+    return getEnergyData().debounceData().isReceivingEnergy(currentTime, debounceTicks);
   }
 
   default void loadEnergyPowerConsumer(final CompoundTag compoundTag) {
@@ -163,7 +140,12 @@ public interface EnergyPowerConsumer {
     if (compoundTag.contains(BATTERY_TAG)) {
       battery = ItemStack.of(compoundTag.getCompound(BATTERY_TAG));
     }
-    setEnergyData(new EnergyPowerData(energy, battery));
+    long lastReceiveTime = compoundTag.getLong(LAST_ENERGY_RECEIVE_TIME_TAG);
+    EnergyDebounceData debounceData =
+        lastReceiveTime > 0
+            ? new EnergyDebounceData(lastReceiveTime, energy)
+            : EnergyDebounceData.empty();
+    setEnergyData(new EnergyPowerData(energy, battery, debounceData));
   }
 
   default void saveEnergyPowerConsumer(final CompoundTag compoundTag) {
@@ -173,6 +155,10 @@ public interface EnergyPowerConsumer {
       CompoundTag batteryTag = new CompoundTag();
       data.battery().save(batteryTag);
       compoundTag.put(BATTERY_TAG, batteryTag);
+    }
+    if (data.debounceData() != null) {
+      compoundTag.putLong(
+          LAST_ENERGY_RECEIVE_TIME_TAG, data.debounceData().lastEnergyReceiveTime());
     }
   }
 }

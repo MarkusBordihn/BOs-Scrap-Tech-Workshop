@@ -21,21 +21,26 @@ package de.markusbordihn.scraptechworkshop.energy;
 
 import net.minecraft.world.item.ItemStack;
 
-public record EnergyPowerData(int currentEnergy, ItemStack battery) {
+public record EnergyPowerData(
+    int currentEnergy, ItemStack battery, EnergyDebounceData debounceData) {
 
   public static EnergyPowerData empty() {
-    return new EnergyPowerData(0, ItemStack.EMPTY);
+    return new EnergyPowerData(0, ItemStack.EMPTY, EnergyDebounceData.empty());
   }
 
   public static EnergyPowerData withEnergy(int energy) {
-    return new EnergyPowerData(energy, ItemStack.EMPTY);
+    return new EnergyPowerData(energy, ItemStack.EMPTY, EnergyDebounceData.empty());
   }
 
   public EnergyPowerData withCurrentEnergy(int newEnergy) {
-    return new EnergyPowerData(newEnergy, battery);
+    return new EnergyPowerData(newEnergy, battery, debounceData);
   }
 
   public EnergyPowerData withBattery(ItemStack newBattery) {
-    return new EnergyPowerData(currentEnergy, newBattery);
+    return new EnergyPowerData(currentEnergy, newBattery, debounceData);
+  }
+
+  public EnergyPowerData withDebounceData(EnergyDebounceData newDebounceData) {
+    return new EnergyPowerData(currentEnergy, battery, newDebounceData);
   }
 }

@@ -1,0 +1,154 @@
+{
+  "variants": {
+    "facing=north,half=lower,status=idle": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine"
+    },
+    "facing=east,half=lower,status=idle": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine",
+      "y": 90
+    },
+    "facing=south,half=lower,status=idle": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine",
+      "y": 180
+    },
+    "facing=west,half=lower,status=idle": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine",
+      "y": 270
+    },
+    "facing=north,half=lower,status=no_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_no_wind"
+    },
+    "facing=east,half=lower,status=no_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_no_wind",
+      "y": 90
+    },
+    "facing=south,half=lower,status=no_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_no_wind",
+      "y": 180
+    },
+    "facing=west,half=lower,status=no_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_no_wind",
+      "y": 270
+    },
+    "facing=north,half=lower,status=low_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_low_wind"
+    },
+    "facing=east,half=lower,status=low_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_low_wind",
+      "y": 90
+    },
+    "facing=south,half=lower,status=low_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_low_wind",
+      "y": 180
+    },
+    "facing=west,half=lower,status=low_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_low_wind",
+      "y": 270
+    },
+    "facing=north,half=lower,status=generating": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_generating"
+    },
+    "facing=east,half=lower,status=generating": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_generating",
+      "y": 90
+    },
+    "facing=south,half=lower,status=generating": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_generating",
+      "y": 180
+    },
+    "facing=west,half=lower,status=generating": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_generating",
+      "y": 270
+    },
+    "facing=north,half=lower,status=error": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_error"
+    },
+    "facing=east,half=lower,status=error": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_error",
+      "y": 90
+    },
+    "facing=south,half=lower,status=error": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_error",
+      "y": 180
+    },
+    "facing=west,half=lower,status=error": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_error",
+      "y": 270
+    },
+    "facing=north,half=upper,status=idle": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top"
+    },
+    "facing=east,half=upper,status=idle": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 90
+    },
+    "facing=south,half=upper,status=idle": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 180
+    },
+    "facing=west,half=upper,status=idle": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 270
+    },
+    "facing=north,half=upper,status=no_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top"
+    },
+    "facing=east,half=upper,status=no_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 90
+    },
+    "facing=south,half=upper,status=no_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 180
+    },
+    "facing=west,half=upper,status=no_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 270
+    },
+    "facing=north,half=upper,status=low_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top"
+    },
+    "facing=east,half=upper,status=low_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 90
+    },
+    "facing=south,half=upper,status=low_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 180
+    },
+    "facing=west,half=upper,status=low_wind": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 270
+    },
+    "facing=north,half=upper,status=generating": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top"
+    },
+    "facing=east,half=upper,status=generating": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 90
+    },
+    "facing=south,half=upper,status=generating": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 180
+    },
+    "facing=west,half=upper,status=generating": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 270
+    },
+    "facing=north,half=upper,status=error": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top"
+    },
+    "facing=east,half=upper,status=error": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 90
+    },
+    "facing=south,half=upper,status=error": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 180
+    },
+    "facing=west,half=upper,status=error": {
+      "model": "scrap_tech_workshop:block/scrap_wind_turbine/scrap_wind_turbine_top",
+      "y": 270
+    }
+  }
+}

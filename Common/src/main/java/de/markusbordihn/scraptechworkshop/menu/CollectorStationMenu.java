@@ -59,8 +59,6 @@ public class CollectorStationMenu extends EnergyPowerMenu {
   public static final int UPGRADE_SLOT_Y = 18;
   public static final int UPGRADE_SLOTS_COUNT = 4;
   public static final int PLAYER_INVENTORY_START_Y = 139;
-  public static final int PLAYER_HOTBAR_START_Y = 197;
-  public static final int SLOT_SPACING = 18;
   public static final int ADDITIONAL_CONTAINER_DATA_SIZE = 2;
 
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
@@ -116,8 +114,7 @@ public class CollectorStationMenu extends EnergyPowerMenu {
 
     checkContainerSize(playerInventory, TOTAL_SLOTS);
     addCollectorStationSlots();
-    addPlayerInventory(playerInventory);
-    addPlayerHotbar(playerInventory);
+    addPlayerInventoryAndHotbar(playerInventory, PLAYER_INVENTORY_START_Y);
     addDataSlots(this.additionalData);
   }
 
@@ -187,26 +184,6 @@ public class CollectorStationMenu extends EnergyPowerMenu {
     return null;
   }
 
-  private void addPlayerInventory(final Inventory playerInventory) {
-    for (int row = 0; row < 3; row++) {
-      for (int col = 0; col < 9; col++) {
-        this.addSlot(
-            new Slot(
-                playerInventory,
-                col + row * 9 + 9,
-                8 + col * SLOT_SPACING,
-                PLAYER_INVENTORY_START_Y + row * SLOT_SPACING + 1));
-      }
-    }
-  }
-
-  private void addPlayerHotbar(final Inventory playerInventory) {
-    for (int col = 0; col < 9; col++) {
-      this.addSlot(
-          new Slot(playerInventory, col, 8 + col * SLOT_SPACING, PLAYER_HOTBAR_START_Y + 1));
-    }
-  }
-
   @Override
   public ItemStack quickMoveStack(Player player, int index) {
     ItemStack returnStack = ItemStack.EMPTY;
@@ -255,11 +232,6 @@ public class CollectorStationMenu extends EnergyPowerMenu {
         ContainerLevelAccess.create(level, blockEntity.getBlockPos()),
         player,
         blockEntity.getBlockState().getBlock());
-  }
-
-  @Override
-  public EnergyPowerConsumer getEnergyConsumer() {
-    return blockEntity;
   }
 
   public int getStatus() {

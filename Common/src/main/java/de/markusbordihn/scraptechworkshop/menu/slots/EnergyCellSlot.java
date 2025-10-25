@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.menu.slots;
 
+import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
@@ -32,7 +33,8 @@ public class EnergyCellSlot extends Slot {
 
   @Override
   public boolean mayPlace(ItemStack itemStack) {
-    return itemStack.getItem() instanceof EnergyCellItem;
+    return itemStack.getItem() instanceof EnergyCellItem
+        || itemStack.getItem() instanceof EmptyEnergyCellItem;
   }
 
   @Override

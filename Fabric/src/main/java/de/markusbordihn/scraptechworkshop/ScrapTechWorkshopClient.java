@@ -23,6 +23,7 @@ import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.Collecto
 import de.markusbordihn.scraptechworkshop.block.entity.hololog.HoloCubeBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.rechargestation.RechargeStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.windturbine.ScrapWindTurbineBlockEntity;
 import de.markusbordihn.scraptechworkshop.client.ClientEventHandler;
 import de.markusbordihn.scraptechworkshop.client.model.robot.BaseRobotModel;
 import de.markusbordihn.scraptechworkshop.client.model.robot.MixedScrapRobotModel;
@@ -30,6 +31,7 @@ import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.HoloCubeBl
 import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.RecyclerBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.collectorstation.CollectorStationBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.rechargestation.RechargeStationBlockEntityRenderer;
+import de.markusbordihn.scraptechworkshop.client.renderer.blockentity.windturbine.ScrapWindTurbineBlockEntityRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.entity.HoloLogHumanoidRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.entity.robot.CollectorStationRobotRenderer;
 import de.markusbordihn.scraptechworkshop.client.renderer.entity.robot.MixedScrapRobotRenderer;
@@ -64,6 +66,8 @@ public class ScrapTechWorkshopClient implements ClientModInitializer {
     BlockEntityRenderers.register(HoloCubeBlockEntity.TYPE, HoloCubeBlockEntityRenderer::new);
     BlockEntityRenderers.register(
         CollectorStationBlockEntity.TYPE, CollectorStationBlockEntityRenderer::new);
+    BlockEntityRenderers.register(
+        ScrapWindTurbineBlockEntity.TYPE, ScrapWindTurbineBlockEntityRenderer::new);
 
     // Register entity renderers
     EntityRendererRegistry.register(

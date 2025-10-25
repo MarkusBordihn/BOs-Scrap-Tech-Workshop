@@ -72,12 +72,7 @@ public class FloatingScrapCollectorScreen extends BaseContainerScreen<FloatingSc
         FloatingScrapCollectorMenu.OUTPUT_GRID_COLUMNS,
         FloatingScrapCollectorMenu.OUTPUT_GRID_ROWS);
 
-    renderPlayerInventoryAt(
-        guiGraphics,
-        x,
-        y,
-        FloatingScrapCollectorMenu.PLAYER_INVENTORY_START_Y,
-        FloatingScrapCollectorMenu.PLAYER_INVENTORY_START_Y + 58);
+    renderPlayerInventoryAt(guiGraphics, x, y, FloatingScrapCollectorMenu.PLAYER_INVENTORY_START_Y);
 
     renderProgressBar(guiGraphics, x, y);
     renderDurabilityBar(guiGraphics, x, y);

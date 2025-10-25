@@ -107,14 +107,10 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
   }
 
   protected void renderPlayerInventoryAt(
-      final GuiGraphics guiGraphics,
-      final int x,
-      final int y,
-      final int inventoryY,
-      final int hotbarY) {
+      final GuiGraphics guiGraphics, final int x, final int y, final int inventoryStartY) {
     RenderSystem.setShaderTexture(0, Constants.TEXTURE_INVENTORY);
-    guiGraphics.blit(Constants.TEXTURE_INVENTORY, x + 7, y + inventoryY, 7, 83, 162, 54);
-    guiGraphics.blit(Constants.TEXTURE_INVENTORY, x + 7, y + hotbarY, 7, 141, 162, 18);
+    guiGraphics.blit(Constants.TEXTURE_INVENTORY, x + 7, y + inventoryStartY - 1, 7, 83, 162, 54);
+    guiGraphics.blit(Constants.TEXTURE_INVENTORY, x + 7, y + inventoryStartY + 57, 7, 141, 162, 18);
   }
 
   protected void renderEnergyBar(
@@ -146,15 +142,26 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
     renderEnergyBar(guiGraphics, x, y, barWidth, barHeight, currentEnergy, maxEnergy);
   }
 
-  protected void renderEnergyPercentage(
+  protected void renderProgressBar(
       final GuiGraphics guiGraphics,
       final int x,
       final int y,
-      final int barWidth,
-      final int percentage) {
-    String energyText = percentage + "%";
-    int textX = x + (barWidth / 2) - (this.font.width(energyText) / 2);
-    guiGraphics.drawString(this.font, energyText, textX, y, 0x55FF55, false);
+      final int width,
+      final int height,
+      final int current,
+      final int max,
+      final int color) {
+    guiGraphics.fill(x, y, x + width, y + height, 0xFF555555);
+
+    if (max > 0 && current > 0) {
+      int filledWidth = (current * width) / max;
+      guiGraphics.fill(x, y, x + filledWidth, y + height, 0xFF000000 | color);
+    }
+
+    guiGraphics.fill(x, y, x + width, y + 1, 0xFF000000);
+    guiGraphics.fill(x, y + height - 1, x + width, y + height, 0xFF000000);
+    guiGraphics.fill(x, y, x + 1, y + height, 0xFF000000);
+    guiGraphics.fill(x + width - 1, y, x + width, y + height, 0xFF000000);
   }
 
   protected void renderEnergyTooltip(

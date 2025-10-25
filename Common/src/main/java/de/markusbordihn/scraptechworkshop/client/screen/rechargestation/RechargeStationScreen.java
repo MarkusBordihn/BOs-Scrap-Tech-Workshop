@@ -43,7 +43,6 @@ public class RechargeStationScreen extends BaseContainerScreen<RechargeStationMe
 
   private static final int SCREEN_WIDTH = 176;
   private static final int SCREEN_HEIGHT = 181;
-  private static final int INVENTORY_LABEL_OFFSET = 73;
 
   private static final int PROGRESS_BAR_AREA_X1 = 68;
   private static final int PROGRESS_BAR_AREA_X2 = 108;
@@ -92,12 +91,7 @@ public class RechargeStationScreen extends BaseContainerScreen<RechargeStationMe
 
     renderSlot(guiGraphics, x + INPUT_SLOT_X, y + INPUT_SLOT_Y);
 
-    renderPlayerInventoryAt(
-        guiGraphics,
-        x,
-        y,
-        RechargeStationMenu.PLAYER_INVENTORY_START_Y,
-        RechargeStationMenu.PLAYER_HOTBAR_START_Y - 1);
+    renderPlayerInventoryAt(guiGraphics, x, y, RechargeStationMenu.PLAYER_INVENTORY_START_Y);
 
     int progressBarX = x + RechargeStationMenu.PROGRESS_BAR_X;
     int progressBarY = y + RechargeStationMenu.PROGRESS_BAR_Y;

@@ -1,0 +1,136 @@
+{
+  "format_version": "1.9.0",
+  "credit": "Made with Blockbench by Markus Bordihn",
+  "textures": {
+    "copper": "block/copper_block",
+    "particle": "scrap_tech_workshop:block/scrap_wind_turbine/control_unit",
+    "control_unit": "scrap_tech_workshop:block/scrap_wind_turbine/control_unit"
+  },
+  "elements": [
+    {
+      "name": "post",
+      "from": [7.001, 0.001, 7.001],
+      "to": [8.999, 30.999, 8.999],
+      "rotation": {"angle": 0, "axis": "y", "origin": [7.97323, 10.18716, 7]},
+      "faces": {
+        "north": {"uv": [1, 0, 2, 16], "texture": "#copper"},
+        "east": {"uv": [4, 0, 5, 16], "texture": "#copper"},
+        "south": {"uv": [3, 0, 4, 16], "texture": "#copper"},
+        "west": {"uv": [2, 0, 3, 16], "texture": "#copper"},
+        "down": {"uv": [16, 15, 15, 16], "texture": "#copper"}
+      }
+    },
+    {
+      "name": "control_unit",
+      "from": [5.1, 8, 5],
+      "to": [11, 15, 7],
+      "rotation": {"angle": 0, "axis": "y", "origin": [7.97323, 10.18716, 7]},
+      "faces": {
+        "north": {"uv": [0, 0, 10, 12], "texture": "#control_unit"},
+        "east": {"uv": [0, 12, 7, 14], "rotation": 90, "texture": "#control_unit"},
+        "south": {"uv": [10, 2, 16, 9], "texture": "#control_unit"},
+        "west": {"uv": [0, 14, 7, 16], "rotation": 90, "texture": "#control_unit"},
+        "up": {"uv": [16, 2, 10, 0], "texture": "#control_unit"},
+        "down": {"uv": [16, 9, 10, 11], "texture": "#control_unit"}
+      }
+    },
+    {
+      "from": [7.11736, -1.21082, 7.46194],
+      "to": [8.11736, 9.78918, 8.46194],
+      "rotation": {"angle": -22.5, "axis": "z", "origin": [7.97323, 10.18716, 7]},
+      "faces": {
+        "north": {"uv": [10, 5, 11, 16], "texture": "#copper"},
+        "east": {"uv": [15, 5, 16, 16], "texture": "#copper"},
+        "south": {"uv": [8, 5, 9, 16], "texture": "#copper"},
+        "west": {"uv": [9, 5, 10, 16], "texture": "#copper"},
+        "down": {"uv": [16, 16, 15, 15], "texture": "#copper"}
+      }
+    },
+    {
+      "from": [7.84959, -1.16135, 7.46194],
+      "to": [8.84959, 9.83865, 8.46194],
+      "rotation": {"angle": 22.5, "axis": "z", "origin": [7.97323, 10.18716, 7]},
+      "faces": {
+        "north": {"uv": [12, 5, 13, 16], "texture": "#copper"},
+        "east": {"uv": [13, 5, 14, 16], "texture": "#copper"},
+        "south": {"uv": [14, 5, 15, 16], "texture": "#copper"},
+        "west": {"uv": [15, 5, 16, 16], "texture": "#copper"},
+        "down": {"uv": [16, 15, 15, 16], "texture": "#copper"}
+      }
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [75, 45, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.375, 0.375, 0.375]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [75, 45, 0],
+      "translation": [0, 2.5, 0],
+      "scale": [0.375, 0.375, 0.375]
+    },
+    "firstperson_righthand": {
+      "rotation": [0, 138, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "firstperson_lefthand": {
+      "rotation": [0, 124, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "ground": {
+      "translation": [0, 5, 0],
+      "scale": [0.4, 0.4, 0.4]
+    },
+    "gui": {
+      "rotation": [30, -135, 0],
+      "scale": [0.625, 0.625, 0.625]
+    },
+    "head": {
+      "translation": [0, 14.5, 0]
+    },
+    "fixed": {
+      "translation": [0, -4, 0],
+      "scale": [0.5, 0.5, 0.5]
+    },
+    "on_shelf": {
+      "rotation": [0, -180, 0],
+      "translation": [0, -0.75, 0]
+    }
+  },
+  "groups": [
+    {
+      "name": "top_part",
+      "origin": [7, 16, 7],
+      "color": 0,
+      "children": [
+        {
+          "name": "blades",
+          "origin": [4, 22, 7],
+          "color": 0,
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "bottom_part",
+      "origin": [7, 16, 7],
+      "color": 0,
+      "children": [
+        0,
+        {
+          "name": "control_unit",
+          "origin": [7, 16, 7],
+          "color": 0,
+          "children": [1]
+        },
+        {
+          "name": "base",
+          "origin": [4, 22, 7],
+          "color": 0,
+          "children": [2, 3]
+        }
+      ]
+    }
+  ]
+}

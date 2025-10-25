@@ -23,10 +23,12 @@ import de.markusbordihn.scraptechworkshop.block.entity.ForgeCollectorStationMenu
 import de.markusbordihn.scraptechworkshop.block.entity.ForgeFloatingScrapCollectorMenuProvider;
 import de.markusbordihn.scraptechworkshop.block.entity.ForgeRechargeStationMenuProvider;
 import de.markusbordihn.scraptechworkshop.block.entity.ForgeRecyclerMenuProvider;
+import de.markusbordihn.scraptechworkshop.block.entity.ForgeScrapWindTurbineMenuProvider;
 import de.markusbordihn.scraptechworkshop.block.entity.collectorstation.CollectorStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.floatingscrapcollector.FloatingScrapCollectorBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.rechargestation.RechargeStationBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.entity.recycler.RecyclerBlockEntity;
+import de.markusbordihn.scraptechworkshop.block.entity.windturbine.ScrapWindTurbineBlockEntity;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -59,6 +61,11 @@ public class ForgeMenuOpener implements MenuManager.MenuOpener {
       NetworkHooks.openScreen(
           serverPlayer,
           new ForgeFloatingScrapCollectorMenuProvider(floatingCollector),
+          blockEntity.getBlockPos());
+    } else if (blockEntity instanceof ScrapWindTurbineBlockEntity windTurbine) {
+      NetworkHooks.openScreen(
+          serverPlayer,
+          new ForgeScrapWindTurbineMenuProvider(windTurbine),
           blockEntity.getBlockPos());
     }
   }

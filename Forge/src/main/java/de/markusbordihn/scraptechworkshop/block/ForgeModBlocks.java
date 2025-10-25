@@ -28,6 +28,7 @@ import de.markusbordihn.scraptechworkshop.block.hololog.HoloCubeBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.block.scrap.ScrapPileBlock;
+import de.markusbordihn.scraptechworkshop.block.windturbine.ScrapWindTurbineBlock;
 import de.markusbordihn.scraptechworkshop.data.scrap.ScrapType;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.DecoBlockRegistry;
@@ -36,6 +37,7 @@ import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockReg
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapBoxBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.ScrapWindTurbineBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.hololog.HoloLogBlockRegistry;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -54,6 +56,10 @@ public class ForgeModBlocks {
   public static final RegistryObject<Block> RECHARGE_STATION_BLOCK =
       BLOCKS.register(
           RechargeStationBlock.ID, () -> RechargeStationBlockRegistry.RECHARGE_STATION_BLOCK);
+
+  public static final RegistryObject<Block> SCRAP_WIND_TURBINE_BLOCK =
+      BLOCKS.register(
+          ScrapWindTurbineBlock.ID, () -> ScrapWindTurbineBlockRegistry.SCRAP_WIND_TURBINE_BLOCK);
 
   public static final RegistryObject<Block> SCRAP_PILE_BLOCK =
       BLOCKS.register(ScrapPileBlock.ID, () -> ScrapPileBlockRegistry.SCRAP_PILE_BLOCK);

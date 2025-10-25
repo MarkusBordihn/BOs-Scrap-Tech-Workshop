@@ -88,6 +88,7 @@ public class ModCreativeTabs {
               output.accept(ModBlockItems.RECHARGE_STATION.get());
               output.accept(ModBlockItems.RECYCLER.get());
               output.accept(ModBlockItems.REPLICANT_TEST_LAMP.get());
+              output.accept(ModBlockItems.SCRAP_WIND_TURBINE.get());
 
               for (HoloCubeItem item : HoloLogItemRegistry.getHoloCubeItems().values()) {
                 output.accept(item);

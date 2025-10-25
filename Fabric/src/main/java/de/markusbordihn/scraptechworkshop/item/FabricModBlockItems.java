@@ -25,6 +25,7 @@ import de.markusbordihn.scraptechworkshop.block.deco.ReplicantTestLampBlock;
 import de.markusbordihn.scraptechworkshop.block.floatingscrapcollector.FloatingScrapCollectorBlock;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
+import de.markusbordihn.scraptechworkshop.block.windturbine.ScrapWindTurbineBlock;
 import de.markusbordihn.scraptechworkshop.data.ScrapPileVariant;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.registry.block.CollectorStationBlockRegistry;
@@ -33,6 +34,7 @@ import de.markusbordihn.scraptechworkshop.registry.block.FloatingScrapCollectorB
 import de.markusbordihn.scraptechworkshop.registry.block.RechargeStationBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.RecyclerBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.block.ScrapPileBlockRegistry;
+import de.markusbordihn.scraptechworkshop.registry.block.ScrapWindTurbineBlockRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.HoloLogItemRegistry;
 import de.markusbordihn.scraptechworkshop.registry.item.HoloLogRegistry;
 import java.util.Map;
@@ -61,6 +63,13 @@ public class FabricModBlockItems {
             () ->
                 new DescriptiveBlockItem(
                     RechargeStationBlockRegistry.RECHARGE_STATION_BLOCK, new Item.Properties()));
+
+    ModBlockItems.SCRAP_WIND_TURBINE =
+        registerBlockItem(
+            ScrapWindTurbineBlock.ID,
+            () ->
+                new DescriptiveBlockItem(
+                    ScrapWindTurbineBlockRegistry.SCRAP_WIND_TURBINE_BLOCK, new Item.Properties()));
 
     ModBlockItems.BASIC_SCRAP_COLLECTOR_STATION =
         registerBlockItem(

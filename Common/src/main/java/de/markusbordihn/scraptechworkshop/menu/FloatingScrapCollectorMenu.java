@@ -32,7 +32,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.MenuType;
@@ -44,7 +43,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FloatingScrapCollectorMenu extends AbstractContainerMenu {
+public class FloatingScrapCollectorMenu extends BaseMenu {
 
   public static final int NET_SLOT_X = 8;
   public static final int NET_SLOT_Y = 17;
@@ -53,8 +52,6 @@ public class FloatingScrapCollectorMenu extends AbstractContainerMenu {
   public static final int OUTPUT_GRID_COLUMNS = 3;
   public static final int OUTPUT_GRID_ROWS = 3;
   public static final int PLAYER_INVENTORY_START_Y = 84;
-  public static final int PLAYER_HOTBAR_START_Y = 142;
-  public static final int SLOT_SPACING = 18;
   public static final int PROGRESS_BAR_X = 35;
   public static final int PROGRESS_BAR_Y = 17;
   public static final int PROGRESS_BAR_WIDTH = 18;
@@ -110,8 +107,7 @@ public class FloatingScrapCollectorMenu extends AbstractContainerMenu {
 
     checkContainerSize(playerInventory, TOTAL_SLOTS);
     addCollectorSlots();
-    addPlayerInventory(playerInventory);
-    addPlayerHotbar(playerInventory);
+    addPlayerInventoryAndHotbar(playerInventory, PLAYER_INVENTORY_START_Y);
     addDataSlots(this.additionalData);
   }
 
@@ -158,25 +154,6 @@ public class FloatingScrapCollectorMenu extends AbstractContainerMenu {
     }
 
     return null;
-  }
-
-  private void addPlayerInventory(Inventory playerInventory) {
-    for (int row = 0; row < 3; row++) {
-      for (int col = 0; col < 9; col++) {
-        this.addSlot(
-            new Slot(
-                playerInventory,
-                col + row * 9 + 9,
-                8 + col * SLOT_SPACING,
-                PLAYER_INVENTORY_START_Y + row * SLOT_SPACING));
-      }
-    }
-  }
-
-  private void addPlayerHotbar(Inventory playerInventory) {
-    for (int col = 0; col < 9; col++) {
-      this.addSlot(new Slot(playerInventory, col, 8 + col * SLOT_SPACING, PLAYER_HOTBAR_START_Y));
-    }
   }
 
   @Override

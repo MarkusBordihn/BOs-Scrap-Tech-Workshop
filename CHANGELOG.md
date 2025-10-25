@@ -7,6 +7,17 @@ All notable changes to this project will be documented in this file.
 This change log includes the summarized changes.
 For the full changelog, please go to the [GitHub History][history] instead.
 
+### v1.1.0
+
+- Fixed smaller memory leak with to accurate checks.
+- Fixed performance issue with block entities ticking all in the same tick.
+- Added Scrap Wind Turbine block which generates energy from wind.
+- Added Energy Generator interface for better energy generation handling.
+- Added Wind calculator based on height, biome and surroundings for more realistic energy generation.
+- Improved Replicant Test Lamp model and texture for better visual appearance and performance.
+- Improved Energy Consumer and Energy Provider interfaces for better energy handling.
+- Smaller code clean-ups and optimizations for less overhead and better maintainability.
+
 ### v1.0.0
 
 - Fixed Neon Tube wall placement issues.

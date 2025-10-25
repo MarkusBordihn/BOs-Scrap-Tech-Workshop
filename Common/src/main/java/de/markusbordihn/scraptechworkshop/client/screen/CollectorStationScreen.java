@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
+import de.markusbordihn.scraptechworkshop.menu.BaseMenu;
 import de.markusbordihn.scraptechworkshop.menu.CollectorStationMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -100,16 +101,11 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
       renderSlot(
           guiGraphics,
           x + CollectorStationMenu.UPGRADE_SLOT_START_X + 2,
-          y + CollectorStationMenu.UPGRADE_SLOT_Y + i * CollectorStationMenu.SLOT_SPACING);
+          y + CollectorStationMenu.UPGRADE_SLOT_Y + i * BaseMenu.SLOT_SPACING);
     }
 
     // Player inventory
-    renderPlayerInventoryAt(
-        guiGraphics,
-        x,
-        y,
-        CollectorStationMenu.PLAYER_INVENTORY_START_Y,
-        CollectorStationMenu.PLAYER_HOTBAR_START_Y);
+    renderPlayerInventoryAt(guiGraphics, x, y, CollectorStationMenu.PLAYER_INVENTORY_START_Y);
 
     // Progress bar frame
     int progressBarX = x + CollectorStationMenu.PROGRESS_BAR_X;

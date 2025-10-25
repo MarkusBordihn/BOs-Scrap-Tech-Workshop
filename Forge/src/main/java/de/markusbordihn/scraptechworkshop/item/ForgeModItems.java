@@ -259,6 +259,10 @@ public class ForgeModItems {
     ModItems.REFINED_COPPER_WIRE =
         ITEMS.register("refined_copper_wire", () -> ToolItemRegistry.REFINED_COPPER_WIRE_ITEM);
 
+    // Dummy Items for Rendering (not in creative tab)
+    ModItems.SCRAP_WIND_TURBINE_BLADES =
+        ITEMS.register("scrap_wind_turbine_blades", () -> new Item(new Item.Properties()));
+
     // Upgrade Items
     ModItems.SPEED_UPGRADE =
         ITEMS.register(NormalSpeedUpgradeItem.ID, () -> ToolItemRegistry.SPEED_UPGRADE_ITEM);

@@ -19,13 +19,11 @@
 
 package de.markusbordihn.scraptechworkshop.menu;
 
-import de.markusbordihn.scraptechworkshop.energy.EnergyPowerConsumer;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 
-public abstract class EnergyPowerMenu extends AbstractContainerMenu {
+public abstract class EnergyPowerMenu extends BaseMenu {
 
   public static final int ENERGY_TAB_BATTERY_SLOT_X = -20;
   public static final int ENERGY_TAB_BATTERY_SLOT_Y = 6;
@@ -50,11 +48,4 @@ public abstract class EnergyPowerMenu extends AbstractContainerMenu {
   public int getEnergyCapacity() {
     return energyData.get(ENERGY_CAPACITY_DATA_INDEX);
   }
-
-  public int getEnergyPercentage() {
-    int capacity = getEnergyCapacity();
-    return capacity > 0 ? (getCurrentEnergy() * 100) / capacity : 0;
-  }
-
-  public abstract EnergyPowerConsumer getEnergyConsumer();
 }

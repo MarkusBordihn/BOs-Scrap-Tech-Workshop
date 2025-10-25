@@ -57,7 +57,6 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
   public static final int STORAGE_SLOTS = 24;
   public static final int FIRST_UPGRADE_SLOT = 25;
   public static final int LAST_UPGRADE_SLOT = 28;
-  public static final int UPGRADE_SLOTS = 4;
   public static final int TOTAL_SLOTS = 29;
   private static final Logger log = LogManager.getLogger();
   private static final int ENERGY_CONSUMPTION_INTERVAL = 20;
@@ -77,6 +76,7 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
   public static BlockEntityType<CollectorStationBlockEntity> TYPE;
 
   private final CollectorStationContainer container;
+  private final int tickOffset;
   private int stateTimer = 0;
   private final ContainerData containerData =
       new ContainerData() {
@@ -109,6 +109,10 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
 
   public CollectorStationBlockEntity(final BlockPos blockPos, final BlockState blockState) {
     super(TYPE, blockPos, blockState);
+    this.tickOffset =
+        Math.abs(
+            (blockPos.getX() * 31 + blockPos.getY() * 17 + blockPos.getZ() * 13)
+                % CollectorStationConfig.checkInterval);
     this.container = new CollectorStationContainer(this);
   }
 
@@ -129,10 +133,6 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
     return container.getItems();
   }
 
-  protected int getTotalSlots() {
-    return TOTAL_SLOTS;
-  }
-
   @Override
   protected WorldlyContainer getContainerDelegate() {
     return container;
@@ -145,11 +145,11 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
   private void serverTick(final Level level, final BlockPos blockPos, final BlockState blockState) {
     CollectorStationStatus currentStatus = getStatus();
 
-    if (level.getGameTime() % ENERGY_CHARGE_INTERVAL == 0) {
+    if ((level.getGameTime() + tickOffset) % ENERGY_CHARGE_INTERVAL == 0) {
       chargeFromBattery(getEnergyTransferRate());
     }
 
-    if (getCurrentEnergy() < CollectorStationConfig.energyPerCycle) {
+    if (!hasStableEnergy(CollectorStationConfig.energyPerCycle)) {
       if (currentStatus != CollectorStationStatus.NO_POWER) {
         setStatus(CollectorStationStatus.NO_POWER);
         stateTimer = 0;
@@ -157,7 +157,7 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
       return;
     }
 
-    if (level.getGameTime() % CollectorStationConfig.checkInterval != 0) {
+    if ((level.getGameTime() + tickOffset) % CollectorStationConfig.checkInterval != 0) {
       return;
     }
 
@@ -361,12 +361,14 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
 
   @Override
   public EnergyPowerData getEnergyData() {
-    return new EnergyPowerData(energyData.currentEnergy(), container.getItem(BATTERY_SLOT));
+    return new EnergyPowerData(
+        energyData.currentEnergy(), container.getItem(BATTERY_SLOT), energyData.debounceData());
   }
 
   @Override
   public void setEnergyData(EnergyPowerData data) {
-    this.energyData = new EnergyPowerData(data.currentEnergy(), data.battery());
+    this.energyData =
+        new EnergyPowerData(data.currentEnergy(), data.battery(), data.debounceData());
     container.setItem(BATTERY_SLOT, data.battery());
     setChanged();
   }
@@ -374,11 +376,6 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
   @Override
   public int getEnergyCapacity() {
     return ENERGY_CAPACITY_MAH;
-  }
-
-  @Override
-  public int getBatterySlot() {
-    return BATTERY_SLOT;
   }
 
   @Override
@@ -424,7 +421,9 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
     loadEnergyPowerConsumer(compoundTag);
     cachedBiome = compoundTag.getString(BIOME_TAG);
     // Sync battery from container after loading
-    energyData = new EnergyPowerData(energyData.currentEnergy(), container.getItem(BATTERY_SLOT));
+    energyData =
+        new EnergyPowerData(
+            energyData.currentEnergy(), container.getItem(BATTERY_SLOT), energyData.debounceData());
   }
 
   @Override

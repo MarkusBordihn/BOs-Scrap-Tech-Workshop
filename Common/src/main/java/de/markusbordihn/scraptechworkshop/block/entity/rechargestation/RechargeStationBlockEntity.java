@@ -56,9 +56,11 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
   private static final int ENERGY_CHARGE_INTERVAL = 5;
   private static final int ENERGY_CONSUMPTION_PER_TICK = 5;
   private static final int RECHARGE_RATE = 5;
+  private static final int STATUS_CHANGE_DELAY = 20;
 
   private static final String PROGRESS_TAG = "Progress";
   private static final String MAX_PROGRESS_TAG = "MaxProgress";
+  private static final String STATUS_DELAY_TIMER_TAG = "StatusDelayTimer";
 
   private static final int PROGRESS_DATA_INDEX = 0;
   private static final int MAX_PROGRESS_DATA_INDEX = 1;
@@ -67,6 +69,7 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
   public static BlockEntityType<RechargeStationBlockEntity> TYPE;
 
   private final RechargeStationContainer container;
+  private final int tickOffset;
   private int progress = 0;
   private int maxProgress = 100;
   private final ContainerData containerData =
@@ -95,11 +98,17 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
       };
   private EnergyPowerData energyData = EnergyPowerData.empty();
   private int tickCounter = 0;
+  private int statusDelayTimer = 0;
+  private RechargeStationStatus pendingStatus = null;
 
   public RechargeStationBlockEntity(final BlockPos blockPos, final BlockState blockState) {
     super(TYPE, blockPos, blockState);
     this.container =
         new RechargeStationContainer(RechargeStationSlots.TOTAL_SLOTS, this::setChanged);
+    this.tickOffset =
+        Math.abs(
+            (blockPos.getX() * 31 + blockPos.getY() * 17 + blockPos.getZ() * 13)
+                % ENERGY_CHARGE_INTERVAL);
   }
 
   public static void tick(
@@ -113,20 +122,33 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
 
     blockEntity.tickCounter++;
 
-    if (blockEntity.tickCounter % ENERGY_CHARGE_INTERVAL == 0) {
+    if ((blockEntity.tickCounter + blockEntity.tickOffset) % ENERGY_CHARGE_INTERVAL == 0) {
       blockEntity.chargeFromBattery(blockEntity.getEnergyTransferRate());
     }
 
     RechargeStationStatus currentStatus = blockState.getValue(RechargeStationBlock.STATUS);
 
-    boolean hasEnoughEnergy = blockEntity.getCurrentEnergy() >= ENERGY_CONSUMPTION_PER_TICK;
+    boolean hasEnoughEnergy = blockEntity.hasStableEnergy(ENERGY_CONSUMPTION_PER_TICK);
     ItemStack inputItem = blockEntity.container.getItem(RechargeStationSlots.INPUT_SLOT);
 
     RechargeStationStatus newStatus = determineStatus(hasEnoughEnergy, inputItem);
 
     if (newStatus != currentStatus) {
-      level.setBlock(blockPos, blockState.setValue(RechargeStationBlock.STATUS, newStatus), 3);
-      blockEntity.progress = 0;
+      if (blockEntity.pendingStatus == newStatus) {
+        blockEntity.statusDelayTimer++;
+        if (blockEntity.statusDelayTimer >= STATUS_CHANGE_DELAY) {
+          level.setBlock(blockPos, blockState.setValue(RechargeStationBlock.STATUS, newStatus), 3);
+          blockEntity.progress = 0;
+          blockEntity.statusDelayTimer = 0;
+          blockEntity.pendingStatus = null;
+        }
+      } else {
+        blockEntity.pendingStatus = newStatus;
+        blockEntity.statusDelayTimer = 0;
+      }
+    } else {
+      blockEntity.statusDelayTimer = 0;
+      blockEntity.pendingStatus = null;
     }
 
     if (newStatus == RechargeStationStatus.CHARGING && hasEnoughEnergy) {
@@ -269,10 +291,6 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
     return container.getItems();
   }
 
-  protected int getTotalSlots() {
-    return RechargeStationSlots.TOTAL_SLOTS;
-  }
-
   @Override
   protected WorldlyContainer getContainerDelegate() {
     return container;
@@ -283,10 +301,13 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
     super.load(compoundTag);
     progress = compoundTag.getInt(PROGRESS_TAG);
     maxProgress = compoundTag.getInt(MAX_PROGRESS_TAG);
+    statusDelayTimer = compoundTag.getInt(STATUS_DELAY_TIMER_TAG);
     loadEnergyPowerConsumer(compoundTag);
     energyData =
         new EnergyPowerData(
-            energyData.currentEnergy(), container.getItem(RechargeStationSlots.BATTERY_SLOT));
+            energyData.currentEnergy(),
+            container.getItem(RechargeStationSlots.BATTERY_SLOT),
+            energyData.debounceData());
   }
 
   @Override
@@ -294,6 +315,7 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
     super.saveAdditional(compoundTag);
     compoundTag.putInt(PROGRESS_TAG, progress);
     compoundTag.putInt(MAX_PROGRESS_TAG, maxProgress);
+    compoundTag.putInt(STATUS_DELAY_TIMER_TAG, statusDelayTimer);
     saveEnergyPowerConsumer(compoundTag);
   }
 
@@ -336,12 +358,15 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
   @Override
   public EnergyPowerData getEnergyData() {
     return new EnergyPowerData(
-        energyData.currentEnergy(), container.getItem(RechargeStationSlots.BATTERY_SLOT));
+        energyData.currentEnergy(),
+        container.getItem(RechargeStationSlots.BATTERY_SLOT),
+        energyData.debounceData());
   }
 
   @Override
   public void setEnergyData(EnergyPowerData data) {
-    this.energyData = new EnergyPowerData(data.currentEnergy(), data.battery());
+    this.energyData =
+        new EnergyPowerData(data.currentEnergy(), data.battery(), data.debounceData());
     container.setItem(RechargeStationSlots.BATTERY_SLOT, data.battery());
     setChanged();
   }
@@ -349,11 +374,6 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
   @Override
   public int getEnergyCapacity() {
     return ENERGY_CAPACITY_MAH;
-  }
-
-  @Override
-  public int getBatterySlot() {
-    return RechargeStationSlots.BATTERY_SLOT;
   }
 
   @Override
@@ -367,9 +387,5 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
 
   public int getProgress() {
     return progress;
-  }
-
-  public int getMaxProgress() {
-    return maxProgress;
   }
 }

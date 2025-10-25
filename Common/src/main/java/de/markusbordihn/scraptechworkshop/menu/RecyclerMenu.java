@@ -51,20 +51,13 @@ public class RecyclerMenu extends EnergyPowerMenu {
   // Main window positions
   public static final int INPUT_SLOT_X = 26;
   public static final int INPUT_SLOT_Y = 35;
-  public static final int SLOT_SPACING = 18;
   public static final int OUTPUT_GRID_START_X = 116;
   public static final int OUTPUT_GRID_START_Y = 17;
   public static final int OUTPUT_GRID_ROWS = 3;
   public static final int OUTPUT_GRID_COLUMNS = 3;
   public static final int UPGRADE_SLOT_START_X = 62;
   public static final int UPGRADE_SLOT_Y = 71;
-  public static final int PLAYER_INVENTORY_START_X = 8;
   public static final int PLAYER_INVENTORY_START_Y = 124;
-  public static final int PLAYER_INVENTORY_ROWS = 3;
-  public static final int PLAYER_INVENTORY_COLUMNS = 9;
-  public static final int PLAYER_HOTBAR_START_X = 8;
-  public static final int PLAYER_HOTBAR_START_Y = 182;
-  public static final int PLAYER_HOTBAR_SLOTS = 9;
   public static final int PROGRESS_ARROW_SIZE = 26;
 
   public static final int ADDITIONAL_CONTAINER_DATA_SIZE = 2;
@@ -120,8 +113,7 @@ public class RecyclerMenu extends EnergyPowerMenu {
 
     checkContainerSize(playerInventory, RecyclerSlots.TOTAL_SLOTS);
     addRecyclerSlots();
-    addPlayerInventory(playerInventory);
-    addPlayerHotbar(playerInventory);
+    addPlayerInventoryAndHotbar(playerInventory, PLAYER_INVENTORY_START_Y);
     addDataSlots(this.additionalData);
   }
 
@@ -148,11 +140,6 @@ public class RecyclerMenu extends EnergyPowerMenu {
       log.error("{} Error reading BlockEntity from additionalData: {}", LOG_PREFIX, e.getMessage());
       return null;
     }
-  }
-
-  @Override
-  public EnergyPowerConsumer getEnergyConsumer() {
-    return blockEntity;
   }
 
   private void addRecyclerSlots() {
@@ -216,30 +203,6 @@ public class RecyclerMenu extends EnergyPowerMenu {
     return null;
   }
 
-  private void addPlayerInventory(Inventory playerInventory) {
-    for (int row = 0; row < PLAYER_INVENTORY_ROWS; row++) {
-      for (int col = 0; col < PLAYER_INVENTORY_COLUMNS; col++) {
-        this.addSlot(
-            new Slot(
-                playerInventory,
-                col + row * PLAYER_INVENTORY_COLUMNS + 9,
-                PLAYER_INVENTORY_START_X + col * SLOT_SPACING,
-                PLAYER_INVENTORY_START_Y + row * SLOT_SPACING));
-      }
-    }
-  }
-
-  private void addPlayerHotbar(Inventory playerInventory) {
-    for (int col = 0; col < PLAYER_HOTBAR_SLOTS; col++) {
-      this.addSlot(
-          new Slot(
-              playerInventory,
-              col,
-              PLAYER_HOTBAR_START_X + col * SLOT_SPACING,
-              PLAYER_HOTBAR_START_Y));
-    }
-  }
-
   public ItemStack getCurrentInput() {
     return this.blockEntity != null ? this.blockEntity.getItem(0) : ItemStack.EMPTY;
   }
@@ -252,9 +215,8 @@ public class RecyclerMenu extends EnergyPowerMenu {
     if (slot.hasItem()) {
       ItemStack slotStack = slot.getItem();
       itemStack = slotStack.copy();
-      int playerInventoryEnd =
-          RecyclerSlots.TOTAL_SLOTS + (PLAYER_INVENTORY_ROWS * PLAYER_INVENTORY_COLUMNS);
-      int playerHotbarEnd = playerInventoryEnd + PLAYER_HOTBAR_SLOTS;
+      int playerInventoryEnd = RecyclerSlots.TOTAL_SLOTS + 27; // 3 rows * 9 columns
+      int playerHotbarEnd = playerInventoryEnd + 9; // 9 hotbar slots
 
       if (blockEntity != null) {
         int inputEnd = RecyclerSlots.INPUT_SLOTS;

@@ -251,6 +251,10 @@ public class FabricModItems {
     ModItems.REFINED_COPPER_WIRE =
         registerItem("refined_copper_wire", () -> ToolItemRegistry.REFINED_COPPER_WIRE_ITEM);
 
+    // Dummy Items for Rendering (not in creative tab)
+    ModItems.SCRAP_WIND_TURBINE_BLADES =
+        registerItem("scrap_wind_turbine_blades", () -> new Item(new Item.Properties()));
+
     // Upgrade Items
     ModItems.SPEED_UPGRADE =
         registerItem(NormalSpeedUpgradeItem.ID, () -> ToolItemRegistry.SPEED_UPGRADE_ITEM);

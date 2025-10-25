@@ -1,0 +1,4 @@
+{
+  "comment": "Dummy model for upper block - actual blades rendered via BlockEntityRenderer on lower block",
+  "parent": "block/air"
+}

@@ -100,8 +100,8 @@ public class ScrapMultitoolScreen extends BaseContainerScreen<ScrapMultitoolMenu
       renderSlot(guiGraphics, x + MODULE_SLOTS_X2 - 36 + (i * 18), y + MODULE_SLOTS_Y);
     }
 
-    // Player inventory moved down appropriately
-    renderPlayerInventoryAt(guiGraphics, x, y, 137, 195);
+    // Player inventory
+    renderPlayerInventoryAt(guiGraphics, x, y, ScrapMultitoolMenu.PLAYER_INVENTORY_START_Y);
 
     render3DMultitool(guiGraphics, x, y);
 

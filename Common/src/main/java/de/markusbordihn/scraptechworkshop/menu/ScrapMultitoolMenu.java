@@ -35,13 +35,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-public class ScrapMultitoolMenu extends AbstractContainerMenu {
+public class ScrapMultitoolMenu extends BaseMenu {
 
+  public static final int PLAYER_INVENTORY_START_Y = 138;
+  public static final int PLAYER_HOTBAR_START_Y = 196;
   // Layout constants
   private static final int BATTERY_SLOT_X = 100;
   private static final int BATTERY_SLOT_Y = 20;
@@ -49,13 +50,7 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
   private static final int MODULE_SLOTS_Y = 50;
   private static final int MODULE_SLOTS_COUNT = ScrapMultitoolData.MODULE_SLOTS;
   private static final int PLAYER_INVENTORY_START_X = 8;
-  private static final int PLAYER_INVENTORY_START_Y = 138;
-  private static final int PLAYER_INVENTORY_ROWS = 3;
-  private static final int PLAYER_INVENTORY_COLUMNS = 9;
   private static final int PLAYER_HOTBAR_START_X = 8;
-  private static final int PLAYER_HOTBAR_Y = 196;
-  private static final int PLAYER_HOTBAR_SLOTS = 9;
-  private static final int SLOT_SPACING = 18;
   private static final int TOTAL_TOOL_SLOTS = 1 + MODULE_SLOTS_COUNT;
 
   // Note: MenuType will be registered by platform-specific code
@@ -88,14 +83,13 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
       final InteractionHand hand,
       final int slotIndex) {
     super(TYPE, windowId);
-    this.multitoolStack = multitoolStack;
-    this.hand = hand;
-    this.toolSlotIndex = slotIndex;
 
-    // Validate multitool stack
     if (!(multitoolStack.getItem() instanceof ScrapMultitoolItem multitool)) {
       throw new IllegalArgumentException("Invalid multitool ItemStack");
     }
+    this.multitoolStack = multitoolStack;
+    this.hand = hand;
+    this.toolSlotIndex = slotIndex;
 
     // Create container with lambda that references the final toolContainer
     SimpleContainer tempContainer =
@@ -111,7 +105,7 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
         });
 
     addToolSlots();
-    addPlayerInventory(playerInventory);
+    addPlayerInventory(playerInventory, PLAYER_INVENTORY_START_X, PLAYER_INVENTORY_START_Y);
     addPlayerHotbar(playerInventory);
 
     initialized = true;
@@ -129,24 +123,11 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
     }
   }
 
-  private void addPlayerInventory(final Inventory playerInventory) {
-    for (int row = 0; row < PLAYER_INVENTORY_ROWS; ++row) {
-      for (int col = 0; col < PLAYER_INVENTORY_COLUMNS; ++col) {
-        this.addSlot(
-            new Slot(
-                playerInventory,
-                col + row * 9 + 9,
-                PLAYER_INVENTORY_START_X + col * 18,
-                PLAYER_INVENTORY_START_Y + row * 18));
-      }
-    }
-  }
-
   private void addPlayerHotbar(final Inventory playerInventory) {
-    for (int index = 0; index < PLAYER_HOTBAR_SLOTS; ++index) {
+    for (int index = 0; index < 9; ++index) { // 9 hotbar slots
       int x = PLAYER_HOTBAR_START_X + index * SLOT_SPACING;
       this.addSlot(
-          new Slot(playerInventory, index, x, PLAYER_HOTBAR_Y) {
+          new Slot(playerInventory, index, x, PLAYER_HOTBAR_START_Y) {
             @Override
             public boolean mayPickup(Player player) {
               return index != toolSlotIndex;
@@ -163,9 +144,8 @@ public class ScrapMultitoolMenu extends AbstractContainerMenu {
     if (slot.hasItem()) {
       ItemStack slotStack = slot.getItem();
       itemStack = slotStack.copy();
-      int playerInventoryEnd =
-          TOTAL_TOOL_SLOTS + (PLAYER_INVENTORY_ROWS * PLAYER_INVENTORY_COLUMNS);
-      int playerHotbarEnd = playerInventoryEnd + PLAYER_HOTBAR_SLOTS;
+      int playerInventoryEnd = TOTAL_TOOL_SLOTS + 27;
+      int playerHotbarEnd = playerInventoryEnd + 9;
 
       if (index < TOTAL_TOOL_SLOTS) {
         // Moving from tool slots to player inventory
