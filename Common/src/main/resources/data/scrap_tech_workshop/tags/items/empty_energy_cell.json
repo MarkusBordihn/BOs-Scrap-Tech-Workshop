@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "scrap_tech_workshop:empty_energy_cell",
+    "scrap_tech_workshop:empty_energy_cell_block"
+  ]
+}

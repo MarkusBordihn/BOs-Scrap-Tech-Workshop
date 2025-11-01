@@ -21,6 +21,7 @@ package de.markusbordihn.scraptechworkshop.registry.item;
 
 import de.markusbordihn.scraptechworkshop.data.wire.WireType;
 import de.markusbordihn.scraptechworkshop.item.component.CircuitBoardItem;
+import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
@@ -59,6 +60,12 @@ public class ToolItemRegistry {
       new EmptyEnergyCellItem(new Item.Properties());
   public static final EnergyCellBlockItem ENERGY_CELL_BLOCK_ITEM =
       new EnergyCellBlockItem(new Item.Properties());
+  public static final EnergyCellBlockItem SLIGHTLY_DAMAGED_ENERGY_CELL_BLOCK_ITEM =
+      new EnergyCellBlockItem(new Item.Properties(), 15000);
+  public static final EnergyCellBlockItem DAMAGED_ENERGY_CELL_BLOCK_ITEM =
+      new EnergyCellBlockItem(new Item.Properties(), 7500);
+  public static final EmptyEnergyCellBlockItem EMPTY_ENERGY_CELL_BLOCK_ITEM =
+      new EmptyEnergyCellBlockItem(new Item.Properties());
   public static final CircuitBoardItem CIRCUIT_BOARD_ITEM =
       new CircuitBoardItem(new Item.Properties());
   public static final WireItem RECLAIMED_COPPER_WIRE_ITEM =

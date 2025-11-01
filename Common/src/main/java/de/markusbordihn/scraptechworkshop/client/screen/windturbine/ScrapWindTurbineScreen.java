@@ -22,6 +22,7 @@ package de.markusbordihn.scraptechworkshop.client.screen.windturbine;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.screen.BaseContainerScreen;
+import de.markusbordihn.scraptechworkshop.client.screen.energy.EnergyPowerRenderer;
 import de.markusbordihn.scraptechworkshop.data.windturbine.ScrapWindTurbineStatus;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.menu.ScrapWindTurbineMenu;
@@ -53,7 +54,6 @@ public class ScrapWindTurbineScreen extends BaseContainerScreen<ScrapWindTurbine
   private static final int SCREEN_WIDTH = 176;
   private static final int SCREEN_HEIGHT = 201;
 
-  // UI element positions
   private static final int UI_LEFT_MARGIN = 8;
   private static final int WIND_SPEED_BAR_Y = 50;
   private static final int POWER_GEN_BAR_Y = 70;
@@ -64,15 +64,6 @@ public class ScrapWindTurbineScreen extends BaseContainerScreen<ScrapWindTurbine
   private static final int PROGRESS_BAR_WIDTH = 70;
   private static final int CHARGING_SLOT_ENERGY_BAR_OFFSET_Y = 20;
 
-  // Energy bar positions
-  private static final int ENERGY_BAR_X_OFFSET = -20;
-  private static final int ENERGY_BAR_Y = 6;
-  private static final int ENERGY_BAR_TOOLTIP_X_OFFSET = -20;
-  private static final int ENERGY_BAR_TOOLTIP_Y = 26;
-  private static final int ENERGY_BAR_WIDTH = 16;
-  private static final int ENERGY_BAR_HEIGHT = 60;
-
-  // Client-side fluctuation state
   private float displayWindSpeed = 0.0f;
   private float displayPowerGen = 0.0f;
   private long lastFluctuationTime = 0;
@@ -101,18 +92,8 @@ public class ScrapWindTurbineScreen extends BaseContainerScreen<ScrapWindTurbine
 
     renderDefaultBackground(guiGraphics, x, y, imageWidth, imageHeight);
 
-    renderEnergyPowerUI(
-        guiGraphics,
-        x,
-        y,
-        ENERGY_BAR_X_OFFSET,
-        ENERGY_BAR_Y,
-        ENERGY_BAR_TOOLTIP_X_OFFSET,
-        ENERGY_BAR_TOOLTIP_Y,
-        ENERGY_BAR_WIDTH,
-        ENERGY_BAR_HEIGHT,
-        menu.getEnergy(),
-        menu.getEnergyCapacity());
+    EnergyPowerRenderer.renderEnergyPowerUI(
+        guiGraphics, x, y, menu.getEnergy(), menu.getEnergyCapacity(), menu.getEnergyFlowStatus());
 
     renderSlot(
         guiGraphics,
@@ -275,12 +256,6 @@ public class ScrapWindTurbineScreen extends BaseContainerScreen<ScrapWindTurbine
         mouseY,
         x,
         y,
-        ENERGY_BAR_X_OFFSET,
-        ENERGY_BAR_Y,
-        ENERGY_BAR_TOOLTIP_X_OFFSET,
-        ENERGY_BAR_TOOLTIP_Y,
-        ENERGY_BAR_WIDTH,
-        ENERGY_BAR_HEIGHT,
         menu.getEnergy(),
         menu.getEnergyCapacity(),
         TRANSLATION_BATTERY_SLOT,

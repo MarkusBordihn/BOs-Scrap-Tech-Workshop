@@ -71,7 +71,6 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
   private static final int DATA_STATE_TIMER = 1;
   private static final int DATA_COUNT = 2;
   private static final int ENERGY_CAPACITY_MAH = 5000;
-  private static final int ENERGY_CHARGE_INTERVAL = 5;
 
   public static BlockEntityType<CollectorStationBlockEntity> TYPE;
 
@@ -145,9 +144,8 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
   private void serverTick(final Level level, final BlockPos blockPos, final BlockState blockState) {
     CollectorStationStatus currentStatus = getStatus();
 
-    if ((level.getGameTime() + tickOffset) % ENERGY_CHARGE_INTERVAL == 0) {
-      chargeFromBattery(getEnergyTransferRate());
-    }
+    long currentTime = level.getGameTime();
+    updateEnergyFlow(currentTime);
 
     if (!hasStableEnergy(CollectorStationConfig.energyPerCycle)) {
       if (currentStatus != CollectorStationStatus.NO_POWER) {
@@ -157,7 +155,7 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
       return;
     }
 
-    if ((level.getGameTime() + tickOffset) % CollectorStationConfig.checkInterval != 0) {
+    if ((currentTime + tickOffset) % CollectorStationConfig.checkInterval != 0) {
       return;
     }
 
@@ -361,14 +359,12 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
 
   @Override
   public EnergyPowerData getEnergyData() {
-    return new EnergyPowerData(
-        energyData.currentEnergy(), container.getItem(BATTERY_SLOT), energyData.debounceData());
+    return energyData.withBattery(container.getItem(BATTERY_SLOT));
   }
 
   @Override
   public void setEnergyData(EnergyPowerData data) {
-    this.energyData =
-        new EnergyPowerData(data.currentEnergy(), data.battery(), data.debounceData());
+    this.energyData = data;
     container.setItem(BATTERY_SLOT, data.battery());
     setChanged();
   }
@@ -420,10 +416,7 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
     stateTimer = compoundTag.getInt(STATE_TIMER_TAG);
     loadEnergyPowerConsumer(compoundTag);
     cachedBiome = compoundTag.getString(BIOME_TAG);
-    // Sync battery from container after loading
-    energyData =
-        new EnergyPowerData(
-            energyData.currentEnergy(), container.getItem(BATTERY_SLOT), energyData.debounceData());
+    energyData = getEnergyData();
   }
 
   @Override

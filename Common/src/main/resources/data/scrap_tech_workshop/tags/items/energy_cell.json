@@ -3,6 +3,9 @@
   "values": [
     "scrap_tech_workshop:energy_cell",
     "scrap_tech_workshop:slightly_damaged_energy_cell",
-    "scrap_tech_workshop:damaged_energy_cell"
+    "scrap_tech_workshop:damaged_energy_cell",
+    "scrap_tech_workshop:energy_cell_block",
+    "scrap_tech_workshop:slightly_damaged_energy_cell_block",
+    "scrap_tech_workshop:damaged_energy_cell_block"
   ]
 }

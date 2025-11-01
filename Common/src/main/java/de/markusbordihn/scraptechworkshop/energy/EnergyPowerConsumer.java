@@ -19,15 +19,22 @@
 
 package de.markusbordihn.scraptechworkshop.energy;
 
+import de.markusbordihn.scraptechworkshop.item.ModItems;
+import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellBlockItem;
+import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 
-public interface EnergyPowerConsumer extends EnergyBatteryHandler {
+public interface EnergyPowerConsumer extends EnergyPowerBatteryHandler {
 
   String ENERGY_TAG = "Energy";
   String BATTERY_TAG = "Battery";
   String LAST_ENERGY_RECEIVE_TIME_TAG = "LastEnergyReceiveTime";
+  String CHARGE_CYCLE_COUNT_TAG = "ChargeCycleCount";
+  String LAST_ENERGY_CHANGE_TIME_TAG = "LastEnergyChangeTime";
+  String LAST_ENERGY_LEVEL_TAG = "LastEnergyLevel";
+  String ENERGY_FLOW_STATUS_TAG = "EnergyFlowStatus";
 
   int DEFAULT_ENERGY_DEBOUNCE_THRESHOLD = 10;
   int DEFAULT_ENERGY_DEBOUNCE_TICKS = 40;
@@ -54,6 +61,38 @@ public interface EnergyPowerConsumer extends EnergyBatteryHandler {
     setEnergyData(getEnergyData().withBattery(battery));
   }
 
+  default int getChargeCycleCount() {
+    return getEnergyData().chargeCycleCount();
+  }
+
+  default void setChargeCycleCount(final int count) {
+    setEnergyData(getEnergyData().withChargeCycleCount(count));
+  }
+
+  default long getLastEnergyChangeTime() {
+    return getEnergyData().lastEnergyChangeTime();
+  }
+
+  default void setLastEnergyChangeTime(final long time) {
+    setEnergyData(getEnergyData().withLastEnergyChangeTime(time));
+  }
+
+  default int getLastEnergyLevel() {
+    return getEnergyData().lastEnergyLevel();
+  }
+
+  default void setLastEnergyLevel(final int energy) {
+    setEnergyData(getEnergyData().withLastEnergyLevel(energy));
+  }
+
+  default EnergyFlowStatus getEnergyFlowStatus() {
+    return getEnergyData().energyFlowStatus();
+  }
+
+  default void setEnergyFlowStatus(final EnergyFlowStatus status) {
+    setEnergyData(getEnergyData().withEnergyFlowStatus(status));
+  }
+
   default int getEnergyTransferRate() {
     return 50;
   }
@@ -65,20 +104,27 @@ public interface EnergyPowerConsumer extends EnergyBatteryHandler {
         return switch (index) {
           case 0 -> getCurrentEnergy();
           case 1 -> getEnergyCapacity();
+          case 2 -> getEnergyFlowStatus().ordinal();
           default -> 0;
         };
       }
 
       @Override
       public void set(int index, int value) {
-        if (index == 0) {
-          setCurrentEnergy(value);
+        switch (index) {
+          case 0 -> setCurrentEnergy(value);
+          case 2 -> {
+            EnergyFlowStatus[] statuses = EnergyFlowStatus.values();
+            if (value >= 0 && value < statuses.length) {
+              setEnergyFlowStatus(statuses[value]);
+            }
+          }
         }
       }
 
       @Override
       public int getCount() {
-        return 2;
+        return 3;
       }
     };
   }
@@ -92,20 +138,73 @@ public interface EnergyPowerConsumer extends EnergyBatteryHandler {
   }
 
   default boolean canAcceptExternalEnergy() {
-    return getCurrentEnergy() < getEnergyCapacity();
+    if (getCurrentEnergy() < getEnergyCapacity()) {
+      return true;
+    }
+    ItemStack battery = getBattery();
+    if (battery.getItem() instanceof EmptyEnergyCellItem || battery.getItem() instanceof EmptyEnergyCellBlockItem) {
+      return true;
+    }
+    if (battery.getItem() instanceof EnergyCell cell) {
+      return cell.getEnergy(battery) < cell.getCapacity();
+    }
+    return false;
+  }
+
+  default int getTotalSpaceAvailable() {
+    int internalSpace = getEnergyCapacity() - getCurrentEnergy();
+    ItemStack battery = getBattery();
+    if (battery.getItem() instanceof EmptyEnergyCellItem || battery.getItem() instanceof EmptyEnergyCellBlockItem) {
+      return internalSpace + Math.min(10000, 150);
+    }
+    if (battery.getItem() instanceof EnergyCell cell) {
+      return internalSpace + Math.min(cell.getCapacity() - cell.getEnergy(battery), cell.getChargeRate());
+    }
+    return internalSpace;
   }
 
   default int receiveEnergy(final int amount, final boolean simulate) {
-    int capacity = getEnergyCapacity();
     int currentEnergy = getCurrentEnergy();
-    int energyReceived = Math.min(amount, capacity - currentEnergy);
-
-    if (!simulate && energyReceived > 0) {
-      setCurrentEnergy(currentEnergy + energyReceived);
+    int spaceInInternal = getEnergyCapacity() - currentEnergy;
+    
+    if (spaceInInternal >= amount) {
+      if (!simulate) {
+        setCurrentEnergy(currentEnergy + amount);
+        updateEnergyReceiveTime();
+      }
+      return amount;
+    }
+    
+    int toInternal = spaceInInternal;
+    int overflow = amount - spaceInInternal;
+    int toBattery = 0;
+    
+    ItemStack battery = getBattery();
+    if (battery.getItem() instanceof EmptyEnergyCellItem || battery.getItem() instanceof EmptyEnergyCellBlockItem) {
+      toBattery = Math.min(overflow, 150);
+      if (!simulate) {
+        ItemStack chargedBattery = battery.getItem() instanceof EmptyEnergyCellBlockItem
+            ? new ItemStack(ModItems.ENERGY_CELL_BLOCK.get())
+            : new ItemStack(ModItems.ENERGY_CELL.get());
+        if (chargedBattery.getItem() instanceof EnergyCell energyCell) {
+          energyCell.setEnergy(chargedBattery, toBattery);
+          setBattery(chargedBattery);
+        }
+      }
+    } else if (battery.getItem() instanceof EnergyCell cell) {
+      toBattery = Math.min(overflow, Math.min(cell.getCapacity() - cell.getEnergy(battery), cell.getChargeRate()));
+      if (!simulate && toBattery > 0) {
+        cell.addEnergy(battery, toBattery);
+        setBattery(battery);
+      }
+    }
+    
+    if (!simulate && toInternal > 0) {
+      setCurrentEnergy(currentEnergy + toInternal);
       updateEnergyReceiveTime();
     }
-
-    return energyReceived;
+    
+    return toInternal + toBattery;
   }
 
   default void updateEnergyReceiveTime() {
@@ -145,7 +244,26 @@ public interface EnergyPowerConsumer extends EnergyBatteryHandler {
         lastReceiveTime > 0
             ? new EnergyDebounceData(lastReceiveTime, energy)
             : EnergyDebounceData.empty();
-    setEnergyData(new EnergyPowerData(energy, battery, debounceData));
+    int chargeCycleCount = compoundTag.getInt(CHARGE_CYCLE_COUNT_TAG);
+    long lastEnergyChangeTime = compoundTag.getLong(LAST_ENERGY_CHANGE_TIME_TAG);
+    int lastEnergyLevel = compoundTag.getInt(LAST_ENERGY_LEVEL_TAG);
+    EnergyFlowStatus flowStatus =
+        EnergyFlowStatus.values()[
+            Math.max(
+                0,
+                Math.min(
+                    compoundTag.getInt(ENERGY_FLOW_STATUS_TAG),
+                    EnergyFlowStatus.values().length - 1))];
+
+    setEnergyData(
+        new EnergyPowerData(
+            energy,
+            battery,
+            debounceData,
+            chargeCycleCount,
+            lastEnergyChangeTime,
+            lastEnergyLevel,
+            flowStatus));
   }
 
   default void saveEnergyPowerConsumer(final CompoundTag compoundTag) {
@@ -160,5 +278,9 @@ public interface EnergyPowerConsumer extends EnergyBatteryHandler {
       compoundTag.putLong(
           LAST_ENERGY_RECEIVE_TIME_TAG, data.debounceData().lastEnergyReceiveTime());
     }
+    compoundTag.putInt(CHARGE_CYCLE_COUNT_TAG, data.chargeCycleCount());
+    compoundTag.putLong(LAST_ENERGY_CHANGE_TIME_TAG, data.lastEnergyChangeTime());
+    compoundTag.putInt(LAST_ENERGY_LEVEL_TAG, data.lastEnergyLevel());
+    compoundTag.putInt(ENERGY_FLOW_STATUS_TAG, data.energyFlowStatus().ordinal());
   }
 }

@@ -17,30 +17,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.menu.slots;
+package de.markusbordihn.scraptechworkshop.item.component;
 
-import de.markusbordihn.scraptechworkshop.energy.EnergyCell;
-import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellBlockItem;
-import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
-import net.minecraft.world.Container;
-import net.minecraft.world.inventory.Slot;
+import de.markusbordihn.scraptechworkshop.Constants;
+import java.util.List;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 
-public class EnergyCellSlot extends Slot {
+public class EmptyEnergyCellBlockItem extends Item {
 
-  public EnergyCellSlot(final Container container, final int slot, final int x, final int y) {
-    super(container, slot, x, y);
+  public static final String ID = "empty_energy_cell_block";
+
+  public EmptyEnergyCellBlockItem(final Properties properties) {
+    super(properties.stacksTo(64).rarity(Rarity.COMMON));
   }
 
   @Override
-  public boolean mayPlace(ItemStack itemStack) {
-    return itemStack.getItem() instanceof EnergyCell
-        || itemStack.getItem() instanceof EmptyEnergyCellItem
-        || itemStack.getItem() instanceof EmptyEnergyCellBlockItem;
-  }
+  public void appendHoverText(
+      ItemStack itemStack, Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+    tooltipComponents.add(
+        Component.translatable(Constants.ITEM_PREFIX + "empty_energy_cell_block.description"));
 
-  @Override
-  public int getMaxStackSize() {
-    return 1;
+    super.appendHoverText(itemStack, level, tooltipComponents, isAdvanced);
   }
 }

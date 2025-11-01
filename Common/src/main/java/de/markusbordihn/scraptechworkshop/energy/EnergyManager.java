@@ -202,14 +202,14 @@ public final class EnergyManager {
 
   public static void syncEnergyWithBattery(
       final ItemStack itemStack, final int maxEnergy, final ItemStack battery) {
-    if (battery.getItem() instanceof EnergyCellItem batteryItem) {
-      int batteryEnergy = batteryItem.getEnergy(battery);
+    if (battery.getItem() instanceof EnergyCell cell) {
+      int batteryEnergy = cell.getEnergy(battery);
       if (batteryEnergy <= 1) {
         setEnergy(itemStack, maxEnergy, 0);
         return;
       }
 
-      float energyRatio = (float) batteryEnergy / EnergyCellItem.CAPACITY_MAH;
+      float energyRatio = (float) batteryEnergy / cell.getCapacity();
       int multitoolEnergy = Math.round(maxEnergy * energyRatio);
       setEnergy(itemStack, maxEnergy, multitoolEnergy);
     } else {

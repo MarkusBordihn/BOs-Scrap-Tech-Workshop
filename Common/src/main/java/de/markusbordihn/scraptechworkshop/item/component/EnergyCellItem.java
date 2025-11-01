@@ -20,6 +20,7 @@
 package de.markusbordihn.scraptechworkshop.item.component;
 
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.energy.EnergyCell;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import java.util.List;
 import net.minecraft.network.chat.Component;
@@ -29,52 +30,57 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public class EnergyCellItem extends Item {
+public class EnergyCellItem extends Item implements EnergyCell {
 
   public static final String ID = "energy_cell";
   public static final int CAPACITY_MAH = 5000;
   public static final float VOLTAGE = 3.7f;
+  public static final int DEFAULT_CHARGE_RATE = 25;
+  public static final int DEFAULT_DISCHARGE_RATE = 100;
 
   private final int initialEnergy;
+  private final int chargeRate;
+  private final int dischargeRate;
 
   public EnergyCellItem(Properties properties) {
-    this(properties, CAPACITY_MAH);
+    this(properties, CAPACITY_MAH, DEFAULT_CHARGE_RATE, DEFAULT_DISCHARGE_RATE);
   }
 
   public EnergyCellItem(Properties properties, int initialEnergy) {
-    super(properties.stacksTo(1).durability(CAPACITY_MAH).rarity(Rarity.UNCOMMON));
-    this.initialEnergy = Math.max(1, Math.min(initialEnergy, CAPACITY_MAH));
+    this(properties, initialEnergy, DEFAULT_CHARGE_RATE, DEFAULT_DISCHARGE_RATE);
   }
 
-  public int getEnergy(ItemStack itemStack) {
-    return CAPACITY_MAH - itemStack.getDamageValue();
+  public EnergyCellItem(Properties properties, int initialEnergy, int chargeRate, int dischargeRate) {
+    super(properties.stacksTo(1).durability(CAPACITY_MAH).rarity(Rarity.UNCOMMON));
+    this.initialEnergy = Math.max(1, Math.min(initialEnergy, CAPACITY_MAH));
+    this.chargeRate = Math.max(1, chargeRate);
+    this.dischargeRate = Math.max(1, dischargeRate);
+  }
+
+  @Override
+  public int getCapacity() {
+    return CAPACITY_MAH;
+  }
+
+  @Override
+  public int getChargeRate() {
+    return chargeRate;
+  }
+
+  @Override
+  public int getDischargeRate() {
+    return dischargeRate;
+  }
+
+  @Override
+  public ItemStack createEmptyBattery() {
+    return new ItemStack(ModItems.EMPTY_ENERGY_CELL.get());
   }
 
   public ItemStack getDefaultInstance() {
     ItemStack stack = new ItemStack(this);
     setEnergy(stack, initialEnergy);
     return stack;
-  }
-
-  public void setEnergy(ItemStack itemStack, int energy) {
-    itemStack.setDamageValue(CAPACITY_MAH - Math.max(1, Math.min(energy, CAPACITY_MAH)));
-  }
-
-  public void consumeEnergy(ItemStack itemStack, int amount) {
-    int currentEnergy = getEnergy(itemStack);
-    setEnergy(itemStack, Math.max(1, currentEnergy - amount));
-  }
-
-  public boolean hasEnergy(ItemStack itemStack, int amount) {
-    return getEnergy(itemStack) >= amount;
-  }
-
-  public float getEnergyPercentage(ItemStack itemStack) {
-    return (float) getEnergy(itemStack) / CAPACITY_MAH;
-  }
-
-  public ItemStack createEmptyBattery() {
-    return new ItemStack(ModItems.EMPTY_ENERGY_CELL.get());
   }
 
   @Override
@@ -84,8 +90,7 @@ public class EnergyCellItem extends Item {
 
   @Override
   public int getBarColor(ItemStack itemStack) {
-    float energyRatio = getEnergyPercentage(itemStack);
-    return energyRatio > 0.6f ? 0x00FF00 : energyRatio > 0.3f ? 0xFFFF00 : 0xFF0000;
+    return EnergyCell.super.getBarColor(itemStack);
   }
 
   @Override

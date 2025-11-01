@@ -67,14 +67,12 @@ public record EnergyData(int current, int maximum, int transferRate) {
     return new EnergyValues(current, maximum, transferRate);
   }
 
-  // Write energy data to ItemStack
   public void writeToItemStack(ItemStack itemStack) {
     CompoundTag tag = itemStack.getOrCreateTag();
     tag.putInt(NBT_ENERGY, current);
     tag.putInt(NBT_MAX_ENERGY, maximum);
     tag.putInt(NBT_TRANSFER_RATE, transferRate);
 
-    // Also update damage value for compatibility with vanilla durability bar
     itemStack.setDamageValue(maximum - Math.max(1, current));
   }
 

@@ -21,6 +21,9 @@ package de.markusbordihn.scraptechworkshop.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.markusbordihn.scraptechworkshop.Constants;
+import de.markusbordihn.scraptechworkshop.client.screen.energy.EnergyPowerRenderer;
+import de.markusbordihn.scraptechworkshop.energy.EnergyFlowStatus;
+import de.markusbordihn.scraptechworkshop.menu.EnergyPowerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
@@ -30,6 +33,11 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
     extends AbstractContainerScreen<T> {
 
+  public static final int STANDARD_BACKGROUND_WIDTH = 248;
+  public static final int STANDARD_BACKGROUND_HEIGHT = 166;
+  public static final int PROGRESS_BAR_BACKGROUND_COLOR = 0xFF555555;
+  public static final int PROGRESS_BAR_BORDER_COLOR = 0xFF000000;
+
   protected BaseContainerScreen(
       final T menu, final Inventory playerInventory, final Component title) {
     super(menu, playerInventory, title);
@@ -38,12 +46,9 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
   protected void renderDefaultBackground(
       final GuiGraphics guiGraphics, final int x, final int y, final int width, final int height) {
     RenderSystem.setShaderTexture(0, Constants.TEXTURE_DEMO_BACKGROUND);
-    int standardWidth = 176;
-    int standardHeight = 166;
 
-    // We split at roughly half of standard size to balance the quadrants
-    int splitX = Math.min(width / 2, standardWidth / 2);
-    int splitY = Math.min(height / 2, standardHeight / 2);
+    int splitX = Math.min(width / 2, STANDARD_BACKGROUND_WIDTH / 2);
+    int splitY = Math.min(height / 2, STANDARD_BACKGROUND_HEIGHT / 2);
 
     // Top-left quadrant (includes left and top borders)
     guiGraphics.blit(
@@ -61,7 +66,7 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
           Constants.TEXTURE_DEMO_BACKGROUND,
           x + splitX,
           y,
-          standardWidth - (width - splitX),
+          STANDARD_BACKGROUND_WIDTH - (width - splitX),
           0,
           width - splitX,
           Math.min(splitY, height));
@@ -74,7 +79,7 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
           x,
           y + splitY,
           0,
-          standardHeight - (height - splitY),
+          STANDARD_BACKGROUND_HEIGHT - (height - splitY),
           Math.min(splitX, width),
           height - splitY);
     }
@@ -85,8 +90,8 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
           Constants.TEXTURE_DEMO_BACKGROUND,
           x + splitX,
           y + splitY,
-          standardWidth - (width - splitX),
-          standardHeight - (height - splitY),
+          STANDARD_BACKGROUND_WIDTH - (width - splitX),
+          STANDARD_BACKGROUND_HEIGHT - (height - splitY),
           width - splitX,
           height - splitY);
     }
@@ -113,35 +118,6 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
     guiGraphics.blit(Constants.TEXTURE_INVENTORY, x + 7, y + inventoryStartY + 57, 7, 141, 162, 18);
   }
 
-  protected void renderEnergyBar(
-      final GuiGraphics guiGraphics,
-      final int x,
-      final int y,
-      final int barWidth,
-      final int barHeight,
-      final int currentEnergy,
-      final int maxEnergy) {
-    guiGraphics.fill(x, y, x + barWidth, y + barHeight, 0xFF555555);
-
-    if (currentEnergy > 0 && maxEnergy > 0) {
-      int energyBarHeight = (int) ((float) currentEnergy / maxEnergy * barHeight);
-      guiGraphics.fill(
-          x, y + (barHeight - energyBarHeight), x + barWidth, y + barHeight, 0xFF00FF00);
-    }
-  }
-
-  protected void renderEnergyBarWithFrame(
-      final GuiGraphics guiGraphics,
-      final int x,
-      final int y,
-      final int barWidth,
-      final int barHeight,
-      final int currentEnergy,
-      final int maxEnergy) {
-    guiGraphics.fill(x - 1, y - 1, x + barWidth + 1, y + barHeight + 1, 0xFF8B8B8B);
-    renderEnergyBar(guiGraphics, x, y, barWidth, barHeight, currentEnergy, maxEnergy);
-  }
-
   protected void renderProgressBar(
       final GuiGraphics guiGraphics,
       final int x,
@@ -151,106 +127,37 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
       final int current,
       final int max,
       final int color) {
-    guiGraphics.fill(x, y, x + width, y + height, 0xFF555555);
+    guiGraphics.fill(x, y, x + width, y + height, PROGRESS_BAR_BACKGROUND_COLOR);
 
     if (max > 0 && current > 0) {
       int filledWidth = (current * width) / max;
       guiGraphics.fill(x, y, x + filledWidth, y + height, 0xFF000000 | color);
     }
 
-    guiGraphics.fill(x, y, x + width, y + 1, 0xFF000000);
-    guiGraphics.fill(x, y + height - 1, x + width, y + height, 0xFF000000);
-    guiGraphics.fill(x, y, x + 1, y + height, 0xFF000000);
-    guiGraphics.fill(x + width - 1, y, x + width, y + height, 0xFF000000);
-  }
-
-  protected void renderEnergyTooltip(
-      final GuiGraphics guiGraphics,
-      final int mouseX,
-      final int mouseY,
-      final int currentEnergy,
-      final int maxEnergy) {
-    renderEnergyTooltip(guiGraphics, mouseX, mouseY, currentEnergy, maxEnergy, 3.7f);
-  }
-
-  protected void renderEnergyTooltip(
-      final GuiGraphics guiGraphics,
-      final int mouseX,
-      final int mouseY,
-      final int currentEnergy,
-      final int maxEnergy,
-      final float voltage) {
-    int percentage = maxEnergy > 0 ? (currentEnergy * 100 / maxEnergy) : 0;
-    Component tooltip =
-        Component.literal(
-            String.format(
-                "%d / %d mAh (%.1fV) - %d%%", currentEnergy, maxEnergy, voltage, percentage));
-    guiGraphics.renderTooltip(this.font, tooltip, mouseX, mouseY);
-  }
-
-  protected boolean isMouseOverEnergyBar(
-      int mouseX, int mouseY, int barX, int barY, int barWidth, int barHeight) {
-    return mouseX >= barX
-        && mouseX <= barX + barWidth
-        && mouseY >= barY
-        && mouseY <= barY + barHeight;
-  }
-
-  protected void renderEnergyTab(
-      final GuiGraphics guiGraphics,
-      final int x,
-      final int y,
-      final int tabWidth,
-      final int tabHeight) {
-    RenderSystem.setShaderTexture(0, Constants.TEXTURE_DEMO_BACKGROUND);
-
-    int cornerHeight = Math.min(tabHeight / 2, 10);
-    guiGraphics.blit(Constants.TEXTURE_DEMO_BACKGROUND, x, y, 0, 0, tabWidth, cornerHeight);
-
-    int middleHeight = tabHeight - (cornerHeight * 2);
-    if (middleHeight > 0) {
-      guiGraphics.blit(
-          Constants.TEXTURE_DEMO_BACKGROUND, x, y + cornerHeight, 0, 5, tabWidth, middleHeight);
-    }
-
-    guiGraphics.blit(
-        Constants.TEXTURE_DEMO_BACKGROUND,
-        x,
-        y + tabHeight - cornerHeight,
-        0,
-        166 - cornerHeight,
-        tabWidth,
-        cornerHeight);
+    guiGraphics.fill(x, y, x + width, y + 1, PROGRESS_BAR_BORDER_COLOR);
+    guiGraphics.fill(x, y + height - 1, x + width, y + height, PROGRESS_BAR_BORDER_COLOR);
+    guiGraphics.fill(x, y, x + 1, y + height, PROGRESS_BAR_BORDER_COLOR);
+    guiGraphics.fill(x + width - 1, y, x + width, y + height, PROGRESS_BAR_BORDER_COLOR);
   }
 
   protected void renderEnergyPowerUI(
       final GuiGraphics guiGraphics,
       final int x,
       final int y,
-      final int batterySlotX,
-      final int batterySlotY,
-      final int energyBarX,
-      final int energyBarY,
-      final int energyBarWidth,
-      final int energyBarHeight,
       final int currentEnergy,
       final int energyCapacity) {
-
-    int tabWidth = 26;
-    int tabHeight = 93;
-    int tabX = x - tabWidth;
-    int tabY = y;
-
-    renderEnergyTab(guiGraphics, tabX, tabY, tabWidth, tabHeight);
-    renderSlot(guiGraphics, x + batterySlotX, y + batterySlotY);
-    renderEnergyBarWithFrame(
-        guiGraphics,
-        x + energyBarX,
-        y + energyBarY,
-        energyBarWidth,
-        energyBarHeight,
-        currentEnergy,
-        energyCapacity);
+    if (this.menu instanceof EnergyPowerMenu energyPowerMenu) {
+      EnergyPowerRenderer.renderEnergyPowerUI(
+          guiGraphics,
+          x,
+          y,
+          currentEnergy,
+          energyCapacity,
+          energyPowerMenu.getEnergyFlowStatus());
+    } else {
+      EnergyPowerRenderer.renderEnergyPowerUI(
+          guiGraphics, x, y, currentEnergy, energyCapacity, EnergyFlowStatus.IDLE);
+    }
   }
 
   protected void renderEnergyPowerTooltips(
@@ -259,32 +166,21 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
       final int mouseY,
       final int leftPos,
       final int topPos,
-      final int batterySlotX,
-      final int batterySlotY,
-      final int energyBarX,
-      final int energyBarY,
-      final int energyBarWidth,
-      final int energyBarHeight,
       final int currentEnergy,
       final int energyCapacity,
       final String batteryTooltipKey,
       final int batterySlotIndex) {
-
-    int relativeX = mouseX - leftPos;
-    int relativeY = mouseY - topPos;
-
-    if (relativeX >= batterySlotX - 1
-        && relativeX <= batterySlotX + 17
-        && relativeY >= batterySlotY - 1
-        && relativeY <= batterySlotY + 17
-        && this.menu.getSlot(batterySlotIndex).getItem().isEmpty()) {
-      guiGraphics.renderTooltip(
-          this.font, Component.translatable(batteryTooltipKey), mouseX, mouseY);
-    }
-
-    if (isMouseOverEnergyBar(
-        relativeX, relativeY, energyBarX, energyBarY, energyBarWidth, energyBarHeight)) {
-      renderEnergyTooltip(guiGraphics, mouseX, mouseY, currentEnergy, energyCapacity);
-    }
+    EnergyPowerRenderer.renderEnergyPowerTooltips(
+        guiGraphics,
+        this.font,
+        mouseX,
+        mouseY,
+        leftPos,
+        topPos,
+        currentEnergy,
+        energyCapacity,
+        batteryTooltipKey,
+        this.menu,
+        batterySlotIndex);
   }
 }

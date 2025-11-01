@@ -110,9 +110,9 @@ public interface EnergyCellConsumer {
     }
 
     ItemStack battery = getBattery(itemStack);
-    if (battery.getItem() instanceof EnergyCellItem batteryItem) {
-      int batteryEnergy = batteryItem.getEnergy(battery);
-      return (float) batteryEnergy / EnergyCellItem.CAPACITY_MAH;
+    if (battery.getItem() instanceof EnergyCell cell) {
+      int batteryEnergy = cell.getEnergy(battery);
+      return (float) batteryEnergy / cell.getCapacity();
     }
 
     return 0.0f;

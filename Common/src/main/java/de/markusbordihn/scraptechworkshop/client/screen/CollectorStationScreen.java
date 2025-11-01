@@ -75,20 +75,9 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
 
     renderDefaultBackground(guiGraphics, x, y, imageWidth, imageHeight);
 
-    renderEnergyPowerUI(
-        guiGraphics,
-        x,
-        y,
-        CollectorStationMenu.ENERGY_TAB_BATTERY_SLOT_X,
-        CollectorStationMenu.ENERGY_TAB_BATTERY_SLOT_Y,
-        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_X,
-        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_Y,
-        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_WIDTH,
-        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
-        menu.getCurrentEnergy(),
-        menu.getEnergyCapacity());
+    renderEnergyPowerUI(guiGraphics, x, y, menu.getCurrentEnergy(), menu.getEnergyCapacity());
 
-    // Storage slots
+    // Storage grid slots
     renderSlots(
         guiGraphics,
         x + CollectorStationMenu.STORAGE_GRID_START_X + 2,
@@ -107,7 +96,7 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
     // Player inventory
     renderPlayerInventoryAt(guiGraphics, x, y, CollectorStationMenu.PLAYER_INVENTORY_START_Y);
 
-    // Progress bar frame
+    // Progress bar
     int progressBarX = x + CollectorStationMenu.PROGRESS_BAR_X;
     int progressBarY = y + CollectorStationMenu.PROGRESS_BAR_Y;
     guiGraphics.fill(
@@ -235,12 +224,6 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
         y,
         leftPos,
         topPos,
-        CollectorStationMenu.ENERGY_TAB_BATTERY_SLOT_X,
-        CollectorStationMenu.ENERGY_TAB_BATTERY_SLOT_Y,
-        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_X,
-        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_Y,
-        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_WIDTH,
-        CollectorStationMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
         menu.getCurrentEnergy(),
         menu.getEnergyCapacity(),
         TRANSLATION_BATTERY_SLOT,
@@ -249,7 +232,6 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
     int relativeX = x - leftPos;
     int relativeY = y - topPos;
 
-    // Progress bar tooltip
     if (relativeX >= CollectorStationMenu.PROGRESS_BAR_X
         && relativeX <= CollectorStationMenu.PROGRESS_BAR_X + PROGRESS_BAR_WIDTH
         && relativeY >= CollectorStationMenu.PROGRESS_BAR_Y

@@ -19,6 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.menu;
 
+import de.markusbordihn.scraptechworkshop.energy.EnergyFlowStatus;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
@@ -29,11 +30,12 @@ public abstract class EnergyPowerGeneratorMenu extends BaseMenu {
   public static final int ENERGY_TAB_BATTERY_SLOT_Y = 6;
   protected static final int ENERGY_DATA_INDEX = 0;
   protected static final int ENERGY_CAPACITY_DATA_INDEX = 1;
+  protected static final int ENERGY_FLOW_STATUS_DATA_INDEX = 2;
   protected final ContainerData energyData;
 
   protected EnergyPowerGeneratorMenu(MenuType<?> menuType, int windowId, ContainerData energyData) {
     super(menuType, windowId);
-    this.energyData = energyData != null ? energyData : new SimpleContainerData(2);
+    this.energyData = energyData != null ? energyData : new SimpleContainerData(3);
     addDataSlots(this.energyData);
   }
 
@@ -43,5 +45,13 @@ public abstract class EnergyPowerGeneratorMenu extends BaseMenu {
 
   public int getEnergyCapacity() {
     return energyData.get(ENERGY_CAPACITY_DATA_INDEX);
+  }
+
+  public EnergyFlowStatus getEnergyFlowStatus() {
+    int statusOrdinal = energyData.get(ENERGY_FLOW_STATUS_DATA_INDEX);
+    EnergyFlowStatus[] statuses = EnergyFlowStatus.values();
+    return statusOrdinal >= 0 && statusOrdinal < statuses.length
+        ? statuses[statusOrdinal]
+        : EnergyFlowStatus.IDLE;
   }
 }

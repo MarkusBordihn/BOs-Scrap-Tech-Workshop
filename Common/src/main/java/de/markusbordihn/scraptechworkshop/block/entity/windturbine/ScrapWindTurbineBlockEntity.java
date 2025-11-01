@@ -23,10 +23,11 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.entity.AbstractWorkshopBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.windturbine.ScrapWindTurbineBlock;
 import de.markusbordihn.scraptechworkshop.data.windturbine.ScrapWindTurbineStatus;
+import de.markusbordihn.scraptechworkshop.energy.EnergyFlowStatus;
+import de.markusbordihn.scraptechworkshop.energy.EnergyPowerBatteryHandler;
 import de.markusbordihn.scraptechworkshop.energy.EnergyPowerData;
 import de.markusbordihn.scraptechworkshop.energy.EnergyPowerGenerator;
 import de.markusbordihn.scraptechworkshop.environment.WindCalculator;
-import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.menu.ScrapWindTurbineMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -46,14 +47,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
-    implements EnergyPowerGenerator {
+    implements EnergyPowerGenerator, EnergyPowerBatteryHandler {
 
   public static final String ID = "scrap_wind_turbine";
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   private static final int ENERGY_CAPACITY_MAH = 5000;
   private static final int ENERGY_GENERATION_INTERVAL = 20;
-  private static final int BATTERY_CHARGE_INTERVAL = 5;
   private static final int ENERGY_DISTRIBUTION_INTERVAL = 1;
   private static final int WIND_CHECK_INTERVAL = 200;
 
@@ -105,6 +105,7 @@ public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
         Math.abs(
             (blockPos.getX() * 31 + blockPos.getY() * 17 + blockPos.getZ() * 13)
                 % WIND_CHECK_INTERVAL);
+    this.energyData = EnergyPowerData.empty();
   }
 
   public static void tick(
@@ -126,10 +127,7 @@ public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
     if (blockEntity.powerGeneration > 0
         && blockEntity.tickCounter % ENERGY_GENERATION_INTERVAL == 0) {
       blockEntity.generateEnergy(blockEntity.powerGeneration);
-    }
-
-    if (blockEntity.tickCounter % BATTERY_CHARGE_INTERVAL == 0) {
-      blockEntity.chargeFromBattery(blockEntity.getEnergyTransferRate());
+      blockEntity.updateEnergyFlow(level.getGameTime());
     }
 
     if (blockEntity.tickCounter % ENERGY_DISTRIBUTION_INTERVAL == 0) {
@@ -189,11 +187,6 @@ public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
     windSpeed = compoundTag.getInt(WIND_SPEED_TAG);
     powerGeneration = compoundTag.getInt(POWER_GENERATION_TAG);
     loadEnergyPowerGenerator(compoundTag);
-    energyData =
-        new EnergyPowerData(
-            energyData.currentEnergy(),
-            container.getItem(ScrapWindTurbineSlots.ENERGY_TAB_BATTERY_SLOT),
-            energyData.debounceData());
   }
 
   @Override
@@ -242,15 +235,13 @@ public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
 
   @Override
   public EnergyPowerData getEnergyData() {
-    return new EnergyPowerData(
-        energyData.currentEnergy(),
-        container.getItem(ScrapWindTurbineSlots.ENERGY_TAB_BATTERY_SLOT),
-        energyData.debounceData());
+    return energyData.withBattery(
+        container.getItem(ScrapWindTurbineSlots.ENERGY_TAB_BATTERY_SLOT));
   }
 
   @Override
   public void setEnergyData(EnergyPowerData data) {
-    energyData = new EnergyPowerData(data.currentEnergy(), data.battery(), data.debounceData());
+    energyData = data;
     container.setItem(ScrapWindTurbineSlots.ENERGY_TAB_BATTERY_SLOT, data.battery());
     setChanged();
   }
@@ -260,35 +251,48 @@ public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
     return ENERGY_CAPACITY_MAH;
   }
 
-  public boolean chargeFromBattery(final int amount) {
-    ItemStack battery = container.getItem(ScrapWindTurbineSlots.ENERGY_TAB_BATTERY_SLOT);
-    if (battery.isEmpty() || !(battery.getItem() instanceof EnergyCellItem batteryItem)) {
-      return false;
-    }
-
-    int spaceAvailable = getEnergyCapacity() - getCurrentEnergy();
-    if (spaceAvailable <= 0) {
-      return false;
-    }
-
-    int batteryEnergy = batteryItem.getEnergy(battery);
-    if (batteryEnergy <= 1) {
-      return false;
-    }
-
-    int energyToTransfer = Math.min(Math.min(amount, spaceAvailable), batteryEnergy - 1);
-    if (energyToTransfer <= 0) {
-      return false;
-    }
-
-    batteryItem.setEnergy(battery, batteryEnergy - energyToTransfer);
-    setCurrentEnergy(getCurrentEnergy() + energyToTransfer);
-    setChanged();
-    return true;
-  }
-
   @Override
   public void markDirty() {
     setChanged();
+  }
+
+  @Override
+  public int getChargeCycleCount() {
+    return getEnergyData().chargeCycleCount();
+  }
+
+  @Override
+  public void setChargeCycleCount(final int count) {
+    setEnergyData(getEnergyData().withChargeCycleCount(count));
+  }
+
+  @Override
+  public long getLastEnergyChangeTime() {
+    return getEnergyData().lastEnergyChangeTime();
+  }
+
+  @Override
+  public void setLastEnergyChangeTime(final long time) {
+    setEnergyData(getEnergyData().withLastEnergyChangeTime(time));
+  }
+
+  @Override
+  public int getLastEnergyLevel() {
+    return getEnergyData().lastEnergyLevel();
+  }
+
+  @Override
+  public void setLastEnergyLevel(final int level) {
+    setEnergyData(getEnergyData().withLastEnergyLevel(level));
+  }
+
+  @Override
+  public EnergyFlowStatus getEnergyFlowStatus() {
+    return getEnergyData().energyFlowStatus();
+  }
+
+  @Override
+  public void setEnergyFlowStatus(final EnergyFlowStatus status) {
+    setEnergyData(getEnergyData().withEnergyFlowStatus(status));
   }
 }

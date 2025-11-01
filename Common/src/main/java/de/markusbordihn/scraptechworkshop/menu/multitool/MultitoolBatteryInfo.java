@@ -20,7 +20,7 @@
 package de.markusbordihn.scraptechworkshop.menu.multitool;
 
 import de.markusbordihn.scraptechworkshop.config.MultitoolConfig;
-import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.energy.EnergyCell;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 
@@ -29,8 +29,8 @@ public class MultitoolBatteryInfo {
 
   public static int getCurrentEnergy(final SimpleContainer toolContainer) {
     ItemStack battery = toolContainer.getItem(0);
-    if (battery.getItem() instanceof EnergyCellItem batteryItem) {
-      int batteryEnergy = batteryItem.getEnergy(battery);
+    if (battery.getItem() instanceof EnergyCell cell) {
+      int batteryEnergy = cell.getEnergy(battery);
       return (batteryEnergy <= 1) ? 0 : batteryEnergy;
     }
     return 0;
@@ -38,20 +38,20 @@ public class MultitoolBatteryInfo {
 
   public static int getMaxEnergy(final SimpleContainer toolContainer) {
     ItemStack battery = toolContainer.getItem(0);
-    if (battery.getItem() instanceof EnergyCellItem) {
-      return EnergyCellItem.CAPACITY_MAH;
+    if (battery.getItem() instanceof EnergyCell cell) {
+      return cell.getCapacity();
     }
     return MultitoolConfig.energyMax;
   }
 
   public static int getPercentage(final SimpleContainer toolContainer) {
     ItemStack battery = toolContainer.getItem(0);
-    if (battery.getItem() instanceof EnergyCellItem batteryItem) {
-      int batteryEnergy = batteryItem.getEnergy(battery);
+    if (battery.getItem() instanceof EnergyCell cell) {
+      int batteryEnergy = cell.getEnergy(battery);
       if (batteryEnergy <= 1) {
         return 0;
       }
-      return Math.round(batteryItem.getEnergyPercentage(battery) * 100);
+      return Math.round(cell.getEnergyPercentage(battery) * 100);
     }
     return 0;
   }

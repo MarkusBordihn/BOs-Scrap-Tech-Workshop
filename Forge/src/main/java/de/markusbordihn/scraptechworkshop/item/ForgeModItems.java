@@ -252,6 +252,12 @@ public class ForgeModItems {
         ITEMS.register("empty_energy_cell", () -> ToolItemRegistry.EMPTY_ENERGY_CELL_ITEM);
     ModItems.ENERGY_CELL_BLOCK =
         ITEMS.register(EnergyCellBlockItem.ID, () -> ToolItemRegistry.ENERGY_CELL_BLOCK_ITEM);
+    ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL_BLOCK =
+        ITEMS.register("slightly_damaged_energy_cell_block", () -> ToolItemRegistry.SLIGHTLY_DAMAGED_ENERGY_CELL_BLOCK_ITEM);
+    ModItems.DAMAGED_ENERGY_CELL_BLOCK =
+        ITEMS.register("damaged_energy_cell_block", () -> ToolItemRegistry.DAMAGED_ENERGY_CELL_BLOCK_ITEM);
+    ModItems.EMPTY_ENERGY_CELL_BLOCK =
+        ITEMS.register("empty_energy_cell_block", () -> ToolItemRegistry.EMPTY_ENERGY_CELL_BLOCK_ITEM);
     ModItems.CIRCUIT_BOARD =
         ITEMS.register(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
     ModItems.RECLAIMED_COPPER_WIRE =

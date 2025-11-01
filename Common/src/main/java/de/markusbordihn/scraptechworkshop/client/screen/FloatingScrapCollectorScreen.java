@@ -35,7 +35,7 @@ public class FloatingScrapCollectorScreen extends BaseContainerScreen<FloatingSc
   private static final String TRANSLATION_DURABILITY = TRANSLATION_KEY_PREFIX + "durability";
 
   private static final int SCREEN_WIDTH = 176;
-  private static final int SCREEN_HEIGHT = 166;
+  private static final int SCREEN_HEIGHT = 176;
 
   public FloatingScrapCollectorScreen(
       FloatingScrapCollectorMenu menu, Inventory playerInventory, Component title) {
@@ -99,15 +99,17 @@ public class FloatingScrapCollectorScreen extends BaseContainerScreen<FloatingSc
   private void renderDurabilityBar(GuiGraphics guiGraphics, int x, int y) {
     float durabilityPercent = menu.getNetDurabilityPercent();
     if (durabilityPercent > 0) {
-      int barWidth = (int) (FloatingScrapCollectorMenu.DURABILITY_BAR_WIDTH * durabilityPercent);
-      renderEnergyBar(
+      int currentDurability =
+          (int) (FloatingScrapCollectorMenu.DURABILITY_BAR_WIDTH * durabilityPercent);
+      renderProgressBar(
           guiGraphics,
           x + FloatingScrapCollectorMenu.DURABILITY_BAR_X,
           y + FloatingScrapCollectorMenu.DURABILITY_BAR_Y,
           FloatingScrapCollectorMenu.DURABILITY_BAR_WIDTH,
           FloatingScrapCollectorMenu.DURABILITY_BAR_HEIGHT,
-          barWidth,
-          FloatingScrapCollectorMenu.DURABILITY_BAR_WIDTH);
+          currentDurability,
+          FloatingScrapCollectorMenu.DURABILITY_BAR_WIDTH,
+          0x00CC00);
     }
   }
 

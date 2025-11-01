@@ -17,8 +17,8 @@
 
 ![Scrap Tech Workshop][logo]
 
-⚠️ **Beta**: Use on copies / backups of your worlds. Balancing and internals can still shift during
-the ModJam.
+⚠️ **Beta**: Use on copies / backups of your worlds.
+Balancing and internals can still shift during the ModJam.
 
 Scrap Tech Workshop is a light post‑apocalyptic style tech mod about squeezing value out of
 leftovers instead of minting shiny new alloys.

@@ -22,11 +22,12 @@ package de.markusbordihn.scraptechworkshop.block.entity.rechargestation;
 import de.markusbordihn.scraptechworkshop.block.entity.AbstractWorkshopBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.rechargestation.RechargeStationBlock;
 import de.markusbordihn.scraptechworkshop.data.rechargestation.RechargeStationStatus;
+import de.markusbordihn.scraptechworkshop.energy.EnergyCell;
 import de.markusbordihn.scraptechworkshop.energy.EnergyPowerConsumer;
 import de.markusbordihn.scraptechworkshop.energy.EnergyPowerData;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
+import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
-import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.menu.RechargeStationMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -53,7 +54,6 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
   public static final String ID = "recharge_station";
 
   private static final int ENERGY_CAPACITY_MAH = 10000;
-  private static final int ENERGY_CHARGE_INTERVAL = 5;
   private static final int ENERGY_CONSUMPTION_PER_TICK = 5;
   private static final int RECHARGE_RATE = 5;
   private static final int STATUS_CHANGE_DELAY = 20;
@@ -69,7 +69,6 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
   public static BlockEntityType<RechargeStationBlockEntity> TYPE;
 
   private final RechargeStationContainer container;
-  private final int tickOffset;
   private int progress = 0;
   private int maxProgress = 100;
   private final ContainerData containerData =
@@ -105,10 +104,6 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
     super(TYPE, blockPos, blockState);
     this.container =
         new RechargeStationContainer(RechargeStationSlots.TOTAL_SLOTS, this::setChanged);
-    this.tickOffset =
-        Math.abs(
-            (blockPos.getX() * 31 + blockPos.getY() * 17 + blockPos.getZ() * 13)
-                % ENERGY_CHARGE_INTERVAL);
   }
 
   public static void tick(
@@ -121,84 +116,132 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
     }
 
     blockEntity.tickCounter++;
-
-    if ((blockEntity.tickCounter + blockEntity.tickOffset) % ENERGY_CHARGE_INTERVAL == 0) {
-      blockEntity.chargeFromBattery(blockEntity.getEnergyTransferRate());
-    }
-
-    RechargeStationStatus currentStatus = blockState.getValue(RechargeStationBlock.STATUS);
+    blockEntity.updateEnergyFlow(level.getGameTime());
 
     boolean hasEnoughEnergy = blockEntity.hasStableEnergy(ENERGY_CONSUMPTION_PER_TICK);
     ItemStack inputItem = blockEntity.container.getItem(RechargeStationSlots.INPUT_SLOT);
-
     RechargeStationStatus newStatus = determineStatus(hasEnoughEnergy, inputItem);
 
-    if (newStatus != currentStatus) {
-      if (blockEntity.pendingStatus == newStatus) {
-        blockEntity.statusDelayTimer++;
-        if (blockEntity.statusDelayTimer >= STATUS_CHANGE_DELAY) {
-          level.setBlock(blockPos, blockState.setValue(RechargeStationBlock.STATUS, newStatus), 3);
-          blockEntity.progress = 0;
-          blockEntity.statusDelayTimer = 0;
-          blockEntity.pendingStatus = null;
-        }
-      } else {
-        blockEntity.pendingStatus = newStatus;
-        blockEntity.statusDelayTimer = 0;
-      }
-    } else {
+    updateBlockStatus(level, blockPos, blockState, blockEntity, newStatus);
+    processCharging(level, blockPos, blockState, blockEntity, newStatus, hasEnoughEnergy, inputItem);
+    resetProgressIfNeeded(blockEntity, newStatus);
+  }
+
+  private static void updateBlockStatus(
+      final Level level,
+      final BlockPos blockPos,
+      final BlockState blockState,
+      final RechargeStationBlockEntity blockEntity,
+      final RechargeStationStatus newStatus) {
+    RechargeStationStatus currentStatus = blockState.getValue(RechargeStationBlock.STATUS);
+
+    if (newStatus == currentStatus) {
+      blockEntity.statusDelayTimer = 0;
+      blockEntity.pendingStatus = null;
+      return;
+    }
+
+    if (blockEntity.pendingStatus != newStatus) {
+      blockEntity.pendingStatus = newStatus;
+      blockEntity.statusDelayTimer = 0;
+      return;
+    }
+
+    blockEntity.statusDelayTimer++;
+    if (blockEntity.statusDelayTimer >= STATUS_CHANGE_DELAY) {
+      level.setBlock(blockPos, blockState.setValue(RechargeStationBlock.STATUS, newStatus), 3);
+      blockEntity.progress = 0;
       blockEntity.statusDelayTimer = 0;
       blockEntity.pendingStatus = null;
     }
+  }
 
-    if (newStatus == RechargeStationStatus.CHARGING && hasEnoughEnergy) {
-      if (inputItem.getItem() instanceof EmptyEnergyCellItem) {
-        ItemStack chargedCell = new ItemStack(ModItems.ENERGY_CELL.get());
-        if (chargedCell.getItem() instanceof EnergyCellItem energyCellItem) {
-          energyCellItem.setEnergy(chargedCell, RECHARGE_RATE);
-          blockEntity.container.setItem(RechargeStationSlots.INPUT_SLOT, chargedCell);
-          blockEntity.consumeEnergy(ENERGY_CONSUMPTION_PER_TICK);
-          blockEntity.progress = 1;
-          blockEntity.maxProgress = 100;
-          blockEntity.setChanged();
-
-          if (blockEntity.tickCounter % 10 == 0) {
-            spawnChargingParticles(level, blockPos, blockState);
-          }
-          if (blockEntity.tickCounter % 20 == 0) {
-            playChargingSound(level, blockPos);
-          }
-        }
-      } else if (inputItem.getItem() instanceof EnergyCellItem batteryItem) {
-        int currentBatteryEnergy = batteryItem.getEnergy(inputItem);
-        int maxBatteryEnergy = EnergyCellItem.CAPACITY_MAH;
-
-        if (currentBatteryEnergy < maxBatteryEnergy) {
-          int energyToTransfer = Math.min(RECHARGE_RATE, maxBatteryEnergy - currentBatteryEnergy);
-          batteryItem.setEnergy(inputItem, currentBatteryEnergy + energyToTransfer);
-
-          blockEntity.consumeEnergy(ENERGY_CONSUMPTION_PER_TICK);
-
-          blockEntity.progress = (currentBatteryEnergy * 100) / maxBatteryEnergy;
-          blockEntity.maxProgress = 100;
-          blockEntity.setChanged();
-
-          if (blockEntity.tickCounter % 10 == 0) {
-            spawnChargingParticles(level, blockPos, blockState);
-          }
-          if (blockEntity.tickCounter % 20 == 0) {
-            playChargingSound(level, blockPos);
-          }
-        } else {
-          level.setBlock(
-              blockPos,
-              blockState.setValue(RechargeStationBlock.STATUS, RechargeStationStatus.DONE),
-              3);
-        }
-      }
+  private static void processCharging(
+      final Level level,
+      final BlockPos blockPos,
+      final BlockState blockState,
+      final RechargeStationBlockEntity blockEntity,
+      final RechargeStationStatus status,
+      final boolean hasEnoughEnergy,
+      final ItemStack inputItem) {
+    if (status != RechargeStationStatus.CHARGING || !hasEnoughEnergy) {
+      return;
     }
 
-    if (newStatus == RechargeStationStatus.DONE || newStatus == RechargeStationStatus.IDLE) {
+    if (inputItem.getItem() instanceof EmptyEnergyCellBlockItem) {
+      chargeEmptyCell(level, blockPos, blockState, blockEntity, ModItems.ENERGY_CELL_BLOCK.get());
+    } else if (inputItem.getItem() instanceof EmptyEnergyCellItem) {
+      chargeEmptyCell(level, blockPos, blockState, blockEntity, ModItems.ENERGY_CELL.get());
+    } else if (inputItem.getItem() instanceof EnergyCell cell) {
+      chargeEnergyCell(level, blockPos, blockState, blockEntity, inputItem, cell);
+    }
+  }
+
+  private static void chargeEmptyCell(
+      final Level level,
+      final BlockPos blockPos,
+      final BlockState blockState,
+      final RechargeStationBlockEntity blockEntity,
+      final net.minecraft.world.item.Item cellItem) {
+    ItemStack chargedCell = new ItemStack(cellItem);
+    if (!(chargedCell.getItem() instanceof EnergyCell energyCellItem)) {
+      return;
+    }
+
+    energyCellItem.setEnergy(chargedCell, RECHARGE_RATE);
+    blockEntity.container.setItem(RechargeStationSlots.INPUT_SLOT, chargedCell);
+    blockEntity.consumeEnergy(ENERGY_CONSUMPTION_PER_TICK);
+    blockEntity.progress = 1;
+    blockEntity.maxProgress = 100;
+    blockEntity.setChanged();
+
+    playChargingEffects(level, blockPos, blockState, blockEntity);
+  }
+
+  private static void chargeEnergyCell(
+      final Level level,
+      final BlockPos blockPos,
+      final BlockState blockState,
+      final RechargeStationBlockEntity blockEntity,
+      final ItemStack inputItem,
+      final EnergyCell cell) {
+    int currentBatteryEnergy = cell.getEnergy(inputItem);
+    int maxBatteryEnergy = cell.getCapacity();
+
+    if (currentBatteryEnergy >= maxBatteryEnergy) {
+      level.setBlock(
+          blockPos,
+          blockState.setValue(RechargeStationBlock.STATUS, RechargeStationStatus.DONE),
+          3);
+      return;
+    }
+
+    int energyToTransfer = Math.min(RECHARGE_RATE, maxBatteryEnergy - currentBatteryEnergy);
+    cell.setEnergy(inputItem, currentBatteryEnergy + energyToTransfer);
+    blockEntity.consumeEnergy(ENERGY_CONSUMPTION_PER_TICK);
+    blockEntity.progress = (currentBatteryEnergy * 100) / maxBatteryEnergy;
+    blockEntity.maxProgress = 100;
+    blockEntity.setChanged();
+
+    playChargingEffects(level, blockPos, blockState, blockEntity);
+  }
+
+  private static void playChargingEffects(
+      final Level level,
+      final BlockPos blockPos,
+      final BlockState blockState,
+      final RechargeStationBlockEntity blockEntity) {
+    if (blockEntity.tickCounter % 10 == 0) {
+      spawnChargingParticles(level, blockPos, blockState);
+    }
+    if (blockEntity.tickCounter % 20 == 0) {
+      playChargingSound(level, blockPos);
+    }
+  }
+
+  private static void resetProgressIfNeeded(
+      final RechargeStationBlockEntity blockEntity, final RechargeStationStatus status) {
+    if (status == RechargeStationStatus.DONE || status == RechargeStationStatus.IDLE) {
       blockEntity.progress = 0;
     }
   }
@@ -213,13 +256,17 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
       return RechargeStationStatus.IDLE;
     }
 
+    if (inputItem.getItem() instanceof EmptyEnergyCellBlockItem) {
+      return RechargeStationStatus.CHARGING;
+    }
+
     if (inputItem.getItem() instanceof EmptyEnergyCellItem) {
       return RechargeStationStatus.CHARGING;
     }
 
-    if (inputItem.getItem() instanceof EnergyCellItem batteryItem) {
-      int currentEnergy = batteryItem.getEnergy(inputItem);
-      int maxEnergy = EnergyCellItem.CAPACITY_MAH;
+    if (inputItem.getItem() instanceof EnergyCell cell) {
+      int currentEnergy = cell.getEnergy(inputItem);
+      int maxEnergy = cell.getCapacity();
 
       if (currentEnergy >= maxEnergy) {
         return RechargeStationStatus.DONE;
@@ -303,11 +350,7 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
     maxProgress = compoundTag.getInt(MAX_PROGRESS_TAG);
     statusDelayTimer = compoundTag.getInt(STATUS_DELAY_TIMER_TAG);
     loadEnergyPowerConsumer(compoundTag);
-    energyData =
-        new EnergyPowerData(
-            energyData.currentEnergy(),
-            container.getItem(RechargeStationSlots.BATTERY_SLOT),
-            energyData.debounceData());
+    energyData = getEnergyData();
   }
 
   @Override
@@ -357,16 +400,12 @@ public class RechargeStationBlockEntity extends AbstractWorkshopBlockEntity
 
   @Override
   public EnergyPowerData getEnergyData() {
-    return new EnergyPowerData(
-        energyData.currentEnergy(),
-        container.getItem(RechargeStationSlots.BATTERY_SLOT),
-        energyData.debounceData());
+    return energyData.withBattery(container.getItem(RechargeStationSlots.BATTERY_SLOT));
   }
 
   @Override
   public void setEnergyData(EnergyPowerData data) {
-    this.energyData =
-        new EnergyPowerData(data.currentEnergy(), data.battery(), data.debounceData());
+    this.energyData = data;
     container.setItem(RechargeStationSlots.BATTERY_SLOT, data.battery());
     setChanged();
   }

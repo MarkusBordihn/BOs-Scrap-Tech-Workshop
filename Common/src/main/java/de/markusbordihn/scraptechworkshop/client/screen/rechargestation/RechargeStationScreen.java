@@ -23,7 +23,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.screen.BaseContainerScreen;
 import de.markusbordihn.scraptechworkshop.data.rechargestation.RechargeStationStatus;
-import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.energy.EnergyCell;
 import de.markusbordihn.scraptechworkshop.menu.RechargeStationMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
@@ -76,18 +76,7 @@ public class RechargeStationScreen extends BaseContainerScreen<RechargeStationMe
 
     renderDefaultBackground(guiGraphics, x, y, imageWidth, imageHeight);
 
-    renderEnergyPowerUI(
-        guiGraphics,
-        x,
-        y,
-        RechargeStationMenu.ENERGY_TAB_BATTERY_SLOT_X,
-        RechargeStationMenu.ENERGY_TAB_BATTERY_SLOT_Y,
-        RechargeStationMenu.ENERGY_TAB_ENERGY_BAR_X,
-        RechargeStationMenu.ENERGY_TAB_ENERGY_BAR_Y,
-        RechargeStationMenu.ENERGY_TAB_ENERGY_BAR_WIDTH,
-        RechargeStationMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
-        menu.getCurrentEnergy(),
-        menu.getEnergyCapacity());
+    renderEnergyPowerUI(guiGraphics, x, y, menu.getCurrentEnergy(), menu.getEnergyCapacity());
 
     renderSlot(guiGraphics, x + INPUT_SLOT_X, y + INPUT_SLOT_Y);
 
@@ -129,9 +118,9 @@ public class RechargeStationScreen extends BaseContainerScreen<RechargeStationMe
 
     // Display battery charge status under the progress bar
     ItemStack inputStack = menu.getSlot(0).getItem();
-    if (!inputStack.isEmpty() && inputStack.getItem() instanceof EnergyCellItem energyCell) {
+    if (!inputStack.isEmpty() && inputStack.getItem() instanceof EnergyCell energyCell) {
       int currentEnergy = energyCell.getEnergy(inputStack);
-      int maxEnergy = EnergyCellItem.CAPACITY_MAH;
+      int maxEnergy = energyCell.getCapacity();
       String batteryText = currentEnergy + " / " + maxEnergy + " mAh";
 
       int textWidth = this.font.width(batteryText);
@@ -155,16 +144,11 @@ public class RechargeStationScreen extends BaseContainerScreen<RechargeStationMe
         y,
         leftPos,
         topPos,
-        RechargeStationMenu.ENERGY_TAB_BATTERY_SLOT_X,
-        RechargeStationMenu.ENERGY_TAB_BATTERY_SLOT_Y,
-        RechargeStationMenu.ENERGY_TAB_ENERGY_BAR_X,
-        RechargeStationMenu.ENERGY_TAB_ENERGY_BAR_Y,
-        RechargeStationMenu.ENERGY_TAB_ENERGY_BAR_WIDTH,
-        RechargeStationMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
         menu.getCurrentEnergy(),
         menu.getEnergyCapacity(),
         TRANSLATION_BATTERY_SLOT,
         1);
+
     int relativeX = x - leftPos;
     int relativeY = y - topPos;
 
@@ -187,10 +171,9 @@ public class RechargeStationScreen extends BaseContainerScreen<RechargeStationMe
         && relativeX >= INPUT_SLOT_X - 1
         && relativeX <= INPUT_SLOT_X + 17
         && relativeY >= INPUT_SLOT_Y - 1
-        && relativeY <= INPUT_SLOT_Y + 17) {
-      if (this.menu.getSlot(0).getItem().isEmpty()) {
-        guiGraphics.renderTooltip(this.font, Component.translatable(TRANSLATION_INPUT_SLOT), x, y);
-      }
+        && relativeY <= INPUT_SLOT_Y + 17
+        && this.menu.getSlot(0).getItem().isEmpty()) {
+      guiGraphics.renderTooltip(this.font, Component.translatable(TRANSLATION_INPUT_SLOT), x, y);
     }
   }
 }

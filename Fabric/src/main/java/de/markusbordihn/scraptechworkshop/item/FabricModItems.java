@@ -244,6 +244,12 @@ public class FabricModItems {
         registerItem("empty_energy_cell", () -> ToolItemRegistry.EMPTY_ENERGY_CELL_ITEM);
     ModItems.ENERGY_CELL_BLOCK =
         registerItem(EnergyCellBlockItem.ID, () -> ToolItemRegistry.ENERGY_CELL_BLOCK_ITEM);
+    ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL_BLOCK =
+        registerItem("slightly_damaged_energy_cell_block", () -> ToolItemRegistry.SLIGHTLY_DAMAGED_ENERGY_CELL_BLOCK_ITEM);
+    ModItems.DAMAGED_ENERGY_CELL_BLOCK =
+        registerItem("damaged_energy_cell_block", () -> ToolItemRegistry.DAMAGED_ENERGY_CELL_BLOCK_ITEM);
+    ModItems.EMPTY_ENERGY_CELL_BLOCK =
+        registerItem("empty_energy_cell_block", () -> ToolItemRegistry.EMPTY_ENERGY_CELL_BLOCK_ITEM);
     ModItems.CIRCUIT_BOARD =
         registerItem(CircuitBoardItem.ID, () -> ToolItemRegistry.CIRCUIT_BOARD_ITEM);
     ModItems.RECLAIMED_COPPER_WIRE =

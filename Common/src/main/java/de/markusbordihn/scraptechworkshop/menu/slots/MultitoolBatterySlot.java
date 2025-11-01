@@ -19,7 +19,7 @@
 
 package de.markusbordihn.scraptechworkshop.menu.slots;
 
-import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
+import de.markusbordihn.scraptechworkshop.energy.EnergyCell;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +32,7 @@ public class MultitoolBatterySlot extends Slot {
 
   @Override
   public boolean mayPlace(ItemStack itemStack) {
-    return itemStack.getItem() instanceof EnergyCellItem;
+    return itemStack.getItem() instanceof EnergyCell;
   }
 
   @Override

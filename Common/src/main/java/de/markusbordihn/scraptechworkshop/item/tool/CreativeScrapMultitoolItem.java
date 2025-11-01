@@ -23,8 +23,8 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.data.multitool.DisplayMode;
 import de.markusbordihn.scraptechworkshop.data.multitool.ScrapMultitoolData;
 import de.markusbordihn.scraptechworkshop.data.multitool.ToolMode;
+import de.markusbordihn.scraptechworkshop.energy.EnergyCell;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
-import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import java.util.List;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -43,8 +43,8 @@ public class CreativeScrapMultitoolItem extends ScrapMultitoolItem {
   public void onCraftedBy(ItemStack itemStack, Level level, Player player) {
     ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
     ItemStack battery = new ItemStack(ModItems.ENERGY_CELL.get());
-    if (battery.getItem() instanceof EnergyCellItem energyCell) {
-      energyCell.setEnergy(battery, EnergyCellItem.CAPACITY_MAH);
+    if (battery.getItem() instanceof EnergyCell energyCell) {
+      energyCell.setEnergy(battery, energyCell.getCapacity());
     }
 
     data = data.withBattery(battery);

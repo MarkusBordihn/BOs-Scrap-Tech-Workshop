@@ -22,25 +22,110 @@ package de.markusbordihn.scraptechworkshop.energy;
 import net.minecraft.world.item.ItemStack;
 
 public record EnergyPowerData(
-    int currentEnergy, ItemStack battery, EnergyDebounceData debounceData) {
+    int currentEnergy,
+    ItemStack battery,
+    EnergyDebounceData debounceData,
+    int chargeCycleCount,
+    long lastEnergyChangeTime,
+    int lastEnergyLevel,
+    EnergyFlowStatus energyFlowStatus) {
 
   public static EnergyPowerData empty() {
-    return new EnergyPowerData(0, ItemStack.EMPTY, EnergyDebounceData.empty());
+    return new EnergyPowerData(
+        0,
+        ItemStack.EMPTY,
+        EnergyDebounceData.empty(),
+        0,
+        0,
+        0,
+        EnergyFlowStatus.NO_BATTERY);
   }
 
   public static EnergyPowerData withEnergy(int energy) {
-    return new EnergyPowerData(energy, ItemStack.EMPTY, EnergyDebounceData.empty());
+    return new EnergyPowerData(
+        energy,
+        ItemStack.EMPTY,
+        EnergyDebounceData.empty(),
+        0,
+        0,
+        energy,
+        EnergyFlowStatus.IDLE);
   }
 
   public EnergyPowerData withCurrentEnergy(int newEnergy) {
-    return new EnergyPowerData(newEnergy, battery, debounceData);
+    return new EnergyPowerData(
+        newEnergy,
+        battery,
+        debounceData,
+        chargeCycleCount,
+        lastEnergyChangeTime,
+        lastEnergyLevel,
+        energyFlowStatus);
   }
 
   public EnergyPowerData withBattery(ItemStack newBattery) {
-    return new EnergyPowerData(currentEnergy, newBattery, debounceData);
+    return new EnergyPowerData(
+        currentEnergy,
+        newBattery,
+        debounceData,
+        chargeCycleCount,
+        lastEnergyChangeTime,
+        lastEnergyLevel,
+        energyFlowStatus);
   }
 
   public EnergyPowerData withDebounceData(EnergyDebounceData newDebounceData) {
-    return new EnergyPowerData(currentEnergy, battery, newDebounceData);
+    return new EnergyPowerData(
+        currentEnergy,
+        battery,
+        newDebounceData,
+        chargeCycleCount,
+        lastEnergyChangeTime,
+        lastEnergyLevel,
+        energyFlowStatus);
+  }
+
+  public EnergyPowerData withChargeCycleCount(int newCycleCount) {
+    return new EnergyPowerData(
+        currentEnergy,
+        battery,
+        debounceData,
+        newCycleCount,
+        lastEnergyChangeTime,
+        lastEnergyLevel,
+        energyFlowStatus);
+  }
+
+  public EnergyPowerData withLastEnergyChangeTime(long newTime) {
+    return new EnergyPowerData(
+        currentEnergy,
+        battery,
+        debounceData,
+        chargeCycleCount,
+        newTime,
+        lastEnergyLevel,
+        energyFlowStatus);
+  }
+
+  public EnergyPowerData withLastEnergyLevel(int newLevel) {
+    return new EnergyPowerData(
+        currentEnergy,
+        battery,
+        debounceData,
+        chargeCycleCount,
+        lastEnergyChangeTime,
+        newLevel,
+        energyFlowStatus);
+  }
+
+  public EnergyPowerData withEnergyFlowStatus(EnergyFlowStatus newStatus) {
+    return new EnergyPowerData(
+        currentEnergy,
+        battery,
+        debounceData,
+        chargeCycleCount,
+        lastEnergyChangeTime,
+        lastEnergyLevel,
+        newStatus);
   }
 }

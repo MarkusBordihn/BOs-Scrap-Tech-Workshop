@@ -104,24 +104,12 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
   protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
     RenderSystem.setShader(GameRenderer::getPositionTexShader);
     RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-
     int x = (width - imageWidth) / 2;
     int y = (height - imageHeight) / 2;
 
     renderDefaultBackground(guiGraphics, x, y, imageWidth, imageHeight);
 
-    renderEnergyPowerUI(
-        guiGraphics,
-        x,
-        y,
-        RecyclerMenu.ENERGY_TAB_BATTERY_SLOT_X,
-        RecyclerMenu.ENERGY_TAB_BATTERY_SLOT_Y,
-        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_X,
-        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_Y,
-        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_WIDTH,
-        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
-        menu.getCurrentEnergy(),
-        menu.getEnergyCapacity());
+    renderEnergyPowerUI(guiGraphics, x, y, menu.getCurrentEnergy(), menu.getEnergyCapacity());
 
     // Input slot
     renderSlot(guiGraphics, x + INPUT_SLOT_X, y + INPUT_SLOT_Y);
@@ -147,7 +135,6 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
     int progressBarY = y + PROGRESS_ARROW_Y;
     int progressBarWidth = 26;
     int progressBarHeight = PROGRESS_ARROW_HEIGHT;
-
     guiGraphics.fill(
         progressBarX,
         progressBarY,
@@ -225,16 +212,11 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
         y,
         leftPos,
         topPos,
-        RecyclerMenu.ENERGY_TAB_BATTERY_SLOT_X,
-        RecyclerMenu.ENERGY_TAB_BATTERY_SLOT_Y,
-        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_X,
-        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_Y,
-        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_WIDTH,
-        RecyclerMenu.ENERGY_TAB_ENERGY_BAR_HEIGHT,
         menu.getCurrentEnergy(),
         menu.getEnergyCapacity(),
         TRANSLATION_BATTERY_SLOT,
         12);
+
     int relativeX = x - leftPos;
     int relativeY = y - topPos;
 

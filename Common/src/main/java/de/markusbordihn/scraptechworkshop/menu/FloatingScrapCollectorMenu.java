@@ -51,7 +51,7 @@ public class FloatingScrapCollectorMenu extends BaseMenu {
   public static final int OUTPUT_GRID_START_Y = 17;
   public static final int OUTPUT_GRID_COLUMNS = 3;
   public static final int OUTPUT_GRID_ROWS = 3;
-  public static final int PLAYER_INVENTORY_START_Y = 84;
+  public static final int PLAYER_INVENTORY_START_Y = 94;
   public static final int PROGRESS_BAR_X = 35;
   public static final int PROGRESS_BAR_Y = 17;
   public static final int PROGRESS_BAR_WIDTH = 18;

@@ -25,10 +25,10 @@ import de.markusbordihn.scraptechworkshop.data.block.StrippableBlocks;
 import de.markusbordihn.scraptechworkshop.data.multitool.DisplayMode;
 import de.markusbordihn.scraptechworkshop.data.multitool.ScrapMultitoolData;
 import de.markusbordihn.scraptechworkshop.data.multitool.ToolMode;
+import de.markusbordihn.scraptechworkshop.energy.EnergyCell;
 import de.markusbordihn.scraptechworkshop.energy.EnergyCellConsumer;
 import de.markusbordihn.scraptechworkshop.energy.EnergyManager;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
-import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.menu.MenuManager;
 import de.markusbordihn.scraptechworkshop.processing.*;
 import java.util.List;
@@ -75,8 +75,8 @@ public class ScrapMultitoolItem extends DiggerItem implements EnergyCellConsumer
     ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(itemStack);
     if (!data.hasBattery()) {
       ItemStack battery = new ItemStack(ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL.get());
-      if (battery.getItem() instanceof EnergyCellItem energyCell) {
-        energyCell.setEnergy(battery, EnergyCellItem.CAPACITY_MAH / 2);
+      if (battery.getItem() instanceof EnergyCell energyCell) {
+        energyCell.setEnergy(battery, energyCell.getCapacity() / 2);
       }
       data = data.withBattery(battery);
       data.saveToItemStack(itemStack);

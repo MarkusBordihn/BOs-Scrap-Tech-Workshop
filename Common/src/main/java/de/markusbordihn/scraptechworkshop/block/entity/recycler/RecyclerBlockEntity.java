@@ -49,7 +49,6 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
   public static final String ID = "recycler";
 
   private static final int ENERGY_CAPACITY_MAH = 10000;
-  private static final int ENERGY_CHARGE_INTERVAL = 5;
   private static final int ENERGY_CONSUMPTION_PER_TICK = 5;
   private static final int ENERGY_CONSUMPTION_INTERVAL = 10;
 
@@ -65,7 +64,6 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
   public static BlockEntityType<RecyclerBlockEntity> TYPE;
 
   private final RecyclerContainer container;
-  private final int tickOffset;
   private int progress = 0;
   private int maxProgress = RecyclerConfig.processTime;
   private final ContainerData containerData =
@@ -101,10 +99,6 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
   public RecyclerBlockEntity(final BlockPos blockPos, final BlockState blockState) {
     super(TYPE, blockPos, blockState);
     this.container = new RecyclerContainer(RecyclerSlots.TOTAL_SLOTS, this::setChanged);
-    this.tickOffset =
-        Math.abs(
-            (blockPos.getX() * 31 + blockPos.getY() * 17 + blockPos.getZ() * 13)
-                % ENERGY_CHARGE_INTERVAL);
   }
 
   public static void tick(
@@ -118,9 +112,8 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
 
     blockEntity.tickCounter++;
 
-    if ((blockEntity.tickCounter + blockEntity.tickOffset) % ENERGY_CHARGE_INTERVAL == 0) {
-      blockEntity.chargeFromBattery(blockEntity.getEnergyTransferRate());
-    }
+    long currentTime = level.getGameTime();
+    blockEntity.updateEnergyFlow(currentTime);
 
     RecyclerStatus currentStatus = blockState.getValue(RecyclerBlock.STATUS);
 
@@ -141,10 +134,8 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
             speedMultiplier,
             blockEntity.getCurrentEnergy(),
             blockEntity.tickCounter);
-
     RecyclerTickResult result;
 
-    // Check if we're currently working without energy
     if (!hasEnoughEnergy && currentStatus == RecyclerStatus.WORKING) {
       recyclerState.progress = 0;
       result = new RecyclerTickResult(RecyclerStatus.IDLE, true);
@@ -206,11 +197,7 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
     noRecipeTimer = compoundTag.getInt(NO_RECIPE_TIMER_TAG);
     doneTimer = compoundTag.getInt(DONE_TIMER_TAG);
     loadEnergyPowerConsumer(compoundTag);
-    energyData =
-        new EnergyPowerData(
-            energyData.currentEnergy(),
-            container.getItem(RecyclerSlots.BATTERY_SLOT),
-            energyData.debounceData());
+    energyData = getEnergyData();
   }
 
   @Override
@@ -282,16 +269,12 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
 
   @Override
   public EnergyPowerData getEnergyData() {
-    return new EnergyPowerData(
-        energyData.currentEnergy(),
-        container.getItem(RecyclerSlots.BATTERY_SLOT),
-        energyData.debounceData());
+    return energyData.withBattery(container.getItem(RecyclerSlots.BATTERY_SLOT));
   }
 
   @Override
   public void setEnergyData(EnergyPowerData data) {
-    this.energyData =
-        new EnergyPowerData(data.currentEnergy(), data.battery(), data.debounceData());
+    this.energyData = data;
     container.setItem(RecyclerSlots.BATTERY_SLOT, data.battery());
     setChanged();
   }

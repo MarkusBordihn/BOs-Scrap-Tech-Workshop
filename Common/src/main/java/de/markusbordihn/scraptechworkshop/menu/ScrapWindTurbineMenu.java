@@ -81,7 +81,7 @@ public class ScrapWindTurbineMenu extends EnergyPowerGeneratorMenu {
         windowId,
         entity instanceof EnergyPowerGenerator generator
             ? generator.getEnergyPowerData()
-            : new SimpleContainerData(2));
+            : new SimpleContainerData(3));
     this.level = playerInventory.player.level();
     this.additionalData =
         additionalData != null

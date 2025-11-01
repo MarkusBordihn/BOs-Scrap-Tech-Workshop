@@ -23,9 +23,9 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.data.multitool.DisplayMode;
 import de.markusbordihn.scraptechworkshop.data.multitool.ScrapMultitoolData;
 import de.markusbordihn.scraptechworkshop.data.multitool.ToolMode;
+import de.markusbordihn.scraptechworkshop.energy.EnergyCell;
 import de.markusbordihn.scraptechworkshop.item.ModBlockItems;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
-import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloCubeItem;
 import de.markusbordihn.scraptechworkshop.item.hololog.HoloPadItem;
 import de.markusbordihn.scraptechworkshop.registry.item.HoloLogItemRegistry;
@@ -65,9 +65,12 @@ public class ModCreativeTabs {
               output.accept(ModItems.CIRCUIT_BOARD.get());
               output.accept(ModItems.DAMAGED_ENERGY_CELL.get().getDefaultInstance());
               output.accept(ModItems.EMPTY_ENERGY_CELL.get());
-              output.accept(ModItems.ENERGY_CELL_BLOCK.get());
               output.accept(ModItems.ENERGY_CELL.get().getDefaultInstance());
               output.accept(ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL.get().getDefaultInstance());
+              output.accept(ModItems.DAMAGED_ENERGY_CELL_BLOCK.get().getDefaultInstance());
+              output.accept(ModItems.EMPTY_ENERGY_CELL_BLOCK.get());
+              output.accept(ModItems.ENERGY_CELL_BLOCK.get().getDefaultInstance());
+              output.accept(ModItems.SLIGHTLY_DAMAGED_ENERGY_CELL_BLOCK.get().getDefaultInstance());
               output.accept(ModItems.RECLAIMED_COPPER_WIRE.get());
               output.accept(ModItems.REFINED_COPPER_WIRE.get());
 
@@ -105,8 +108,8 @@ public class ModCreativeTabs {
   private static ItemStack createCreativeMultitoolWithBattery() {
     ItemStack multitool = new ItemStack(ModItems.CREATIVE_SCRAP_MULTITOOL.get());
     ItemStack battery = new ItemStack(ModItems.ENERGY_CELL.get());
-    if (battery.getItem() instanceof EnergyCellItem energyCell) {
-      energyCell.setEnergy(battery, EnergyCellItem.CAPACITY_MAH);
+    if (battery.getItem() instanceof EnergyCell energyCell) {
+      energyCell.setEnergy(battery, energyCell.getCapacity());
     }
     ScrapMultitoolData data = ScrapMultitoolData.fromItemStack(multitool);
     data = data.withBattery(battery);

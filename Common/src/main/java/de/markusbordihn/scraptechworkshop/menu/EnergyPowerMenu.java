@@ -19,25 +19,23 @@
 
 package de.markusbordihn.scraptechworkshop.menu;
 
+import de.markusbordihn.scraptechworkshop.energy.EnergyFlowStatus;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
 
 public abstract class EnergyPowerMenu extends BaseMenu {
 
-  public static final int ENERGY_TAB_BATTERY_SLOT_X = -20;
+  public static final int ENERGY_TAB_BATTERY_SLOT_X = -19;
   public static final int ENERGY_TAB_BATTERY_SLOT_Y = 6;
-  public static final int ENERGY_TAB_ENERGY_BAR_X = -20;
-  public static final int ENERGY_TAB_ENERGY_BAR_Y = 26;
-  public static final int ENERGY_TAB_ENERGY_BAR_WIDTH = 16;
-  public static final int ENERGY_TAB_ENERGY_BAR_HEIGHT = 60;
   protected static final int ENERGY_DATA_INDEX = 0;
   protected static final int ENERGY_CAPACITY_DATA_INDEX = 1;
+  protected static final int ENERGY_FLOW_STATUS_DATA_INDEX = 2;
   protected final ContainerData energyData;
 
   protected EnergyPowerMenu(MenuType<?> menuType, int windowId, ContainerData energyData) {
     super(menuType, windowId);
-    this.energyData = energyData != null ? energyData : new SimpleContainerData(2);
+    this.energyData = energyData != null ? energyData : new SimpleContainerData(3);
     addDataSlots(this.energyData);
   }
 
@@ -47,5 +45,13 @@ public abstract class EnergyPowerMenu extends BaseMenu {
 
   public int getEnergyCapacity() {
     return energyData.get(ENERGY_CAPACITY_DATA_INDEX);
+  }
+
+  public EnergyFlowStatus getEnergyFlowStatus() {
+    int statusOrdinal = energyData.get(ENERGY_FLOW_STATUS_DATA_INDEX);
+    EnergyFlowStatus[] statuses = EnergyFlowStatus.values();
+    return statusOrdinal >= 0 && statusOrdinal < statuses.length
+        ? statuses[statusOrdinal]
+        : EnergyFlowStatus.IDLE;
   }
 }

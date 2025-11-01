@@ -171,6 +171,7 @@ public class ScrapWindTurbineBlock extends BaseEntityBlock implements MultiBlock
         Containers.dropContents(level, mainPos, windTurbineBlockEntity.getContainer());
       }
       removeMultiBlock(level, blockPos, blockState);
+      super.onRemove(blockState, level, blockPos, newState, isMoving);
     }
   }
 

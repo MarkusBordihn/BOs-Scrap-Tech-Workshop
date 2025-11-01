@@ -17,30 +17,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.menu.slots;
+package de.markusbordihn.scraptechworkshop.energy;
 
-import de.markusbordihn.scraptechworkshop.energy.EnergyCell;
-import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellBlockItem;
-import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
-import net.minecraft.world.Container;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
+public enum ChargingMode {
+  LEARNING(2, 100),
+  CONSERVATION(Integer.MAX_VALUE, 95);
 
-public class EnergyCellSlot extends Slot {
+  private final int cycleLimit;
+  private final int targetPercentage;
 
-  public EnergyCellSlot(final Container container, final int slot, final int x, final int y) {
-    super(container, slot, x, y);
+  ChargingMode(int cycleLimit, int targetPercentage) {
+    this.cycleLimit = cycleLimit;
+    this.targetPercentage = targetPercentage;
   }
 
-  @Override
-  public boolean mayPlace(ItemStack itemStack) {
-    return itemStack.getItem() instanceof EnergyCell
-        || itemStack.getItem() instanceof EmptyEnergyCellItem
-        || itemStack.getItem() instanceof EmptyEnergyCellBlockItem;
+  public int getCycleLimit() {
+    return cycleLimit;
   }
 
-  @Override
-  public int getMaxStackSize() {
-    return 1;
+  public int getTargetPercentage() {
+    return targetPercentage;
+  }
+
+  public int getHysteresisPercentage() {
+    return targetPercentage - 10;
   }
 }

@@ -19,8 +19,9 @@
 
 package de.markusbordihn.scraptechworkshop.menu.slots;
 
+import de.markusbordihn.scraptechworkshop.energy.EnergyCell;
+import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
-import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +35,8 @@ public class RechargeStationInputSlot extends Slot {
 
   @Override
   public boolean mayPlace(ItemStack itemStack) {
-    return itemStack.getItem() instanceof EnergyCellItem
-        || itemStack.getItem() instanceof EmptyEnergyCellItem;
+    return itemStack.getItem() instanceof EnergyCell
+        || itemStack.getItem() instanceof EmptyEnergyCellItem
+        || itemStack.getItem() instanceof EmptyEnergyCellBlockItem;
   }
 }
