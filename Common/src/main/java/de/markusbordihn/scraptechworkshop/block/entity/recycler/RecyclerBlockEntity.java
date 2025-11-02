@@ -22,9 +22,9 @@ package de.markusbordihn.scraptechworkshop.block.entity.recycler;
 import de.markusbordihn.scraptechworkshop.block.entity.AbstractWorkshopBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.recycler.RecyclerBlock;
 import de.markusbordihn.scraptechworkshop.config.RecyclerConfig;
+import de.markusbordihn.scraptechworkshop.data.energy.EnergyPowerData;
 import de.markusbordihn.scraptechworkshop.data.recycler.RecyclerStatus;
 import de.markusbordihn.scraptechworkshop.energy.EnergyPowerConsumer;
-import de.markusbordihn.scraptechworkshop.energy.EnergyPowerData;
 import de.markusbordihn.scraptechworkshop.item.upgrade.SpeedUpgradeItem;
 import de.markusbordihn.scraptechworkshop.menu.RecyclerMenu;
 import de.markusbordihn.scraptechworkshop.recipe.recycler.RecyclerRecipe;
@@ -51,6 +51,7 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
   private static final int ENERGY_CAPACITY_MAH = 10000;
   private static final int ENERGY_CONSUMPTION_PER_TICK = 5;
   private static final int ENERGY_CONSUMPTION_INTERVAL = 10;
+  private static final int ENERGY_FLOW_DISPLAY_TICKS = 40;
 
   private static final String PROGRESS_TAG = "Progress";
   private static final String MAX_PROGRESS_TAG = "MaxProgress";
@@ -64,6 +65,7 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
   public static BlockEntityType<RecyclerBlockEntity> TYPE;
 
   private final RecyclerContainer container;
+  private final ContainerData energyContainerData = createEnergyContainerData();
   private int progress = 0;
   private int maxProgress = RecyclerConfig.processTime;
   private final ContainerData containerData =
@@ -95,6 +97,8 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
   private int doneTimer = 0;
   private RecyclerRecipe currentRecipe = null;
   private int tickCounter = 0;
+  private long lastEnergyReceiveTick = 0;
+  private long lastEnergyDistributeTick = 0;
 
   public RecyclerBlockEntity(final BlockPos blockPos, final BlockState blockState) {
     super(TYPE, blockPos, blockState);
@@ -113,6 +117,19 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
     blockEntity.tickCounter++;
 
     long currentTime = level.getGameTime();
+    long currentTick = currentTime;
+
+    if (blockEntity.lastEnergyReceiveTick > 0
+        && currentTick - blockEntity.lastEnergyReceiveTick > ENERGY_FLOW_DISPLAY_TICKS) {
+      blockEntity.energyContainerData.set(4, 0);
+      blockEntity.lastEnergyReceiveTick = 0;
+    }
+    if (blockEntity.lastEnergyDistributeTick > 0
+        && currentTick - blockEntity.lastEnergyDistributeTick > ENERGY_FLOW_DISPLAY_TICKS) {
+      blockEntity.energyContainerData.set(5, 0);
+      blockEntity.lastEnergyDistributeTick = 0;
+    }
+
     blockEntity.updateEnergyFlow(currentTime);
 
     RecyclerStatus currentStatus = blockState.getValue(RecyclerBlock.STATUS);
@@ -172,6 +189,32 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
     if (result.hasChanged()
         && blockEntity.tickCounter % RecyclerConfig.progressUpdateInterval == 0) {
       blockEntity.setChanged();
+    }
+  }
+
+  @Override
+  public int getLastEnergyReceiveAmount() {
+    return energyContainerData.get(4);
+  }
+
+  @Override
+  public void setLastEnergyReceiveAmount(int amount) {
+    energyContainerData.set(4, amount);
+    if (this.level != null) {
+      this.lastEnergyReceiveTick = this.level.getGameTime();
+    }
+  }
+
+  @Override
+  public int getLastEnergyDistributeAmount() {
+    return energyContainerData.get(5);
+  }
+
+  @Override
+  public void setLastEnergyDistributeAmount(int amount) {
+    energyContainerData.set(5, amount);
+    if (this.level != null) {
+      this.lastEnergyDistributeTick = this.level.getGameTime();
     }
   }
 
@@ -269,14 +312,21 @@ public class RecyclerBlockEntity extends AbstractWorkshopBlockEntity
 
   @Override
   public EnergyPowerData getEnergyData() {
-    return energyData.withBattery(container.getItem(RecyclerSlots.BATTERY_SLOT));
+    return energyData;
   }
 
   @Override
   public void setEnergyData(EnergyPowerData data) {
-    this.energyData = data;
-    container.setItem(RecyclerSlots.BATTERY_SLOT, data.battery());
+    // Always update with current battery from slot
+    ItemStack currentBattery = container.getItem(RecyclerSlots.BATTERY_SLOT);
+    this.energyData = data.withBattery(currentBattery);
+    container.setItem(RecyclerSlots.BATTERY_SLOT, this.energyData.battery());
     setChanged();
+  }
+
+  @Override
+  public ContainerData getEnergyPowerData() {
+    return energyContainerData;
   }
 
   @Override

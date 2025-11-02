@@ -51,12 +51,6 @@ public class ScrapTechWorkshop {
     initialize(context.getModEventBus());
   }
 
-  @Deprecated(forRemoval = true)
-  // @deprecated Fallback constructor for older Forge versions.
-  public ScrapTechWorkshop() {
-    initialize(FMLJavaModLoadingContext.get().getModEventBus());
-  }
-
   private void initialize(final IEventBus modEventBus) {
 
     log.info("Initializing {} (Forge) ...", Constants.MOD_NAME);

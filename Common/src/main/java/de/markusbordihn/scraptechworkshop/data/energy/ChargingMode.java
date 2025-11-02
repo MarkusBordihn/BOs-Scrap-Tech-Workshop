@@ -17,21 +17,29 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.energy;
+package de.markusbordihn.scraptechworkshop.data.energy;
 
-public enum EnergyFlowStatus {
-  IDLE(0),
-  NO_BATTERY(1),
-  BATTERY_TO_INTERNAL(2),
-  INTERNAL_TO_BATTERY(3);
+public enum ChargingMode {
+  LEARNING(2, 100),
+  CONSERVATION(Integer.MAX_VALUE, 95);
 
-  private final int spriteIndex;
+  private final int cycleLimit;
+  private final int targetPercentage;
 
-  EnergyFlowStatus(final int spriteIndex) {
-    this.spriteIndex = spriteIndex;
+  ChargingMode(final int cycleLimit, final int targetPercentage) {
+    this.cycleLimit = cycleLimit;
+    this.targetPercentage = targetPercentage;
   }
 
-  public int getSpriteIndex() {
-    return spriteIndex;
+  public int getCycleLimit() {
+    return cycleLimit;
+  }
+
+  public int getTargetPercentage() {
+    return targetPercentage;
+  }
+
+  public int getHysteresisPercentage() {
+    return targetPercentage - 10;
   }
 }

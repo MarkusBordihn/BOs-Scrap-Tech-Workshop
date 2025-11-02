@@ -39,7 +39,6 @@ public class RechargeStationScreen extends BaseContainerScreen<RechargeStationMe
   private static final String TRANSLATION_DONE = TRANSLATION_KEY_PREFIX + "done";
   private static final String TRANSLATION_IDLE = TRANSLATION_KEY_PREFIX + "idle";
   private static final String TRANSLATION_INPUT_SLOT = TRANSLATION_KEY_PREFIX + "input_slot";
-  private static final String TRANSLATION_BATTERY_SLOT = TRANSLATION_KEY_PREFIX + "battery_slot";
 
   private static final int SCREEN_WIDTH = 176;
   private static final int SCREEN_HEIGHT = 181;
@@ -76,7 +75,7 @@ public class RechargeStationScreen extends BaseContainerScreen<RechargeStationMe
 
     renderDefaultBackground(guiGraphics, x, y, imageWidth, imageHeight);
 
-    renderEnergyPowerUI(guiGraphics, x, y, menu.getCurrentEnergy(), menu.getEnergyCapacity());
+    super.renderBg(guiGraphics, partialTick, mouseX, mouseY);
 
     renderSlot(guiGraphics, x + INPUT_SLOT_X, y + INPUT_SLOT_Y);
 
@@ -137,17 +136,6 @@ public class RechargeStationScreen extends BaseContainerScreen<RechargeStationMe
   @Override
   protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
     super.renderTooltip(guiGraphics, x, y);
-
-    renderEnergyPowerTooltips(
-        guiGraphics,
-        x,
-        y,
-        leftPos,
-        topPos,
-        menu.getCurrentEnergy(),
-        menu.getEnergyCapacity(),
-        TRANSLATION_BATTERY_SLOT,
-        1);
 
     int relativeX = x - leftPos;
     int relativeY = y - topPos;

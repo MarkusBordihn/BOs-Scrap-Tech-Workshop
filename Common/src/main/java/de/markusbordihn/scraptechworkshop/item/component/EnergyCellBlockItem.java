@@ -33,10 +33,10 @@ import net.minecraft.world.level.Level;
 public class EnergyCellBlockItem extends Item implements EnergyCell {
 
   public static final String ID = "energy_cell_block";
-  public static final int CAPACITY_MAH = 30000;
-  public static final float VOLTAGE = 11.1f;
-  public static final int DEFAULT_CHARGE_RATE = 150;
-  public static final int DEFAULT_DISCHARGE_RATE = 600;
+  public static final int CAPACITY_MAH = 10000;
+  public static final float VOLTAGE = 12.8f;
+  public static final int DEFAULT_CHARGE_RATE = 50;
+  public static final int DEFAULT_DISCHARGE_RATE = 200;
 
   private final int initialEnergy;
   private final int chargeRate;
@@ -50,7 +50,8 @@ public class EnergyCellBlockItem extends Item implements EnergyCell {
     this(properties, initialEnergy, DEFAULT_CHARGE_RATE, DEFAULT_DISCHARGE_RATE);
   }
 
-  public EnergyCellBlockItem(Properties properties, int initialEnergy, int chargeRate, int dischargeRate) {
+  public EnergyCellBlockItem(
+      Properties properties, int initialEnergy, int chargeRate, int dischargeRate) {
     super(properties.stacksTo(1).durability(CAPACITY_MAH).rarity(Rarity.RARE));
     this.initialEnergy = Math.max(1, Math.min(initialEnergy, CAPACITY_MAH));
     this.chargeRate = Math.max(1, chargeRate);

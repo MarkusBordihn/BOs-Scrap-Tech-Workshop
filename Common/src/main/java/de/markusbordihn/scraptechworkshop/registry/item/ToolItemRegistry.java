@@ -61,9 +61,9 @@ public class ToolItemRegistry {
   public static final EnergyCellBlockItem ENERGY_CELL_BLOCK_ITEM =
       new EnergyCellBlockItem(new Item.Properties());
   public static final EnergyCellBlockItem SLIGHTLY_DAMAGED_ENERGY_CELL_BLOCK_ITEM =
-      new EnergyCellBlockItem(new Item.Properties(), 15000);
+      new EnergyCellBlockItem(new Item.Properties(), 5000);
   public static final EnergyCellBlockItem DAMAGED_ENERGY_CELL_BLOCK_ITEM =
-      new EnergyCellBlockItem(new Item.Properties(), 7500);
+      new EnergyCellBlockItem(new Item.Properties(), 2500);
   public static final EmptyEnergyCellBlockItem EMPTY_ENERGY_CELL_BLOCK_ITEM =
       new EmptyEnergyCellBlockItem(new Item.Properties());
   public static final CircuitBoardItem CIRCUIT_BOARD_ITEM =

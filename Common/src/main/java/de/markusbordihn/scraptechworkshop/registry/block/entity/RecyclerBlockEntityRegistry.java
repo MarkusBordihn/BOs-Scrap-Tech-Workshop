@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 
 public class RecyclerBlockEntityRegistry {
 
-  // Note: BlockEntityType will be set by platform-specific code during registration
   public static BlockEntityType<RecyclerBlockEntity> RECYCLER_BLOCK_ENTITY_TYPE;
 
   private RecyclerBlockEntityRegistry() {}

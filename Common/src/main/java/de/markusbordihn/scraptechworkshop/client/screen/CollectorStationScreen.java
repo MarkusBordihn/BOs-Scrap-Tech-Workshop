@@ -44,7 +44,6 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
       TRANSLATION_KEY_PREFIX + "status.no_storage";
   private static final String TRANSLATION_STATUS_NO_POWER =
       TRANSLATION_KEY_PREFIX + "status.no_power";
-  private static final String TRANSLATION_BATTERY_SLOT = TRANSLATION_KEY_PREFIX + "battery_slot";
 
   private static final int SCREEN_WIDTH = 176;
   private static final int SCREEN_HEIGHT = 220;
@@ -75,7 +74,7 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
 
     renderDefaultBackground(guiGraphics, x, y, imageWidth, imageHeight);
 
-    renderEnergyPowerUI(guiGraphics, x, y, menu.getCurrentEnergy(), menu.getEnergyCapacity());
+    super.renderBg(guiGraphics, partialTick, mouseX, mouseY);
 
     // Storage grid slots
     renderSlots(
@@ -100,10 +99,10 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
     int progressBarX = x + CollectorStationMenu.PROGRESS_BAR_X;
     int progressBarY = y + CollectorStationMenu.PROGRESS_BAR_Y;
     guiGraphics.fill(
-        progressBarX - 1,
-        progressBarY - 1,
-        progressBarX + PROGRESS_BAR_WIDTH + 1,
-        progressBarY + PROGRESS_BAR_HEIGHT + 1,
+        progressBarX,
+        progressBarY,
+        progressBarX + PROGRESS_BAR_WIDTH,
+        progressBarY + PROGRESS_BAR_HEIGHT,
         0xFF8B8B8B);
 
     renderProgressBar(guiGraphics, x, y);
@@ -217,17 +216,6 @@ public class CollectorStationScreen extends BaseContainerScreen<CollectorStation
   @Override
   protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
     super.renderTooltip(guiGraphics, x, y);
-
-    renderEnergyPowerTooltips(
-        guiGraphics,
-        x,
-        y,
-        leftPos,
-        topPos,
-        menu.getCurrentEnergy(),
-        menu.getEnergyCapacity(),
-        TRANSLATION_BATTERY_SLOT,
-        0);
 
     int relativeX = x - leftPos;
     int relativeY = y - topPos;

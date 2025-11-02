@@ -22,7 +22,8 @@ package de.markusbordihn.scraptechworkshop.client.screen;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.screen.energy.EnergyPowerRenderer;
-import de.markusbordihn.scraptechworkshop.energy.EnergyFlowStatus;
+import de.markusbordihn.scraptechworkshop.data.energy.EnergyFlowStatus;
+import de.markusbordihn.scraptechworkshop.menu.EnergyPowerGeneratorMenu;
 import de.markusbordihn.scraptechworkshop.menu.EnergyPowerMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -146,17 +147,39 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
       final int y,
       final int currentEnergy,
       final int energyCapacity) {
-    if (this.menu instanceof EnergyPowerMenu energyPowerMenu) {
+    if (this.menu instanceof EnergyPowerGeneratorMenu generatorMenu) {
       EnergyPowerRenderer.renderEnergyPowerUI(
           guiGraphics,
           x,
           y,
           currentEnergy,
           energyCapacity,
-          energyPowerMenu.getEnergyFlowStatus());
+          generatorMenu.getEnergyFlowStatus(),
+          generatorMenu.getEnergyReceiveAmount(),
+          generatorMenu.getEnergyDistributeAmount(),
+          EnergyPowerGeneratorMenu.ENERGY_TAB_BATTERY_SLOT_Y);
+    } else if (this.menu instanceof EnergyPowerMenu energyPowerMenu) {
+      EnergyPowerRenderer.renderEnergyPowerUI(
+          guiGraphics,
+          x,
+          y,
+          currentEnergy,
+          energyCapacity,
+          energyPowerMenu.getEnergyFlowStatus(),
+          energyPowerMenu.getEnergyReceiveAmount(),
+          energyPowerMenu.getEnergyDistributeAmount(),
+          EnergyPowerMenu.ENERGY_TAB_BATTERY_SLOT_Y);
     } else {
       EnergyPowerRenderer.renderEnergyPowerUI(
-          guiGraphics, x, y, currentEnergy, energyCapacity, EnergyFlowStatus.IDLE);
+          guiGraphics,
+          x,
+          y,
+          currentEnergy,
+          energyCapacity,
+          EnergyFlowStatus.IDLE,
+          0,
+          0,
+          EnergyPowerMenu.ENERGY_TAB_BATTERY_SLOT_Y);
     }
   }
 
@@ -182,5 +205,57 @@ public abstract class BaseContainerScreen<T extends AbstractContainerMenu>
         batteryTooltipKey,
         this.menu,
         batterySlotIndex);
+  }
+
+  @Override
+  protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
+    if (this.menu instanceof EnergyPowerMenu energyPowerMenu) {
+      renderEnergyPowerUI(
+          guiGraphics,
+          this.leftPos,
+          this.topPos,
+          energyPowerMenu.getCurrentEnergy(),
+          energyPowerMenu.getEnergyCapacity());
+    } else if (this.menu instanceof EnergyPowerGeneratorMenu generatorMenu) {
+      renderEnergyPowerUI(
+          guiGraphics,
+          this.leftPos,
+          this.topPos,
+          generatorMenu.getEnergy(),
+          generatorMenu.getEnergyCapacity());
+    }
+  }
+
+  @Override
+  protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    super.renderTooltip(guiGraphics, mouseX, mouseY);
+    if (this.menu instanceof EnergyPowerMenu energyPowerMenu) {
+      renderEnergyPowerTooltips(
+          guiGraphics,
+          mouseX,
+          mouseY,
+          this.leftPos,
+          this.topPos,
+          energyPowerMenu.getCurrentEnergy(),
+          energyPowerMenu.getEnergyCapacity(),
+          Constants.GUI_PREFIX + "battery_slot",
+          energyPowerMenu.getBatterySlotIndex());
+    } else if (this.menu instanceof EnergyPowerGeneratorMenu generatorMenu) {
+      renderEnergyPowerTooltips(
+          guiGraphics,
+          mouseX,
+          mouseY,
+          this.leftPos,
+          this.topPos,
+          generatorMenu.getEnergy(),
+          generatorMenu.getEnergyCapacity(),
+          Constants.GUI_PREFIX + "battery_slot",
+          generatorMenu.getBatterySlotIndex());
+    }
+  }
+
+  @Override
+  protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    super.renderLabels(guiGraphics, mouseX, mouseY);
   }
 }

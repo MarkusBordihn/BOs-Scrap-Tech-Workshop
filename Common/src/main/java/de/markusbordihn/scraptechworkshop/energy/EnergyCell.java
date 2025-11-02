@@ -32,11 +32,15 @@ public interface EnergyCell {
   ItemStack createEmptyBattery();
 
   default int getEnergy(final ItemStack itemStack) {
-    return getCapacity() - itemStack.getDamageValue();
+    if (itemStack.getDamageValue() > getCapacity() - 1) {
+      itemStack.setDamageValue(getCapacity() - 1);
+    }
+    return Math.max(1, getCapacity() - itemStack.getDamageValue());
   }
 
   default void setEnergy(final ItemStack itemStack, final int energy) {
-    itemStack.setDamageValue(getCapacity() - Math.max(1, Math.min(energy, getCapacity())));
+    itemStack.setDamageValue(
+        Math.min(getCapacity() - Math.max(1, Math.min(energy, getCapacity())), getCapacity() - 1));
   }
 
   default void consumeEnergy(final ItemStack itemStack, final int amount) {

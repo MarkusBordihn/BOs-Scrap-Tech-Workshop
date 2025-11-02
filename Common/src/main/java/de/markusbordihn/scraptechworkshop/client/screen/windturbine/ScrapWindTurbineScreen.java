@@ -22,7 +22,6 @@ package de.markusbordihn.scraptechworkshop.client.screen.windturbine;
 import com.mojang.blaze3d.systems.RenderSystem;
 import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.client.screen.BaseContainerScreen;
-import de.markusbordihn.scraptechworkshop.client.screen.energy.EnergyPowerRenderer;
 import de.markusbordihn.scraptechworkshop.data.windturbine.ScrapWindTurbineStatus;
 import de.markusbordihn.scraptechworkshop.item.component.EnergyCellItem;
 import de.markusbordihn.scraptechworkshop.menu.ScrapWindTurbineMenu;
@@ -36,7 +35,6 @@ public class ScrapWindTurbineScreen extends BaseContainerScreen<ScrapWindTurbine
   private static final String TRANSLATION_KEY_PREFIX = Constants.GUI_PREFIX + "scrap_wind_turbine.";
   private static final String TRANSLATION_WIND_SPEED = TRANSLATION_KEY_PREFIX + "wind_speed";
   private static final String TRANSLATION_POWER_GEN = TRANSLATION_KEY_PREFIX + "power_generation";
-  private static final String TRANSLATION_BATTERY_SLOT = TRANSLATION_KEY_PREFIX + "battery_slot";
   private static final String TRANSLATION_CHARGING_SLOT = TRANSLATION_KEY_PREFIX + "charging_slot";
   private static final String TRANSLATION_STATUS_IDLE = TRANSLATION_KEY_PREFIX + "status.idle";
   private static final String TRANSLATION_STATUS_NO_WIND =
@@ -92,8 +90,7 @@ public class ScrapWindTurbineScreen extends BaseContainerScreen<ScrapWindTurbine
 
     renderDefaultBackground(guiGraphics, x, y, imageWidth, imageHeight);
 
-    EnergyPowerRenderer.renderEnergyPowerUI(
-        guiGraphics, x, y, menu.getEnergy(), menu.getEnergyCapacity(), menu.getEnergyFlowStatus());
+    super.renderBg(guiGraphics, partialTick, mouseX, mouseY);
 
     renderSlot(
         guiGraphics,
@@ -222,7 +219,6 @@ public class ScrapWindTurbineScreen extends BaseContainerScreen<ScrapWindTurbine
   }
 
   private int getChargingBatteryEnergy() {
-    // Get energy of the battery in the charging slot
     var slot = menu.getSlot(menu.getChargingBatterySlotIndex());
     if (slot != null && !slot.getItem().isEmpty()) {
       var item = slot.getItem().getItem();
@@ -247,20 +243,10 @@ public class ScrapWindTurbineScreen extends BaseContainerScreen<ScrapWindTurbine
 
   @Override
   protected void renderTooltip(GuiGraphics guiGraphics, int mouseX, int mouseY) {
+    super.renderTooltip(guiGraphics, mouseX, mouseY);
+
     int x = (width - imageWidth) / 2;
     int y = (height - imageHeight) / 2;
-
-    renderEnergyPowerTooltips(
-        guiGraphics,
-        mouseX,
-        mouseY,
-        x,
-        y,
-        menu.getEnergy(),
-        menu.getEnergyCapacity(),
-        TRANSLATION_BATTERY_SLOT,
-        menu.getEnergyTabBatterySlotIndex());
-
     int relativeX = mouseX - x;
     int relativeY = mouseY - y;
 
@@ -271,7 +257,5 @@ public class ScrapWindTurbineScreen extends BaseContainerScreen<ScrapWindTurbine
       guiGraphics.renderTooltip(
           this.font, Component.translatable(TRANSLATION_CHARGING_SLOT), mouseX, mouseY);
     }
-
-    super.renderTooltip(guiGraphics, mouseX, mouseY);
   }
 }

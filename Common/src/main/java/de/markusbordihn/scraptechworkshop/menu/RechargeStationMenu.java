@@ -60,7 +60,7 @@ public class RechargeStationMenu extends EnergyPowerMenu {
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
   private static final String LOG_PREFIX = "[RECHARGE_STATION]";
 
-  public static MenuType<RechargeStationMenu> TYPE;
+  public static MenuType<RechargeStationMenu> MENU_TYPE;
 
   private final RechargeStationBlockEntity blockEntity;
   private final Level level;
@@ -83,11 +83,11 @@ public class RechargeStationMenu extends EnergyPowerMenu {
       final BlockEntity entity,
       final ContainerData additionalData) {
     super(
-        TYPE,
+        MENU_TYPE,
         windowId,
         entity instanceof EnergyPowerConsumer consumer
             ? consumer.getEnergyPowerData()
-            : new SimpleContainerData(2));
+            : new SimpleContainerData(6));
     this.level = playerInventory.player.level();
     this.additionalData =
         additionalData != null
@@ -238,5 +238,10 @@ public class RechargeStationMenu extends EnergyPowerMenu {
       return RechargeStationStatus.IDLE;
     }
     return blockEntity.getBlockState().getValue(RechargeStationBlock.STATUS);
+  }
+
+  @Override
+  public int getBatterySlotIndex() {
+    return RechargeStationSlots.BATTERY_SLOT;
   }
 }

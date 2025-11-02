@@ -17,7 +17,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.energy;
+package de.markusbordihn.scraptechworkshop.data.energy;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -25,8 +25,10 @@ import net.minecraft.world.item.ItemStack;
 public record BatteryStatus(
     EnergyStatus status, EnergySourceType sourceType, boolean rechargeable, int cycleCount) {
 
-  public static final String NBT_RECHARGEABLE = "Rechargeable";
-  public static final String NBT_CYCLE_COUNT = "CycleCount";
+  public static final String RECHARGEABLE_TAG = "Rechargeable";
+  public static final String CYCLE_COUNT_TAG = "CycleCount";
+  public static final String ENERGY_SOURCE_TAG = "EnergySource";
+  public static final String ENERGY_STATUS_TAG = "EnergyStatus";
 
   public BatteryStatus(ItemStack itemStack) {
     this(readFromItemStack(itemStack));
@@ -45,10 +47,10 @@ public record BatteryStatus(
     int cycleCount;
 
     if (tag != null) {
-      status = EnergyStatus.fromId(tag.getString(EnergyStatus.NBT_ENERGY_STATUS));
-      sourceType = EnergySourceType.fromId(tag.getString(EnergySourceType.NBT_ENERGY_SOURCE));
-      rechargeable = tag.getBoolean(NBT_RECHARGEABLE);
-      cycleCount = tag.getInt(NBT_CYCLE_COUNT);
+      status = EnergyStatus.fromId(tag.getString(ENERGY_STATUS_TAG));
+      sourceType = EnergySourceType.fromId(tag.getString(ENERGY_SOURCE_TAG));
+      rechargeable = tag.getBoolean(RECHARGEABLE_TAG);
+      cycleCount = tag.getInt(CYCLE_COUNT_TAG);
     } else {
       status = EnergyStatus.READY;
       sourceType = EnergySourceType.BATTERY;
@@ -61,10 +63,10 @@ public record BatteryStatus(
 
   public void writeToItemStack(ItemStack itemStack) {
     CompoundTag tag = itemStack.getOrCreateTag();
-    tag.putString(EnergyStatus.NBT_ENERGY_STATUS, status.getId());
-    tag.putString(EnergySourceType.NBT_ENERGY_SOURCE, sourceType.getId());
-    tag.putBoolean(NBT_RECHARGEABLE, rechargeable);
-    tag.putInt(NBT_CYCLE_COUNT, cycleCount);
+    tag.putString(ENERGY_STATUS_TAG, status.getId());
+    tag.putString(ENERGY_SOURCE_TAG, sourceType.getId());
+    tag.putBoolean(RECHARGEABLE_TAG, rechargeable);
+    tag.putInt(CYCLE_COUNT_TAG, cycleCount);
   }
 
   public BatteryStatus withStatus(EnergyStatus newStatus) {

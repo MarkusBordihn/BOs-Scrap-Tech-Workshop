@@ -17,19 +17,44 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.energy;
+package de.markusbordihn.scraptechworkshop.data.energy;
 
-public record EnergyDebounceData(long lastEnergyReceiveTime, int lastEnergyAmount) {
+public enum EnergySourceType {
+  NONE("none"),
+  BATTERY("battery"),
+  BATTERY_BLOCK("battery_block"),
+  PIPELINE("pipeline"),
+  CABLE("cable"),
+  EXTERNAL_MOD("external_mod");
 
-  public static EnergyDebounceData empty() {
-    return new EnergyDebounceData(0, 0);
+  private final String id;
+
+  EnergySourceType(String id) {
+    this.id = id;
   }
 
-  public EnergyDebounceData withReceiveTime(long time, int amount) {
-    return new EnergyDebounceData(time, amount);
+  public static EnergySourceType fromId(final String id) {
+    for (EnergySourceType type : values()) {
+      if (type.id.equals(id)) {
+        return type;
+      }
+    }
+    return NONE;
   }
 
-  public boolean isReceivingEnergy(long currentTime, int debounceTicks) {
-    return currentTime - lastEnergyReceiveTime < debounceTicks;
+  public String getId() {
+    return id;
+  }
+
+  public boolean isPortable() {
+    return this == BATTERY;
+  }
+
+  public boolean isStationary() {
+    return this == BATTERY_BLOCK || this == PIPELINE || this == CABLE;
+  }
+
+  public boolean isExternal() {
+    return this == EXTERNAL_MOD;
   }
 }

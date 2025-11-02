@@ -34,7 +34,7 @@ public class EnergyCellItem extends Item implements EnergyCell {
 
   public static final String ID = "energy_cell";
   public static final int CAPACITY_MAH = 5000;
-  public static final float VOLTAGE = 3.7f;
+  public static final float VOLTAGE = 3.2f;
   public static final int DEFAULT_CHARGE_RATE = 25;
   public static final int DEFAULT_DISCHARGE_RATE = 100;
 
@@ -50,7 +50,8 @@ public class EnergyCellItem extends Item implements EnergyCell {
     this(properties, initialEnergy, DEFAULT_CHARGE_RATE, DEFAULT_DISCHARGE_RATE);
   }
 
-  public EnergyCellItem(Properties properties, int initialEnergy, int chargeRate, int dischargeRate) {
+  public EnergyCellItem(
+      Properties properties, int initialEnergy, int chargeRate, int dischargeRate) {
     super(properties.stacksTo(1).durability(CAPACITY_MAH).rarity(Rarity.UNCOMMON));
     this.initialEnergy = Math.max(1, Math.min(initialEnergy, CAPACITY_MAH));
     this.chargeRate = Math.max(1, chargeRate);

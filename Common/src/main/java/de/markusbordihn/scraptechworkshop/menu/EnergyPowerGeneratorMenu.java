@@ -19,7 +19,8 @@
 
 package de.markusbordihn.scraptechworkshop.menu;
 
-import de.markusbordihn.scraptechworkshop.energy.EnergyFlowStatus;
+import de.markusbordihn.scraptechworkshop.data.energy.EnergyFlowStatus;
+import de.markusbordihn.scraptechworkshop.data.energy.ExternalEnergyFlowStatus;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SimpleContainerData;
@@ -28,14 +29,18 @@ public abstract class EnergyPowerGeneratorMenu extends BaseMenu {
 
   public static final int ENERGY_TAB_BATTERY_SLOT_X = -20;
   public static final int ENERGY_TAB_BATTERY_SLOT_Y = 6;
+
   protected static final int ENERGY_DATA_INDEX = 0;
   protected static final int ENERGY_CAPACITY_DATA_INDEX = 1;
   protected static final int ENERGY_FLOW_STATUS_DATA_INDEX = 2;
+  protected static final int EXTERNAL_ENERGY_FLOW_STATUS_DATA_INDEX = 3;
+  protected static final int ENERGY_RECEIVE_AMOUNT_DATA_INDEX = 4;
+  protected static final int ENERGY_DISTRIBUTE_AMOUNT_DATA_INDEX = 5;
   protected final ContainerData energyData;
 
   protected EnergyPowerGeneratorMenu(MenuType<?> menuType, int windowId, ContainerData energyData) {
     super(menuType, windowId);
-    this.energyData = energyData != null ? energyData : new SimpleContainerData(3);
+    this.energyData = energyData != null ? energyData : new SimpleContainerData(6);
     addDataSlots(this.energyData);
   }
 
@@ -54,4 +59,22 @@ public abstract class EnergyPowerGeneratorMenu extends BaseMenu {
         ? statuses[statusOrdinal]
         : EnergyFlowStatus.IDLE;
   }
+
+  public ExternalEnergyFlowStatus getExternalEnergyFlowStatus() {
+    int statusOrdinal = energyData.get(EXTERNAL_ENERGY_FLOW_STATUS_DATA_INDEX);
+    ExternalEnergyFlowStatus[] statuses = ExternalEnergyFlowStatus.values();
+    return statusOrdinal >= 0 && statusOrdinal < statuses.length
+        ? statuses[statusOrdinal]
+        : ExternalEnergyFlowStatus.IDLE;
+  }
+
+  public int getEnergyReceiveAmount() {
+    return energyData.get(ENERGY_RECEIVE_AMOUNT_DATA_INDEX);
+  }
+
+  public int getEnergyDistributeAmount() {
+    return energyData.get(ENERGY_DISTRIBUTE_AMOUNT_DATA_INDEX);
+  }
+
+  public abstract int getBatterySlotIndex();
 }

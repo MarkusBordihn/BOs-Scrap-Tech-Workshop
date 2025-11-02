@@ -17,46 +17,21 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.energy;
+package de.markusbordihn.scraptechworkshop.data.energy;
 
-public enum EnergySourceType {
-  NONE("none"),
-  BATTERY("battery"),
-  BATTERY_BLOCK("battery_block"),
-  PIPELINE("pipeline"),
-  CABLE("cable"),
-  EXTERNAL_MOD("external_mod");
+public enum EnergyFlowStatus {
+  IDLE(0),
+  NO_BATTERY(1),
+  BATTERY_TO_INTERNAL(2),
+  INTERNAL_TO_BATTERY(3);
 
-  public static final String NBT_ENERGY_SOURCE = "EnergySource";
+  private final int spriteIndex;
 
-  private final String id;
-
-  EnergySourceType(String id) {
-    this.id = id;
+  EnergyFlowStatus(final int spriteIndex) {
+    this.spriteIndex = spriteIndex;
   }
 
-  public static EnergySourceType fromId(String id) {
-    for (EnergySourceType type : values()) {
-      if (type.id.equals(id)) {
-        return type;
-      }
-    }
-    return NONE;
-  }
-
-  public String getId() {
-    return id;
-  }
-
-  public boolean isPortable() {
-    return this == BATTERY;
-  }
-
-  public boolean isStationary() {
-    return this == BATTERY_BLOCK || this == PIPELINE || this == CABLE;
-  }
-
-  public boolean isExternal() {
-    return this == EXTERNAL_MOD;
+  public int getSpriteIndex() {
+    return spriteIndex;
   }
 }

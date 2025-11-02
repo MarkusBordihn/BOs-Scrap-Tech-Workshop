@@ -55,7 +55,7 @@ public class ScrapWindTurbineMenu extends EnergyPowerGeneratorMenu {
   private static final int PLAYER_INVENTORY_END_INDEX = PLAYER_INVENTORY_START_INDEX + 27;
   private static final int PLAYER_HOTBAR_END_INDEX = PLAYER_INVENTORY_END_INDEX + 9;
   private static final int ADDITIONAL_CONTAINER_DATA_SIZE = 2;
-  public static MenuType<ScrapWindTurbineMenu> TYPE;
+  public static MenuType<ScrapWindTurbineMenu> MENU_TYPE;
   private final ScrapWindTurbineBlockEntity blockEntity;
   private final Level level;
   private final ContainerData additionalData;
@@ -77,11 +77,11 @@ public class ScrapWindTurbineMenu extends EnergyPowerGeneratorMenu {
       final BlockEntity entity,
       final ContainerData additionalData) {
     super(
-        TYPE,
+        MENU_TYPE,
         windowId,
         entity instanceof EnergyPowerGenerator generator
             ? generator.getEnergyPowerData()
-            : new SimpleContainerData(3));
+            : new SimpleContainerData(6));
     this.level = playerInventory.player.level();
     this.additionalData =
         additionalData != null
@@ -239,5 +239,10 @@ public class ScrapWindTurbineMenu extends EnergyPowerGeneratorMenu {
 
   public int getChargingBatterySlotIndex() {
     return ScrapWindTurbineSlots.CHARGING_BATTERY_SLOT;
+  }
+
+  @Override
+  public int getBatterySlotIndex() {
+    return getEnergyTabBatterySlotIndex();
   }
 }

@@ -19,6 +19,9 @@
 
 package de.markusbordihn.scraptechworkshop.energy;
 
+import de.markusbordihn.scraptechworkshop.data.energy.ChargingMode;
+import de.markusbordihn.scraptechworkshop.data.energy.EnergyFlowStatus;
+import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
 import net.minecraft.world.item.ItemStack;
 
@@ -57,7 +60,7 @@ public interface EnergyPowerBatteryHandler extends EnergyBatteryHandler {
   default void updateEnergyFlow(final long currentTime) {
     ItemStack battery = getBattery();
     EnergyFlowStatus currentStatus = getEnergyFlowStatus();
-    
+
     if (battery.isEmpty()) {
       if (currentStatus != EnergyFlowStatus.NO_BATTERY) {
         setEnergyFlowStatus(EnergyFlowStatus.NO_BATTERY);
@@ -67,7 +70,8 @@ public interface EnergyPowerBatteryHandler extends EnergyBatteryHandler {
       return;
     }
 
-    if (battery.getItem() instanceof EmptyEnergyCellItem) {
+    if (battery.getItem() instanceof EmptyEnergyCellItem
+        || battery.getItem() instanceof EmptyEnergyCellBlockItem) {
       if (currentStatus != EnergyFlowStatus.IDLE) {
         setEnergyFlowStatus(EnergyFlowStatus.IDLE);
         setLastEnergyLevel(0);
@@ -85,36 +89,35 @@ public interface EnergyPowerBatteryHandler extends EnergyBatteryHandler {
       return;
     }
 
-    int currentEnergy = getCurrentEnergy();
-    int capacity = getEnergyCapacity();
     int batteryEnergy = cell.getEnergy(battery);
     int lastBatteryEnergy = getLastEnergyLevel();
-    int targetEnergy = (capacity * getChargingMode().getTargetPercentage()) / 100;
-    int hysteresisEnergy = (capacity * getChargingMode().getHysteresisPercentage()) / 100;
-    boolean canStatusChange = shouldCharge(currentTime);
+    int hysteresisEnergy =
+        (getEnergyCapacity() * getChargingMode().getHysteresisPercentage()) / 100;
+    int targetEnergy = (getEnergyCapacity() * getChargingMode().getTargetPercentage()) / 100;
     EnergyFlowStatus newStatus = currentStatus;
 
     if (batteryEnergy > lastBatteryEnergy) {
       newStatus = EnergyFlowStatus.INTERNAL_TO_BATTERY;
-      if (canStatusChange) {
+      if (shouldCharge(currentTime)) {
         setLastEnergyLevel(batteryEnergy);
         setLastEnergyChangeTime(currentTime);
       }
-    }
-    else if (batteryEnergy < lastBatteryEnergy) {
+    } else if (batteryEnergy < lastBatteryEnergy) {
       newStatus = EnergyFlowStatus.BATTERY_TO_INTERNAL;
-      if (canStatusChange) {
+      if (shouldCharge(currentTime)) {
         setLastEnergyLevel(batteryEnergy);
         setLastEnergyChangeTime(currentTime);
       }
-    }
-    else if (currentEnergy < hysteresisEnergy && batteryEnergy > 1 && canStatusChange) {
+    } else if (getCurrentEnergy() < hysteresisEnergy
+        && batteryEnergy > 1
+        && shouldCharge(currentTime)) {
       int extracted = cell.extractEnergy(battery);
       if (extracted > 0) {
-        setCurrentEnergy(currentEnergy + extracted);
+        int oldEnergy = getCurrentEnergy();
+        setCurrentEnergy(oldEnergy + extracted);
         newStatus = EnergyFlowStatus.BATTERY_TO_INTERNAL;
 
-        if (currentEnergy < hysteresisEnergy && getCurrentEnergy() >= targetEnergy) {
+        if (oldEnergy < hysteresisEnergy && getCurrentEnergy() >= targetEnergy) {
           setChargeCycleCount(getChargeCycleCount() + 1);
         }
 
@@ -127,23 +130,25 @@ public interface EnergyPowerBatteryHandler extends EnergyBatteryHandler {
         setLastEnergyChangeTime(currentTime);
         markDirty();
       }
-    }
-    else if (currentEnergy >= hysteresisEnergy && batteryEnergy < cell.getCapacity()) {
-      if (currentEnergy >= capacity || (currentStatus == EnergyFlowStatus.INTERNAL_TO_BATTERY && currentEnergy >= hysteresisEnergy)) {
-        int transferred = cell.addEnergy(battery, currentEnergy - hysteresisEnergy + 1);
+    } else if (getCurrentEnergy() >= hysteresisEnergy && batteryEnergy < cell.getCapacity()) {
+      if (getCurrentEnergy() >= getEnergyCapacity()
+          || (currentStatus == EnergyFlowStatus.INTERNAL_TO_BATTERY
+              && getCurrentEnergy() >= hysteresisEnergy)) {
+        int transferred = cell.addEnergy(battery, getCurrentEnergy() - hysteresisEnergy + 1);
         if (transferred > 0) {
-          setCurrentEnergy(currentEnergy - transferred);
+          setCurrentEnergy(getCurrentEnergy() - transferred);
           setBattery(battery);
           newStatus = EnergyFlowStatus.INTERNAL_TO_BATTERY;
-          if (canStatusChange) {
+          if (shouldCharge(currentTime)) {
             setLastEnergyLevel(cell.getEnergy(battery));
             setLastEnergyChangeTime(currentTime);
           }
           markDirty();
         }
       }
-    }
-    else if (canStatusChange && batteryEnergy == lastBatteryEnergy && currentStatus != EnergyFlowStatus.IDLE) {
+    } else if (shouldCharge(currentTime)
+        && batteryEnergy == lastBatteryEnergy
+        && currentStatus != EnergyFlowStatus.IDLE) {
       newStatus = EnergyFlowStatus.IDLE;
       setLastEnergyChangeTime(currentTime);
     }

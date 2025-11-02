@@ -1,13 +1,19 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "EEE",
-    "EEE",
-    "EEE"
+    "CEC",
+    "ERE",
+    "CEC"
   ],
   "key": {
     "E": {
       "item": "scrap_tech_workshop:energy_cell"
+    },
+    "C": {
+      "tag": "scrap_tech_workshop:copper_wires"
+    },
+    "R": {
+      "item": "minecraft:redstone"
     }
   },
   "result": {

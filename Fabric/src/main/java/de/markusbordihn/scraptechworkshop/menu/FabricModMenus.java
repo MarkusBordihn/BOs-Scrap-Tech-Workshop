@@ -79,11 +79,11 @@ public class FabricModMenus {
         floatingScrapCollectorMenuType);
 
     // Set the menu types in the common class
-    RecyclerMenu.TYPE = recyclerMenuType;
-    RechargeStationMenu.TYPE = rechargeStationMenuType;
-    ScrapWindTurbineMenu.TYPE = scrapWindTurbineMenuType;
-    ScrapMultitoolMenu.TYPE = scrapMultitoolMenuType;
-    CollectorStationMenu.TYPE = collectorStationMenuType;
-    FloatingScrapCollectorMenu.TYPE = floatingScrapCollectorMenuType;
+    CollectorStationMenu.MENU_TYPE = collectorStationMenuType;
+    FloatingScrapCollectorMenu.MENU_TYPE = floatingScrapCollectorMenuType;
+    RechargeStationMenu.MENU_TYPE = rechargeStationMenuType;
+    RecyclerMenu.MENU_TYPE = recyclerMenuType;
+    ScrapMultitoolMenu.MENU_TYPE = scrapMultitoolMenuType;
+    ScrapWindTurbineMenu.MENU_TYPE = scrapWindTurbineMenuType;
   }
 }

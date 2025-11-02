@@ -19,6 +19,9 @@
 
 package de.markusbordihn.scraptechworkshop.energy;
 
+import de.markusbordihn.scraptechworkshop.data.energy.EnergyFlowStatus;
+import de.markusbordihn.scraptechworkshop.data.energy.EnergyPowerData;
+import de.markusbordihn.scraptechworkshop.data.energy.ExternalEnergyFlowStatus;
 import de.markusbordihn.scraptechworkshop.item.ModItems;
 import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellBlockItem;
 import de.markusbordihn.scraptechworkshop.item.component.EmptyEnergyCellItem;
@@ -48,6 +51,14 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
 
   void setEnergyData(final EnergyPowerData data);
 
+  int getLastEnergyReceiveAmount();
+
+  void setLastEnergyReceiveAmount(int amount);
+
+  int getLastEnergyDistributeAmount();
+
+  void setLastEnergyDistributeAmount(int amount);
+
   default int getCurrentEnergy() {
     return getEnergyData().currentEnergy();
   }
@@ -64,24 +75,46 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
     setEnergyData(getEnergyData().withBattery(battery));
   }
 
+  default de.markusbordihn.scraptechworkshop.data.energy.ExternalEnergyFlowStatus
+      getExternalEnergyFlowStatus() {
+    return getEnergyData().externalEnergyFlowStatus();
+  }
+
+  default void setExternalEnergyFlowStatus(
+      de.markusbordihn.scraptechworkshop.data.energy.ExternalEnergyFlowStatus status) {
+    setEnergyData(getEnergyData().withExternalEnergyFlowStatus(status));
+  }
+
+  default void resetEnergyFlowAmounts() {
+    if (getLastEnergyReceiveAmount() != 0 || getLastEnergyDistributeAmount() != 0) {
+      setLastEnergyReceiveAmount(0);
+      setLastEnergyDistributeAmount(0);
+    }
+  }
+
   default int getEnergyTransferRate() {
     return 50;
   }
 
-  default ContainerData getEnergyPowerData() {
+  default ContainerData createEnergyContainerData() {
     return new ContainerData() {
+      private int lastReceiveAmount = 0;
+      private int lastDistributeAmount = 0;
+
       @Override
       public int get(int index) {
         return switch (index) {
           case 0 -> getCurrentEnergy();
           case 1 -> getEnergyCapacity();
           case 2 -> {
-            // If this implements EnergyPowerBatteryHandler, return flow status
             if (EnergyPowerGenerator.this instanceof EnergyPowerBatteryHandler handler) {
               yield handler.getEnergyFlowStatus().ordinal();
             }
             yield 0;
           }
+          case 3 -> getEnergyData().externalEnergyFlowStatus().ordinal();
+          case 4 -> lastReceiveAmount;
+          case 5 -> lastDistributeAmount;
           default -> 0;
         };
       }
@@ -98,15 +131,25 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
               }
             }
           }
+          case 3 -> {
+            ExternalEnergyFlowStatus[] statuses = ExternalEnergyFlowStatus.values();
+            if (value >= 0 && value < statuses.length) {
+              setEnergyData(getEnergyData().withExternalEnergyFlowStatus(statuses[value]));
+            }
+          }
+          case 4 -> lastReceiveAmount = value;
+          case 5 -> lastDistributeAmount = value;
         }
       }
 
       @Override
       public int getCount() {
-        return 3;
+        return 6;
       }
     };
   }
+
+  ContainerData getEnergyPowerData();
 
   default int getAdaptiveTransferRate(final int baseTransferRate) {
     if (getCurrentEnergy() > baseTransferRate) {
@@ -117,24 +160,21 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
   }
 
   default boolean generateEnergy(final int amount) {
-    int currentEnergy = getCurrentEnergy();
-    int capacity = getEnergyCapacity();
-    int energyToAdd = Math.min(amount, capacity - currentEnergy);
-    
+    int energyToAdd = Math.min(amount, getEnergyCapacity() - getCurrentEnergy());
+
     if (energyToAdd > 0) {
-      setCurrentEnergy(currentEnergy + energyToAdd);
+      setCurrentEnergy(getCurrentEnergy() + energyToAdd);
       return true;
     }
-    
+
     return false;
   }
 
   default int extractEnergy(final int amount, final boolean simulate) {
-    int currentEnergy = getCurrentEnergy();
-    int energyExtracted = Math.min(amount, currentEnergy);
+    int energyExtracted = Math.min(amount, getCurrentEnergy());
 
     if (!simulate && energyExtracted > 0) {
-      setCurrentEnergy(currentEnergy - energyExtracted);
+      setCurrentEnergy(getCurrentEnergy() - energyExtracted);
     }
 
     return energyExtracted;
@@ -146,9 +186,9 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
     if (compoundTag.contains(BATTERY_TAG)) {
       battery = ItemStack.of(compoundTag.getCompound(BATTERY_TAG));
     }
-    
+
     EnergyPowerData data = EnergyPowerData.withEnergy(energy).withBattery(battery);
-    
+
     if (this instanceof EnergyPowerBatteryHandler) {
       if (compoundTag.contains("ChargeCycleCount")) {
         data = data.withChargeCycleCount(compoundTag.getInt("ChargeCycleCount"));
@@ -167,8 +207,8 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
         }
       }
     }
-    
-    setEnergyData(data.withDebounceData(EnergyDebounceData.empty()));
+
+    setEnergyData(data);
   }
 
   default void saveEnergyPowerGenerator(final CompoundTag compoundTag) {
@@ -179,7 +219,7 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
       data.battery().save(batteryTag);
       compoundTag.put(BATTERY_TAG, batteryTag);
     }
-    
+
     if (this instanceof EnergyPowerBatteryHandler) {
       compoundTag.putInt("ChargeCycleCount", data.chargeCycleCount());
       compoundTag.putLong("LastEnergyChangeTime", data.lastEnergyChangeTime());
@@ -222,7 +262,6 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
     }
 
     int totalDistributed = 0;
-
     int platformDistributed =
         distributeToPlatformEnergySystem(level, blockPos, availableEnergy, maxTransferRate);
     if (platformDistributed > 0) {
@@ -251,7 +290,8 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
       ItemStack battery = container.getItem(chargingBatterySlot);
       int batterySpace = getBatterySpaceAvailable(battery);
       if (batterySpace > 0) {
-        consumers.add(new EnergyConsumerInfo(container, chargingBatterySlot, battery, batterySpace));
+        consumers.add(
+            new EnergyConsumerInfo(container, chargingBatterySlot, battery, batterySpace));
       }
     }
 
@@ -294,6 +334,12 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
       chargeEnergyTabBattery(batteryHandler);
     }
 
+    setLastEnergyDistributeAmount(totalDistributed);
+    if (totalDistributed > 0) {
+      setExternalEnergyFlowStatus(ExternalEnergyFlowStatus.ENERGY_OUT);
+      markDirty();
+    }
+
     return totalDistributed;
   }
 
@@ -303,54 +349,45 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
       return;
     }
 
-    int currentEnergy = getCurrentEnergy();
     int capacity = getEnergyCapacity();
 
-    // Handle empty energy cell block - convert to charged block
     if (battery.getItem() instanceof EmptyEnergyCellBlockItem) {
-      // Only charge if we're at or above capacity (generator is full)
-      if (currentEnergy >= capacity) {
+      if (getCurrentEnergy() >= capacity) {
         ItemStack chargedBattery = new ItemStack(ModItems.ENERGY_CELL_BLOCK.get());
         if (chargedBattery.getItem() instanceof EnergyCell energyCell) {
-          int energyToAdd = Math.min(currentEnergy - capacity + 1, energyCell.getCapacity());
+          int energyToAdd = Math.min(getCurrentEnergy() - capacity + 1, energyCell.getCapacity());
           energyCell.setEnergy(chargedBattery, energyToAdd);
           handler.setBattery(chargedBattery);
-          setCurrentEnergy(currentEnergy - energyToAdd);
+          setCurrentEnergy(getCurrentEnergy() - energyToAdd);
           markDirty();
         }
       }
       return;
     }
 
-    // Handle empty energy cell - convert to charged cell
     if (battery.getItem() instanceof EmptyEnergyCellItem) {
-      // Only charge if we're at or above capacity (generator is full)
-      if (currentEnergy >= capacity) {
+      if (getCurrentEnergy() >= capacity) {
         ItemStack chargedBattery = new ItemStack(ModItems.ENERGY_CELL.get());
         if (chargedBattery.getItem() instanceof EnergyCell energyCell) {
-          int energyToAdd = Math.min(currentEnergy - capacity + 1, energyCell.getCapacity());
+          int energyToAdd = Math.min(getCurrentEnergy() - capacity + 1, energyCell.getCapacity());
           energyCell.setEnergy(chargedBattery, energyToAdd);
           handler.setBattery(chargedBattery);
-          setCurrentEnergy(currentEnergy - energyToAdd);
+          setCurrentEnergy(getCurrentEnergy() - energyToAdd);
           markDirty();
         }
       }
       return;
     }
-    
-    // Handle charging existing battery - only if above target (95%)
+
     if (battery.getItem() instanceof EnergyCell cell) {
       int batteryEnergy = cell.getEnergy(battery);
       if (batteryEnergy < cell.getCapacity()) {
-        ChargingMode mode = handler.getChargingMode();
-        int targetEnergy = (capacity * mode.getTargetPercentage()) / 100;
-        
-        // Only charge battery if we're above target level (95%)
-        if (currentEnergy > targetEnergy) {
-          int availableForCharging = currentEnergy - targetEnergy;
-          int transferred = cell.addEnergy(battery, availableForCharging);
+        int targetEnergy = (capacity * handler.getChargingMode().getTargetPercentage()) / 100;
+
+        if (getCurrentEnergy() > targetEnergy) {
+          int transferred = cell.addEnergy(battery, getCurrentEnergy() - targetEnergy);
           if (transferred > 0) {
-            setCurrentEnergy(currentEnergy - transferred);
+            setCurrentEnergy(getCurrentEnergy() - transferred);
             handler.setBattery(battery);
             markDirty();
           }
@@ -365,21 +402,19 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
     }
 
     if (battery.getItem() instanceof EmptyEnergyCellBlockItem) {
-      // For empty cell blocks, return capacity of standard energy cell block
       ItemStack tempCell = new ItemStack(ModItems.ENERGY_CELL_BLOCK.get());
       if (tempCell.getItem() instanceof EnergyCell cell) {
         return cell.getCapacity();
       }
-      return 30000; // Fallback to block capacity
+      return 10000;
     }
 
     if (battery.getItem() instanceof EmptyEnergyCellItem) {
-      // For empty cells, return capacity of standard energy cell
       ItemStack tempCell = new ItemStack(ModItems.ENERGY_CELL.get());
       if (tempCell.getItem() instanceof EnergyCell cell) {
         return cell.getCapacity();
       }
-      return 5000; // Fallback to standard capacity
+      return 5000;
     }
 
     if (battery.getItem() instanceof EnergyCell cell) {
@@ -405,7 +440,8 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
       this.spaceAvailable = spaceAvailable;
     }
 
-    public EnergyConsumerInfo(Container container, int slot, ItemStack battery, int spaceAvailable) {
+    public EnergyConsumerInfo(
+        Container container, int slot, ItemStack battery, int spaceAvailable) {
       this.blockConsumer = null;
       this.batteryContainer = container;
       this.batterySlot = slot;
@@ -423,7 +459,7 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
     }
 
     private int chargeBatteryItem(Container container, int slot, ItemStack battery, int amount) {
-      // Handle empty energy cell block
+
       if (battery.getItem() instanceof EmptyEnergyCellBlockItem) {
         ItemStack chargedBattery = new ItemStack(ModItems.ENERGY_CELL_BLOCK.get());
         if (chargedBattery.getItem() instanceof EnergyCell energyCell) {
@@ -432,9 +468,7 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
           container.setItem(slot, chargedBattery);
           return energyToAdd;
         }
-      }
-      // Handle empty energy cell
-      else if (battery.getItem() instanceof EmptyEnergyCellItem) {
+      } else if (battery.getItem() instanceof EmptyEnergyCellItem) {
         ItemStack chargedBattery = new ItemStack(ModItems.ENERGY_CELL.get());
         if (chargedBattery.getItem() instanceof EnergyCell energyCell) {
           int energyToAdd = Math.min(amount, energyCell.getCapacity());
@@ -442,12 +476,9 @@ public interface EnergyPowerGenerator extends EnergyBatteryHandler {
           container.setItem(slot, chargedBattery);
           return energyToAdd;
         }
-      } 
-      // Handle charging existing battery
-      else if (battery.getItem() instanceof EnergyCell cell) {
-        int currentEnergy = cell.getEnergy(battery);
-        int energyToAdd = Math.min(amount, cell.getCapacity() - currentEnergy);
-        cell.setEnergy(battery, currentEnergy + energyToAdd);
+      } else if (battery.getItem() instanceof EnergyCell cell) {
+        int energyToAdd = Math.min(amount, cell.getCapacity() - cell.getEnergy(battery));
+        cell.setEnergy(battery, cell.getEnergy(battery) + energyToAdd);
         return energyToAdd;
       }
       return 0;

@@ -66,8 +66,7 @@ public class RecyclerMenu extends EnergyPowerMenu {
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
   private static final String LOG_PREFIX = "[RECYCLER]";
 
-  // Note: MenuType will be registered by platform-specific code
-  public static MenuType<RecyclerMenu> TYPE;
+  public static MenuType<RecyclerMenu> MENU_TYPE;
 
   private final RecyclerBlockEntity blockEntity;
   private final Level level;
@@ -86,11 +85,11 @@ public class RecyclerMenu extends EnergyPowerMenu {
   public RecyclerMenu(
       int windowId, Inventory playerInventory, BlockEntity entity, ContainerData additionalData) {
     super(
-        TYPE,
+        MENU_TYPE,
         windowId,
         entity instanceof EnergyPowerConsumer consumer
             ? consumer.getEnergyPowerData()
-            : new SimpleContainerData(2));
+            : new SimpleContainerData(6));
     this.level = playerInventory.player.level();
     this.additionalData =
         additionalData != null
@@ -325,5 +324,10 @@ public class RecyclerMenu extends EnergyPowerMenu {
       return RecyclerStatus.IDLE;
     }
     return blockEntity.getBlockState().getValue(RecyclerBlock.STATUS);
+  }
+
+  @Override
+  public int getBatterySlotIndex() {
+    return RecyclerSlots.BATTERY_SLOT;
   }
 }

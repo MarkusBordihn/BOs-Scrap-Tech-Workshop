@@ -9,6 +9,7 @@ For the full changelog, please go to the [GitHub History][history] instead.
 
 ### v1.2.0
 
+- Refactored energy system for better mod compatibility and performance.
 - Added energy cell block as upgrade of the energy cell item.
 - Improved energy power tab with additional logic and textures.
 - Improved energy handling and performance optimizations.

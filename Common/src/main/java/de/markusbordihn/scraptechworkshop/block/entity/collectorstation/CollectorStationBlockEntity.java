@@ -23,8 +23,8 @@ import de.markusbordihn.scraptechworkshop.block.collectorstation.CollectorStatio
 import de.markusbordihn.scraptechworkshop.block.entity.AbstractWorkshopBlockEntity;
 import de.markusbordihn.scraptechworkshop.config.CollectorStationConfig;
 import de.markusbordihn.scraptechworkshop.data.collectorstation.CollectorStationStatus;
+import de.markusbordihn.scraptechworkshop.data.energy.EnergyPowerData;
 import de.markusbordihn.scraptechworkshop.energy.EnergyPowerConsumer;
-import de.markusbordihn.scraptechworkshop.energy.EnergyPowerData;
 import de.markusbordihn.scraptechworkshop.loot.ScrapLootGenerator;
 import de.markusbordihn.scraptechworkshop.menu.CollectorStationMenu;
 import java.util.ArrayList;
@@ -51,6 +51,9 @@ import org.apache.logging.log4j.Logger;
 public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
     implements EnergyPowerConsumer {
 
+  public static final String STATE_TIMER_TAG = "StateTimer";
+  public static final String BIOME_TAG = "Biome";
+
   public static final int BATTERY_SLOT = 0;
   public static final int FIRST_STORAGE_SLOT = 1;
   public static final int LAST_STORAGE_SLOT = 24;
@@ -65,17 +68,17 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
   private static final float SOUND_VOLUME = 0.5f;
   private static final float SOUND_PITCH = 1.0f;
   private static final String TRANSLATION_KEY = "container.scrap_tech_workshop.collector_station";
-  private static final String STATE_TIMER_TAG = "StateTimer";
-  private static final String BIOME_TAG = "Biome";
   private static final int DATA_STATUS = 0;
   private static final int DATA_STATE_TIMER = 1;
   private static final int DATA_COUNT = 2;
   private static final int ENERGY_CAPACITY_MAH = 5000;
+  private static final int ENERGY_FLOW_DISPLAY_TICKS = 40;
 
   public static BlockEntityType<CollectorStationBlockEntity> TYPE;
 
   private final CollectorStationContainer container;
   private final int tickOffset;
+  private final ContainerData energyContainerData = createEnergyContainerData();
   private int stateTimer = 0;
   private final ContainerData containerData =
       new ContainerData() {
@@ -105,6 +108,8 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
   private String cachedBiome = "";
   private List<ItemStack> pendingItems = new ArrayList<>();
   private int processingIndex = 0;
+  private long lastEnergyReceiveTick = 0;
+  private long lastEnergyDistributeTick = 0;
 
   public CollectorStationBlockEntity(final BlockPos blockPos, final BlockState blockState) {
     super(TYPE, blockPos, blockState);
@@ -128,6 +133,32 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
   }
 
   @Override
+  public int getLastEnergyReceiveAmount() {
+    return energyContainerData.get(4);
+  }
+
+  @Override
+  public void setLastEnergyReceiveAmount(int amount) {
+    energyContainerData.set(4, amount);
+    if (this.level != null) {
+      this.lastEnergyReceiveTick = this.level.getGameTime();
+    }
+  }
+
+  @Override
+  public int getLastEnergyDistributeAmount() {
+    return energyContainerData.get(5);
+  }
+
+  @Override
+  public void setLastEnergyDistributeAmount(int amount) {
+    energyContainerData.set(5, amount);
+    if (this.level != null) {
+      this.lastEnergyDistributeTick = this.level.getGameTime();
+    }
+  }
+
+  @Override
   protected NonNullList<ItemStack> getItems() {
     return container.getItems();
   }
@@ -145,6 +176,17 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
     CollectorStationStatus currentStatus = getStatus();
 
     long currentTime = level.getGameTime();
+    if (lastEnergyReceiveTick > 0
+        && currentTime - lastEnergyReceiveTick > ENERGY_FLOW_DISPLAY_TICKS) {
+      energyContainerData.set(4, 0);
+      lastEnergyReceiveTick = 0;
+    }
+    if (lastEnergyDistributeTick > 0
+        && currentTime - lastEnergyDistributeTick > ENERGY_FLOW_DISPLAY_TICKS) {
+      energyContainerData.set(5, 0);
+      lastEnergyDistributeTick = 0;
+    }
+
     updateEnergyFlow(currentTime);
 
     if (!hasStableEnergy(CollectorStationConfig.energyPerCycle)) {
@@ -359,14 +401,19 @@ public class CollectorStationBlockEntity extends AbstractWorkshopBlockEntity
 
   @Override
   public EnergyPowerData getEnergyData() {
-    return energyData.withBattery(container.getItem(BATTERY_SLOT));
+    return energyData;
   }
 
   @Override
   public void setEnergyData(EnergyPowerData data) {
-    this.energyData = data;
-    container.setItem(BATTERY_SLOT, data.battery());
+    this.energyData = data.withBattery(container.getItem(BATTERY_SLOT));
+    container.setItem(BATTERY_SLOT, this.energyData.battery());
     setChanged();
+  }
+
+  @Override
+  public ContainerData getEnergyPowerData() {
+    return energyContainerData;
   }
 
   @Override

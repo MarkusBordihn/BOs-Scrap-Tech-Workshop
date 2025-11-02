@@ -17,29 +17,43 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.energy;
+package de.markusbordihn.scraptechworkshop.data.energy;
 
-public enum ChargingMode {
-  LEARNING(2, 100),
-  CONSERVATION(Integer.MAX_VALUE, 95);
+public enum EnergyStatus {
+  EMPTY("empty"),
+  DISCHARGING("discharging"),
+  CHARGING("charging"),
+  FULL("full"),
+  FAULTY("faulty"),
+  OVERCHARGED("overcharged"),
+  READY("ready");
 
-  private final int cycleLimit;
-  private final int targetPercentage;
+  private final String id;
 
-  ChargingMode(int cycleLimit, int targetPercentage) {
-    this.cycleLimit = cycleLimit;
-    this.targetPercentage = targetPercentage;
+  EnergyStatus(final String id) {
+    this.id = id;
   }
 
-  public int getCycleLimit() {
-    return cycleLimit;
+  public static EnergyStatus fromId(final String id) {
+    for (EnergyStatus status : values()) {
+      if (status.id.equals(id)) {
+        return status;
+      }
+    }
+    return READY;
   }
 
-  public int getTargetPercentage() {
-    return targetPercentage;
+  public static EnergyStatus fromEnergyLevel(final int current, final int maximum) {
+    if (current <= 0) {
+      return EMPTY;
+    }
+    if (current >= maximum) {
+      return FULL;
+    }
+    return READY;
   }
 
-  public int getHysteresisPercentage() {
-    return targetPercentage - 10;
+  public String getId() {
+    return id;
   }
 }

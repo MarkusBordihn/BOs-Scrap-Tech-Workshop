@@ -43,11 +43,11 @@ public class ClientScreens {
 
   public static void registerScreens() {
     log.info("{} Client Screens ...", Constants.LOG_REGISTER_PREFIX);
-    MenuScreens.register(RecyclerMenu.TYPE, RecyclerScreen::new);
-    MenuScreens.register(RechargeStationMenu.TYPE, RechargeStationScreen::new);
-    MenuScreens.register(ScrapWindTurbineMenu.TYPE, ScrapWindTurbineScreen::new);
-    MenuScreens.register(ScrapMultitoolMenu.TYPE, ScrapMultitoolScreen::new);
-    MenuScreens.register(CollectorStationMenu.TYPE, CollectorStationScreen::new);
-    MenuScreens.register(FloatingScrapCollectorMenu.TYPE, FloatingScrapCollectorScreen::new);
+    MenuScreens.register(CollectorStationMenu.MENU_TYPE, CollectorStationScreen::new);
+    MenuScreens.register(FloatingScrapCollectorMenu.MENU_TYPE, FloatingScrapCollectorScreen::new);
+    MenuScreens.register(RechargeStationMenu.MENU_TYPE, RechargeStationScreen::new);
+    MenuScreens.register(RecyclerMenu.MENU_TYPE, RecyclerScreen::new);
+    MenuScreens.register(ScrapMultitoolMenu.MENU_TYPE, ScrapMultitoolScreen::new);
+    MenuScreens.register(ScrapWindTurbineMenu.MENU_TYPE, ScrapWindTurbineScreen::new);
   }
 }

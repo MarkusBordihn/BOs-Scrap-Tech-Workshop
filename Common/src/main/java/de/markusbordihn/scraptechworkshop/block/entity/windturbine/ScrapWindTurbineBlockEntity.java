@@ -19,13 +19,12 @@
 
 package de.markusbordihn.scraptechworkshop.block.entity.windturbine;
 
-import de.markusbordihn.scraptechworkshop.Constants;
 import de.markusbordihn.scraptechworkshop.block.entity.AbstractWorkshopBlockEntity;
 import de.markusbordihn.scraptechworkshop.block.windturbine.ScrapWindTurbineBlock;
+import de.markusbordihn.scraptechworkshop.data.energy.EnergyFlowStatus;
+import de.markusbordihn.scraptechworkshop.data.energy.EnergyPowerData;
 import de.markusbordihn.scraptechworkshop.data.windturbine.ScrapWindTurbineStatus;
-import de.markusbordihn.scraptechworkshop.energy.EnergyFlowStatus;
 import de.markusbordihn.scraptechworkshop.energy.EnergyPowerBatteryHandler;
-import de.markusbordihn.scraptechworkshop.energy.EnergyPowerData;
 import de.markusbordihn.scraptechworkshop.energy.EnergyPowerGenerator;
 import de.markusbordihn.scraptechworkshop.environment.WindCalculator;
 import de.markusbordihn.scraptechworkshop.menu.ScrapWindTurbineMenu;
@@ -43,14 +42,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
     implements EnergyPowerGenerator, EnergyPowerBatteryHandler {
 
   public static final String ID = "scrap_wind_turbine";
-  private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
 
   private static final int ENERGY_CAPACITY_MAH = 5000;
   private static final int ENERGY_GENERATION_INTERVAL = 20;
@@ -64,10 +60,11 @@ public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
   private static final int POWER_GENERATION_DATA_INDEX = 1;
 
   private static final String TRANSLATION_KEY = "container.scrap_tech_workshop.scrap_wind_turbine";
+  private static final int ENERGY_FLOW_DISPLAY_TICKS = 40;
   public static BlockEntityType<ScrapWindTurbineBlockEntity> TYPE;
-
   private final ScrapWindTurbineContainer container;
   private final int windCheckOffset;
+  private final ContainerData energyContainerData = createEnergyContainerData();
   private int windSpeed = 0;
   private int powerGeneration = 0;
   private final ContainerData containerData =
@@ -95,6 +92,8 @@ public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
         }
       };
   private EnergyPowerData energyData = EnergyPowerData.empty();
+  private long lastEnergyReceiveTick = 0;
+  private long lastEnergyDistributeTick = 0;
   private int tickCounter = 0;
 
   public ScrapWindTurbineBlockEntity(final BlockPos blockPos, final BlockState blockState) {
@@ -118,6 +117,19 @@ public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
     }
 
     blockEntity.tickCounter++;
+
+    // Reset energy flow amounts after display time
+    long currentTick = level.getGameTime();
+    if (blockEntity.lastEnergyReceiveTick > 0
+        && currentTick - blockEntity.lastEnergyReceiveTick > ENERGY_FLOW_DISPLAY_TICKS) {
+      blockEntity.energyContainerData.set(4, 0);
+      blockEntity.lastEnergyReceiveTick = 0;
+    }
+    if (blockEntity.lastEnergyDistributeTick > 0
+        && currentTick - blockEntity.lastEnergyDistributeTick > ENERGY_FLOW_DISPLAY_TICKS) {
+      blockEntity.energyContainerData.set(5, 0);
+      blockEntity.lastEnergyDistributeTick = 0;
+    }
 
     if ((blockEntity.tickCounter + blockEntity.windCheckOffset) % WIND_CHECK_INTERVAL == 0) {
       blockEntity.windSpeed = WindCalculator.calculateWindSpeed(level, blockPos.above());
@@ -144,6 +156,32 @@ public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
 
     if (blockEntity.tickCounter % 20 == 0) {
       blockEntity.setChanged();
+    }
+  }
+
+  @Override
+  public int getLastEnergyReceiveAmount() {
+    return energyContainerData.get(4);
+  }
+
+  @Override
+  public void setLastEnergyReceiveAmount(int amount) {
+    energyContainerData.set(4, amount);
+    if (this.level != null) {
+      this.lastEnergyReceiveTick = this.level.getGameTime();
+    }
+  }
+
+  @Override
+  public int getLastEnergyDistributeAmount() {
+    return energyContainerData.get(5);
+  }
+
+  @Override
+  public void setLastEnergyDistributeAmount(int amount) {
+    energyContainerData.set(5, amount);
+    if (this.level != null) {
+      this.lastEnergyDistributeTick = this.level.getGameTime();
     }
   }
 
@@ -211,6 +249,11 @@ public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
     return containerData;
   }
 
+  @Override
+  public ContainerData getEnergyPowerData() {
+    return energyContainerData;
+  }
+
   private void syncToClient() {
     if (level != null && !level.isClientSide) {
       level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 3);
@@ -235,14 +278,15 @@ public class ScrapWindTurbineBlockEntity extends AbstractWorkshopBlockEntity
 
   @Override
   public EnergyPowerData getEnergyData() {
-    return energyData.withBattery(
-        container.getItem(ScrapWindTurbineSlots.ENERGY_TAB_BATTERY_SLOT));
+    return energyData;
   }
 
   @Override
   public void setEnergyData(EnergyPowerData data) {
-    energyData = data;
-    container.setItem(ScrapWindTurbineSlots.ENERGY_TAB_BATTERY_SLOT, data.battery());
+    // Always update with current battery from slot
+    ItemStack currentBattery = container.getItem(ScrapWindTurbineSlots.ENERGY_TAB_BATTERY_SLOT);
+    this.energyData = data.withBattery(currentBattery);
+    container.setItem(ScrapWindTurbineSlots.ENERGY_TAB_BATTERY_SLOT, this.energyData.battery());
     setChanged();
   }
 

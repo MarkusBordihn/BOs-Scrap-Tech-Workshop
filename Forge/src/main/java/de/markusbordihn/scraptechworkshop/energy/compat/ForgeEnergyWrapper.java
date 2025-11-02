@@ -27,7 +27,7 @@ public class ForgeEnergyWrapper implements IEnergyStorage {
 
   private final EnergyPowerConsumer energyConsumer;
 
-  public ForgeEnergyWrapper(EnergyPowerConsumer energyConsumer) {
+  public ForgeEnergyWrapper(final EnergyPowerConsumer energyConsumer) {
     this.energyConsumer = energyConsumer;
   }
 
@@ -37,15 +37,8 @@ public class ForgeEnergyWrapper implements IEnergyStorage {
       return 0;
     }
 
-    int currentMilliampereHour = energyConsumer.getCurrentEnergy();
-    int milliampereHourReceived =
-        Math.min(
-            EnergyConverter.forgeEnergyToMilliampereHour(forgeEnergyReceive),
-            energyConsumer.getEnergyCapacity() - currentMilliampereHour);
-    if (!simulate && milliampereHourReceived > 0) {
-      energyConsumer.setCurrentEnergy(currentMilliampereHour + milliampereHourReceived);
-      energyConsumer.markDirty();
-    }
+    int milliampereHourToReceive = EnergyConverter.forgeEnergyToMilliampereHour(forgeEnergyReceive);
+    int milliampereHourReceived = energyConsumer.receiveEnergy(milliampereHourToReceive, simulate);
 
     return EnergyConverter.milliampereHourToForgeEnergy(milliampereHourReceived);
   }

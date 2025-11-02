@@ -64,7 +64,7 @@ public class CollectorStationMenu extends EnergyPowerMenu {
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
   private static final String LOG_PREFIX = "[CollectorStationMenu]";
 
-  public static MenuType<CollectorStationMenu> TYPE;
+  public static MenuType<CollectorStationMenu> MENU_TYPE;
 
   private final CollectorStationBlockEntity blockEntity;
   private final Level level;
@@ -87,11 +87,11 @@ public class CollectorStationMenu extends EnergyPowerMenu {
       final BlockEntity entity,
       final ContainerData additionalData) {
     super(
-        TYPE,
+        MENU_TYPE,
         windowId,
         entity instanceof EnergyPowerConsumer consumer
             ? consumer.getEnergyPowerData()
-            : new SimpleContainerData(2));
+            : new SimpleContainerData(6));
     this.level = playerInventory.player.level();
     this.additionalData =
         additionalData != null
@@ -258,5 +258,10 @@ public class CollectorStationMenu extends EnergyPowerMenu {
 
   public CollectorStationBlockEntity getBlockEntity() {
     return blockEntity;
+  }
+
+  @Override
+  public int getBatterySlotIndex() {
+    return CollectorStationBlockEntity.BATTERY_SLOT;
   }
 }

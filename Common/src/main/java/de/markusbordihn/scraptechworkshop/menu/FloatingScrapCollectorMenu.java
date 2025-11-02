@@ -65,7 +65,7 @@ public class FloatingScrapCollectorMenu extends BaseMenu {
   private static final Logger log = LogManager.getLogger(Constants.LOG_NAME);
   private static final String LOG_PREFIX = "[FloatingScrapCollectorMenu]";
 
-  public static MenuType<FloatingScrapCollectorMenu> TYPE;
+  public static MenuType<FloatingScrapCollectorMenu> MENU_TYPE;
 
   private final FloatingScrapCollectorBlockEntity blockEntity;
   private final Level level;
@@ -84,7 +84,7 @@ public class FloatingScrapCollectorMenu extends BaseMenu {
 
   public FloatingScrapCollectorMenu(
       int windowId, Inventory playerInventory, BlockEntity entity, ContainerData additionalData) {
-    super(TYPE, windowId);
+    super(MENU_TYPE, windowId);
     this.level = playerInventory.player.level();
     this.additionalData =
         additionalData != null

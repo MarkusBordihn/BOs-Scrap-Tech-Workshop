@@ -23,6 +23,7 @@ import de.markusbordihn.scraptechworkshop.Constants;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -64,13 +65,13 @@ public class ForgeModMenus {
 
     // Set the menu type in the common class after registration
     eventBus.addListener(
-        (net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) -> {
-          RecyclerMenu.TYPE = RECYCLER_MENU.get();
-          RechargeStationMenu.TYPE = RECHARGE_STATION_MENU.get();
-          ScrapWindTurbineMenu.TYPE = SCRAP_WIND_TURBINE_MENU.get();
-          ScrapMultitoolMenu.TYPE = SCRAP_MULTITOOL_MENU.get();
-          CollectorStationMenu.TYPE = COLLECTOR_STATION_MENU.get();
-          FloatingScrapCollectorMenu.TYPE = FLOATING_SCRAP_COLLECTOR_MENU.get();
+        (FMLCommonSetupEvent event) -> {
+          CollectorStationMenu.MENU_TYPE = COLLECTOR_STATION_MENU.get();
+          FloatingScrapCollectorMenu.MENU_TYPE = FLOATING_SCRAP_COLLECTOR_MENU.get();
+          RechargeStationMenu.MENU_TYPE = RECHARGE_STATION_MENU.get();
+          RecyclerMenu.MENU_TYPE = RECYCLER_MENU.get();
+          ScrapMultitoolMenu.MENU_TYPE = SCRAP_MULTITOOL_MENU.get();
+          ScrapWindTurbineMenu.MENU_TYPE = SCRAP_WIND_TURBINE_MENU.get();
         });
   }
 }

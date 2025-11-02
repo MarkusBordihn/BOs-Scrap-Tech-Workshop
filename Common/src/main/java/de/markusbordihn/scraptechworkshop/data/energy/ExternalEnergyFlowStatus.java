@@ -17,41 +17,20 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-package de.markusbordihn.scraptechworkshop.energy;
+package de.markusbordihn.scraptechworkshop.data.energy;
 
-public enum EnergyStatus {
-  EMPTY("empty"),
-  DISCHARGING("discharging"),
-  CHARGING("charging"),
-  FULL("full"),
-  FAULTY("faulty"),
-  OVERCHARGED("overcharged"),
-  READY("ready");
+public enum ExternalEnergyFlowStatus {
+  IDLE(1),
+  ENERGY_IN(2),
+  ENERGY_OUT(3);
 
-  public static final String NBT_ENERGY_STATUS = "EnergyStatus";
+  private final int spriteIndex;
 
-  private final String id;
-
-  EnergyStatus(String id) {
-    this.id = id;
+  ExternalEnergyFlowStatus(final int spriteIndex) {
+    this.spriteIndex = spriteIndex;
   }
 
-  public static EnergyStatus fromId(String id) {
-    for (EnergyStatus status : values()) {
-      if (status.id.equals(id)) {
-        return status;
-      }
-    }
-    return READY;
-  }
-
-  public static EnergyStatus fromEnergyLevel(int current, int maximum) {
-    if (current <= 0) return EMPTY;
-    if (current >= maximum) return FULL;
-    return READY;
-  }
-
-  public String getId() {
-    return id;
+  public int getSpriteIndex() {
+    return spriteIndex;
   }
 }

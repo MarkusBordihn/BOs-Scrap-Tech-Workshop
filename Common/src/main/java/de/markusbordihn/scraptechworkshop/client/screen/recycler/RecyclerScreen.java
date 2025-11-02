@@ -50,7 +50,6 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
   private static final String TRANSLATION_INPUT_SLOT = TRANSLATION_KEY_PREFIX + "input_slot";
   private static final String TRANSLATION_OUTPUT_SLOTS = TRANSLATION_KEY_PREFIX + "output_slots";
   private static final String TRANSLATION_UPGRADE_SLOTS = TRANSLATION_KEY_PREFIX + "upgrade_slots";
-  private static final String TRANSLATION_BATTERY_SLOT = TRANSLATION_KEY_PREFIX + "battery_slot";
 
   private static final int SCREEN_WIDTH = 176;
   private static final int SCREEN_HEIGHT = 205;
@@ -109,7 +108,7 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
 
     renderDefaultBackground(guiGraphics, x, y, imageWidth, imageHeight);
 
-    renderEnergyPowerUI(guiGraphics, x, y, menu.getCurrentEnergy(), menu.getEnergyCapacity());
+    super.renderBg(guiGraphics, partialTick, mouseX, mouseY);
 
     // Input slot
     renderSlot(guiGraphics, x + INPUT_SLOT_X, y + INPUT_SLOT_Y);
@@ -205,17 +204,6 @@ public class RecyclerScreen extends BaseContainerScreen<RecyclerMenu> {
   @Override
   protected void renderTooltip(GuiGraphics guiGraphics, int x, int y) {
     super.renderTooltip(guiGraphics, x, y);
-
-    renderEnergyPowerTooltips(
-        guiGraphics,
-        x,
-        y,
-        leftPos,
-        topPos,
-        menu.getCurrentEnergy(),
-        menu.getEnergyCapacity(),
-        TRANSLATION_BATTERY_SLOT,
-        12);
 
     int relativeX = x - leftPos;
     int relativeY = y - topPos;

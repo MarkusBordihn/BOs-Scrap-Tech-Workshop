@@ -43,18 +43,18 @@ public class ScrapMultitoolMenu extends BaseMenu {
 
   public static final int PLAYER_INVENTORY_START_Y = 138;
   public static final int PLAYER_HOTBAR_START_Y = 196;
-  // Layout constants
-  private static final int BATTERY_SLOT_X = 100;
-  private static final int BATTERY_SLOT_Y = 20;
-  private static final int MODULE_SLOTS_START_X = 64;
-  private static final int MODULE_SLOTS_Y = 50;
+
+  public static final String ID = "scrap_multitool";
+
+  public static final int BATTERY_SLOT_X = 85;
+  public static final int BATTERY_SLOT_Y = 50;
+  public static final int MODULE_SLOTS_X = 60;
+  public static final int MODULE_SLOTS_Y = 95;
   private static final int MODULE_SLOTS_COUNT = ScrapMultitoolData.MODULE_SLOTS;
   private static final int PLAYER_INVENTORY_START_X = 8;
   private static final int PLAYER_HOTBAR_START_X = 8;
   private static final int TOTAL_TOOL_SLOTS = 1 + MODULE_SLOTS_COUNT;
-
-  // Note: MenuType will be registered by platform-specific code
-  public static MenuType<ScrapMultitoolMenu> TYPE;
+  public static MenuType<ScrapMultitoolMenu> MENU_TYPE;
 
   private final ItemStack multitoolStack;
   private final SimpleContainer toolContainer;
@@ -82,7 +82,7 @@ public class ScrapMultitoolMenu extends BaseMenu {
       final ItemStack multitoolStack,
       final InteractionHand hand,
       final int slotIndex) {
-    super(TYPE, windowId);
+    super(MENU_TYPE, windowId);
 
     if (!(multitoolStack.getItem() instanceof ScrapMultitoolItem multitool)) {
       throw new IllegalArgumentException("Invalid multitool ItemStack");
@@ -91,13 +91,9 @@ public class ScrapMultitoolMenu extends BaseMenu {
     this.hand = hand;
     this.toolSlotIndex = slotIndex;
 
-    // Create container with lambda that references the final toolContainer
-    SimpleContainer tempContainer =
-        MultitoolContainerFactory.createToolContainer(multitoolStack, () -> {});
-    this.toolContainer = tempContainer;
+    this.toolContainer = MultitoolContainerFactory.createToolContainer(multitoolStack, () -> {});
 
-    // Now set up the change listener that uses the initialized toolContainer
-    tempContainer.addListener(
+    toolContainer.addListener(
         container -> {
           if (initialized) {
             MultitoolDataSaver.saveToMultitool(multitoolStack, toolContainer);
@@ -118,13 +114,13 @@ public class ScrapMultitoolMenu extends BaseMenu {
     // Module slots
     for (int i = 0; i < MODULE_SLOTS_COUNT; i++) {
       int slotIndex = i + 1;
-      int x = MODULE_SLOTS_START_X + i * SLOT_SPACING;
+      int x = MODULE_SLOTS_X + i * SLOT_SPACING;
       this.addSlot(new MultitoolModuleSlot(toolContainer, slotIndex, x, MODULE_SLOTS_Y));
     }
   }
 
   private void addPlayerHotbar(final Inventory playerInventory) {
-    for (int index = 0; index < 9; ++index) { // 9 hotbar slots
+    for (int index = 0; index < 9; ++index) {
       int x = PLAYER_HOTBAR_START_X + index * SLOT_SPACING;
       this.addSlot(
           new Slot(playerInventory, index, x, PLAYER_HOTBAR_START_Y) {
@@ -148,46 +144,37 @@ public class ScrapMultitoolMenu extends BaseMenu {
       int playerHotbarEnd = playerInventoryEnd + 9;
 
       if (index < TOTAL_TOOL_SLOTS) {
-        // Moving from tool slots to player inventory
         if (!this.moveItemStackTo(slotStack, TOTAL_TOOL_SLOTS, playerHotbarEnd, true)) {
           return ItemStack.EMPTY;
         }
       } else if (index < playerInventoryEnd) {
-        // Moving from player inventory
         if (slotStack.getItem() instanceof EnergyCellItem) {
-          // Try to move battery to battery slot
           if (!this.moveItemStackTo(slotStack, 0, 1, false)
               && !this.moveItemStackTo(slotStack, playerInventoryEnd, playerHotbarEnd, false)) {
             return ItemStack.EMPTY;
           }
         } else if (isValidModule(slotStack)) {
-          // Try to move module to module slots
           if (!this.moveItemStackTo(slotStack, 1, TOTAL_TOOL_SLOTS, false)
               && !this.moveItemStackTo(slotStack, playerInventoryEnd, playerHotbarEnd, false)) {
             return ItemStack.EMPTY;
           }
         } else {
-          // Regular item, try hotbar
           if (!this.moveItemStackTo(slotStack, playerInventoryEnd, playerHotbarEnd, false)) {
             return ItemStack.EMPTY;
           }
         }
       } else if (index < playerHotbarEnd) {
-        // Moving from player hotbar
         if (slotStack.getItem() instanceof EnergyCellItem) {
-          // Try to move battery to battery slot
           if (!this.moveItemStackTo(slotStack, 0, 1, false)
               && !this.moveItemStackTo(slotStack, TOTAL_TOOL_SLOTS, playerInventoryEnd, false)) {
             return ItemStack.EMPTY;
           }
         } else if (isValidModule(slotStack)) {
-          // Try to move module to module slots
           if (!this.moveItemStackTo(slotStack, 1, TOTAL_TOOL_SLOTS, false)
               && !this.moveItemStackTo(slotStack, TOTAL_TOOL_SLOTS, playerInventoryEnd, false)) {
             return ItemStack.EMPTY;
           }
         } else {
-          // Regular item, try inventory
           if (!this.moveItemStackTo(slotStack, TOTAL_TOOL_SLOTS, playerInventoryEnd, false)) {
             return ItemStack.EMPTY;
           }
@@ -257,23 +244,23 @@ public class ScrapMultitoolMenu extends BaseMenu {
     }
 
     ScrapMultitoolData currentData = ScrapMultitoolData.fromItemStack(actualMultitoolStack);
-    ScrapMultitoolData newData =
-        new ScrapMultitoolData(
+    new ScrapMultitoolData(
             toolContainer.getItem(0),
             modules,
             currentData.hologramColor(),
             currentData.hudEnabled(),
             currentData.toolPriority(),
-            currentData.activeMode());
-    newData.saveToItemStack(actualMultitoolStack);
+            currentData.activeMode())
+        .saveToItemStack(actualMultitoolStack);
 
-    // Always sync energy: either from battery or reset to 0 if no battery
     if (actualMultitoolStack.getItem() instanceof ScrapMultitoolItem multitoolItem) {
       multitoolItem.syncEnergyDisplay(actualMultitoolStack);
     }
 
     DisplayMode displayMode = new DisplayMode(actualMultitoolStack);
-    displayMode.updateModel(ToolMode.fromId(newData.activeMode()), newData.getBatteryLevel());
+    displayMode.updateModel(
+        ToolMode.fromId(currentData.activeMode()),
+        ScrapMultitoolData.fromItemStack(actualMultitoolStack).getBatteryLevel());
   }
 
   public ItemStack getMultitoolStack() {
